@@ -1,0 +1,15 @@
+<format>1.0</format>
+<practitioner>
+<id>0</id>
+<name>pract a</name>
+<type>0</type>
+<appointment_length>60</appointment_length>
+<note>start at 5pm		last appointment 30 mins</note>
+</practitioner>
+<practitioner>
+<id>1</id>
+<name>pract b</name>
+<type>1</type>
+<appointment_length>45</appointment_length>
+<note></note>
+</practitioner>
