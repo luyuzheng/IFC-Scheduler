@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/gui/sub/HelpUI.java</name>
-			<type>1</type>
-			<location>C:/Users/Aakash Jain/workspace/IFC/src/gui/sub/HelpUI.java</location>
-		</link>
-	</linkedResources>
 </projectDescription>

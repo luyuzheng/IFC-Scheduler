@@ -55,6 +55,7 @@ public class DayPanel extends JPanel {
 		waitListButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
+		
 		//We don't want these focusable, so they won't disrupt the focus of the main calendar area
 		patientButton.setAction(addPatAction);
 		patientButton.setFocusable(false);
@@ -71,7 +72,7 @@ public class DayPanel extends JPanel {
 		waitListButton.setAction(waitListAction);
 		waitListButton.setFocusable(true);
 		
-		JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
 		
 		buttonPanel.add(addPracButton);
 		buttonPanel.add(removePracButton);
@@ -139,14 +140,14 @@ public class DayPanel extends JPanel {
 		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
 	}
 	
-	private final AbstractAction removePracAction = new AbstractAction("<html>Remove <br>Practitioner</html>") {
+	private final AbstractAction removePracAction = new AbstractAction("<html>Remove Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
 			
 			clearRoom(rp);
 		}
 	};
 	
-	public final AbstractAction switchViewAction = new AbstractAction("<html>Switch to <br>Month View</html>") {
+	public final AbstractAction switchViewAction = new AbstractAction("<html>Switch to Month View</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Month View</html>");
 			else switchViewButton.setText("<html>Switch to <br>Day View</html>");
@@ -154,20 +155,20 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
-	private final AbstractAction removePatAction = new AbstractAction("<html>Remove<br> Patient</html>") {
+	private final AbstractAction removePatAction = new AbstractAction("<html>Remove Patient</html>") {
 		public void actionPerformed(ActionEvent e) {
 			AppointmentBlock block = ab;
 			if (JOptionPane.showConfirmDialog(mw, "Are you sure you'd like to clear this appointment?", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) block.clearAppt();
 		}
 	};
 	
-	private final AbstractAction addPatAction = new AbstractAction("<html>Schedule<br> Patient</html>") {
+	private final AbstractAction addPatAction = new AbstractAction("<html>Schedule Patient</html>") {
 		public void actionPerformed(ActionEvent e) {
 			ab.setPatient(SelectPatientUI.ShowDialog(ab.getParent()));
 		}
 	};
 	
-	private final AbstractAction addPracAction = new AbstractAction("<html>Add <br>Practitioner<html>") {
+	private final AbstractAction addPracAction = new AbstractAction("<html>Add Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
 			Practitioner p = SelectPractitionerUI.ShowDialog(mw);
 			if (p==null) return;
@@ -177,13 +178,13 @@ public class DayPanel extends JPanel {
 	};
 	
 	//private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Change <br>Hours of <br>Operation</html>") {
-	private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Change<br>Hours of <br>Operation(for<br>Selected day)</html>") {
+	private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Change Work Hours<br>(for Selected Day)</html>") {
 		public void actionPerformed(ActionEvent e) {
 			setTimeSlot(SelectTimeSlotUI.ShowDialog(mw));
 		}
 	};
 	
-	private final AbstractAction waitListAction = new AbstractAction("<html>Show <br>Wait List</html>") {
+	private final AbstractAction waitListAction = new AbstractAction("<html>Show Wait List</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (mw.showingWaitList()) waitListButton.setText("<html>Show <br>Wait List</html>");
 			else waitListButton.setText("<html>Hide <br>Wait List</html>");
