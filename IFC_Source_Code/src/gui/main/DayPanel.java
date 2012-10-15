@@ -186,14 +186,14 @@ public class DayPanel extends JPanel {
 	
 	private final AbstractAction waitListAction = new AbstractAction("<html>Show Wait List</html>") {
 		public void actionPerformed(ActionEvent e) {
-			if (mw.showingWaitList()) waitListButton.setText("<html>Show <br>Wait List</html>");
-			else waitListButton.setText("<html>Hide <br>Wait List</html>");
+			if (mw.showingWaitList()) waitListButton.setText("<html>Show Wait List</html>");
+			else waitListButton.setText("<html>Hide Wait List</html>");
 			mw.toggleWaitList();
 		}
 	};
 	
 	public void showingWaitList() {
-		if (mw.showingWaitList()) waitListButton.setText("<html>Hide <br>Wait List</html>");
+		if (mw.showingWaitList()) waitListButton.setText("<html>Hide Wait List</html>");
 	}
 	
 }

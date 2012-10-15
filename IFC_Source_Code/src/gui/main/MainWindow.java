@@ -63,10 +63,12 @@ public class MainWindow extends JFrame {
 	
 	private void initComponents(DayPanel dp) {
 		sidePanel = new JPanel(new BorderLayout());
-		sidePanel.add(dp, BorderLayout.NORTH);
 		JPanel test = new JPanel(new BorderLayout());
 		test.add(cp, BorderLayout.NORTH);
-		sidePanel.add(test,BorderLayout.CENTER);
+		sidePanel.add(test,BorderLayout.NORTH);
+		
+		sidePanel.add(dp, BorderLayout.CENTER);
+
 		sidePane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sidePane.setViewportView(sidePanel);
 		
@@ -82,12 +84,14 @@ public class MainWindow extends JFrame {
 	//Loads and displays the month view data 
 	private void initMVComponents(DayPanel dp) {
 		sidePanel = new JPanel(new BorderLayout());
-		//Add the toolbox daypanel to sidepanel
-		sidePanel.add(dp, BorderLayout.NORTH);
-		//Addd the calender on the left to sidepanel
+		//Add the calendar on the left to sidepanel
 		JPanel test = new JPanel(new BorderLayout());
 		test.add(cp, BorderLayout.NORTH);
-		sidePanel.add(test,BorderLayout.CENTER);
+		sidePanel.add(test,BorderLayout.NORTH);
+		
+		//Add the toolbox daypanel to sidepanel
+		sidePanel.add(dp, BorderLayout.CENTER);
+	
 		//Add above created sidepanel to sidepane
 		sidePane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sidePane.setViewportView(sidePanel);
