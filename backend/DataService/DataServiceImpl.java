@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,54 +16,21 @@ public class DataServiceImpl implements DataService {
 
     // just for testing
     public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/test";
+        //String url = "jdbc:mysql://localhost:3306/test";
         String user = "testuser";
         String password = "test623";
         
         DataService serv = DataServiceImpl.create("test", "localhost:3306", user, password);
-        PatientDto patient = new PatientDto();
-        patient.setFirst("Dead").setLast("Bowie").setPhone(3215552314L).setNotes("ELE member");
-        serv.addPatient(patient);
+
+//        PatientDto patient = new PatientDto();
+//        patient.setFirst("Dead").setLast("Bowie").setPhone(3215552314L).setNotes("ELE member");
+//        serv.addPatient(patient);
         
-        System.out.println(serv.getPatient(2));
+        for (PatientDto patient : serv.queryPatientByName("Felicia", "Day")) {
+            System.out.println(patient);
+        }
         //System.out.println(serv.queryPatientByName("Dead", "Bowie").get(0));
-        
-        /*
-        Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-
-        try {
-            con = DriverManager.getConnection(url, user, password);
-            
-            st = con.prepareStatement("INSERT INTO Patients (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
-            st.setString(1, "Nathan");
-            st.setString(2, "Fillion");
-            st.setLong(3, 1235551234);
-            st.setString(4, "Cpt. Malcom Reynolds");
-            st.executeUpdate();
-
-        } catch (SQLException ex) {
-            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-            lgr.log(Level.SEVERE, ex.getMessage(), ex);
-
-        } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-
-            } catch (SQLException ex) {
-                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-                lgr.log(Level.WARNING, ex.getMessage(), ex);
-            }
-        }*/
+        serv.close();
     }
     
     private final String url;
@@ -96,7 +64,8 @@ public class DataServiceImpl implements DataService {
                 "jdbc:mysql://" + serverAddr + "/" + dbName, username, password);
 
         try {
-            service.connection = DriverManager.getConnection(service.url, username, password);
+            service.connection =
+                    DriverManager.getConnection(service.url, service.user, service.password);
         } catch (SQLException e) {
             Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
             lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -106,6 +75,7 @@ public class DataServiceImpl implements DataService {
         return service;
     }
     
+    @Override
     public void close() {
         try {
             if (connection != null) {
@@ -159,8 +129,7 @@ public class DataServiceImpl implements DataService {
         ResultSet rs = null;
         
         try {
-            st = connection.prepareStatement(
-                    "SELECT * FROM Patients WHERE PatID=(?)");
+            st = connection.prepareStatement("SELECT * FROM Patients WHERE PatID=(?)");
             st.setInt(1, PatID);
             rs = st.executeQuery();
             PatientDto patient = new PatientDto();
@@ -192,7 +161,40 @@ public class DataServiceImpl implements DataService {
     
     @Override
     public List<PatientDto> queryPatientByName(String first, String last) {
-        // TODO: implement
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        try {
+            st = connection.prepareStatement("SELECT * FROM Patients WHERE First=? AND Last=?");
+            st.setString(1, first);
+            st.setString(2, last);
+            rs = st.executeQuery();
+            List<PatientDto> results = new ArrayList<PatientDto>();
+            PatientDto patient = new PatientDto();
+            while (rs.next()) {
+                // TODO: Will the columns always be the same order?
+                patient.setField(PatientDto.PATIENT_ID, rs.getInt(1));
+                patient.setField(PatientDto.FIRST, rs.getString(2));
+                patient.setField(PatientDto.LAST, rs.getString(3));
+                patient.setField(PatientDto.PHONE, rs.getLong(4));
+                patient.setField(PatientDto.NOTES, rs.getString(5));
+                results.add(patient);
+                patient = new PatientDto();
+            }
+            return results;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
         return null;
     }
 }
