@@ -2,6 +2,7 @@ package DataService;
 
 import java.util.List;
 
+import DataTransferObjects.NoShowDto;
 import DataTransferObjects.PatientDto;
 
 public interface DataService {
@@ -34,4 +35,12 @@ public interface DataService {
 	 * @return List of results. null if there was an error completing the request.
 	 */
 	public List<PatientDto> queryPatientByName(String first, String last);
+	
+	/**
+	 * Returns a list no shows according patient.
+	 *
+	 * @param PatID
+	 * @return List of no shows associated with the patient
+	 */
+	public List<NoShowDto> getNoShowsByPatient(int PatID);
 }

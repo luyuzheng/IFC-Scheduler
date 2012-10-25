@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import DataTransferObjects.NoShowDto;
 import DataTransferObjects.PatientDto;
 
 public class DataServiceImpl implements DataService {
@@ -173,13 +174,49 @@ public class DataServiceImpl implements DataService {
             PatientDto patient = new PatientDto();
             while (rs.next()) {
                 // TODO: Will the columns always be the same order?
-                patient.setField(PatientDto.PATIENT_ID, rs.getInt(1));
-                patient.setField(PatientDto.FIRST, rs.getString(2));
-                patient.setField(PatientDto.LAST, rs.getString(3));
-                patient.setField(PatientDto.PHONE, rs.getLong(4));
-                patient.setField(PatientDto.NOTES, rs.getString(5));
+                patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+                patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
+                patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
+                patient.setField(PatientDto.PHONE, rs.getLong(PatientDto.PHONE));
+                patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
                 results.add(patient);
                 patient = new PatientDto();
+            }
+            return results;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public List<NoShowDto> getNoShowsByPatient(int patID) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        try {
+            st = connection.prepareStatement("SELECT * FROM NoShows WHERE PatID=?");
+            st.setInt(1, patID);
+            rs = st.executeQuery();
+            List<NoShowDto> results = new ArrayList<NoShowDto>();
+            NoShowDto noShow = new NoShowDto();
+            while (rs.next()) {
+                // TODO: Will the columns always be the same order?
+                noShow.setField(NoShowDto.NOSHOW_ID, rs.getInt(NoShowDto.NOSHOW_ID));
+                noShow.setField(NoShowDto.PATIENT_ID, rs.getString(NoShowDto.PATIENT_ID));
+                noShow.setField(NoShowDto.DATE, rs.getString(NoShowDto.DATE));
+                results.add(noShow);
+                noShow = new NoShowDto();
             }
             return results;
         } catch (SQLException e) {

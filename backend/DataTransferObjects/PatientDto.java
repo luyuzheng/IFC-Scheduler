@@ -59,7 +59,7 @@ public class PatientDto extends AbstractDto {
         return this;
     }
 
-    public PatientDto setPhone(long phone) {
+    public PatientDto setPhone(Long phone) {
         fieldsMap.put(PHONE, phone);
         return this;
     }
