@@ -109,7 +109,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please select a patient.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} 
-			Type type = (Type)typeCombo.getSelectedItem();
+			data.Type type = (data.Type)typeCombo.getSelectedItem();
 			String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t");
 			p = new WaitingPatient(wm.getNewId(), patient, type, comment, System.currentTimeMillis());
 			wm.addWaitingPatient(p);

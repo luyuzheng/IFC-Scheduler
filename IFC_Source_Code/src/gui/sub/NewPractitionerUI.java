@@ -122,7 +122,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New Type")) {
-			Type t = NewTypeUI.ShowDialog(this);
+			data.Type t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
 			tm = new TypeManager();
 			removeAll();
@@ -155,9 +155,9 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 			
 			int id = new PractitionerManager().getNewId();
 			TypeManager tm = new TypeManager();
-			Type t = tm.getType(type);
+			data.Type t = tm.getType(type);
 			if (t == null) {
-				t = new Type(tm.getNewId(), type);
+				t = new data.Type(tm.getNewId(), type);
 				tm.addType(t);
 			}
 			

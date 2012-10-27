@@ -1,0 +1,8 @@
+<format>1.0</format>
+<practitioner>
+<id>0</id>
+<name>Peanut</name>
+<type>0</type>
+<appointment_length>30</appointment_length>
+<note></note>
+</practitioner>

@@ -1,0 +1,8 @@
+<format>1.0</format>
+<patient>
+<id>0</id>
+<first_name>Jelly</first_name>
+<last_name>Bean</last_name>
+<phone>123-456-7890</phone>
+<note></note>
+</patient>

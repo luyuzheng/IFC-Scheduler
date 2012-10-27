@@ -28,12 +28,14 @@ import data.Room;
 import data.TimeSlot;
 
 public class DayPanel extends JPanel {
-	private Day day;	
+	private Day day;
+	private JButton switchViewButton = new PanelButton("Month View");
 	private JButton patientButton = new PanelButton("Schedule Patient");
 	private JButton addPracButton = new PanelButton("Add Practitioner");
 	private JButton removePracButton = new PanelButton("Remove Practitioner");
 	private JButton setTimeSlotButton = new PanelButton("Time of Operation");
-	private JButton switchViewButton = new PanelButton("Month View");
+	private JButton searchButton = new PanelButton("Search");
+	private JButton noShowsButton = new PanelButton("No Shows");
 	private JButton waitListButton = new PanelButton("Wait List");
 	
 	
@@ -47,16 +49,20 @@ public class DayPanel extends JPanel {
 		setBackground(Color.WHITE);
 		this.day = day;
 		
+		switchViewButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		patientButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		addPracButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		removePracButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		setTimeSlotButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		switchViewButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		searchButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		noShowsButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		waitListButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
 		
 		//We don't want these focusable, so they won't disrupt the focus of the main calendar area
+		switchViewButton.setAction(switchViewAction);
+		switchViewButton.setFocusable(false);
 		patientButton.setAction(addPatAction);
 		patientButton.setFocusable(false);
 		patientButton.setEnabled(false);
@@ -65,20 +71,24 @@ public class DayPanel extends JPanel {
 		removePracButton.setAction(removePracAction);
 		removePracButton.setFocusable(false);
 		removePracButton.setEnabled(false);
-		setTimeSlotButton.setAction(changeTimeSlotAction);
 		setTimeSlotButton.setFocusable(false);
-		switchViewButton.setAction(switchViewAction);
-		switchViewButton.setFocusable(false);
+		searchButton.setAction(searchAction);
+		searchButton.setFocusable(false);
+		noShowsButton.setAction(noShowsAction);
+		noShowsButton.setFocusable(false);
+		setTimeSlotButton.setAction(changeTimeSlotAction);
 		waitListButton.setAction(waitListAction);
 		waitListButton.setFocusable(true);
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
 		
+		buttonPanel.add(switchViewButton);
 		buttonPanel.add(addPracButton);
 		buttonPanel.add(removePracButton);
 		buttonPanel.add(setTimeSlotButton);
 		buttonPanel.add(patientButton);
-		buttonPanel.add(switchViewButton);
+		buttonPanel.add(searchButton);
+		buttonPanel.add(noShowsButton);
 		buttonPanel.add(waitListButton);
 		add(buttonPanel);
 	}
@@ -181,6 +191,20 @@ public class DayPanel extends JPanel {
 	private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Change Work Hours<br>(for Selected Day)</html>") {
 		public void actionPerformed(ActionEvent e) {
 			setTimeSlot(SelectTimeSlotUI.ShowDialog(mw));
+		}
+	};
+	
+	// TODO: Add search button functionality
+	private final AbstractAction searchAction = new AbstractAction("<html>Search</html>") {
+		public void actionPerformed(ActionEvent e) {
+			
+		}
+	};
+	
+	// TODO: Add no shows functionality
+	private final AbstractAction noShowsAction = new AbstractAction("<html>Display 'No Shows' List</html>") {
+		public void actionPerformed(ActionEvent e) {
+			
 		}
 	};
 	

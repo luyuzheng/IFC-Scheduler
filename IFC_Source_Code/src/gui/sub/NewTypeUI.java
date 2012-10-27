@@ -16,7 +16,7 @@ import data.managers.TypeManager;
 
 public class NewTypeUI extends JDialog implements ActionListener {
 	private static NewTypeUI newTypeUI;
-	private static Type t;
+	private static data.Type t;
 	
 	private TypeManager tm = new TypeManager();
 	
@@ -48,7 +48,7 @@ public class NewTypeUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static Type ShowDialog(Component owner) {
+	public static data.Type ShowDialog(Component owner) {
 		t = null;
 		newTypeUI = new NewTypeUI();
 		newTypeUI.pack();
@@ -61,7 +61,7 @@ public class NewTypeUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("ok")) {
 			String type = typeField.getText();
 			if (type.equals("")) newTypeUI.setVisible(false);
-			t = new Type(tm.getNewId(), type);
+			t = new data.Type(tm.getNewId(), type);
 			tm.addType(t);
 		} 
 		newTypeUI.setVisible(false);

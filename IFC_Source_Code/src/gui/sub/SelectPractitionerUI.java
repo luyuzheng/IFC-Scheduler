@@ -176,7 +176,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New Type")) {
-			Type t = NewTypeUI.ShowDialog(this);
+			data.Type t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
 			tm = new TypeManager();
 			tabbedPane.remove(1);
@@ -196,7 +196,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please enter a name.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			String type = ((Type)typeCombo.getSelectedItem()).toString();
+			String type = ((data.Type)typeCombo.getSelectedItem()).toString();
 			if (type.equals("")) {
 				JOptionPane.showMessageDialog(this, "Please enter a type.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -216,9 +216,9 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 			
 			int id = new PractitionerManager().getNewId();
 			TypeManager tm = new TypeManager();
-			Type t = tm.getType(type);
+			data.Type t = tm.getType(type);
 			if (t == null) {
-				t = new Type(tm.getNewId(), type);
+				t = new data.Type(tm.getNewId(), type);
 				tm.addType(t);
 			}
 			

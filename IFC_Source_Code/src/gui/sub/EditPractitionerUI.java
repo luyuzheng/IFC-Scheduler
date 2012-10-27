@@ -127,7 +127,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New Type")) {
-			Type t = NewTypeUI.ShowDialog(this);
+			data.Type t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
 			remove(panel);
 			panel = makeMainPanel();
@@ -159,7 +159,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please select a type.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			Type t = (Type)typeCombo.getSelectedItem();
+			data.Type t = (data.Type)typeCombo.getSelectedItem();
 
 			PractitionerManager pm = new PractitionerManager();
 			int newApptLength = Integer.parseInt(apptLength);
