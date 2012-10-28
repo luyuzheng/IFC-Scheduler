@@ -6,3 +6,10 @@
 <appointment_length>30</appointment_length>
 <note></note>
 </practitioner>
+<practitioner>
+<id>1</id>
+<name>Jelly</name>
+<type>0</type>
+<appointment_length>30</appointment_length>
+<note></note>
+</practitioner>

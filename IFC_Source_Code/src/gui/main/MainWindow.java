@@ -23,12 +23,14 @@ public class MainWindow extends JFrame {
 	private DatePicker cp;
 	private JPanel sidePanel;
 	private MonthPanel mp;
+	private SearchPane sp;
 	private WaitListPane wlp;
 	private JSplitPane pane;
 	private JScrollPane sidePane;
 	
 	private boolean inMonthView = false;
 	private boolean showingWaitList = false;
+	private boolean showingSearch = false;
 	
 	//The code (virtually) starts here
 	public MainWindow(String name) {
@@ -102,7 +104,42 @@ public class MainWindow extends JFrame {
 		add(mp, BorderLayout.CENTER);
 	}
 
+	private void showSearch() {
+		sp = new SearchPane(this);
+		if (inMonthView) {
+			remove(mp);
+			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, mp, sp);
+			pane.setResizeWeight(.75);
+			add(pane, BorderLayout.CENTER);
+		} else {
+			remove(ap);
+			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, ap, sp);
+			pane.setResizeWeight(.75);
+			add(pane, BorderLayout.CENTER);
+		}
+		showingSearch = true;
+	}
+	
+	private void hideSearch() {
+		if (inMonthView) {
+			remove(pane);
+			add(mp, BorderLayout.CENTER);
+		} else {
+			remove(pane);
+			add(ap, BorderLayout.CENTER);
+		}
+		showingSearch = false;
+	}
 		
+	public void toggleSearch() {
+		if (showingSearch)
+			hideSearch();
+		else
+			showSearch();
+		repaint();
+		validate();
+	}
+	
 	private void showWaitList() {
 		wlp = new WaitListPane(this);
 		if (inMonthView) {
@@ -150,6 +187,10 @@ public class MainWindow extends JFrame {
 	
 	public boolean inMonthView() {
 		return inMonthView;
+	}
+	
+	public boolean showingSearch() {
+		return showingSearch;
 	}
 	
 	public boolean showingWaitList() {

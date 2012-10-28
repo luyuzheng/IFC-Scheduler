@@ -1,0 +1,8 @@
+package data.managers;
+
+public class SearchManager {
+	
+	public SearchManager() {
+		
+	}
+}

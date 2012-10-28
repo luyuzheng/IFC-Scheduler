@@ -60,6 +60,7 @@ public class Room {
 	 */
 	private void buildApptList() {
 		int apptLength = prac.getApptLength();
+		Date date = day.getDate();
 		TimeSlot slot = day.getTimeSlot();
 		Time t1 = slot.getStartTime();
 		Time t2 = slot.getEndTime();
@@ -71,7 +72,7 @@ public class Room {
 			t1 = t2;
 			t2 = t1.addMinutes(apptLength);
 			TimeSlot ts = new TimeSlot(t1, t2);
-			appointments.add(new Appointment(ts));			
+			appointments.add(new Appointment(date, ts));			
 		}
 		leftoverMinutes = day.getTimeSlot().getEndTime().timeInMinutes() - t2.timeInMinutes();
 	}

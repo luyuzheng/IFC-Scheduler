@@ -1,0 +1,4 @@
+<format>1.0</format>
+<09272012>
+<timeslot>16:00 - 20:00</timeslot>
+</09272012>

@@ -6,3 +6,17 @@
 <10242012>
 <timeslot>16:00 - 20:00</timeslot>
 </10242012>
+<10272012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>0</practitioner>
+<practitioner>1</practitioner>
+</10272012>
+<10232012>
+<timeslot>16:00 - 20:00</timeslot>
+</10232012>
+<10172012>
+<timeslot>16:00 - 20:00</timeslot>
+</10172012>
+<10082012>
+<timeslot>16:00 - 20:00</timeslot>
+</10082012>

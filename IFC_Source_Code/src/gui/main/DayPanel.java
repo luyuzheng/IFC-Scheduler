@@ -197,7 +197,11 @@ public class DayPanel extends JPanel {
 	// TODO: Add search button functionality
 	private final AbstractAction searchAction = new AbstractAction("<html>Search</html>") {
 		public void actionPerformed(ActionEvent e) {
-			
+			if (mw.showingSearch())
+				searchButton.setText("<html>Show Search</html>");
+			else
+				searchButton.setText("<html>Hide Search</html>");
+			mw.toggleSearch();
 		}
 	};
 	
