@@ -1,7 +1,0 @@
-package gui.main;
-
-import javax.swing.JPanel;
-
-public class SearchPane extends JPanel {
-	
-}

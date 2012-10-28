@@ -1,0 +1,75 @@
+package gui.sub;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+import data.Patient;
+import data.WaitingPatient;
+import data.managers.SearchManager;
+
+public class SearchForPatientUI extends JDialog implements ActionListener {
+	private static SearchForPatientUI searchForPatientUI;
+	
+	private SearchManager sm = new SearchManager();
+	
+	private static Patient p;
+	private JLabel searchLabel;
+	private JTextField searchField = new JTextField();
+	private JButton searchButton = new JButton("Search");
+	private JButton cancelButton = new JButton("Cancel");
+	private Font font = new Font("Arial", Font.PLAIN, 16);
+	
+	public SearchForPatientUI(String name) {
+		setModal(true);
+		setTitle(name);
+		
+		setLayout(new BorderLayout());
+		
+		// Create panels for the search area and the buttons
+		JPanel searchPanel = new JPanel(new BorderLayout());
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		
+		// Create search label and set the font for all fields
+		searchLabel = new JLabel("Search for a Patient: ");
+		searchLabel.setFont(font);
+		searchField.setFont(font);
+		
+		// Add search info to search panel
+		searchPanel.add(searchLabel);
+		searchPanel.add(searchField);
+		add(searchPanel, BorderLayout.CENTER);
+		
+		// Create buttons to search and cancel
+		searchButton.addActionListener(this);
+		searchButton.setActionCommand("Search");
+		cancelButton.addActionListener(this);
+		cancelButton.setActionCommand("Cancel");
+		
+		// Add buttons to button panel
+		buttonPanel.add(searchButton);
+		buttonPanel.add(cancelButton);
+		add(buttonPanel, BorderLayout.SOUTH);
+	}
+	
+	public static Patient ShowDialog(Component owner) {
+		searchForPatientUI = new SearchForPatientUI("Search for a Patient");
+		searchForPatientUI.pack();
+		searchForPatientUI.setLocationRelativeTo(owner);
+		searchForPatientUI.setVisible(true);
+		return p;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		
+	}
+}

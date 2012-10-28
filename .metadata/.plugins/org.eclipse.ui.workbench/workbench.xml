@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <workbench progressCount="28" version="2.0">
 <workbenchAdvisor/>
-<window height="728" maximized="true" width="1024" x="100" y="0">
+<window height="728" maximized="true" width="1024" x="162" y="251">
 <fastViewData fastViewLocation="1024"/>
 <perspectiveBar>
-<itemSize x="160"/>
+<itemSize x="161"/>
 </perspectiveBar>
 <coolbarLayout>
 <coolItem id="group.file" itemType="typeGroupMarker"/>
@@ -19,6 +19,7 @@
 <coolItem id="group.nav" itemType="typeGroupMarker"/>
 <coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="190" y="22"/>
 <coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.DefaultTextEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.wb.core.guiEditor" itemType="typePlaceholder" x="-1" y="-1"/>
 <coolItem id="org.eclipse.jdt.ui.CompilationUnitEditor" itemType="typeToolBarContribution" x="-1" y="-1"/>
 <coolItem id="group.help" itemType="typeGroupMarker"/>
@@ -36,46 +37,42 @@
 <part id="3"/>
 <part id="4"/>
 <part id="5"/>
-<part id="6"/>
 </presentation>
 </folder>
 </info>
 </editorArea>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MainWindow.java" partName="MainWindow.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/MainWindow.java" title="MainWindow.java" tooltip="IFC_Source_Code/src/gui/main/MainWindow.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/MainWindow.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="571" selectionTopPixel="0"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchPane.java" partName="SearchPane.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/SearchPane.java" title="SearchPane.java" tooltip="IFC_Source_Code/src/gui/main/SearchPane.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/SearchPane.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="2140" selectionTopPixel="718"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Menu.java" partName="Menu.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/Menu.java" title="Menu.java" tooltip="IFC_Source_Code/src/gui/main/Menu.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/Menu.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1087" selectionTopPixel="0"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="WaitListPane.java" partName="WaitListPane.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/WaitListPane.java" title="WaitListPane.java" tooltip="IFC_Source_Code/src/gui/main/WaitListPane.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/WaitListPane.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="151" selectionOffset="1179" selectionTopPixel="261"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MonthPanel.java" partName="MonthPanel.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/MonthPanel.java" title="MonthPanel.java" tooltip="IFC_Source_Code/src/gui/main/MonthPanel.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/MonthPanel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="90"/>
+<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AddToWaitlistUI.java" partName="AddToWaitlistUI.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/sub/AddToWaitlistUI.java" title="AddToWaitlistUI.java" tooltip="IFC_Source_Code/src/gui/sub/AddToWaitlistUI.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/sub/AddToWaitlistUI.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1469" selectionTopPixel="0"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DayPanel.java" partName="DayPanel.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/DayPanel.java" title="DayPanel.java" tooltip="IFC_Source_Code/src/gui/main/DayPanel.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/DayPanel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="1580" selectionTopPixel="0"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchForPatientUI.java" partName="SearchForPatientUI.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/sub/SearchForPatientUI.java" title="SearchForPatientUI.java" tooltip="IFC_Source_Code/src/gui/sub/SearchForPatientUI.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/sub/SearchForPatientUI.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="154" selectionTopPixel="0"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SidePanel.java" partName="SidePanel.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/SidePanel.java" title="SidePanel.java" tooltip="IFC_Source_Code/src/gui/main/SidePanel.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/SidePanel.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchForPractitionerUI.java" partName="SearchForPractitionerUI.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/sub/SearchForPractitionerUI.java" title="SearchForPractitionerUI.java" tooltip="IFC_Source_Code/src/gui/sub/SearchForPractitionerUI.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/sub/SearchForPractitionerUI.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="558" selectionOffset="0" selectionTopPixel="0"/>
 </editor>
-<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PanelButton.java" partName="PanelButton.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/main/PanelButton.java" title="PanelButton.java" tooltip="IFC_Source_Code/src/gui/main/PanelButton.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/main/PanelButton.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="266" selectionTopPixel="0"/>
-</editor>
-<editor activePart="true" focus="true" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NewPractitionerUI.java" partName="NewPractitionerUI.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/sub/NewPractitionerUI.java" title="NewPractitionerUI.java" tooltip="IFC_Source_Code/src/gui/sub/NewPractitionerUI.java" workbook="DefaultEditorWorkbook">
-<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/sub/NewPractitionerUI.java"/>
-<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="0" selectionTopPixel="0"/>
+<editor id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchForAppointmentUI.java" partName="SearchForAppointmentUI.java" path="C:/Users/Jean/Documents/GitHub/IFC-Scheduler/IFC_Source_Code/src/gui/sub/SearchForAppointmentUI.java" title="SearchForAppointmentUI.java" tooltip="IFC_Source_Code/src/gui/sub/SearchForAppointmentUI.java" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/IFC_Source_Code/src/gui/sub/SearchForAppointmentUI.java"/>
+<editorState selectionHorizontalPixel="0" selectionLength="0" selectionOffset="5" selectionTopPixel="0"/>
 </editor>
 </editors>
 <views>
 <view id="org.eclipse.ui.views.ProblemView" partName="Problems">
 <viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.severityAndDescriptionField" categoryGroup="org.eclipse.ui.ide.severity" markerContentGenerator="org.eclipse.ui.ide.problemsGenerator" partName="Problems">
 <expanded>
-<category IMemento.internal.id="Errors"/>
 <category IMemento.internal.id="Warnings"/>
+<category IMemento.internal.id="Errors"/>
+<category IMemento.internal.id="Warnings (100 of 107 items)"/>
 </expanded>
 <columnWidths org.eclipse.ui.ide.locationField="90" org.eclipse.ui.ide.markerType="90" org.eclipse.ui.ide.pathField="120" org.eclipse.ui.ide.resourceField="90" org.eclipse.ui.ide.severityAndDescriptionField="300"/>
 <visible IMemento.internal.id="org.eclipse.ui.ide.severityAndDescriptionField"/>
@@ -279,168 +276,164 @@
 <workingSets/>
 <navigationHistory>
 <editors>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/MainWindow.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/DayPanel.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/SelectPractitionerUI.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/data/managers/TypeManager.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/NewPractitionerUI.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/EditPractitionerUI.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/NewTypeUI.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/SearchPane.java"/>
 <editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/AddToWaitlistUI.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/PanelButton.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/SidePanel.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/MonthPanel.java"/>
-<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/MonthHeadingPanel.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/SearchForPatientUI.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/SearchForPractitionerUI.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/sub/SearchForAppointmentUI.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/data/managers/WaitlistManager.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/data/managers/SearchManager.java"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" path="/IFC_Source_Code/src/gui/main/MainWindow.java"/>
 </editors>
-<item historyLabel="TypeManager.java" index="3">
-<position info="not_deleted" x="2469" y="7"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="1614" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="506" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="1614" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="506" y="0"/>
 </item>
-<item historyLabel="TypeManager.java" index="3">
-<position info="not_deleted" x="2469" y="7"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="1614" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="506" y="0"/>
 </item>
-<item historyLabel="NewPractitionerUI.java" index="4">
-<position/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="1614" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="503" y="0"/>
 </item>
-<item historyLabel="TypeManager.java" index="3">
-<position info="not_deleted" x="2469" y="7"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="1614" y="0"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7353" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="503" y="0"/>
 </item>
-<item historyLabel="EditPractitionerUI.java" index="5">
-<position/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="1614" y="0"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7353" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="503" y="0"/>
 </item>
-<item historyLabel="NewTypeUI.java" index="6">
-<position info="not_deleted" x="1518" y="0"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="1614" y="0"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7353" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="503" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3392" y="44"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7353" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="499" y="0"/>
 </item>
-<item historyLabel="NewPractitionerUI.java" index="4">
-<position info="not_deleted" x="4402" y="0"/>
+<item historyLabel="SearchPane.java" index="0">
+<position info="not_deleted" x="2050" y="0"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7353" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="499" y="0"/>
 </item>
-<item historyLabel="EditPractitionerUI.java" index="5">
-<position info="not_deleted" x="4189" y="0"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7353" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="391" y="0"/>
 </item>
-<item historyLabel="AddToWaitlistUI.java" index="7">
-<position info="not_deleted" x="3662" y="0"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7353" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="441" y="0"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="7514" y="0"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="6416" y="56"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="374" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position info="not_deleted" x="6421" y="40"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position info="not_deleted" x="6892" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="441" y="0"/>
 </item>
-<item historyLabel="SelectPractitionerUI.java" index="2">
-<position info="not_deleted" x="7263" y="0"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="1580" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="441" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position info="not_deleted" x="335" y="10"/>
+<item historyLabel="SearchPane.java" index="0">
+<position info="not_deleted" x="2050" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position info="not_deleted" x="3203" y="0"/>
+<item historyLabel="SearchForPractitionerUI.java" index="3">
+<position info="not_deleted" x="558" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="0" y="506"/>
 </item>
-<item historyLabel="PanelButton.java" index="8">
-<position info="not_deleted" x="266" y="0"/>
+<item historyLabel="SearchForPractitionerUI.java" index="3">
+<position info="not_deleted" x="450" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position/>
+<item historyLabel="SearchPane.java" index="0">
+<position info="not_deleted" x="2050" y="0"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="1580" y="0"/>
+<item historyLabel="SearchForAppointmentUI.java" index="4">
+<position info="not_deleted" x="579" y="0"/>
 </item>
-<item historyLabel="SidePanel.java" index="9">
+<item historyLabel="SearchForPractitionerUI.java" index="3">
+<position info="not_deleted" x="0" y="558"/>
+</item>
+<item historyLabel="SearchForAppointmentUI.java" index="4">
 <position info="not_deleted" x="5" y="0"/>
 </item>
-<item historyLabel="SidePanel.java" index="9">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="SearchPane.java" index="0">
+<position info="not_deleted" x="576" y="0"/>
 </item>
-<item historyLabel="MonthPanel.java" index="10">
-<position info="not_deleted" x="0" y="0"/>
+<item historyLabel="WaitlistManager.java" index="5">
+<position info="not_deleted" x="5" y="0"/>
 </item>
-<item historyLabel="DayPanel.java" index="1">
-<position info="not_deleted" x="1580" y="0"/>
+<item historyLabel="SearchPane.java" index="0">
+<position info="not_deleted" x="576" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position/>
+<item historyLabel="SearchManager.java" index="6">
+<position info="not_deleted" x="199" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position/>
+<item historyLabel="SearchManager.java" index="6">
+<position info="not_deleted" x="196" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position/>
+<item historyLabel="SearchManager.java" index="6">
+<position info="not_deleted" x="130" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position info="not_deleted" x="3175" y="0"/>
+<item historyLabel="SearchManager.java" index="6">
+<position info="not_deleted" x="194" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position info="not_deleted" x="3175" y="0"/>
+<item historyLabel="SearchPane.java" index="0">
+<position info="not_deleted" x="2140" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position info="not_deleted" x="3175" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="154" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position/>
+<item historyLabel="MainWindow.java" index="7">
+<position info="not_deleted" x="5004" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position info="not_deleted" x="5664" y="0"/>
+<item historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
-<item historyLabel="MonthHeadingPanel.java" index="11">
-<position info="not_deleted" x="951" y="0"/>
+<item historyLabel="SearchForPatientUI.java" index="2">
+<position info="not_deleted" x="154" y="0"/>
 </item>
-<item historyLabel="MainWindow.java" index="0">
-<position info="not_deleted" x="571" y="0"/>
-</item>
-<item active="true" historyLabel="NewPractitionerUI.java" index="4">
-<position info="not_deleted" x="0" y="0"/>
+<item active="true" historyLabel="AddToWaitlistUI.java" index="1">
+<position info="not_deleted" x="3136" y="59"/>
 </item>
 </navigationHistory>
 <input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
@@ -464,50 +457,50 @@
 </trimLayout>
 </window>
 <mruList>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NewPractitionerUI.java" tooltip="IFC_Source_Code/src/gui/sub/NewPractitionerUI.java">
-<persistable path="/IFC_Source_Code/src/gui/sub/NewPractitionerUI.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchManager.java" tooltip="IFC_Source_Code/src/data/managers/SearchManager.java">
+<persistable path="/IFC_Source_Code/src/data/managers/SearchManager.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SelectPractitionerUI.java" tooltip="IFC_Source_Code/src/gui/sub/SelectPractitionerUI.java">
-<persistable path="/IFC_Source_Code/src/gui/sub/SelectPractitionerUI.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="WaitlistManager.java" tooltip="IFC_Source_Code/src/data/managers/WaitlistManager.java">
+<persistable path="/IFC_Source_Code/src/data/managers/WaitlistManager.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchForAppointmentUI.java" tooltip="IFC_Source_Code/src/gui/sub/SearchForAppointmentUI.java">
+<persistable path="/IFC_Source_Code/src/gui/sub/SearchForAppointmentUI.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchForPractitionerUI.java" tooltip="IFC_Source_Code/src/gui/sub/SearchForPractitionerUI.java">
+<persistable path="/IFC_Source_Code/src/gui/sub/SearchForPractitionerUI.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SearchForPatientUI.java" tooltip="IFC_Source_Code/src/gui/sub/SearchForPatientUI.java">
+<persistable path="/IFC_Source_Code/src/gui/sub/SearchForPatientUI.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.ui.DefaultTextEditor" name="SearchForPatientUI" tooltip="IFC_Source_Code/src/gui/sub/SearchForPatientUI">
+<persistable path="/IFC_Source_Code/src/gui/sub/SearchForPatientUI"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Room.java" tooltip="IFC_Source_Code/src/data/Room.java">
+<persistable path="/IFC_Source_Code/src/data/Room.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TimeSlot.java" tooltip="IFC_Source_Code/src/data/TimeSlot.java">
+<persistable path="/IFC_Source_Code/src/data/TimeSlot.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Date.java" tooltip="IFC_Source_Code/src/data/Date.java">
+<persistable path="/IFC_Source_Code/src/data/Date.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Appointment.java" tooltip="IFC_Source_Code/src/data/Appointment.java">
+<persistable path="/IFC_Source_Code/src/data/Appointment.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Day.java" tooltip="IFC_Source_Code/src/data/Day.java">
+<persistable path="/IFC_Source_Code/src/data/Day.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="Patient.java" tooltip="IFC_Source_Code/src/data/Patient.java">
+<persistable path="/IFC_Source_Code/src/data/Patient.java"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="WaitingPatient.java" tooltip="IFC_Source_Code/src/data/WaitingPatient.java">
+<persistable path="/IFC_Source_Code/src/data/WaitingPatient.java"/>
 </file>
 <file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="AddToWaitlistUI.java" tooltip="IFC_Source_Code/src/gui/sub/AddToWaitlistUI.java">
 <persistable path="/IFC_Source_Code/src/gui/sub/AddToWaitlistUI.java"/>
 </file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="EditPractitionerUI.java" tooltip="IFC_Source_Code/src/gui/sub/EditPractitionerUI.java">
-<persistable path="/IFC_Source_Code/src/gui/sub/EditPractitionerUI.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="NewTypeUI.java" tooltip="IFC_Source_Code/src/gui/sub/NewTypeUI.java">
-<persistable path="/IFC_Source_Code/src/gui/sub/NewTypeUI.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="TypeManager.java" tooltip="IFC_Source_Code/src/data/managers/TypeManager.java">
-<persistable path="/IFC_Source_Code/src/data/managers/TypeManager.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="WaitlistPatientListener.java" tooltip="IFC_Source_Code/src/gui/main/listeners/WaitlistPatientListener.java">
-<persistable path="/IFC_Source_Code/src/gui/main/listeners/WaitlistPatientListener.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="MonthHeadingPanel.java" tooltip="IFC_Source_Code/src/gui/main/MonthHeadingPanel.java">
-<persistable path="/IFC_Source_Code/src/gui/main/MonthHeadingPanel.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="FileManager.java" tooltip="IFC_Source_Code/src/data/managers/FileManager.java">
-<persistable path="/IFC_Source_Code/src/data/managers/FileManager.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DefaultManager.java" tooltip="IFC_Source_Code/src/data/managers/DefaultManager.java">
-<persistable path="/IFC_Source_Code/src/data/managers/DefaultManager.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="PanelButton.java" tooltip="IFC_Source_Code/src/gui/main/PanelButton.java">
-<persistable path="/IFC_Source_Code/src/gui/main/PanelButton.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="SidePanel.java" tooltip="IFC_Source_Code/src/gui/main/SidePanel.java">
-<persistable path="/IFC_Source_Code/src/gui/main/SidePanel.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HelpUI.java" tooltip="IFC_Source_Code/src/gui/sub/HelpUI.java">
-<persistable path="/IFC_Source_Code/src/gui/sub/HelpUI.java"/>
-</file>
-<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="HelpUI.java" tooltip="C:\Users\Jean\AppData\Local\Temp\Rar$DI61.616\HelpUI.java">
-<persistable uri="file:/C:/Users/Jean/AppData/Local/Temp/Rar$DI61.616/HelpUI.java"/>
-</file>
-<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="DayPanel.java" tooltip="IFC_Source_Code/src/gui/main/DayPanel.java">
-<persistable path="/IFC_Source_Code/src/gui/main/DayPanel.java"/>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.eclipse.jdt.ui.CompilationUnitEditor" name="WaitListPane.java" tooltip="IFC_Source_Code/src/gui/main/WaitListPane.java">
+<persistable path="/IFC_Source_Code/src/gui/main/WaitListPane.java"/>
 </file>
 </mruList>
 </workbench>
