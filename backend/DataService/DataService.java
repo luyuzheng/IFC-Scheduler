@@ -28,7 +28,12 @@ public interface DataService {
 	 * @param PatID
 	 */
 	public PatientDto getPatient(int PatID);
-	
+
+	/**
+	 * Retrieves a list of all patients
+	 */
+	public List<PatientDto> getAllPatients();
+
 	/**
 	 * Retrieves a list of patients by the specified name.
 	 * 
