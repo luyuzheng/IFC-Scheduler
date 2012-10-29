@@ -5,6 +5,13 @@ import java.util.List;
 import DataTransferObjects.NoShowDto;
 import DataTransferObjects.PatientDto;
 
+/**
+ * Interface for the data service backend for scheduler database.
+ * The implementation of this interface will have a static create method
+ * for generating instances of this data service. Methods in this interface
+ * are used to query data from the database.
+ * TODO: add more methods as needed and we will try to implement them.
+ */
 public interface DataService {
 
     /**
