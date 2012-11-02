@@ -1,5 +1,0 @@
-package gui.sub;
-
-public class SearchForPatientUI extends JDialog implements ActionListener {
-	
-}

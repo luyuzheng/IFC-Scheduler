@@ -22,4 +22,6 @@
 </10082012>
 <10282012>
 <timeslot>16:00 - 20:00</timeslot>
+<practitioner>0</practitioner>
+<16:00>0:<16:30>
 </10282012>
