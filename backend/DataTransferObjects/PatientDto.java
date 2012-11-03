@@ -2,7 +2,9 @@ package DataTransferObjects;
 
 import java.util.HashMap;
 
-
+/**
+ * DTO class for patients
+ */
 public class PatientDto extends AbstractDto {
 
     public static final String PATIENT_ID = "PatID";
