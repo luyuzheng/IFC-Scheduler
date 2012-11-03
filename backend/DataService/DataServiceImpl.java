@@ -1,11 +1,13 @@
 package DataService;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -300,6 +302,58 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public int getNoShowCountInLastSixMonths(PatientDto patient) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.prepareStatement(
+					"SELECT COUNT(*) FROM NoShows WHERE PatID=? AND NoShowDate>?}");
+			st.setInt(1, patient.getPatID());
+			Calendar today = Calendar.getInstance();
+			today.set(Calendar.HOUR_OF_DAY, 0);
+			today.add(Calendar.MONTH, -6);
+			st.setDate(2, new Date(today.getTime().getTime()));
+			rs = st.executeQuery();
+			// should only return single result.
+			if (rs.next()) {
+				return rs.getInt("COUNT(*)");
+			}
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return -1;
+	}
+
+	@Override
+	public void addNewPractitionerType(String type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removePractitionerType(String type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public List<String> getAllPractitionerTypers() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

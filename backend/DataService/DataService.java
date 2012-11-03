@@ -63,6 +63,11 @@ public interface DataService {
 	 * @return List of no shows associated with the patient
 	 */
 	public List<NoShowDto> getNoShowsByPatient(int PatID);
+	
+	/**
+	 * Returns a list of no shows in the last six months for the specified patient.
+	 */
+	public int getNoShowCountInLastSixMonths(PatientDto patient);
     
     /**
      * Adds a new Practitioner type to the database
