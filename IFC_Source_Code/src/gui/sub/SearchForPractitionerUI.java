@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import data.Practitioner;
 import data.Type;
@@ -32,7 +33,8 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 	private SearchManager sm = new SearchManager();
 	
 	private static Practitioner p;
-	private JTextField searchField = new JTextField();
+	private JTextField firstNameField = new JTextField();
+	private JTextField lastNameField = new JTextField();
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
 	private JComboBox typeSelector;
@@ -44,12 +46,13 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(300, 200));
+		setPreferredSize(new Dimension(350, 350));
 		setResizable(false);
 		
 		// Create panels for the search area and the buttons
 		JPanel typeSelectionPanel = new JPanel(new GridLayout(0,1));
-		JPanel searchPanel = new JPanel(new GridLayout(0, 1));
+		JPanel searchPanel = new JPanel(new GridLayout(0, 1, 0, 0));
+		JPanel namesPanel  = new JPanel(new GridLayout(2, 2, 0, 10));
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Create drop down box of types of services
@@ -64,23 +67,35 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 		typeSelector.setFont(font);
 		
 		// Add drop down info to the panel
+		typeSelectionPanel.setBorder(new EmptyBorder(20, 10, 0, 10));
 		typeSelectionPanel.add(typeLabel);
 		typeSelectionPanel.add(typeSelector);
 		add(typeSelectionPanel, BorderLayout.NORTH);
 		
-		// Create search label to search for a practitioner
+		// Create search labels to search for a practitioner
 		JLabel orLabel = new JLabel("OR");
 		JLabel searchLabel = new JLabel("Enter a Practitioner's Name: ");
+		JLabel firstNameLabel = new JLabel("First Name: ");
+		JLabel lastNameLabel = new JLabel("Last Name: ");
 		
 		// Set font for all fields
 		orLabel.setFont(font);
 		searchLabel.setFont(font);
-		searchField.setFont(font);
+		firstNameLabel.setFont(font);
+		lastNameLabel.setFont(font);
+		firstNameField.setFont(font);
+		lastNameField.setFont(font);
 		
 		// Add search info to search panel
+		namesPanel.add(firstNameLabel);
+		namesPanel.add(firstNameField);
+		namesPanel.add(lastNameLabel);
+		namesPanel.add(lastNameField);
+		
+		searchPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
 		searchPanel.add(orLabel);
 		searchPanel.add(searchLabel);
-		searchPanel.add(searchField);
+		searchPanel.add(namesPanel);
 		add(searchPanel, BorderLayout.CENTER);
 		
 		// Create buttons to search and cancel
@@ -93,6 +108,7 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 		cancelButton.setFont(font);
 		
 		// Add buttons to button panel
+		buttonPanel.setBorder(new EmptyBorder(20, 0, 20, 0));
 		buttonPanel.add(searchButton);
 		buttonPanel.add(cancelButton);
 		add(buttonPanel, BorderLayout.SOUTH);

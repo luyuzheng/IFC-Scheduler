@@ -82,7 +82,7 @@ public class SearchPane extends JPanel {
 		}
 	};
 	
-	private final AbstractAction searchForApptAction = new AbstractAction("Search for an Open Appointment Time Slot") {
+	private final AbstractAction searchForApptAction = new AbstractAction("Search for Next Available Appointment") {
 		public void actionPerformed(ActionEvent e) {
 			SearchForAppointmentUI.ShowDialog(owner);
 		}

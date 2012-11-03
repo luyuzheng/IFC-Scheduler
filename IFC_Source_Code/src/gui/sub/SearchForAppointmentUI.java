@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 
 import data.Appointment;
 import data.Type;
@@ -33,7 +34,6 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private SearchManager sm = new SearchManager();
 	
 	private static Appointment a;
-	private JTextField apptLengthField = new JTextField();
 	private JCheckBox monday = new JCheckBox("Mon");
 	private JCheckBox tuesday = new JCheckBox("Tues");
 	private JCheckBox wednesday = new JCheckBox("Wed");
@@ -54,8 +54,9 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		setResizable(false);
 		
 		// Create panels for the search area and the buttons
-		JPanel typeSelectionPanel = new JPanel(new GridLayout(0,1));
-		JPanel daysOfTheWeekPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		JPanel typeSelectionPanel = new JPanel(new GridLayout(0, 1));
+		JPanel daysOfTheWeekPanel = new JPanel(new GridLayout(0, 1));
+		JPanel checkboxPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Create drop down box of types of services
@@ -66,39 +67,46 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		typeSelector.setSelectedIndex(0);
 		//typeSelector.addActionListener(new BoxListener()); // PROBABLY NEED TO ADD THIS BACK IN LATER!!!
 		JLabel typeLabel = new JLabel("Select Type of Service:");
+		
+		// Set font for fields
 		typeLabel.setFont(font);
 		typeSelector.setFont(font);
-		
-		// Create search labels
-		JLabel apptLengthLabel = new JLabel("Appointment Length (in minutes): ");
-		JLabel daysOfTheWeekLabel = new JLabel("Select Days of the Week: ");
-		
-		// Set font for all fields
-		apptLengthLabel.setFont(font);
-		daysOfTheWeekLabel.setFont(font);
-		apptLengthField.setFont(font);
+
 		
 		// Add drop down info to the panel
+		typeSelectionPanel.setBorder(new EmptyBorder(20, 10, 10, 10));
 		typeSelectionPanel.add(typeLabel);
 		typeSelectionPanel.add(typeSelector);
-		typeSelectionPanel.add(apptLengthLabel);
-		typeSelectionPanel.add(apptLengthField);
-		typeSelectionPanel.add(daysOfTheWeekLabel);
 		add(typeSelectionPanel, BorderLayout.NORTH);
 		
 		
+		// Create label for days of the week
+		JLabel daysOfTheWeekLabel = new JLabel("Select Days of the Week: ");
+		
 		// Create checkboxes for days of the week and add to panel
+		monday.setSelected(true);
+		tuesday.setSelected(true);
+		wednesday.setSelected(true);
+		thursday.setSelected(true);
+		friday.setSelected(true);
+		
+		// Set fonts for days of the week
+		daysOfTheWeekLabel.setFont(font);
 		monday.setFont(font);
 		tuesday.setFont(font);
 		wednesday.setFont(font);
 		thursday.setFont(font);
 		friday.setFont(font);
+
+		checkboxPanel.add(monday);
+		checkboxPanel.add(tuesday);
+		checkboxPanel.add(wednesday);
+		checkboxPanel.add(thursday);
+		checkboxPanel.add(friday);
 		
-		daysOfTheWeekPanel.add(monday);
-		daysOfTheWeekPanel.add(tuesday);
-		daysOfTheWeekPanel.add(wednesday);
-		daysOfTheWeekPanel.add(thursday);
-		daysOfTheWeekPanel.add(friday);
+		daysOfTheWeekPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		daysOfTheWeekPanel.add(daysOfTheWeekLabel);
+		daysOfTheWeekPanel.add(checkboxPanel);
 		add(daysOfTheWeekPanel, BorderLayout.CENTER);
 		
 		// Create buttons to search and cancel
@@ -111,13 +119,14 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		cancelButton.setFont(font);
 		
 		// Add buttons to button panel
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
 		buttonPanel.add(searchButton);
 		buttonPanel.add(cancelButton);
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
 	public static Appointment ShowDialog(Component owner) {
-		searchForAppointmentUI = new SearchForAppointmentUI("Search for a Practitioner");
+		searchForAppointmentUI = new SearchForAppointmentUI("Search for Next Available Appointment");
 		searchForAppointmentUI.pack();
 		searchForAppointmentUI.setLocationRelativeTo(owner);
 		searchForAppointmentUI.setVisible(true);

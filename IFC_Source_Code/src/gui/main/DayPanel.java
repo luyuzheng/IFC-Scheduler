@@ -198,7 +198,7 @@ public class DayPanel extends JPanel {
 	private final AbstractAction searchAction = new AbstractAction("<html>Search</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (mw.showingSearch())
-				searchButton.setText("<html>Show Search</html>");
+				searchButton.setText("<html>Search</html>");
 			else
 				searchButton.setText("<html>Hide Search</html>");
 			mw.toggleSearch();
@@ -206,7 +206,7 @@ public class DayPanel extends JPanel {
 	};
 	
 	// TODO: Add no shows functionality
-	private final AbstractAction noShowsAction = new AbstractAction("<html>Display 'No Shows' List</html>") {
+	private final AbstractAction noShowsAction = new AbstractAction("<html>Display 'No Shows'</html>") {
 		public void actionPerformed(ActionEvent e) {
 			
 		}
