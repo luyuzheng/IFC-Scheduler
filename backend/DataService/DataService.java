@@ -63,4 +63,26 @@ public interface DataService {
 	 * @return List of no shows associated with the patient
 	 */
 	public List<NoShowDto> getNoShowsByPatient(int PatID);
+    
+    /**
+     * Adds a new Practitioner type to the database
+     */
+    public void addNewPractitionerType(String type);
+    
+    /**
+     * Removed a Practitioner type from the database
+     * should also remove any practitioners registered only under that
+     * type.
+     */
+    public void removePractitionerType(String type);
+    
+    /** Retrieves a list of practitioner types.
+     * @return List of types in the form of strings. null if there was
+     *an error completing the request.
+     */
+    public List<String> getAllPractitionerTypers();
+    
+    
+        
+    
 }
