@@ -1,0 +1,137 @@
+Buttons:
+Add Practioner
+--Open up dialogue box
+	Select From List 
+		--Pull from database of practioners
+	New Practioner --Add to database of practioners
+		4 Fields
+		Name
+		Appt Length
+		Practioner Type
+			Select From Existing
+			--Show list of types from Pract_Type database
+			Add from new one 
+			--Add to Pract_Type database
+		Notes
+	After selection practioner, pop up box for hours, defaults to day's hours, if day doesn't have hours, pop up box to do that [or automatically changes day's hour?]
+	--Add practioner to pract_schedule database
+	--Create and add appointments to database of appointments [one appointment for each available slot]
+	--Update display
+	
+
+Remove Practioner 
+	two options: 
+	1. gives practioners for day, and choose one
+	2. grayed out until practioner to remove is selected
+	either way, once done:
+	--Remove practioner for the day
+	--Remove appointments from day
+	--Update display
+	
+Schedule/Remove Patient
+--Open up dialogue box
+	Select from existing patients --Pull from database of patients (sort alphabetically, [find patient button?]
+	Add new patient --Add to patient database [Check if same phone + name?]
+		First
+		Last
+		Phone Number (specify no dashes)
+		Notes
+		No-Shows (none)
+	--Add patient link to the appointment
+	--Update display
+				
+Search
+--Open Dialogue box
+	Select Type
+	--Display empty appointments in the future of that type
+	--Select patient and add to that appointment
+	[option to add to waitlist?]
+
+Waitlist
+--Display Waitlist
+
+Set Hours
+--Open Dialogue Box
+	Set hours for day (army time)
+	--Update day's hour
+
+Month View
+--Open up month view
+
+Get Numbers 
+--Pulls patients from the appointments for the day
+--Shows those paients for the day with phone number, ability to check called or confirmed (color code patient if colored)
+
+Mark as no Show (need remove no show somewhere)
+--Updates patient for that appointment as a no show
+--Add status to 
+
+Display:
+Appointment (color code if appointment is scheduled or not, confirmed, called, canceled)
+	--Pull from appointment database (where date = today's date) 
+
+Practioner
+	--Pull from practioner (another database)
+
+Side Arrow (either direction)
+	--Change display of appointments (need set way to decide order of practioners for a day, what if same practioner twice?)
+
+Calendar: color code dates for open/closed
+	Change date
+	--Reload display from that day where date = that date
+	Change month
+	--Reload month display
+	Today Button
+	--Change display to current date and shift calendar accordingly	
+
+Waitlist View: (color code if appointment is available in requested type)
+	Add Patient to Waitlist 
+		Two options
+		1. New Patient (same as previous new patiet)
+		2. Select patient
+		Once patient is selected, also need type + option for comment
+		--Add entry to waitlist database
+	Remove Patient from waitlist
+		--Remove selected patient from waitlist database
+	Schedule patient on waitlist 
+		--Display a list of possible appointment datetimes for patient
+		Once date is selected:
+		--Remove selected patient from waitlist database
+		--Alter selected appointment to reflect added patient
+	List of patients on waitlist (ordered by date? change how its ordered?)
+	--Pull from waitlist databaes
+
+Month View:
+	Display days
+	--Pull from day database
+	--Link to practioners_scheduled + appointments
+	--Display practioners on the day, color code full or not
+	Can click on day to load that day
+	Add Practioner
+	Change Hours of Operation
+	Change Month
+	
+
+Database Structure:
+
+[Todo: Showable foreight key]
+Patient Database:
+Pat_ID, First, Last, Phone, Notes
+
+No_Show Database:
+NS_ID, Pat_ID, Datetime (or Date, Time) [more info, want practioner?]
+
+Practioner Database:
+Pract_ID, First, Last, Type_ID, Notes, Appointment_Time
+
+Type_Practioner Database:
+Type_ID, Type_Name
+
+Practioner_Scheduled Database:
+Pract_Sch_ID, Pract_ID, Date, Start, End [options for start stop start stop?]
+
+Appointment Database:
+Appoint_ID, Pract_Sch_ID, Pat_ID, Start, End, Status, NS_ID, Note
+
+Day Database (no repeat dates):
+Date, Hours
