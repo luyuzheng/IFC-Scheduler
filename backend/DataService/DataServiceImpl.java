@@ -123,6 +123,38 @@ public class DataServiceImpl implements DataService {
 		}
 		return false;
 	}
+	
+	@Override
+	public boolean removePatient(PatientDto patient) {
+		PreparedStatement st = null;
+
+		try {
+			if (patient.getPatID() == null) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, "Tried to delete patient without ID");
+				return false;
+			} else {
+				st = connection.prepareStatement(
+				"DELETE FROM Patients WHERE PatID=\'?\'");
+				st.setInt(1, patient.getPatID());
+			}
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public PatientDto getPatient(int PatID) {
@@ -144,6 +176,42 @@ public class DataServiceImpl implements DataService {
 			}
 
 			return null;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<PatientDto> getAllPatients() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.prepareStatement("SELECT * FROM Patients");
+			rs = st.executeQuery();
+			List<PatientDto> results = new ArrayList<PatientDto>();
+			PatientDto patient = new PatientDto();
+			while (rs.next()) {
+				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
+				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
+				patient.setField(PatientDto.PHONE, rs.getLong(PatientDto.PHONE));
+				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+				results.add(patient);
+				patient = new PatientDto();
+			}
+			return results;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -217,42 +285,6 @@ public class DataServiceImpl implements DataService {
 				noShow.setField(NoShowDto.DATE, rs.getString(NoShowDto.DATE));
 				results.add(noShow);
 				noShow = new NoShowDto();
-			}
-			return results;
-		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-			lgr.log(Level.SEVERE, e.getMessage(), e);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-				lgr.log(Level.WARNING, ex.getMessage(), ex);
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public List<PatientDto> getAllPatients() {
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = connection.prepareStatement("SELECT * FROM Patients");
-			rs = st.executeQuery();
-			List<PatientDto> results = new ArrayList<PatientDto>();
-			PatientDto patient = new PatientDto();
-			while (rs.next()) {
-				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
-				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
-				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
-				patient.setField(PatientDto.PHONE, rs.getLong(PatientDto.PHONE));
-				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
-				results.add(patient);
-				patient = new PatientDto();
 			}
 			return results;
 		} catch (SQLException e) {

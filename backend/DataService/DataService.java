@@ -30,6 +30,14 @@ public interface DataService {
 	public boolean addPatient(PatientDto patient);
 	
 	/**
+	 * Removes a patient from the database using the PatID in the PatientDto
+	 *
+	 * @param patient Contains the PatID to delete
+	 * @return True if succeeds false if error is encountered.
+	 */
+	public boolean removePatient(PatientDto patient);
+	
+	/**
 	 * Retrieves the patientDto by PatID. null if cannot be found.
 	 *
 	 * @param PatID
