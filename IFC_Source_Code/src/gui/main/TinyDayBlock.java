@@ -1,3 +1,7 @@
+/**
+ * Represents a day block in the small calendar. 
+ */
+
 package gui.main;
 
 import java.awt.BorderLayout;

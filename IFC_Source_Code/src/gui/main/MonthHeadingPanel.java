@@ -1,3 +1,7 @@
+/**
+ * Displays the heading for the monthly view.
+ */
+
 package gui.main;
 
 

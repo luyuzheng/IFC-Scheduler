@@ -1,3 +1,7 @@
+/**
+ * Represents that pane with the patient wait list.
+ */
+
 package gui.main;
 
 import gui.main.listeners.WaitlistPatientListener;

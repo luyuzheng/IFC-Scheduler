@@ -1,3 +1,7 @@
+/**
+ * Represents a day block in the month view
+ */
+
 package gui.main;
 
 import java.awt.BorderLayout;

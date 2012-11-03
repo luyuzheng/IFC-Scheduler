@@ -1,3 +1,7 @@
+/**
+ * Represents the day view when there are no practitioners scheduled.
+ */
+
 package gui.main;
 
 import java.awt.BorderLayout;
