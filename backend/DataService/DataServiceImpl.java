@@ -430,9 +430,25 @@ public class DataServiceImpl implements DataService {
 		try {
 			st = connection.prepareStatement("SELECT * FROM Practitioner");
 			rs = st.executeQuery();
-			List<String> results = new ArrayList<String>();
+			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
+			PractitionerDto practitioner;
 			while (rs.next()) {
-				results.add(rs.getString("TypeName"));
+				practitioner = new PractitionerDto();
+				practitioner.setField(
+						PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
+				practitioner.setField(
+						PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
+				practitioner.setField(
+						PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
+				practitioner.setField(
+						PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
+				practitioner.setField(
+						PractitionerDto.APPT_LENGTH, rs.getString(PractitionerDto.APPT_LENGTH));
+				practitioner.setField(
+						PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
+				practitioner.setField(
+						PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
+				results.add(practitioner);
 			}
 			return results;
 		} catch (SQLException e) {
@@ -453,7 +469,40 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public boolean addPractitioner(PractitionerDto practitioner) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		try {
+			if (practitioner.getPractID() == null) {
+				st = connection.prepareStatement("INSERT INTO Patients " +
+						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes) " +
+						"VALUES (?, ?, ?, ?, ?, ?)");
+			} else {
+				st = connection.prepareStatement("INSERT INTO Patients " +
+						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes, PractID) " +
+						"VALUES (?, ?, ?, ?, ?, ?, ?)");
+				st.setInt(7, practitioner.getPractID());
+			}
+			st.setInt(1, practitioner.getTypeID());
+			st.setString(2, practitioner.getFirst());
+			st.setString(3, practitioner.getLast()); //TODO: npe when getPhone returns null
+			st.setInt(4, practitioner.getApptLength());
+			st.setString(5, practitioner.getPhone());
+			st.setString(6, practitioner.getNotes());
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
 		return false;
 	}
 
