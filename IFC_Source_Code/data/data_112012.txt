@@ -1,0 +1,57 @@
+<format>1.0</format>
+<11272012>
+<timeslot>16:00 - 20:00</timeslot>
+</11272012>
+<11022012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>1</practitioner>
+<16:00>0:notes notes notes notes<16:40>
+<16:40>1:here are some more notes here are some more notes here are some more notes here are some more notes<17:20>
+<practitioner>0</practitioner>
+<16:00>1:here are some more notes here are some more notes here are some more noteshere are some more noteshere are some more notes<16:30>
+<practitioner>0</practitioner>
+<practitioner>1</practitioner>
+</11022012>
+<11032012>
+<timeslot>16:00 - 20:00</timeslot>
+</11032012>
+<11012012>
+<timeslot>16:00 - 20:00</timeslot>
+</11012012>
+<11102012>
+<timeslot>16:00 - 20:00</timeslot>
+</11102012>
+<11092012>
+<timeslot>16:00 - 20:00</timeslot>
+</11092012>
+<11162012>
+<timeslot>16:00 - 20:00</timeslot>
+</11162012>
+<11222012>
+<timeslot>16:00 - 20:00</timeslot>
+</11222012>
+<11142012>
+<timeslot>16:00 - 20:00</timeslot>
+</11142012>
+<11122012>
+<timeslot>16:00 - 20:00</timeslot>
+</11122012>
+<11112012>
+<timeslot>16:00 - 20:00</timeslot>
+</11112012>
+<11082012>
+<timeslot>16:00 - 20:00</timeslot>
+</11082012>
+<11052012>
+<timeslot>16:00 - 20:00</timeslot>
+</11052012>
+<11152012>
+<timeslot>16:00 - 20:00</timeslot>
+</11152012>
+<11132012>
+<timeslot>16:00 - 20:00</timeslot>
+</11132012>
+<11042012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>1</practitioner>
+</11042012>

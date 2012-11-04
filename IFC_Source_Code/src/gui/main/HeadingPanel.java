@@ -17,6 +17,7 @@ import java.awt.event.FocusListener;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 import data.Constants;
 import data.Room;
@@ -36,14 +37,15 @@ public class HeadingPanel extends JPanel implements FocusListener {
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
 		text.setEditable(false);
-		text.setFont(new Font("Tahoma",Font.PLAIN,11));
+		text.setFont(new Font("Tahoma",Font.PLAIN,16));
 		text.setOpaque(false);
 		text.setHighlighter(null);
 		
 		setText();
 		setBackground(new Color(215,255,215));
 		setPreferredSize(new Dimension(Constants.APPT_SUBPANEL_WIDTH,Constants.HEADING_PANEL_HEIGHT));
-		setBorder(BorderFactory.createMatteBorder(0,1,1,0,Color.BLACK));
+		//setBorder(BorderFactory.createMatteBorder(0,1,1,0,Color.BLACK));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,1,1,0,Color.BLACK), new EmptyBorder(5,5,5,5)));
 		setLayout(new BorderLayout());
 		add(text);
 		text.addFocusListener(this);

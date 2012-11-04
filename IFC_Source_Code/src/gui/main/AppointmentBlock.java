@@ -16,8 +16,10 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 
 import data.Appointment;
@@ -41,14 +43,15 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Tahoma",Font.PLAIN,11));
+		textArea.setFont(new Font("Arial",Font.PLAIN,14));
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		int time = appointment.getTimeSlot().lengthInMinutes();
 		setPreferredSize(new Dimension(0, time*Constants.PIXELS_PER_MINUTE));
 		setMaximumSize(new Dimension(Integer.MAX_VALUE, time*Constants.PIXELS_PER_MINUTE));
 		setMinimumSize(new Dimension(0, time*Constants.PIXELS_PER_MINUTE));
-		setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
+		//setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK), new EmptyBorder(5,5,5,5)));
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
 		add(textArea, BorderLayout.CENTER);
@@ -67,12 +70,16 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 * slot and patient. Otherwise, just the patient. 
 	 */
 	public void setText() {
-		String text = appointment.getTimeSlot().toString();
+		//String text = appointment.getTimeSlot().toString();
+		JLabel timeslot= new JLabel(appointment.getTimeSlot().toString());
+		timeslot.setFont(new Font("Arial",Font.BOLD, 14));
+		add(timeslot, BorderLayout.NORTH);
+		String text = "";
 		if (appointment.isFilled()) {
-			if (!appointment.getNote().equals("")) text += "   Note: " + appointment.getShortNote(50).replaceAll("\t\t", " ");
-			text += "\n" + appointment.getPatient().getFullName() + " - ";
+			text += appointment.getPatient().getFullName() + " - ";
 			if (appointment.getPatient().getNumber() == null) text += "No Phone # Specified";
 			else text += appointment.getPatient().getNumberString();
+			if (!appointment.getNote().equals("")) text += "\n\nNote: " + appointment.getShortNote(50).replaceAll("\t\t", " ");
 		} 
 		textArea.setText(text);
 	}

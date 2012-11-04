@@ -3,7 +3,7 @@ package data;
 public class Date {
 	private int month;
 	private int day;
-	private int year;
+	private int year; 
 	
 	public Date(int month, int day, int year) {
 		this.month = month;
@@ -49,4 +49,39 @@ public class Date {
 	public String[] toPrintString() {
 		return new String[] {month + "/" + day, year + ""};
 	}
+	
+	public static String toShortString(int m) {
+		String shortString="";
+		switch (m) {
+		case 1: shortString="Jan.";
+				break;
+		case 2: shortString="Feb.";
+				break;
+		case 3: shortString="Mar.";
+				break;
+		case 4: shortString="Apr.";
+				break;
+		case 5: shortString="May";
+				break;
+		case 6: shortString="June";	
+				break;
+		case 7: shortString="July";
+				break;
+		case 8: shortString="Aug.";
+				break;
+		case 9: shortString="Sept.";
+				break;
+		case 10: shortString="Oct.";
+				break;
+		case 11: shortString="Nov.";
+				break;
+		case 12: shortString="Dec.";
+				break;	
+		default: shortString="Invalid month";
+				break;
+		}
+		return shortString;
+	}
+	
+	
 }

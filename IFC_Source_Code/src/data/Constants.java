@@ -11,9 +11,9 @@ public class Constants {
 	/**
 	 * The number of pixels that each minute corresponds to in the calendar area
 	 */
-	public static final int PIXELS_PER_MINUTE = 3;
-	public static final int HEADING_PANEL_HEIGHT = 50;
-	public static final int TIMES_PANEL_WIDTH = 50;
+	public static final int PIXELS_PER_MINUTE = 4;
+	public static final int HEADING_PANEL_HEIGHT = 75;
+	public static final int TIMES_PANEL_WIDTH = 75;
 	public static final int MIN_APPT_PANEL_WIDTH = 300;
 	public static final int MIN_APPT_PANEL_HEIGHT = 300;
 	public static final int APPT_SUBPANEL_WIDTH = 200;
