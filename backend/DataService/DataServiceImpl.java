@@ -12,8 +12,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import DataTransferObjects.AppointmentDto;
+import DataTransferObjects.DayDto;
 import DataTransferObjects.NoShowDto;
 import DataTransferObjects.PatientDto;
+import DataTransferObjects.PractitionerDto;
+import DataTransferObjects.WaitlistDto;
 
 public class DataServiceImpl implements DataService {
 
@@ -415,6 +419,129 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public List<PractitionerDto> getAllPractioners() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean addPractitioner(PractitionerDto practitioner) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removePractitioner(PractitionerDto practitioner) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean updatePractitionerInfo(PractitionerDto practitioner) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<PractitionerDto> getAllPractitionersForDay(DayDto day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<AppointmentDto> getPractitionersAppointments(int practID,
+			DayDto day) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean removePractitionerFromDay(int practId, DayDto day) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean changePractitionerHoursForDay(PractitionerDto practitioner,
+			DayDto day) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addAppointmentsToDay(DayDto day, int patID) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removeAppointmentsFromDay(DayDto day, int patId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addPatientToAppointment(int patID, AppointmentDto appointment) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removePatientFromAppointment(AppointmentDto appointment) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean checkAsNoShow(AppointmentDto appointment) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean uncheckAsNoShow(AppointmentDto appointment) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addPatientToWaitlist(PatientDto patient, String type) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean removePatientFromWaitlist(PatientDto patient, String type) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public WaitlistDto getWaitlist() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean setHoursForDay(DayDto day) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean setStatus(DayDto day) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<AppointmentDto> getAppointmentsForPractitioner(DayDto day,
+			int practID) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 }

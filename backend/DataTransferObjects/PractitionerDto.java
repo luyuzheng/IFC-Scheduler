@@ -4,14 +4,13 @@
  */
 package DataTransferObjects;
 
-import java.sql.Date;
 import java.util.HashMap;
 
 /**
  *
  * @author kenny
  */
-public class PractionerDto extends AbstractDto {
+public class PractitionerDto extends AbstractDto {
     
     public static final String PRACT_ID = "PractID";
     public static final String TYPE_ID = "TypeID";
@@ -22,7 +21,7 @@ public class PractionerDto extends AbstractDto {
     public static final String PHONE = "PhoneNumber";
     public static final String NOTES = "Notes";
     
-    public PractionerDto() {
+    public PractitionerDto() {
         fieldsMap = new HashMap<String, Object>();
         fieldsMap.put(PRACT_ID, null);
         fieldsMap.put(TYPE_ID, null);

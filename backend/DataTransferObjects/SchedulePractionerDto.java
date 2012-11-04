@@ -27,8 +27,8 @@ public class SchedulePractionerDto extends AbstractDto {
         fieldsMap.put(DATE, null);
     }
     
-    public PractionerDto getPractioner(){
-        return (PractionerDto) fieldsMap.get(PRACT);
+    public PractitionerDto getPractioner(){
+        return (PractitionerDto) fieldsMap.get(PRACT);
     }
     
     public Integer getPractSchedID(){
