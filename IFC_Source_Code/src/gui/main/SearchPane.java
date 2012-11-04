@@ -18,6 +18,7 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import data.Appointment;
@@ -26,7 +27,15 @@ import data.Practitioner;
 
 public class SearchPane extends JPanel {
 	
+	private enum SearchType {
+		SEARCHBYPATIENT,
+		SEARCHBYPRAC,
+		SEARCHBYAPPT
+	}
+	private SearchType clicked = null;
+	
 	private Component owner;
+	private JTable resultsTable;
 	private JButton searchForPatientButton = new JButton("Search for a Patient");
 	private JButton searchForPracButton = new JButton("Search for a Practitioner");
 	private JButton searchForApptButton = new JButton("Search for an Open Appointment Time Slot");
@@ -65,6 +74,19 @@ public class SearchPane extends JPanel {
 		
 		// Add to the main GUI
 		add(buttonPanel, BorderLayout.NORTH);
+		
+		JPanel resultsTablePanel = new JPanel(new BorderLayout());
+		AbstractTableModel model;
+		if (clicked == SearchType.SEARCHBYPATIENT) {
+			//model = new PatientResultsTableModel(sm.getPatientSearchList());
+		} else if (clicked == SearchType.SEARCHBYPRAC) {
+			//model = new PractitionerResultsTableModel(sm.getPracSearchList());
+		} else if (clicked == SearchType.SEARCHBYAPPT) {
+			//model = new AppointmentResultsTableModel(sm.getApptSearchList());
+		} else { // Nothing clicked yet
+			
+		}
+		//resultsTable = new JTable(model);
 	}
 	
 	/**
@@ -213,10 +235,13 @@ public class SearchPane extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand() == "Search for a Patient") {
 				displayPatientSearchBox();
+				clicked = SearchType.SEARCHBYPATIENT;
 			} else if (e.getActionCommand() == "Search for a Practitioner") {
 				displayPracSearchBox();
+				clicked = SearchType.SEARCHBYPRAC;
 			} else {
 				displayApptSearchBox();
+				clicked = SearchType.SEARCHBYAPPT;
 			}
 		}
 	}

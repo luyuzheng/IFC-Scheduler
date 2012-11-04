@@ -11,6 +11,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
@@ -46,6 +47,7 @@ public class WaitListPane extends JPanel {
 	private JButton addPatientButton = new JButton("Add Patient to List");
 	private JButton removePatientButton = new JButton("Remove Patient from List");
 	private ArrayList<Type> types;
+	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	public WaitListPane(Component owner) {
 		this.owner = owner;
@@ -61,13 +63,19 @@ public class WaitListPane extends JPanel {
 		typeSelector.setSelectedIndex(0);
 		typeSelector.addActionListener(new BoxListener());
 		JLabel typeLabel = new JLabel("Select Practitioner Type:");
+		typeSelector.setFont(font);
+		typeLabel.setFont(font);
 		typeSelectionPanel.add(typeLabel);
 		typeSelectionPanel.add(typeSelector);
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
     	removePatientButton.setAction(removePatientAction);
     	addPatientButton.setAction(addPatientAction);
-    	buttonPanel.add(new JLabel("Perform Action:"));
+    	JLabel actionLabel = new JLabel("Perform Action:");
+    	actionLabel.setFont(font);
+    	addPatientButton.setFont(font);
+    	removePatientButton.setFont(font);
+    	buttonPanel.add(actionLabel);
     	buttonPanel.add(addPatientButton);
     	buttonPanel.add(removePatientButton);
 		
@@ -81,6 +89,7 @@ public class WaitListPane extends JPanel {
 		WaitlistTableModel model = new WaitlistTableModel(wm.getWaitList(), false);
 		specTable = new JTable(model);
 		specTable.setDragEnabled(true);
+		specTable.setFont(font);
 		specTable.addMouseListener(new WaitlistPatientListener(specTable, this));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		specTable.setAutoCreateRowSorter(true);
@@ -174,7 +183,6 @@ public class WaitListPane extends JPanel {
 		public boolean isCellEditable(int row, int col) {
 			return false;
 		}
-		
 	}
 	
 	public class BoxListener implements ActionListener {
