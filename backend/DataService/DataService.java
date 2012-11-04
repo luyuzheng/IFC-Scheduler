@@ -6,6 +6,8 @@ import DataTransferObjects.AppointmentDto;
 import DataTransferObjects.DayDto;
 import DataTransferObjects.NoShowDto;
 import DataTransferObjects.PatientDto;
+import DataTransferObjects.PractitionerDto;
+import DataTransferObjects.WaitlistDto;
 
 /**
  * Interface for the data service backend for scheduler database.
