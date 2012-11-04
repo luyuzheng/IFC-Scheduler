@@ -97,7 +97,7 @@ public class DataServiceImpl implements DataService {
 		try {
 			if (patient.getPatID() == null) {
 				st = connection.prepareStatement(
-						"INSERT INTO Patients (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
+				"INSERT INTO Patients (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
 			} else {
 				st = connection.prepareStatement(
 						"INSERT INTO Patients (First, Last, Phone, Notes, PatID) " +
@@ -125,7 +125,7 @@ public class DataServiceImpl implements DataService {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean removePatient(PatientDto patient) {
 		PreparedStatement st = null;
@@ -137,7 +137,7 @@ public class DataServiceImpl implements DataService {
 				return false;
 			} else {
 				st = connection.prepareStatement(
-				"DELETE FROM Patients WHERE PatID=\'?\'");
+				"DELETE FROM Patients WHERE PatID=?");
 				st.setInt(1, patient.getPatID());
 			}
 			st.executeUpdate();
@@ -312,7 +312,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement(
-					"SELECT COUNT(*) FROM NoShows WHERE PatID=? AND NoShowDate>?}");
+			"SELECT COUNT(*) FROM NoShows WHERE PatID=? AND NoShowDate>?}");
 			st.setInt(1, patient.getPatID());
 			Calendar today = Calendar.getInstance();
 			today.set(Calendar.HOUR_OF_DAY, 0);
@@ -340,20 +340,81 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public void addNewPractitionerType(String type) {
-		// TODO Auto-generated method stub
-		
+	public boolean addNewPractitionerType(String serviceType) {
+		PreparedStatement st = null;
+
+		try {
+			st = connection.prepareStatement("INSERT INTO ServiceType (TypeName) VALUES (?)");
+			st.setString(1, serviceType);
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
 	}
 
 	@Override
-	public void removePractitionerType(String type) {
-		// TODO Auto-generated method stub
-		
+	public boolean removePractitionerType(String serviceType) {
+		PreparedStatement st = null;
+
+		try {
+			st = connection.prepareStatement("DELETE FROM ServiceType WHERE (TypeName=?)");
+			st.setString(1, serviceType);
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public List<String> getAllPractitionerTypers() {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.prepareStatement("SELECT * FROM ServiceType");
+			rs = st.executeQuery();
+			List<String> results = new ArrayList<String>();
+			while (rs.next()) {
+				results.add(rs.getString("TypeName"));
+			}
+			return results;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
 		return null;
 	}
 }

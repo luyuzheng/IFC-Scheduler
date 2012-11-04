@@ -72,14 +72,14 @@ public interface DataService {
     /**
      * Adds a new Practitioner type to the database
      */
-    public void addNewPractitionerType(String type);
+    public void addNewPractitionerType(String serviceType);
     
     /**
      * Removed a Practitioner type from the database
      * should also remove any practitioners registered only under that
      * type.
      */
-    public void removePractitionerType(String type);
+    public void removePractitionerType(String serviceType);
     
     /** Retrieves a list of practitioner types.
      * @return List of types in the form of strings. null if there was
