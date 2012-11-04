@@ -27,7 +27,7 @@ ApptDate date,
 Note text
 );
 
-CREATE TABLE IF NOT EXISTS Practioner
+CREATE TABLE IF NOT EXISTS Practitioner
 (
 PractID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 TypeID int, 
@@ -44,7 +44,7 @@ TypeID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 TypeName varchar(255) UNIQUE
 );
 
-CREATE TABLE IF NOT EXISTS PractionerScheduled
+CREATE TABLE IF NOT EXISTS PractitionerScheduled
 (
 PractSchID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 PractID int,

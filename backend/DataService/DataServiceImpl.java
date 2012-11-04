@@ -424,7 +424,30 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public List<PractitionerDto> getAllPractioners() {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.prepareStatement("SELECT * FROM Practitioner");
+			rs = st.executeQuery();
+			List<String> results = new ArrayList<String>();
+			while (rs.next()) {
+				results.add(rs.getString("TypeName"));
+			}
+			return results;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
 		return null;
 	}
 
