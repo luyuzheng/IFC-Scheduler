@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS PractionerScheduled
 (
 PractSchID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 PractID int,
+ScheduleDate date,
 StartTime time,
 EndTime time
 );
