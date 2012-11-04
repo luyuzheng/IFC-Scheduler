@@ -18,8 +18,8 @@ Practioner
 *Change hours of operation on a day (remove their appointments for the day)
 
 Appointments
-*Create Appointment
-*Remove Appointment
+*Create Appointment only when adding practitioner to day
+*Remove Appointment when removing practitioner from day
 *Add patients to appointment
 *Remove patient from appointment
 *Check as no show
