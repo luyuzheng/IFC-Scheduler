@@ -41,14 +41,13 @@ Notes text
 CREATE TABLE IF NOT EXISTS ServiceType
 (
 TypeID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-TypeName varchar(255) UNIQUE
+TypeName varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS PractionerScheduled
 (
 PractSchID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 PractID int,
-ScheduleDate date,
 StartTime time,
 EndTime time
 );
