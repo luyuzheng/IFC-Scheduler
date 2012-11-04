@@ -1,1 +1,8 @@
 <format>1.0</format>
+<wl>
+<id>0</id>
+<pid>0</pid>
+<tid>0</tid>
+<timestamp>1352060571436</timestamp>
+<comment></comment>
+</wl>
