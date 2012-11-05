@@ -62,5 +62,21 @@
 </11282012>
 <11022012>
 <timeslot>16:00 - 20:00</timeslot>
+<practitioner>1</practitioner>
+<16:00>0:notes notes notes notes<16:40>
+<16:40>1:here are some more notes here are some more notes here are some more notes here are some more notes<17:20>
+<practitioner>0</practitioner>
+<16:00>1:here are some more notes here are some more notes here are some more noteshere are some more noteshere are some more notes<16:30>
+<practitioner>0</practitioner>
+<practitioner>1</practitioner>
 </11022012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>1</practitioner>
+<16:00>0:notes notes notes notes<16:40>
+<16:40>1:here are some more notes here are some more notes here are some more notes here are some more notes<17:20>
+<practitioner>0</practitioner>
+<16:00>1:here are some more notes here are some more notes here are some more noteshere are some more noteshere are some more notes<16:30>
+<practitioner>0</practitioner>
+<practitioner>1</practitioner>
+<timeslot>16:00 - 20:00</timeslot>
 >>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76
