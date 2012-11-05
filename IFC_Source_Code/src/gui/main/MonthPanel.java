@@ -1,3 +1,7 @@
+/**
+ * Displays the entire monthly view. 
+ */
+
 package gui.main;
 
 import java.awt.BorderLayout;

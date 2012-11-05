@@ -1,3 +1,7 @@
+/**
+ * Displays the small calendar.
+ */
+
 package gui.main;
 
 import java.awt.BorderLayout;

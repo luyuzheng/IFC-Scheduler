@@ -1,7 +1,12 @@
 /**
  * An appointment panel is a large scroll pane consisting of all headings, rooms, and time indicators. 
+<<<<<<< HEAD
  * It is the primary scheduling area of the application. 
  * PRINT OUT VERSION
+=======
+ * It is the primary scheduling area of the application. This class encapsulates the panel in which all
+ * of the appointments appear.
+>>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76
  */
 
 package gui.main;

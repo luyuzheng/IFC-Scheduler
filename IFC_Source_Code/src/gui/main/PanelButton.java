@@ -1,3 +1,7 @@
+/**
+ * Set up of each button on the panel. 
+ */
+
 package gui.main;
 
 import java.awt.Color;

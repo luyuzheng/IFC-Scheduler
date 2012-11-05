@@ -35,7 +35,7 @@ public class DayPanel extends JPanel {
 	private JButton removePracButton = new PanelButton("Remove Practitioner");
 	private JButton setTimeSlotButton = new PanelButton("Time of Operation");
 	private JButton searchButton = new PanelButton("Search");
-	private JButton noShowsButton = new PanelButton("No Shows");
+	private JButton apptConfirmationButton = new PanelButton("Appointment Confirmations");
 	private JButton waitListButton = new PanelButton("Wait List");
 	
 	
@@ -55,7 +55,7 @@ public class DayPanel extends JPanel {
 		removePracButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		setTimeSlotButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		searchButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
-		noShowsButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
+		apptConfirmationButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		waitListButton.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		
@@ -74,8 +74,8 @@ public class DayPanel extends JPanel {
 		setTimeSlotButton.setFocusable(false);
 		searchButton.setAction(searchAction);
 		searchButton.setFocusable(false);
-		noShowsButton.setAction(noShowsAction);
-		noShowsButton.setFocusable(false);
+		apptConfirmationButton.setAction(apptConfirmationAction);
+		apptConfirmationButton.setFocusable(false);
 		setTimeSlotButton.setAction(changeTimeSlotAction);
 		waitListButton.setAction(waitListAction);
 		waitListButton.setFocusable(true);
@@ -88,7 +88,7 @@ public class DayPanel extends JPanel {
 		buttonPanel.add(setTimeSlotButton);
 		buttonPanel.add(patientButton);
 		buttonPanel.add(searchButton);
-		buttonPanel.add(noShowsButton);
+		buttonPanel.add(apptConfirmationButton);
 		buttonPanel.add(waitListButton);
 		add(buttonPanel);
 	}
@@ -197,14 +197,23 @@ public class DayPanel extends JPanel {
 	// TODO: Add search button functionality
 	private final AbstractAction searchAction = new AbstractAction("<html>Search</html>") {
 		public void actionPerformed(ActionEvent e) {
-			
+			if (mw.showingSearch())
+				searchButton.setText("<html>Search</html>");
+			else
+				searchButton.setText("<html>Hide Search</html>");
+			mw.toggleSearch();
 		}
 	};
 	
 	// TODO: Add no shows functionality
-	private final AbstractAction noShowsAction = new AbstractAction("<html>Display 'No Shows' List</html>") {
+	private final AbstractAction apptConfirmationAction = new AbstractAction("<html>Appointment <br> Confirmation</html>") {
 		public void actionPerformed(ActionEvent e) {
-			
+			if (mw.showingApptConfirmation()) {
+				apptConfirmationButton.setText("<html>Appointment <br> Confirmation</html>");
+			} else {
+				apptConfirmationButton.setText("<html>Hide Appointment <br> Confirmation</html>");
+			}
+			mw.toggleApptConfirmation();
 		}
 	};
 	

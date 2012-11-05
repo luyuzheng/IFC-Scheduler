@@ -9,6 +9,7 @@
 <10272012>
 <timeslot>16:00 - 20:00</timeslot>
 <practitioner>0</practitioner>
+<<<<<<< HEAD
 <16:30>0:<17:00>
 <practitioner>0</practitioner>
 <practitioner>0</practitioner>
@@ -44,3 +45,25 @@
 <10102012>
 <timeslot>16:00 - 20:00</timeslot>
 </10102012>
+=======
+<16:00>0:<16:30>
+<practitioner>1</practitioner>
+</10272012>
+<10232012>
+<timeslot>16:00 - 20:00</timeslot>
+</10232012>
+<10172012>
+<timeslot>16:00 - 20:00</timeslot>
+</10172012>
+<10082012>
+<timeslot>16:00 - 20:00</timeslot>
+</10082012>
+<10282012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>0</practitioner>
+<16:00>0:<16:30>
+</10282012>
+<10022012>
+<timeslot>16:00 - 20:00</timeslot>
+</10022012>
+>>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76

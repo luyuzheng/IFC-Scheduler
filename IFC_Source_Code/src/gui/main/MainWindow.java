@@ -23,12 +23,17 @@ public class MainWindow extends JFrame {
 	private DatePicker cp;
 	private JPanel sidePanel;
 	private MonthPanel mp;
+	private SearchPane sp;
+	private AppointmentConfirmationPane acp;
 	private WaitListPane wlp;
 	private JSplitPane pane;
 	private JScrollPane sidePane;
 	
 	private boolean inMonthView = false;
+	private boolean showingSearch = false;
+	private boolean showingApptConfirmation = false;
 	private boolean showingWaitList = false;
+
 	
 	//The code (virtually) starts here
 	public MainWindow(String name) {
@@ -102,7 +107,92 @@ public class MainWindow extends JFrame {
 		add(mp, BorderLayout.CENTER);
 	}
 
+	private void showSearch() {
+		sp = new SearchPane(this);
+		if (inMonthView) {
+			remove(mp);
+			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, mp, sp);
+			pane.setResizeWeight(.75);
+			add(pane, BorderLayout.CENTER);
+		} else {
+			remove(ap);
+			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, ap, sp);
+			pane.setResizeWeight(.75);
+			add(pane, BorderLayout.CENTER);
+		}
+		showingSearch = true;
+	}
+	
+	private void hideSearch() {
+		if (inMonthView) {
+			remove(pane);
+			add(mp, BorderLayout.CENTER);
+		} else {
+			remove(pane);
+			add(ap, BorderLayout.CENTER);
+		}
+		showingSearch = false;
+	}
 		
+	public void toggleSearch() {
+		if (showingSearch) {
+			hideSearch();
+		} else {
+			if (showingApptConfirmation) {
+				hideApptConfirmation();
+			}
+			if (showingWaitList) {
+				hideWaitList();
+			}
+			showSearch();
+		}
+		repaint();
+		validate();
+	}
+	
+	private void showApptConfirmation() {
+		acp = new AppointmentConfirmationPane(this);
+		if (inMonthView) {
+			remove(mp);
+			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, mp, acp);
+			pane.setResizeWeight(.75);
+			add(pane, BorderLayout.CENTER);
+		} else {
+			remove(ap);
+			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, ap, acp);
+			pane.setResizeWeight(.75);
+			add(pane, BorderLayout.CENTER);
+		}
+		showingApptConfirmation = true;
+	}
+	
+	private void hideApptConfirmation() {
+		if (inMonthView) {
+			remove(pane);
+			add(mp, BorderLayout.CENTER);
+		} else {
+			remove(pane);
+			add(ap, BorderLayout.CENTER);
+		}
+		showingApptConfirmation = false;
+	}
+	
+	public void toggleApptConfirmation() {
+		if (showingApptConfirmation) {
+			hideApptConfirmation();
+		} else {
+			if (showingSearch) {
+				hideSearch();
+			}
+			if (showingWaitList) {
+				hideWaitList();
+			}
+			showApptConfirmation();	
+		}
+		repaint();
+		validate();
+	}
+	
 	private void showWaitList() {
 		wlp = new WaitListPane(this);
 		if (inMonthView) {
@@ -131,8 +221,18 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void toggleWaitList() {
-		if (showingWaitList) hideWaitList();
-		else showWaitList();
+		if (showingWaitList) {
+			hideWaitList();
+		}
+		else {
+			if (showingSearch) {
+				hideSearch();
+			}
+			if (showingApptConfirmation) {
+				hideApptConfirmation();
+			}
+			showWaitList();
+		}
 		repaint();
 		validate();
 	}
@@ -150,6 +250,14 @@ public class MainWindow extends JFrame {
 	
 	public boolean inMonthView() {
 		return inMonthView;
+	}
+	
+	public boolean showingSearch() {
+		return showingSearch;
+	}
+	
+	public boolean showingApptConfirmation() {
+		return showingApptConfirmation;
 	}
 	
 	public boolean showingWaitList() {

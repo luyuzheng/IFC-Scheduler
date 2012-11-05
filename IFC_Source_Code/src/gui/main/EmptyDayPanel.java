@@ -1,8 +1,13 @@
+/**
+ * Represents the day view when there are no practitioners scheduled.
+ */
+
 package gui.main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -23,6 +28,7 @@ public class EmptyDayPanel extends JPanel {
 		topPanel.setBorder(BorderFactory.createMatteBorder(0,1,1,0,Color.BLACK));
 		
 		textLabel = new JLabel("There are no practitioners currently selected for this day.", JLabel.CENTER);
+		textLabel.setFont(new Font("Arial", Font.PLAIN, 28));
 		textLabel.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 		
 		mainPanel.add(textLabel, BorderLayout.CENTER);

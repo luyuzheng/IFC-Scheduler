@@ -6,14 +6,24 @@
 package data;
 
 public class Appointment {
+	private Date date;
 	private TimeSlot slot;
 	private Patient pat;
 	private String note;
 	
-	public Appointment(TimeSlot ts) {
+	public Appointment(Date d, TimeSlot ts) {
+		date = d;
 		slot = ts;
 		pat = null;
 		note = "";
+	}
+	
+	public Date getDate() {
+		return date;
+	}
+	
+	public void setDate(Date d) {
+		date = d;
 	}
 	
 	public Patient getPatient() {

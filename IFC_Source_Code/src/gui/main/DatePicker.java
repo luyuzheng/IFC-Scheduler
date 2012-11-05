@@ -1,3 +1,7 @@
+/**
+ * This class reports behaviors of what happens in the small calendar.
+ */
+
 package gui.main;
 import java.awt.Color;
 
@@ -107,6 +111,9 @@ public class DatePicker extends JPanel {
 		//curr.selectDay(selectedBlock.getDate().getDay());
 	}
 	
+	/**
+	 * This method determines the behavior of clicking on a day in the month view.
+	 */
 	public void reportFocusGained(TinyDayBlock b) {
 		if (b.getDate().getMonth() == selectedBlock.getDate().getMonth()) {
 			if (mainWindow.inMonthView()) mainWindow.switchView();

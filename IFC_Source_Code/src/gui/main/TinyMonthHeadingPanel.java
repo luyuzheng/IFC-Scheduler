@@ -1,3 +1,7 @@
+/**
+ * Creates the headings in the small calendar.
+ */
+
 package gui.main;
 
 

@@ -2,6 +2,7 @@
 <11272012>
 <timeslot>16:00 - 20:00</timeslot>
 </11272012>
+<<<<<<< HEAD
 <11022012>
 <timeslot>16:00 - 20:00</timeslot>
 <practitioner>1</practitioner>
@@ -55,3 +56,11 @@
 <timeslot>16:00 - 20:00</timeslot>
 <practitioner>1</practitioner>
 </11042012>
+=======
+<11282012>
+<timeslot>16:00 - 20:00</timeslot>
+</11282012>
+<11022012>
+<timeslot>16:00 - 20:00</timeslot>
+</11022012>
+>>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76
