@@ -12,12 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import DataTransferObjects.AppointmentDto;
-import DataTransferObjects.DayDto;
-import DataTransferObjects.NoShowDto;
-import DataTransferObjects.PatientDto;
-import DataTransferObjects.PractitionerDto;
-import DataTransferObjects.WaitlistDto;
+import DataTransferObjects.*;
 
 public class DataServiceImpl implements DataService {
 
