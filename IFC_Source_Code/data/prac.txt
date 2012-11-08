@@ -8,8 +8,8 @@
 </practitioner>
 <practitioner>
 <id>1</id>
-<name>Jelly</name>
-<type>0</type>
-<appointment_length>30</appointment_length>
+<name>Gargoyle Finn</name>
+<type>1</type>
+<appointment_length>40</appointment_length>
 <note></note>
 </practitioner>

@@ -6,6 +6,7 @@ package gui.main;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -59,7 +60,9 @@ public class TimesPanel extends JPanel {
 			panel.setPreferredSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
 			panel.setMaximumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
 			panel.setMinimumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
-			panel.add(new JLabel(start.toString()));
+			JLabel startLabel= new JLabel(start.toString());
+			startLabel.setFont(new Font("Arial", Font.BOLD, 14));
+			panel.add(startLabel);
 			panel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
 			add(panel);
 			start = start.addMinutes(60);

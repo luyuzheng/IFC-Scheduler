@@ -6,3 +6,10 @@
 <phone>123-456-7890</phone>
 <note></note>
 </patient>
+<patient>
+<id>1</id>
+<first_name>Roberto Alfredo</first_name>
+<last_name>Jimenez Holguin</last_name>
+<phone>607-123-4567</phone>
+<note>Lorem ipsum dolor sit amet.confirmed for 11/2</note>
+</patient>

@@ -1,7 +1,12 @@
 /**
  * An appointment panel is a large scroll pane consisting of all headings, rooms, and time indicators. 
+<<<<<<< HEAD
+ * It is the primary scheduling area of the application. 
+ * PRINT OUT VERSION
+=======
  * It is the primary scheduling area of the application. This class encapsulates the panel in which all
  * of the appointments appear.
+>>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76
  */
 
 package gui.main;
@@ -63,7 +68,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		int r = day.getRooms().size();
 
 		//set the font for the page
-		Font font = new Font("monospaced", Font.PLAIN, 8);
+		Font font = new Font("Arial", Font.PLAIN, 12);
 
 		//create the graphics object
 		Graphics2D g2d = (Graphics2D) g.create();
@@ -128,7 +133,9 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		double colWidth;
 		
 		int lineLength = 100;
+		
 		int roomsLeft = r - page*3;
+		
 		if (roomsLeft == 1) colWidth = width;
 		else if (roomsLeft == 2) {
 			colWidth = width / 2.0;
@@ -139,6 +146,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			roomsLeft = 3;
 			lineLength = 30;
 		}
+		
 
 		for (int j = 0; j < roomsLeft; j++) {
 			Rectangle2D.Double rect = new Rectangle2D.Double ();

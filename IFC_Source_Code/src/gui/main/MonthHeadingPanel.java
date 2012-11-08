@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 import data.Constants;
 
@@ -48,15 +49,17 @@ public class MonthHeadingPanel extends JPanel {
 			text.setLineWrap(true);
 			text.setWrapStyleWord(true);
 			text.setEditable(false);
-			text.setFont(new Font("Tahoma",Font.PLAIN,11));
+			text.setFont(new Font("Tahoma",Font.PLAIN,14));
 			text.setOpaque(false);
 			text.setHighlighter(null);
 			text.setText(day);
+		
 			
 			JPanel panel = new JPanel(new BorderLayout());
 			panel.add(text, BorderLayout.CENTER);
 			panel.setBackground(new Color(255,215,215));
-			panel.setBorder(BorderFactory.createMatteBorder(0,0,1,1,Color.BLACK));
+			//panel.setBorder(BorderFactory.createMatteBorder(0,0,1,1,Color.BLACK));
+			panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,1,1,Color.BLACK), new EmptyBorder(5,5,5,5)));
 			setPreferredSize(new Dimension(0, Constants.HEADING_PANEL_HEIGHT));
 			dayHeading.add(panel);
 			

@@ -7,9 +7,11 @@ package gui.main;
 import gui.main.listeners.NewPractitionerListener;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
+import data.Constants;
 import data.DaySaver;
 import data.Practitioner;
 import data.Room;
@@ -30,6 +32,7 @@ public class RoomPanel extends JPanel {
 		add(headingPanel, BorderLayout.NORTH);
 		add(roomSubpanel, BorderLayout.CENTER);
 		addMouseListener(npl);
+		//setPreferredSize(new Dimension(Constants.APPT_SUBPANEL_WIDTH,Constants.HEADING_PANEL_HEIGHT));
 	}
 	
 	/**

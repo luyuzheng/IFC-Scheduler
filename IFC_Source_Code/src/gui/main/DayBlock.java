@@ -29,7 +29,7 @@ public class DayBlock extends JPanel {
 	
 	public DayBlock(Date date, Color color) {
 		textArea = new JTextArea();
-		String text = date.toFormalString() + "\n\n";
+		String text = date.getDay() + "\n";
 		
 		DayLoader dl = new DayLoader();
 		Day d = dl.loadDay(date);
