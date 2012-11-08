@@ -641,11 +641,4 @@ public class DataServiceImpl implements DataService {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
-	public List<AppointmentDto> getAppointmentsForPractitioner(DayDto day,
-			int practID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

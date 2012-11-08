@@ -191,11 +191,4 @@ public interface DataService {
      * set open or closed on day
      */
     public boolean setStatus(DayDto day);
-    
-    /**
-     * get a list of all practitioners for the day
-     */
-    public List<PractitionerDto> getAppointmentsForPractitioner(DayDto day);
-    
-    
 }
