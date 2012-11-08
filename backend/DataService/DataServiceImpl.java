@@ -101,10 +101,10 @@ public class DataServiceImpl implements DataService {
 		try {
 			if (patient.getPatID() == null) {
 				st = connection.prepareStatement(
-				"INSERT INTO Patients (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
+				"INSERT INTO Patient (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
 			} else {
 				st = connection.prepareStatement(
-						"INSERT INTO Patients (First, Last, Phone, Notes, PatID) " +
+						"INSERT INTO Patient (First, Last, Phone, Notes, PatID) " +
 				"VALUES (?, ?, ?, ?, ?)");
 				st.setInt(5, patient.getPatID());
 			}
@@ -141,7 +141,7 @@ public class DataServiceImpl implements DataService {
 				return false;
 			} else {
 				st = connection.prepareStatement(
-				"DELETE FROM Patients WHERE PatID=?");
+				"DELETE FROM Patient WHERE PatID=?");
 				st.setInt(1, patient.getPatID());
 			}
 			st.executeUpdate();
@@ -168,7 +168,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patients WHERE PatID=(?)");
+			st = connection.prepareStatement("SELECT * FROM Patient WHERE PatID=(?)");
 			st.setInt(1, PatID);
 			rs = st.executeQuery();
 			PatientDto patient = new PatientDto();
@@ -204,7 +204,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patients");
+			st = connection.prepareStatement("SELECT * FROM Patient");
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
@@ -240,7 +240,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patients WHERE First=? AND Last=?");
+			st = connection.prepareStatement("SELECT * FROM Patient WHERE First=? AND Last=?");
 			st.setString(1, first);
 			st.setString(2, last);
 			rs = st.executeQuery();
@@ -473,11 +473,11 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			if (practitioner.getPractID() == null) {
-				st = connection.prepareStatement("INSERT INTO Patients " +
+				st = connection.prepareStatement("INSERT INTO Practitioner " +
 						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes) " +
 						"VALUES (?, ?, ?, ?, ?, ?)");
 			} else {
-				st = connection.prepareStatement("INSERT INTO Patients " +
+				st = connection.prepareStatement("INSERT INTO Practitioner " +
 						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes, PractID) " +
 						"VALUES (?, ?, ?, ?, ?, ?, ?)");
 				st.setInt(7, practitioner.getPractID());
@@ -506,16 +506,48 @@ public class DataServiceImpl implements DataService {
 		return false;
 	}
 
+	// TODO: Remove appointments with this practitioner
 	@Override
 	public boolean removePractitioner(PractitionerDto practitioner) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		try {
+			if (practitioner.getPractID() == null) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, "Tried to delete practitioner without ID\n");
+				return false;
+			} else {
+				st = connection.prepareStatement(
+				"DELETE FROM Practitioner WHERE PractID	=?");
+				st.setInt(1, practitioner.getPractID());
+			}
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean updatePractitionerInfo(PractitionerDto practitioner) {
-		// TODO Auto-generated method stub
-		return false;
+		if (practitioner.getPractID() == null) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, "Tried to update practitioner without ID.\n");
+			return false;
+		}
+		// TODO: check that the ID exists in the table.
+		return addPractitioner(practitioner);
 	}
 
 	@Override
@@ -527,7 +559,7 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public List<AppointmentDto> getPractitionersAppointments(int practID,
 			DayDto day) {
-		// TODO Auto-generated method stub
+		// TODO Duplicate method?
 		return null;
 	}
 
@@ -608,12 +640,5 @@ public class DataServiceImpl implements DataService {
 	public boolean setStatus(DayDto day) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public List<AppointmentDto> getAppointmentsForPractitioner(DayDto day,
-			int practID) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
