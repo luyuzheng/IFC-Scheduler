@@ -13,3 +13,10 @@
 <phone>607-123-4567</phone>
 <note>Lorem ipsum dolor sit amet.confirmed for 11/2</note>
 </patient>
+<patient>
+<id>2</id>
+<first_name>Sassafras</first_name>
+<last_name>Corleone</last_name>
+<phone>607-456-0987</phone>
+<note>notes notes notes notes</note>
+</patient>

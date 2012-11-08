@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
@@ -42,10 +44,11 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 	JTabbedPane tabbedPane;
 	private JTextField apptLengthField = new JTextField();
 	private JTextArea noteField = new JTextArea();
-	private JButton okButton1 = new JButton("Ok");
+	private JButton okButton1 = new JButton("OK");
 	private JButton cancelButton1 = new JButton("Cancel");
-	private JButton okButton2 = new JButton("Ok");
+	private JButton okButton2 = new JButton("OK");
 	private JButton cancelButton2 = new JButton("Cancel");
+	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	JTable pracTable;
 	
 	private static Practitioner practitioner;
@@ -66,7 +69,8 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
 		setLayout(new GridLayout(1,1));
-		tabbedPane.setPreferredSize(new Dimension(275,250));
+		tabbedPane.setPreferredSize(new Dimension(500,250));
+		tabbedPane.setFont(font);
 		add(tabbedPane);
 		setResizable(false);
 		
@@ -93,10 +97,15 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	    }
     	}
     	pracTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	pracTable.setFont(font);
+    	pracTable.setBorder(new EmptyBorder(5,5,5,5));
+    	pracTable.getTableHeader().setFont(font);
     	panel.add(pracTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(pracTable, BorderLayout.CENTER);
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
+    	okButton1.setFont(font);
+    	cancelButton1.setFont(font);
     	buttonPanel.add(okButton1);
     	buttonPanel.add(cancelButton1);
     	
@@ -117,10 +126,14 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	JPanel nameLengthPanel = new JPanel(new BorderLayout());
     	JPanel namePanel = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("Name: ");
+    	label.setFont(font);
+    	nameField.setFont(font);
     	namePanel.add(label, BorderLayout.NORTH);
     	namePanel.add(nameField, BorderLayout.CENTER);
     	JPanel lengthPanel = new JPanel(new BorderLayout());
     	label = new JLabel("Appt Length (Min): ");
+    	label.setFont(font);
+    	apptLengthField.setFont(font);
     	lengthPanel.add(label, BorderLayout.NORTH);
     	lengthPanel.add(apptLengthField, BorderLayout.CENTER);
     	nameLengthPanel.add(namePanel, BorderLayout.CENTER);
@@ -129,13 +142,16 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel typePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner Type: ");
+    	label.setFont(font);
     	typePanel.add(label, BorderLayout.NORTH);
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
     	typeCombo = new JComboBox(tm.getTypeList().toArray());
     	if (tm.getTypeList().size() > 0)
     		typeCombo.setSelectedIndex(0);
+    	typeCombo.setFont(font);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	JButton newTypeButton = new JButton("New Type");
+    	newTypeButton.setFont(font);
     	newTypeButton.addActionListener(this);
     	newTypeButton.setActionCommand("New Type");
     	typeComboPanel.add(newTypeButton, BorderLayout.EAST);
@@ -148,8 +164,9 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner notes: ", JLabel.CENTER);
+    	label.setFont(font);
     	notePanel.add(label, BorderLayout.NORTH);
-    	noteField.setFont(nameField.getFont());
+    	noteField.setFont(font);
     	noteField.setLineWrap(true);
     	noteField.setWrapStyleWord(true);
     	JScrollPane notePane = new JScrollPane(noteField);
@@ -158,6 +175,8 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	
+    	okButton2.setFont(font);
+    	cancelButton2.setFont(font);
     	buttonPanel.add(okButton2);
     	buttonPanel.add(cancelButton2);
     	

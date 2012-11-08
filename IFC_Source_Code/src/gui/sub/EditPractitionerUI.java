@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,13 +31,14 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 	private JComboBox typeCombo = new JComboBox();
 	private JTextArea note = new JTextArea();
 	private JTextField apptLengthField = new JTextField();
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 
 	private static Practitioner p;
 	private TypeManager tm;
 
 	private JPanel panel;
+	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	private EditPractitionerUI(String name) {
 		setModal(true);
@@ -62,30 +64,37 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 
 		JPanel namePanel = new JPanel(new BorderLayout());
 		JLabel label = new JLabel("First Name: ");
+		label.setFont(font);
 		namePanel.add(label, BorderLayout.NORTH);
 		nameField.setColumns(15);
+		nameField.setFont(font);
 		namePanel.add(nameField, BorderLayout.CENTER);
 
 		input.add(namePanel);
 
 		JPanel apptLengthPanel = new JPanel(new BorderLayout());
 		label = new JLabel("Appt Length: ", JLabel.CENTER);
+		label.setFont(font);
 		apptLengthPanel.add(label, BorderLayout.NORTH);
+		apptLengthField.setFont(font);
 		apptLengthPanel.add(apptLengthField, BorderLayout.CENTER);
 
 		input.add(apptLengthPanel);
 
 		JPanel typePanel = new JPanel(new BorderLayout());
 		label = new JLabel("Type: ", JLabel.CENTER);
+		label.setFont(font);
 		typePanel.add(label, BorderLayout.NORTH);
 		typeCombo = new JComboBox(tm.getTypeList().toArray());
 		typeCombo.setSelectedIndex(0);
 		//Added by Aakash on 14th feb to fix combolist practitioner-type bug
 		typeCombo.setSelectedIndex(p.getType().getId());
 
+		typeCombo.setFont(font);
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());
 		typeInnerPanel.add(typeCombo, BorderLayout.CENTER);
 		JButton newTypeButton = new JButton("New Type");
+		newTypeButton.setFont(font);
 		newTypeButton.addActionListener(this);
 		newTypeButton.setActionCommand("New Type");
 		typeInnerPanel.add(newTypeButton, BorderLayout.EAST);
@@ -93,9 +102,10 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		input.add(typePanel);
 
 		JPanel notePanel = new JPanel(new BorderLayout());
-		label = new JLabel("Practitioner notes: ", JLabel.CENTER);
+		label = new JLabel("Practitioner Notes: ", JLabel.CENTER);
+		label.setFont(font);
 		notePanel.add(label, BorderLayout.NORTH);
-		note.setFont(namePanel.getFont());
+		note.setFont(font);
 		note.setLineWrap(true);
 		note.setWrapStyleWord(true);
 		JScrollPane notePane = new JScrollPane(note);
@@ -105,6 +115,8 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		okButton.setActionCommand("okNew");
 		okButton.addActionListener(this);
+		okButton.setFont(font);
+		cancelButton.setFont(font);
 		cancelButton.addActionListener(this);
 		buttonPanel.add(okButton);
 		buttonPanel.add(cancelButton);

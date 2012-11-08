@@ -44,49 +44,72 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 	private JButton cancelButton;
 	private DefaultManager dm;
 	
+	private Font font= new Font("Tahoma", Font.PLAIN, 14);
+	
 	private DefaultTimeslotsUI(String name) {
 		setModal(true);
 		setTitle(name);
 		
 		dm = new DefaultManager();
 		
+		
+		
 		startTimeField1 = new JTextField();
+		
+		//startTimeField1.set
+		
+		startTimeField1.setFont(font);
 		endTimeField1 = new JTextField();
+		endTimeField1.setFont(font);
 		TimeSlot t1 = dm.getTimeSlot(DefaultManager.SUNDAY);
 		startTimeField1.setText(t1.getStartTime().to24HrString());
 		endTimeField1.setText(t1.getEndTime().to24HrString());
 		startTimeField2 = new JTextField();
+		startTimeField2.setFont(font);
 		endTimeField2 = new JTextField();
+		endTimeField2.setFont(font);
 		TimeSlot t2 = dm.getTimeSlot(DefaultManager.MONDAY);
 		startTimeField2.setText(t2.getStartTime().to24HrString());
 		endTimeField2.setText(t2.getEndTime().to24HrString());
 		startTimeField3 = new JTextField();
+		startTimeField3.setFont(font);
 		endTimeField3 = new JTextField();
+		endTimeField3.setFont(font);
 		TimeSlot t3 = dm.getTimeSlot(DefaultManager.TUESDAY);
 		startTimeField3.setText(t3.getStartTime().to24HrString());
 		endTimeField3.setText(t3.getEndTime().to24HrString());
 		startTimeField4 = new JTextField();
+		startTimeField4.setFont(font);
 		endTimeField4 = new JTextField();
+		endTimeField4.setFont(font);
 		TimeSlot t4 = dm.getTimeSlot(DefaultManager.WEDNESDAY);
 		startTimeField4.setText(t4.getStartTime().to24HrString());
 		endTimeField4.setText(t4.getEndTime().to24HrString());
 		startTimeField5 = new JTextField();
+		startTimeField5.setFont(font);
 		endTimeField5 = new JTextField();
+		endTimeField5.setFont(font);
 		TimeSlot t5 = dm.getTimeSlot(DefaultManager.THURSDAY);
 		startTimeField5.setText(t5.getStartTime().to24HrString());
 		endTimeField5.setText(t5.getEndTime().to24HrString());
 		startTimeField6 = new JTextField();
+		startTimeField6.setFont(font);
 		endTimeField6 = new JTextField();
+		endTimeField6.setFont(font);
 		TimeSlot t6 = dm.getTimeSlot(DefaultManager.FRIDAY);
 		startTimeField6.setText(t6.getStartTime().to24HrString());
 		endTimeField6.setText(t6.getEndTime().to24HrString());
 		startTimeField7 = new JTextField();
+		startTimeField7.setFont(font);
 		endTimeField7 = new JTextField();
+		endTimeField7.setFont(font);
 		TimeSlot t7 = dm.getTimeSlot(DefaultManager.SATURDAY);
 		startTimeField7.setText(t7.getStartTime().to24HrString());
 		endTimeField7.setText(t7.getEndTime().to24HrString());
-		okButton = new JButton("Ok");
+		okButton = new JButton("OK");
+		okButton.setFont(font);
 		cancelButton = new JButton("Cancel");
+		cancelButton.setFont(font);
 		setLayout(new BorderLayout());
 		add(makeTimeSlotPanel(), BorderLayout.CENTER);
 		setResizable(false);

@@ -2,6 +2,7 @@ package gui.sub;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,10 +21,11 @@ public class NewTypeUI extends JDialog implements ActionListener {
 	
 	private TypeManager tm = new TypeManager();
 	
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 
 	private JTextField typeField;
+	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	private NewTypeUI() {
 		setModal(true);
@@ -31,14 +33,17 @@ public class NewTypeUI extends JDialog implements ActionListener {
 		
 		setLayout(new GridLayout(0,1));
 		typeField = new JTextField();
+		typeField.setFont(font);
 		add(typeField);
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		okButton.addActionListener(this);
 		okButton.setActionCommand("ok");
+		okButton.setFont(font);
 		buttonPanel.add(okButton);
 		cancelButton.addActionListener(this);
 		cancelButton.setActionCommand("cancel");
+		cancelButton.setFont(font);
 		buttonPanel.add(cancelButton);
 		
 		add(buttonPanel);

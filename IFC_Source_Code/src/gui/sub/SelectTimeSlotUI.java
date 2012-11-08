@@ -3,6 +3,7 @@ package gui.sub;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,7 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 	private JTextField endTimeField;
 	private JButton okButton;
 	private JButton cancelButton;
+	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	private SelectTimeSlotUI(String name) {
 		timeSlot = null;
@@ -33,7 +35,7 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 		setTitle(name);
 		startTimeField = new JTextField();
 		endTimeField = new JTextField();
-		okButton = new JButton("Ok");
+		okButton = new JButton("OK");
 		cancelButton = new JButton("Cancel");
 		setLayout(new BorderLayout());
 		add(makeTimeSlotPanel(), BorderLayout.CENTER);
@@ -53,10 +55,14 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
     	JPanel panel = new JPanel(new GridLayout(0,1));
     	
     	JLabel label = new JLabel("Start Time (00:00 - 23:59): ");
+    	label.setFont(font);
+    	startTimeField.setFont(font);
     	panel.add(label);
     	panel.add(startTimeField);
     	
     	label = new JLabel("End Time (00:00 - 23:59, greater than start time): ");
+    	label.setFont(font);
+    	endTimeField.setFont(font);
     	panel.add(label);
     	panel.add(endTimeField);
     	

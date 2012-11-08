@@ -13,3 +13,10 @@
 <appointment_length>40</appointment_length>
 <note></note>
 </practitioner>
+<practitioner>
+<id>2</id>
+<name>Sassafras Corleone</name>
+<type>1</type>
+<appointment_length>30</appointment_length>
+<note></note>
+</practitioner>
