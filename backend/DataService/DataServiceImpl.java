@@ -12,7 +12,12 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import DataTransferObjects.*;
+import DataTransferObjects.AppointmentDto;
+import DataTransferObjects.DayDto;
+import DataTransferObjects.NoShowDto;
+import DataTransferObjects.PatientDto;
+import DataTransferObjects.PractitionerDto;
+import DataTransferObjects.WaitlistDto;
 
 public class DataServiceImpl implements DataService {
 
@@ -468,11 +473,11 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			if (practitioner.getPractID() == null) {
-				st = connection.prepareStatement("INSERT INTO Patients " +
+				st = connection.prepareStatement("INSERT INTO Practitioner " +
 						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes) " +
 						"VALUES (?, ?, ?, ?, ?, ?)");
 			} else {
-				st = connection.prepareStatement("INSERT INTO Patients " +
+				st = connection.prepareStatement("INSERT INTO Practitioner " +
 						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes, PractID) " +
 						"VALUES (?, ?, ?, ?, ?, ?, ?)");
 				st.setInt(7, practitioner.getPractID());
@@ -501,16 +506,48 @@ public class DataServiceImpl implements DataService {
 		return false;
 	}
 
+	// TODO: Remove appointments with this practitioner
 	@Override
 	public boolean removePractitioner(PractitionerDto practitioner) {
-		// TODO Auto-generated method stub
+		PreparedStatement st = null;
+
+		try {
+			if (practitioner.getPractID() == null) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, "Tried to delete practitioner without ID\n");
+				return false;
+			} else {
+				st = connection.prepareStatement(
+				"DELETE FROM Practitioner WHERE PractID	=?");
+				st.setInt(1, practitioner.getPractID());
+			}
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
 		return false;
 	}
 
 	@Override
 	public boolean updatePractitionerInfo(PractitionerDto practitioner) {
-		// TODO Auto-generated method stub
-		return false;
+		if (practitioner.getPractID() == null) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, "Tried to update practitioner without ID.\n");
+			return false;
+		}
+		// TODO: check that the ID exists in the table.
+		return addPractitioner(practitioner);
 	}
 
 	@Override
@@ -522,7 +559,7 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public List<AppointmentDto> getPractitionersAppointments(int practID,
 			DayDto day) {
-		// TODO Auto-generated method stub
+		// TODO Duplicate method?
 		return null;
 	}
 
