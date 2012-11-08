@@ -101,10 +101,10 @@ public class DataServiceImpl implements DataService {
 		try {
 			if (patient.getPatID() == null) {
 				st = connection.prepareStatement(
-				"INSERT INTO Patients (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
+				"INSERT INTO Patient (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
 			} else {
 				st = connection.prepareStatement(
-						"INSERT INTO Patients (First, Last, Phone, Notes, PatID) " +
+						"INSERT INTO Patient (First, Last, Phone, Notes, PatID) " +
 				"VALUES (?, ?, ?, ?, ?)");
 				st.setInt(5, patient.getPatID());
 			}
@@ -141,7 +141,7 @@ public class DataServiceImpl implements DataService {
 				return false;
 			} else {
 				st = connection.prepareStatement(
-				"DELETE FROM Patients WHERE PatID=?");
+				"DELETE FROM Patient WHERE PatID=?");
 				st.setInt(1, patient.getPatID());
 			}
 			st.executeUpdate();
@@ -168,7 +168,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patients WHERE PatID=(?)");
+			st = connection.prepareStatement("SELECT * FROM Patient WHERE PatID=(?)");
 			st.setInt(1, PatID);
 			rs = st.executeQuery();
 			PatientDto patient = new PatientDto();
@@ -204,7 +204,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patients");
+			st = connection.prepareStatement("SELECT * FROM Patient");
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
@@ -240,7 +240,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patients WHERE First=? AND Last=?");
+			st = connection.prepareStatement("SELECT * FROM Patient WHERE First=? AND Last=?");
 			st.setString(1, first);
 			st.setString(2, last);
 			rs = st.executeQuery();
