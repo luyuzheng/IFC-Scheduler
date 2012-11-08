@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class WaitlistDto extends AbstractDto {
     
     public static final String WAITLIST_ID = "WaitlistID";
-    public static final String PATIENT = "Patient";
+    public static final String PATIENT = "PatID";
     public static final String TYPE_ID = "TypeID";
     public static final String TYPE_NAME = "TypeName";
     public static final String DATE = "DatetimeEntered";

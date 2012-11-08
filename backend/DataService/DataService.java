@@ -7,6 +7,7 @@ import DataTransferObjects.DayDto;
 import DataTransferObjects.NoShowDto;
 import DataTransferObjects.PatientDto;
 import DataTransferObjects.PractitionerDto;
+import DataTransferObjects.TypeDto;
 import DataTransferObjects.WaitlistDto;
 
 /**
@@ -170,7 +171,7 @@ public interface DataService {
     /**
      * add patient to waitlist
      */
-    public boolean addPatientToWaitlist(PatientDto patient, String type);
+    public boolean addPatientToWaitlist(PatientDto patient, TypeDto type);
     
     /**
      * remove patient from waitlist
@@ -180,7 +181,7 @@ public interface DataService {
     /**
      * get waitlist info
      */
-    public WaitlistDto getWaitlist();
+    public List<WaitlistDto> getWaitlist();
     
     /**
      * sets hours of operation for a day

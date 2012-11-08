@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -17,6 +18,7 @@ import DataTransferObjects.DayDto;
 import DataTransferObjects.NoShowDto;
 import DataTransferObjects.PatientDto;
 import DataTransferObjects.PractitionerDto;
+import DataTransferObjects.TypeDto;
 import DataTransferObjects.WaitlistDto;
 
 public class DataServiceImpl implements DataService {
@@ -27,14 +29,31 @@ public class DataServiceImpl implements DataService {
 		String user = "testuser";
 		String password = "test623";
 
-		DataService serv = DataServiceImpl.create("test", "localhost:3306", user, password);
+		DataService serv = DataServiceImpl.create("test", "192.168.0.13:3306", user, password);
 
-		//        PatientDto patient = new PatientDto();
-		//        patient.setFirst("Dead").setLast("Bowie").setPhone(3215552314L).setNotes("ELE member");
-		//        serv.addPatient(patient);
+//		PatientDto newPatient = new PatientDto();
+//		newPatient.setFirst("Dead").setLast("Bowie").setPhone(3215552314L).setNotes("ELE member");
+//		serv.addPatient(newPatient);
+		
+//        serv.addNewPractitionerType("Homeopathy");
+//        
+//        PractitionerDto newPractitioner = new PractitionerDto();
+//        newPractitioner.setApptLength(60);
+//        newPractitioner.setFirst("Mitts");
+//        newPractitioner.setLast("MaGee");
+//        newPractitioner.setNotes("Not President");
+//        newPractitioner.setPhone("123456789");
+//        newPractitioner.setTypeID(1);
+//        serv.addPractitioner(newPractitioner);
 
-		for (PatientDto patient : serv.queryPatientByName("Felicia", "Day")) {
+		for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
 			System.out.println(patient);
+		}
+//		TypeDto type = new TypeDto();
+//		type.setField("TypeID", 1);
+//		serv.addPatientToWaitlist(new PatientDto().setPatID(1), type);
+		for (WaitlistDto entry : serv.getWaitlist()) {
+		    System.out.println(entry);
 		}
 		//System.out.println(serv.queryPatientByName("Dead", "Bowie").get(0));
 		serv.close();
@@ -101,10 +120,10 @@ public class DataServiceImpl implements DataService {
 		try {
 			if (patient.getPatID() == null) {
 				st = connection.prepareStatement(
-				"INSERT INTO Patient (First, Last, Phone, Notes) VALUES (?, ?, ?, ?)");
+				"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes) VALUES (?, ?, ?, ?)");
 			} else {
 				st = connection.prepareStatement(
-						"INSERT INTO Patient (First, Last, Phone, Notes, PatID) " +
+						"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes, PatID) " +
 				"VALUES (?, ?, ?, ?, ?)");
 				st.setInt(5, patient.getPatID());
 			}
@@ -240,7 +259,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patient WHERE First=? AND Last=?");
+			st = connection.prepareStatement("SELECT * FROM Patient WHERE FirstName=? AND LastName=?");
 			st.setString(1, first);
 			st.setString(2, last);
 			rs = st.executeQuery();
@@ -347,6 +366,7 @@ public class DataServiceImpl implements DataService {
 	public boolean addNewPractitionerType(String serviceType) {
 		PreparedStatement st = null;
 
+		//TODO: have this return the ID of the this object instead if possible
 		try {
 			st = connection.prepareStatement("INSERT INTO ServiceType (TypeName) VALUES (?)");
 			st.setString(1, serviceType);
@@ -613,21 +633,72 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public boolean addPatientToWaitlist(PatientDto patient, String type) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean addPatientToWaitlist(PatientDto patient, TypeDto type) {
+	    PreparedStatement st = null;
+
+        try {
+            st = connection.prepareStatement("INSERT INTO Waitlist " +
+                    "(PatID, TypeID, DatetimeEntered) " +
+                    "VALUES (?, ?, ?)");
+            st.setInt(1, patient.getPatID());
+            st.setInt(2, type.getTypeID());
+            st.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return false;
 	}
 
 	@Override
 	public boolean removePatientFromWaitlist(PatientDto patient, String type) {
-		// TODO Auto-generated method stub
+		// TODO discuss: it would be easier if we used the waitlist ID to remove
 		return false;
 	}
 
 	@Override
-	public WaitlistDto getWaitlist() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<WaitlistDto> getWaitlist() {
+	    PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+            st = connection.prepareStatement("SELECT * FROM Waitlist");
+            rs = st.executeQuery();
+            List<WaitlistDto> results = new ArrayList<WaitlistDto>();
+            while (rs.next()) {
+                WaitlistDto entry = new WaitlistDto();
+                entry.setField(WaitlistDto.WAITLIST_ID, rs.getInt(WaitlistDto.WAITLIST_ID));
+                entry.setField(WaitlistDto.PATIENT, rs.getString(WaitlistDto.PATIENT));
+                entry.setField(WaitlistDto.TYPE_ID, rs.getString(WaitlistDto.TYPE_ID));
+                entry.setField(WaitlistDto.DATE, rs.getString(WaitlistDto.DATE));
+                results.add(entry);
+            }
+            return results;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return null;
 	}
 
 	@Override

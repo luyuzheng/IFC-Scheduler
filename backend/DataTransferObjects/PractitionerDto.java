@@ -61,7 +61,7 @@ public class PractitionerDto extends AbstractDto {
         return (String) fieldsMap.get(LAST);
     }
     
-    public void SetLast(String s){
+    public void setLast(String s){
         fieldsMap.put(LAST, s);
     }
     
