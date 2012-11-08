@@ -80,3 +80,6 @@
 <practitioner>1</practitioner>
 <timeslot>16:00 - 20:00</timeslot>
 >>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76
+<11072012>
+<timeslot>16:00 - 20:00</timeslot>
+</11072012>

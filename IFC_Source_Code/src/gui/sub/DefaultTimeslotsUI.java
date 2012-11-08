@@ -107,7 +107,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	JLabel note = new JLabel(" NOTE: All times must be entered in military time (00:00 - 23:59).");
     	panel.add(note);
     	
-    	Font font = new Font("Tahoma", Font.BOLD, 11);
+    	Font font = new Font("Arial", Font.BOLD, 16);
     	
     	JPanel main1 = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("Sunday  ");
@@ -263,6 +263,8 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	okButton.setActionCommand("ok");
     	okButton.addActionListener(this);
     	cancelButton.addActionListener(this);
+    	okButton.setFont(font);
+    	cancelButton.setFont(font);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	

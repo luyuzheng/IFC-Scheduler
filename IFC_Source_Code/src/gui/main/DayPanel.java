@@ -197,10 +197,13 @@ public class DayPanel extends JPanel {
 	// TODO: Add search button functionality
 	private final AbstractAction searchAction = new AbstractAction("<html>Search</html>") {
 		public void actionPerformed(ActionEvent e) {
-			if (mw.showingSearch())
+			if (mw.showingSearch()) {
 				searchButton.setText("<html>Search</html>");
-			else
+			} else {
 				searchButton.setText("<html>Hide Search</html>");
+				apptConfirmationButton.setText("<html>Appointment <br> Confirmation</html>");
+				waitListButton.setText("<html>Wait List</html>");
+			}
 			mw.toggleSearch();
 		}
 	};
@@ -212,15 +215,23 @@ public class DayPanel extends JPanel {
 				apptConfirmationButton.setText("<html>Appointment <br> Confirmation</html>");
 			} else {
 				apptConfirmationButton.setText("<html>Hide Appointment <br> Confirmation</html>");
+				searchButton.setText("<html>Search</html>");
+				waitListButton.setText("<html>Wait List</html>");
 			}
 			mw.toggleApptConfirmation();
 		}
 	};
 	
-	private final AbstractAction waitListAction = new AbstractAction("<html>Show Wait List</html>") {
+	private final AbstractAction waitListAction = new AbstractAction("<html>Wait List</html>") {
 		public void actionPerformed(ActionEvent e) {
-			if (mw.showingWaitList()) waitListButton.setText("<html>Show Wait List</html>");
-			else waitListButton.setText("<html>Hide Wait List</html>");
+			if (mw.showingWaitList()) {
+				waitListButton.setText("<html>Wait List</html>");
+			}
+			else {
+				waitListButton.setText("<html>Hide Wait List</html>");
+				searchButton.setText("<html>Search</html>");
+				apptConfirmationButton.setText("<html>Appointment <br> Confirmation</html>");
+			}
 			mw.toggleWaitList();
 		}
 	};

@@ -151,7 +151,7 @@ public class MainWindow extends JFrame {
 	}
 	
 	private void showApptConfirmation() {
-		acp = new AppointmentConfirmationPane(this);
+		acp = new AppointmentConfirmationPane(this, dp);
 		if (inMonthView) {
 			remove(mp);
 			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, mp, acp);
@@ -274,7 +274,7 @@ public class MainWindow extends JFrame {
 	
 	public void switchView() {	
 		if (inMonthView) {
-			if (showingWaitList) {
+			if (showingWaitList || showingSearch || showingApptConfirmation) {
 				ap = new AppointmentPanel(dp);
 				pane.setLeftComponent(ap);
 				pane.repaint();
@@ -288,7 +288,7 @@ public class MainWindow extends JFrame {
 			}
 			
 		} else {
-			if (showingWaitList) {
+			if (showingWaitList || showingSearch || showingApptConfirmation) {
 				mp = new MonthPanel(dp);
 				pane.setLeftComponent(mp);
 				pane.repaint();
@@ -314,7 +314,7 @@ public class MainWindow extends JFrame {
 		dp = new DayPanel(day, this);
 		
 		if (inMonthView) {
-			if (showingWaitList) {
+			if (showingWaitList || showingSearch || showingApptConfirmation) {
 				mp = new MonthPanel(dp);
 				pane.setLeftComponent(mp);
 				pane.repaint();
@@ -327,7 +327,7 @@ public class MainWindow extends JFrame {
 				validate();
 			}
 		} else {
-			if (showingWaitList) {
+			if (showingWaitList || showingSearch || showingApptConfirmation) {
 				sidePanel.remove(dp);
 				sidePanel.add(dp, BorderLayout.NORTH);
 				sidePanel.repaint();
