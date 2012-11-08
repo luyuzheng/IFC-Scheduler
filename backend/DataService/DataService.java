@@ -195,7 +195,7 @@ public interface DataService {
     /**
      * get a list of all practitioners for the day
      */
-    public List<AppointmentDto> getAppointmentsForPractitioner(DayDto day, int practID);
+    public List<PractitionerDto> getAppointmentsForPractitioner(DayDto day);
     
     
 }
