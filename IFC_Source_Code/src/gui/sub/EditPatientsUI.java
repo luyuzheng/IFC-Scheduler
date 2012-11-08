@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -37,6 +38,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	private JButton removeButton = new JButton("Remove");
 	private JTable patTable;
 	private JTextField searchField = new JTextField();
+	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	public EditPatientsUI(String s) {
 		setModal(true);
@@ -85,6 +87,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     	};
     	patTable.setAutoCreateRowSorter(true);
     	patTable.getTableHeader().setReorderingAllowed(false);
+    	patTable.getTableHeader().setFont(font);
 
     	patTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	panel.add(patTable.getTableHeader(), BorderLayout.PAGE_START);
@@ -93,18 +96,22 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("ok");
     	okButton.addActionListener(this);
+    	okButton.setFont(font);
     	buttonPanel.add(okButton);
     	
     	editButton.setActionCommand("edit");
     	editButton.addActionListener(this);
+    	editButton.setFont(font);
     	buttonPanel.add(editButton);
     	
     	removeButton.setActionCommand("remove");
     	removeButton.addActionListener(this);
+    	removeButton.setFont(font);
     	buttonPanel.add(removeButton);
     	
     	newButton.setActionCommand("new");
     	newButton.addActionListener(this);
+    	newButton.setFont(font);
     	buttonPanel.add(newButton);
     	
     	//Create the scroll pane and add the table to it.

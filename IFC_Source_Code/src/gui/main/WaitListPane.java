@@ -29,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.TransferHandler;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import data.Type;
@@ -63,6 +64,7 @@ public class WaitListPane extends JPanel {
 		typeSelector.setSelectedIndex(0);
 		typeSelector.addActionListener(new BoxListener());
 		JLabel typeLabel = new JLabel("Select Practitioner Type:");
+		typeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		typeSelector.setFont(font);
 		typeLabel.setFont(font);
 		typeSelectionPanel.add(typeLabel);
@@ -72,6 +74,7 @@ public class WaitListPane extends JPanel {
     	removePatientButton.setAction(removePatientAction);
     	addPatientButton.setAction(addPatientAction);
     	JLabel actionLabel = new JLabel("Perform Action:");
+    	actionLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
     	actionLabel.setFont(font);
     	addPatientButton.setFont(font);
     	removePatientButton.setFont(font);
@@ -94,6 +97,7 @@ public class WaitListPane extends JPanel {
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		specTable.setAutoCreateRowSorter(true);
     	specTable.getTableHeader().setReorderingAllowed(false);
+    	specTable.getTableHeader().setFont(font);
     	specTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	specTablePanel.add(specTable.getTableHeader(), BorderLayout.PAGE_START);
     	specTablePanel.add(specTable, BorderLayout.CENTER);

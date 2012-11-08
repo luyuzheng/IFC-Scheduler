@@ -10,6 +10,7 @@ public class Appointment {
 	private TimeSlot slot;
 	private Patient pat;
 	private String note;
+	private boolean confirmed;
 	
 	public Appointment(Date d, TimeSlot ts) {
 		date = d;
@@ -67,5 +68,13 @@ public class Appointment {
 		if (note.length() > chars) 
 			return note.substring(0,chars) + "...";
 		else return note;
+	}
+	
+	public boolean getConfirmed() {
+		return confirmed;
+	}
+	
+	public void setConfirmed(boolean confirmed) {
+		this.confirmed = confirmed;
 	}
 }

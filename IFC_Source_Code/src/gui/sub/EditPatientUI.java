@@ -3,6 +3,7 @@ package gui.sub;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -33,6 +34,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	private JTextField numberPart2Field = new JTextField();
 	private JButton okButton = new JButton("Ok");
 	private JButton cancelButton = new JButton("Cancel");
+	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	private static Patient p;
 	
@@ -41,12 +43,21 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		firstNameField.setText(p.getFirstName());
+		firstNameField.setFont(font);
+		
 		lastNameField.setText(p.getLastName());
+		lastNameField.setFont(font);
+		
 		if(p.getNumberString()!=""){
 			String[] number = p.getNumberString().split("-");
 			areaCodeField.setText(number[0]);
+			areaCodeField.setFont(font);
+			
 			numberPart1Field.setText(number[1]);
+			numberPart1Field.setFont(font);
+			
 			numberPart2Field.setText(number[2]);
+			numberPart2Field.setFont(font);
 		}
 		note.setText((p.getNote()).replaceAll("\t\t", "\n")) ;
 		
@@ -54,12 +65,14 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	JPanel input = new JPanel(new GridLayout(0,1));
     	JPanel fName = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("First Name: ");
+    	label.setFont(font);
     	fName.add(label, BorderLayout.NORTH);
     	firstNameField.setColumns(15);
     	fName.add(firstNameField, BorderLayout.CENTER);
     	
     	JPanel lName = new JPanel(new BorderLayout());
     	label = new JLabel("Last Name: ");
+    	label.setFont(font);
     	lName.add(label, BorderLayout.NORTH);
     	lastNameField.setColumns(15);
     	lName.add(lastNameField, BorderLayout.CENTER);
@@ -72,6 +85,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	JPanel num = new JPanel(new BorderLayout());
     	label = new JLabel("Phone Number: ", JLabel.CENTER);
+    	label.setFont(font);
     	num.add(label, BorderLayout.NORTH);
     	JPanel phonePanel = new JPanel(new FlowLayout());
     	areaCodeField.setColumns(5);
@@ -85,8 +99,10 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Patient notes: ", JLabel.CENTER);
+    	label.setFont(font);
     	notePanel.add(label, BorderLayout.NORTH);
-    	note.setFont(phonePanel.getFont());
+    	//note.setFont(phonePanel.getFont());
+    	note.setFont(font);
     	//note.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
     	note.setLineWrap(true);
     	note.setWrapStyleWord(true);
@@ -97,7 +113,9 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("okNew");
     	okButton.addActionListener(this);
+    	okButton.setFont(font);
     	cancelButton.addActionListener(this);
+    	cancelButton.setFont(font);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	

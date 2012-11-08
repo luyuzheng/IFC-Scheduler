@@ -29,7 +29,6 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	private JTextArea textArea;
 	private JTextArea noteArea;
-	
 	private Font font= new Font("Tahoma",Font.PLAIN,14);
 	
 	private static Appointment appointment;
@@ -65,7 +64,8 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		noteArea = new JTextArea();
 		noteArea.setLineWrap(true);
 		noteArea.setWrapStyleWord(true);
-		noteArea.setFont(new Font("Tahoma",Font.PLAIN,14));
+		noteArea.setFont(font);
+
 		noteArea.setText((a.getNote()).replaceAll("\t\t", "\n"));
 		notePane.setViewportView(noteArea);
 		notePanel.add(noteLabel, BorderLayout.NORTH);
@@ -76,6 +76,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		editButton.setActionCommand("edit");
 		editButton.setFont(font);
 		buttonPanel.add(editButton);
+
 		okButton.addActionListener(this);
 		okButton.setActionCommand("ok");
 		okButton.setFont(font);

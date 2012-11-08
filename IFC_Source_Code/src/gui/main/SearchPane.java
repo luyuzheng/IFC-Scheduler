@@ -1,5 +1,6 @@
 package gui.main;
 
+import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.SearchForAppointmentUI;
 import gui.sub.SearchForPatientUI;
 import gui.sub.SearchForPractitionerUI;
@@ -18,7 +19,10 @@ import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import data.Appointment;
@@ -54,6 +58,7 @@ public class SearchPane extends JPanel {
 		
 		// Provide choice for type of search
 		JLabel typeOfSearchLabel = new JLabel("Choose a Search Option: ");
+		typeOfSearchLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		typeOfSearchLabel.setFont(font);
 		
 		// Create buttons for each search option
@@ -78,15 +83,27 @@ public class SearchPane extends JPanel {
 		JPanel resultsTablePanel = new JPanel(new BorderLayout());
 		AbstractTableModel model;
 		if (clicked == SearchType.SEARCHBYPATIENT) {
-			//model = new PatientResultsTableModel(sm.getPatientSearchList());
+			model = new PatientResultsTableModel(new ArrayList<Patient>()); // ACTUALLY NEED TO PASS IN A LIST OF PEOPLE HERE!!!
 		} else if (clicked == SearchType.SEARCHBYPRAC) {
-			//model = new PractitionerResultsTableModel(sm.getPracSearchList());
+			model = new PractitionerResultsTableModel(new ArrayList<Practitioner>());
 		} else if (clicked == SearchType.SEARCHBYAPPT) {
-			//model = new AppointmentResultsTableModel(sm.getApptSearchList());
+			model = new AppointmentResultsTableModel(new ArrayList<Appointment>());
 		} else { // Nothing clicked yet
-			
+			model = new EmptyResultsTableModel();
 		}
-		//resultsTable = new JTable(model);
+		resultsTable = new JTable(model);
+		resultsTable.setDragEnabled(true);
+		resultsTable.setFont(font);
+		//resultsTable.addMouseListener(new SearchListener(resultsTable, this));
+		//specTable.setTransferHandler(new WaitlistTransferHandler());
+		resultsTable.setAutoCreateRowSorter(true);
+		resultsTable.getTableHeader().setReorderingAllowed(false);
+		resultsTable.getTableHeader().setFont(font);
+		resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		resultsTablePanel.add(resultsTable.getTableHeader(), BorderLayout.PAGE_START);
+		resultsTablePanel.add(resultsTable, BorderLayout.CENTER);
+    	JScrollPane scrollPane = new JScrollPane(resultsTablePanel);
+    	add(scrollPane, BorderLayout.CENTER);
 	}
 	
 	/**
@@ -111,6 +128,34 @@ public class SearchPane extends JPanel {
 	};
 	
 	/**
+	 * Displays an empty table when first initialized (no search has been conducted yet).
+	 */
+	public class EmptyResultsTableModel extends AbstractTableModel {
+		
+		private String columnNames[];
+		
+		public EmptyResultsTableModel() {
+			columnNames = new String[] {" ", " ", " ", " "};
+		}
+		
+		public int getColumnCount() {
+			return columnNames.length;
+		}
+		
+		public String getColumnName(int col) {
+			return columnNames[col];
+		}
+		
+		public int getRowCount() {
+			return 0;
+		}
+		
+		public Object getValueAt(int row, int col) {
+			return null;
+		}
+	}
+	
+	/**
 	 * Displays the table of results after searching for a patient.
 	 */
 	public class PatientResultsTableModel extends AbstractTableModel {
@@ -125,6 +170,10 @@ public class SearchPane extends JPanel {
 		
 		public int getColumnCount() {
 			return columnNames.length;
+		}
+		
+		public String getColumnName(int col) {
+			return columnNames[col];
 		}
 		
 		public int getRowCount() {

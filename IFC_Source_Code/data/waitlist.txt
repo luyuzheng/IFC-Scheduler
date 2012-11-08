@@ -1,8 +1,1 @@
-<format>1.0</format>
-<wl>
-<id>0</id>
-<pid>0</pid>
-<tid>1</tid>
-<timestamp>1352086371376</timestamp>
-<comment></comment>
-</wl>
+
