@@ -13,7 +13,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import data.Constants;
+import gui.Constants;
 
 public class EmptyDayPanel extends JPanel {
 	JLabel textLabel;
