@@ -21,21 +21,20 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import backend.DataService.DataService;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.PatientDto;
 
-import data.Appointment;
-import data.Constants;
-import data.Date;
-import data.DaySaver;
-import data.Patient;
 
 public class AppointmentBlock extends JPanel implements FocusListener {
 
-	Appointment appointment;
+	AppointmentDto appointment;
 	JTextArea textArea;
 	NewPatientListener npl = new NewPatientListener(this, this.getParent());
 	DayPanel dp;
 
-	public AppointmentBlock(Appointment appointment, DayPanel dp) {
+	public AppointmentBlock(AppointmentDto appointment, DayPanel dp) {
 
 		this.dp = dp;
 		this.appointment = appointment;
@@ -46,11 +45,10 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		textArea.setFont(new Font("Arial",Font.PLAIN,14));
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
-		int time = appointment.getTimeSlot().lengthInMinutes();
+		int time = appointment.getEnd() - appointment.getStart();
 		setPreferredSize(new Dimension(0, time*Constants.PIXELS_PER_MINUTE));
 		setMaximumSize(new Dimension(Integer.MAX_VALUE, time*Constants.PIXELS_PER_MINUTE));
 		setMinimumSize(new Dimension(0, time*Constants.PIXELS_PER_MINUTE));
-		//setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK), new EmptyBorder(5,5,5,5)));
 		setLayout(new BorderLayout());
 		setBackground(Color.WHITE);
@@ -59,7 +57,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		this.setFocusable(true);
 		textArea.addFocusListener(this);
 		
-		if (appointment.isFilled()) setBackground(new Color(238,238,255));
+		if (appointment.getPatientID() != null) setBackground(new Color(238,238,255));
 
 		setText();
 		
@@ -70,15 +68,17 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 * slot and patient. Otherwise, just the patient. 
 	 */
 	public void setText() {
-		//String text = appointment.getTimeSlot().toString();
-		JLabel timeslot= new JLabel(appointment.getTimeSlot().toString());
+		JLabel timeslot= new JLabel(appointment.getStart().toString() + " - " + appointment.getEnd().toString());
 		timeslot.setFont(new Font("Arial",Font.BOLD, 14));
 		add(timeslot, BorderLayout.NORTH);
 		String text = "";
-		if (appointment.isFilled()) {
-			text += appointment.getPatient().getFullName() + " - ";
-			if (appointment.getPatient().getNumber() == null) text += "No Phone # Specified";
-			else text += appointment.getPatient().getNumberString();
+		if (appointment.getPatientID() != null) {
+			int patientId= appointment.getPatientID();
+			PatientDto patient= DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(patientId); 
+			
+			text += patient.getFirst() + " " + patient.getLast() + " - ";
+			if (patient.getPhone() == null) text += "No Phone # Specified";
+			else text += patient.getPhone();
 			if (!appointment.getNote().equals("")) text += "\n\nNote: " + appointment.getShortNote(50).replaceAll("\t\t", " ");
 		} 
 		textArea.setText(text);
@@ -86,12 +86,12 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	
 	/**
 	 * Sets the appointment
-	 * @param pat the patient that is filling this appointment
+	 * @param patId the patient that is filling this appointment
 	 */
-	public void setPatient(Patient pat) {
-		appointment.setPatient(pat);
+	public void setPatient(int patId) {
+		appointment.setPatientID(patId);
 		setText();
-		new DaySaver().storeDay(dp.getDay());
+		// TODO new DaySaver().storeDay(dp.getDay()); WHAT IS THISSSSSSS
 	}
 
 	/**
@@ -100,7 +100,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 */
 	public void focusGained(FocusEvent arg0) {
 		dp.setPatButtonEnabled(true, this);
-		if (appointment.isFilled()) 
+		if (appointment.getPatientID() != null) 
 			setBackground(new Color(255,200,200));
 		else
 			setBackground(new Color(200,200,255));
@@ -112,7 +112,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 * of the block back to normal. Remove double-click mouse listener. 
 	 */
 	public void focusLost(FocusEvent arg0) {
-		if (appointment.isFilled())
+		if (appointment.getPatientID() != null)
 			setBackground(new Color(238, 238, 255));
 		else
 			setBackground(Color.WHITE);
@@ -122,10 +122,10 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	}
 	
 	public void clearAppt() {
-		setPatient(null);
+		appointment.setPatientID(null);
 	}
 	
-	public Appointment getAppointment() {
+	public AppointmentDto getAppointment() {
 		return appointment;
 	}
 	

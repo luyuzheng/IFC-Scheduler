@@ -45,7 +45,7 @@ public class AppointmentDto extends AbstractDto {
         return (Integer) fieldsMap.get(PAT_ID);
     }
     
-    public void setPatientID(int i){
+    public void setPatientID(Integer i){
         fieldsMap.put(PAT_ID, i);
     }
     
@@ -87,6 +87,11 @@ public class AppointmentDto extends AbstractDto {
     
     public void setNote(String s){
         fieldsMap.put(NOTE, s);
+    }
+    
+    //TODO -- truncates length of note to number of characters specified
+    public String getShortNote(int length){
+    	return null;
     }
     
 }
