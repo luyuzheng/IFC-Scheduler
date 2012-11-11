@@ -26,7 +26,7 @@ import backend.DataTransferObjects.DayDto;
 import java.util.Date;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
-//import data.TimeSlot;
+import gui.TimeSlot;
 
 public class DayPanel extends JPanel {
 	private DayDto day;
