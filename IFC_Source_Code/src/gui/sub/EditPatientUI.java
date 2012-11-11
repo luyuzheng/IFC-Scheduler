@@ -21,10 +21,6 @@ import javax.swing.JTextField;
 
 import backend.DataTransferObjects.PatientDto;
 
-import data.Patient;
-import data.PhoneNumber;
-import data.managers.PatientManager;
-
 public class EditPatientUI extends JDialog implements ActionListener {
 	private static EditPatientUI editPatientUI;
 	
@@ -44,13 +40,13 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		setModal(true);
 		setTitle(name);
 		
-		firstNameField.setText(p.getFirstName());
+		firstNameField.setText(p.getFirst());
 		firstNameField.setFont(font);
 		
-		lastNameField.setText(p.getLastName());
+		lastNameField.setText(p.getLast());
 		lastNameField.setFont(font);
 		
-		if(p.getNumberString()!=""){
+		if(p.getPhone()!=""){
 			String[] number = p.getNumberString().split("-");
 			areaCodeField.setText(number[0]);
 			areaCodeField.setFont(font);
@@ -61,7 +57,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 			numberPart2Field.setText(number[2]);
 			numberPart2Field.setFont(font);
 		}
-		note.setText((p.getNote()).replaceAll("\t\t", "\n")) ;
+		note.setText((p.getNotes()).replaceAll("\t\t", "\n")) ;
 		
     	JPanel panel = new JPanel(new BorderLayout());
     	JPanel input = new JPanel(new GridLayout(0,1));
@@ -175,7 +171,9 @@ public class EditPatientUI extends JDialog implements ActionListener {
 					num = new PhoneNumber(areaCode, numberPart1, numberPart2);
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, "Please enter a valid phone number (###-###-####) or leave the field blank.", "Error!", JOptionPane.ERROR_MESSAGE);
+			JLabel msg = new JLabel("Please enter a valid phone number (###-###-####) or leave the field blank.");
+			msg.setFont(font);
+			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		

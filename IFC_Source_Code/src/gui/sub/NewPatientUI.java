@@ -23,6 +23,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
+import backend.DataTransferObjects.PatientDto;
+
 import data.Patient;
 import data.PhoneNumber;
 import data.managers.PatientManager;
@@ -43,7 +45,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 	JTable patTable;
 	private JTextField searchField = new JTextField();
 	
-	private static Patient patient;
+	private static PatientDto patient;
 	
 	private NewPatientUI(String name) {
 		patient = null;
@@ -115,7 +117,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
     	return panel;
     }
 	
-	public static Patient ShowDialog(Component owner) {
+	public static PatientDto ShowDialog(Component owner) {
 		newPatientUI = new NewPatientUI("New Patient");
 		newPatientUI.pack();
 		newPatientUI.setLocationRelativeTo(owner);

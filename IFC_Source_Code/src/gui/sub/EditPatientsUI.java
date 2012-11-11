@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -24,13 +25,12 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import data.Patient;
-import data.managers.PatientManager;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.PatientDto;
 
 public class EditPatientsUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPatientsUI editPatientsUI;
-	private PatientManager pm = new PatientManager();
-	private ArrayList<Patient> pat = pm.getPatientList();
+	private List<PatientDto> pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 	
 	private JButton editButton = new JButton("Edit");
 	private JButton okButton = new JButton("Ok");
@@ -156,13 +156,13 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	
 	class PatTableModel extends AbstractTableModel {
 
-		ArrayList<Patient> patients = new ArrayList<Patient>();
+		List<PatientDto> patients = new ArrayList<PatientDto>();
 		
-		public PatTableModel(ArrayList<Patient> patients) {
+		public PatTableModel(List<PatientDto> patients) {
 			this.patients = patients;
 		}
 		
-		public Patient getPatient(int row) {
+		public PatientDto getPatient(int row) {
 			return patients.get(row);
 		}
 		
@@ -181,15 +181,15 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		}
 
 		public Object getValueAt(int row, int col) {
-			Patient p = patients.get(row);
+			PatientDto p = patients.get(row);
 			if (col == 0) 
-				return p.getFirstName();
+				return p.getFirst();
 			else  if (col == 1)
-				return p.getLastName();
+				return p.getLast();
 			else if (col == 2)
-				return p.getNumberString();
+				return p.getPhone();
 			else
-				return p.getNote();
+				return p.getNotes();
 		}
 		
 		public boolean isCellEditable(int row, int col) {
@@ -218,20 +218,20 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 			if (patTable.getSelectedRow() < 0) return;
 			else {
 				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getSelectedRow()));
-				pat = pm.getPatientList();
+				pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 				return;
 			}
 		} else if (e.getActionCommand().equals("new")) {
 			NewPatientUI.ShowDialog(this);
-			pat = pm.getPatientList();
+			pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 			patTable.setModel(new PatTableModel(pat));
 			return;
 		} else if (e.getActionCommand().equals("remove")) {
 			if (patTable.getSelectedRow() < 0) return;
 			if (JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this patient? Removing this patient will not affect historical data, but you will no longer be able to schedule him or her.", "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				pm.retirePatient(model.getPatient(patTable.getSelectedRow()));
-				pat = pm.getPatientList();
+				pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 			}
 			return;	
