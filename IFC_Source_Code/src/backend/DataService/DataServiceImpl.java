@@ -412,16 +412,19 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public List<String> getAllPractitionerTypers() {
+	public List<TypeDto> getAllPractitionerTypers() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
 			st = connection.prepareStatement("SELECT * FROM ServiceType");
 			rs = st.executeQuery();
-			List<String> results = new ArrayList<String>();
+			List<TypeDto> results = new ArrayList<TypeDto>();
 			while (rs.next()) {
-				results.add(rs.getString("TypeName"));
+				TypeDto type = new TypeDto();
+				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+				type.setField(TypeDto.TYPE_ID, rs.getString(TypeDto.TYPE_ID));
+				results.add(type);
 			}
 			return results;
 		} catch (SQLException e) {

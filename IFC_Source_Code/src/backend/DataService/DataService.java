@@ -90,7 +90,7 @@ public interface DataService {
      * @return List of types in the form of strings. null if there was
      *an error completing the request.
      */
-    public List<String> getAllPractitionerTypers();
+    public List<TypeDto> getAllPractitionerTypers();
     
     /** Retrieves a list of all practitioners
     */

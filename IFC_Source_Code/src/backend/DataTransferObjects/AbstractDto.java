@@ -27,4 +27,14 @@ public abstract class AbstractDto {
         }
         return str;
     }
+
+    @Override
+    public boolean equals(Object other) {
+    	for (Entry<String, Object> entry : fieldsMap.entrySet()) {
+            if (!this.getField(entry.getKey()).equals(entry.getValue())) {
+            	return false;
+            }
+        }
+    	return true;
+    }
 }
