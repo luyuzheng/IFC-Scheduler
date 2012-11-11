@@ -1,5 +1,6 @@
 CREATE DATABASE IF NOT EXISTS ifc_db;
 CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'test623';
+USE ifc_db;
 GRANT ALL ON testdb.* TO 'testuser'@'localhost';
 CREATE TABLE IF NOT EXISTS Patient
 (
@@ -60,7 +61,8 @@ CREATE TABLE IF NOT EXISTS Day
 (
 DayDate date NOT NULL PRIMARY KEY,
 StartTime time,
-EndTime time
+EndTime time,
+Status varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS Waitlist
