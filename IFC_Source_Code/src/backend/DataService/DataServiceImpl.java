@@ -54,6 +54,8 @@ public class DataServiceImpl implements DataService {
 		serv.close();
 	}
 
+	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("", "", "", "");
+	
 	private final String url;
 	private final String user;
 	private final String password;
@@ -93,6 +95,7 @@ public class DataServiceImpl implements DataService {
 			return null;
 		}
 
+		GLOBAL_DATA_INSTANCE = service;
 		return service;
 	}
 
