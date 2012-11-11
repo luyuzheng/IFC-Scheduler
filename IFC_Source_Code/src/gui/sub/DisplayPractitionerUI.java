@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import data.Practitioner;
+import backend.DataTransferObjects.PractitionerDto;
 
 public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private static DisplayPractitionerUI displayPractitionerUI;
@@ -23,19 +23,19 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private JButton clearButton = new JButton("Clear Room");
 	private JTextArea textArea;
 	
-	private static Practitioner practitioner;
+	private static PractitionerDto practitioner;
 	
-	private DisplayPractitionerUI(String name, Practitioner p) {
+	private DisplayPractitionerUI(String name, PractitionerDto p) {
 		practitioner = p;
 		setModal(true);
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
 		
-		String text = "Practitioner Name: " + p.getName();
-		text += "\nType: " + p.getType().toString();
+		String text = "Practitioner Name: " + p.getFirst() + " " + p.getLast();
+		text += "\nType: " + p.getTypeName().toString();
 		text += "\nAppointment Length: " + p.getApptLength() + " Minutes";
-		text += "\nPractitioner Note: " + p.getNote();
+		text += "\nPractitioner Note: " + p.getNotes();
 
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
@@ -65,7 +65,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static Practitioner ShowDialog(Component owner, Practitioner p) {
+	public static PractitionerDto ShowDialog(Component owner, PractitionerDto p) {
 		displayPractitionerUI = new DisplayPractitionerUI("Edit Practitioner", p);
 		displayPractitionerUI.pack();
 		displayPractitionerUI.setLocationRelativeTo(owner);
@@ -75,7 +75,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("change")) {
-			Practitioner p = SelectPractitionerUI.ShowDialog(this);
+			PractitionerDto p = SelectPractitionerUI.ShowDialog(this);
 			if (JOptionPane.showConfirmDialog(this, "Changing practitioners will clear all the appointments for this practitioner. Continue anyways?", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 				return;
 			}

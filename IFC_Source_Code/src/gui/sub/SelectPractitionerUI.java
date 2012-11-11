@@ -28,6 +28,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
+import backend.DataTransferObjects.PractitionerDto;
+
 import data.Practitioner;
 import data.Type;
 import data.managers.PractitionerManager;
@@ -51,7 +53,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	JTable pracTable;
 	
-	private static Practitioner practitioner;
+	private static PractitionerDto practitioner;
 	
 	private SelectPractitionerUI(String name) {
 		practitioner = null;
@@ -185,7 +187,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	return panel;
     }
 	
-	public static Practitioner ShowDialog(Component owner) {
+	public static PractitionerDto ShowDialog(Component owner) {
 		selectPractitionerUI = new SelectPractitionerUI("Select Practitioner");
 		selectPractitionerUI.pack();
 		selectPractitionerUI.setLocationRelativeTo(owner);
