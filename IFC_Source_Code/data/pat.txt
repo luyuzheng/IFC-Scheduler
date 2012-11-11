@@ -4,7 +4,7 @@
 <first_name>Jelly</first_name>
 <last_name>Bean</last_name>
 <phone>123-456-7890</phone>
-<note></note>
+<note>Peanut butter Peanut butter Peanut butter Peanut butter Peanut butter Peanut butter Peanut butter Peanut butter</note>
 </patient>
 <patient>
 <id>1</id>
