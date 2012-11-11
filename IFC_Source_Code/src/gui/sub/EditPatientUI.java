@@ -19,9 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import data.Patient;
-import data.PhoneNumber;
-import data.managers.PatientManager;
+import backend.DataTransferObjects.PatientDto;
 
 public class EditPatientUI extends JDialog implements ActionListener {
 	private static EditPatientUI editPatientUI;
@@ -36,19 +34,19 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
-	private static Patient p;
+	private static PatientDto p;
 	
 	private EditPatientUI(String name) {
 		setModal(true);
 		setTitle(name);
 		
-		firstNameField.setText(p.getFirstName());
+		firstNameField.setText(p.getFirst());
 		firstNameField.setFont(font);
 		
-		lastNameField.setText(p.getLastName());
+		lastNameField.setText(p.getLast());
 		lastNameField.setFont(font);
 		
-		if(p.getNumberString()!=""){
+		if(p.getPhone()!=""){
 			String[] number = p.getNumberString().split("-");
 			areaCodeField.setText(number[0]);
 			areaCodeField.setFont(font);
@@ -59,7 +57,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 			numberPart2Field.setText(number[2]);
 			numberPart2Field.setFont(font);
 		}
-		note.setText((p.getNote()).replaceAll("\t\t", "\n")) ;
+		note.setText((p.getNotes()).replaceAll("\t\t", "\n")) ;
 		
     	JPanel panel = new JPanel(new BorderLayout());
     	JPanel input = new JPanel(new GridLayout(0,1));
@@ -130,7 +128,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static Patient ShowDialog(Component owner, Patient pat) {
+	public static PatientDto ShowDialog(Component owner, PatientDto pat) {
 		p = pat;
 		editPatientUI = new EditPatientUI("Edit Patient");
 		editPatientUI.pack();
@@ -173,7 +171,9 @@ public class EditPatientUI extends JDialog implements ActionListener {
 					num = new PhoneNumber(areaCode, numberPart1, numberPart2);
 			}
 		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(this, "Please enter a valid phone number (###-###-####) or leave the field blank.", "Error!", JOptionPane.ERROR_MESSAGE);
+			JLabel msg = new JLabel("Please enter a valid phone number (###-###-####) or leave the field blank.");
+			msg.setFont(font);
+			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		

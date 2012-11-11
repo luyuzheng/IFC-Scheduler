@@ -24,10 +24,9 @@ import javax.swing.JPanel;
 import backend.DataTransferObjects.DayDto;
 
 import java.util.Date;
-import data.DaySaver;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
-//import data.TimeSlot;
+import gui.TimeSlot;
 
 public class DayPanel extends JPanel {
 	private DayDto day;
@@ -119,7 +118,7 @@ public class DayPanel extends JPanel {
 		ab = a;
 		patientButton.setEnabled(b);
 		if (b) {
-			if (ab.getAppointment().isFilled())
+			if (ab.getAppointment().getPatientID() != null)
 				patientButton.setAction(removePatAction);
 			else
 				patientButton.setAction(addPatAction);
