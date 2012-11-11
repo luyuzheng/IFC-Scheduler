@@ -2,6 +2,8 @@ package DataService;
 
 import java.util.List;
 
+import java.sql.Date;
+
 import DataTransferObjects.*;
 
 /**
@@ -114,11 +116,6 @@ public interface DataService {
     public List<PractitionerDto> getAllPractitionersForDay(DayDto day);
     
     /**
-     * get list of each practitioner's appointment on a day
-     */
-    public List<AppointmentDto> getPractitionersAppointments(int practID, DayDto day);
-    
-    /**
      * remove a practitioner from a scheduled day
      * should also remove all appointments
      */
@@ -180,4 +177,25 @@ public interface DataService {
      */
     public SchedulePractitionerDto addPractitionerToDay(PractitionerDto pract, DayDto day, 
         int start, int end);
+    
+    /*
+     * Gets a day given a date
+     */
+    public DayDto getOrCreateDay(Date date);
+    
+    /*
+     * Gets a list of practioner's on a day, each with their own list of appointmnets
+     */
+    public List<SchedulePractitionerDto> getPractionersOnDay(DayDto day);
+    
+    /*
+     * Gets a practioner from an ID
+     */
+    public PractitionerDto getPractitioner(int PractID);
+    
+    /*
+     * Gets all appointments for a scheduledPract 
+     */
+    public List<AppointmentDto> getAllAppointments(int schedPractId);
+    
 }

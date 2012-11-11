@@ -572,13 +572,6 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public List<AppointmentDto> getPractitionersAppointments(int practID,
-			DayDto day) {
-		// TODO Duplicate method?
-		return null;
-	}
-
-	@Override
 	public boolean removePractitionerFromDay(int practSchedId, DayDto day) {
                 PreparedStatement st = null;
                 try {
@@ -883,6 +876,8 @@ public class DataServiceImpl implements DataService {
                 st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
 		rs = st.executeQuery();
                 
+                rs.next();
+                
                 int pract_id = rs.getInt(1);
                 System.out.println(pract_id);
                 
@@ -930,4 +925,104 @@ public class DataServiceImpl implements DataService {
 		}
 		return null;    
     }
+
+    @Override
+    public DayDto getOrCreateDay(Date date) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        DayDto retDay = new DayDto(); 
+        
+        try {
+                st = connection.prepareStatement(
+			"SELECT * WHERE DayDate = ?");
+                st.setDate(1, date);
+                rs = st.executeQuery();
+                
+                if (rs.next()){
+                    retDay.setField(DayDto.DATE, date);
+                    retDay.setStart(rs.getInt(DayDto.START));
+                    retDay.setEnd(rs.getInt(DayDto.END));
+                    return retDay;
+                }
+                else{
+                    st = connection.prepareStatement("INSERT INTO Day (DayDate, StartTime, EndTime) VALUES (?, ?, ?)");
+                    retDay.setField(DayDto.DATE, date);
+                    st.setDate(1, date);
+                    //retDfay.setStart(default start);
+                    //st.setInt(2, defaut start);
+                    //retDay.setEnd(default end);
+                    //st.setInt(3, default end);
+                    st.executeQuery();
+                    return retDay;
+                }
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+        return retDay;
+    }
+
+    @Override
+    public List<SchedulePractitionerDto> getPractionersOnDay(DayDto day) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        ResultSet appointments = null;
+        
+        try {
+                st = connection.prepareStatement(
+			"SELECT * FROM PractitionerScheduled WHERE ScheduleDate = ?");
+                st.setDate(1, day.getDate());
+                rs = st.executeQuery();
+                List<SchedulePractitionerDto> retList = new ArrayList<SchedulePractitionerDto>();
+                SchedulePractitionerDto newPract;
+                
+                while(rs.next()){
+                    newPract = new SchedulePractitionerDto();
+                    newPract.setEnd(rs.getInt(SchedulePractitionerDto.END));
+                    newPract.setStart(rs.getInt(SchedulePractitionerDto.START));
+                    newPract.setField(SchedulePractitionerDto.PRACT_SCHED_ID, 
+                            rs.getInt(SchedulePractitionerDto.PRACT_SCHED_ID));
+                    newPract.setField(SchedulePractitionerDto.PRACT, 
+                            this.getPractitioner(rs.getInt("PractID")));
+                    newPract.setField(SchedulePractitionerDto.APPOINTMENTS, 
+                            this.getAllAppointments(rs.getInt(newPract.getPractSchedID())));
+                    
+                }
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+        return null;
+    }
+
+    @Override
+    public PractitionerDto getPractitioner(int PractID) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<AppointmentDto> getAllAppointments(int schedPractId) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }
+
