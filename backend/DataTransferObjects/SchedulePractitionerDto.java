@@ -6,25 +6,28 @@ package DataTransferObjects;
 
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
  * @author kenny
  */
-public class SchedulePractionerDto extends AbstractDto {
+public class SchedulePractitionerDto extends AbstractDto {
     public static final String PRACT_SCHED_ID = "PractSchID";
     public static final String PRACT = "Pract";
     public static final String START = "StartTime";
     public static final String END = "EndTime";
     public static final String DATE = "ScheduleDate";
+    public static final String APPOINTMENTS = "Appointments";
     
-    public SchedulePractionerDto() {
+    public SchedulePractitionerDto() {
         fieldsMap = new HashMap<String, Object>();
         fieldsMap.put(PRACT, null);
         fieldsMap.put(PRACT_SCHED_ID, null);
         fieldsMap.put(START, null);
         fieldsMap.put(END, null);
         fieldsMap.put(DATE, null);
+        fieldsMap.put(APPOINTMENTS, null);
     }
     
     public PractitionerDto getPractioner(){
@@ -53,5 +56,9 @@ public class SchedulePractionerDto extends AbstractDto {
     
     public Date getDate(){
         return (Date) fieldsMap.get(DATE);
+    }
+    
+    public List<AppointmentDto> getAppointments(){
+        return (List<AppointmentDto>) fieldsMap.get(APPOINTMENTS);
     }
 }

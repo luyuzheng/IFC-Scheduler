@@ -184,11 +184,6 @@ public interface DataService {
     public DayDto getOrCreateDay(Date date);
     
     /*
-     * Gets a list of practioner's on a day, each with their own list of appointmnets
-     */
-    public List<SchedulePractitionerDto> getPractionersOnDay(DayDto day);
-    
-    /*
      * Gets a practioner from an ID
      */
     public PractitionerDto getPractitioner(int PractID);

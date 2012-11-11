@@ -567,8 +567,45 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public List<PractitionerDto> getAllPractitionersForDay(DayDto day) {
-		// TODO Auto-generated method stub
-		return null;
+		PreparedStatement st = null;
+        ResultSet rs = null;
+        ResultSet appointments = null;
+        
+        try {
+                st = connection.prepareStatement(
+			"SELECT * FROM PractitionerScheduled WHERE ScheduleDate = ?");
+                st.setDate(1, day.getDate());
+                rs = st.executeQuery();
+                List<SchedulePractitionerDto> retList = new ArrayList<SchedulePractitionerDto>();
+                SchedulePractitionerDto newPract;
+                
+                while(rs.next()){
+                    newPract = new SchedulePractitionerDto();
+                    newPract.setEnd(rs.getInt(SchedulePractitionerDto.END));
+                    newPract.setStart(rs.getInt(SchedulePractitionerDto.START));
+                    newPract.setField(SchedulePractitionerDto.PRACT_SCHED_ID, 
+                            rs.getInt(SchedulePractitionerDto.PRACT_SCHED_ID));
+                    newPract.setField(SchedulePractitionerDto.PRACT, 
+                            this.getPractitioner(rs.getInt("PractID")));
+                    newPract.setField(SchedulePractitionerDto.APPOINTMENTS, 
+                            this.getAllAppointments(rs.getInt(newPract.getPractSchedID())));
+                    
+                }
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+        return null;
 	}
 
 	@Override
@@ -973,31 +1010,82 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public List<SchedulePractitionerDto> getPractionersOnDay(DayDto day) {
+    public PractitionerDto getPractitioner(int practID) {
+        PreparedStatement st = null;
+	ResultSet rs = null;
+
+	try {
+		st = connection.prepareStatement("SELECT * FROM Practitioner WHERE PractID=(?)");
+		st.setInt(1, practID);
+		rs = st.executeQuery();
+		PractitionerDto pract = new PractitionerDto();
+                
+		if (rs.next()) {
+			pract.setField(PractitionerDto.FIRST, rs.getInt(PractitionerDto.FIRST));
+			pract.setField(PractitionerDto.LAST, rs.getInt(PractitionerDto.LAST));
+			pract.setField(PractitionerDto.APPT_LENGTH, 
+                                rs.getInt(PractitionerDto.APPT_LENGTH));
+			pract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
+			pract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
+                        pract.setField(PractitionerDto.PRACT_ID, rs.getString(PractitionerDto.PRACT_ID));
+                        pract.setField(PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
+                        //TODO:get TypeName
+			return pract;
+		}
+                return null;
+
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return null;
+    }
+
+    @Override
+    public List<AppointmentDto> getAllAppointments(int schedPractId) {
         PreparedStatement st = null;
         ResultSet rs = null;
         ResultSet appointments = null;
         
         try {
                 st = connection.prepareStatement(
-			"SELECT * FROM PractitionerScheduled WHERE ScheduleDate = ?");
-                st.setDate(1, day.getDate());
+			"SELECT * FROM Appointment WHERE PractSchedID = ?");
+                st.setInt(1, schedPractId);
                 rs = st.executeQuery();
-                List<SchedulePractitionerDto> retList = new ArrayList<SchedulePractitionerDto>();
-                SchedulePractitionerDto newPract;
+                
+                List<AppointmentDto> retList = new ArrayList<AppointmentDto>();
+                AppointmentDto newAppointment;
                 
                 while(rs.next()){
-                    newPract = new SchedulePractitionerDto();
-                    newPract.setEnd(rs.getInt(SchedulePractitionerDto.END));
-                    newPract.setStart(rs.getInt(SchedulePractitionerDto.START));
-                    newPract.setField(SchedulePractitionerDto.PRACT_SCHED_ID, 
-                            rs.getInt(SchedulePractitionerDto.PRACT_SCHED_ID));
-                    newPract.setField(SchedulePractitionerDto.PRACT, 
-                            this.getPractitioner(rs.getInt("PractID")));
-                    newPract.setField(SchedulePractitionerDto.APPOINTMENTS, 
-                            this.getAllAppointments(rs.getInt(newPract.getPractSchedID())));
-                    
+                    newAppointment = new AppointmentDto();
+                    newAppointment.setField(AppointmentDto.APPT_DATE, 
+                            rs.getDate(AppointmentDto.APPT_DATE));
+                    newAppointment.setField(AppointmentDto.APPT_ID, 
+                            rs.getInt(AppointmentDto.APPT_ID));
+                    newAppointment.setField(AppointmentDto.END, 
+                            rs.getInt(AppointmentDto.END));
+                    newAppointment.setField(AppointmentDto.NOTE, 
+                            rs.getString(AppointmentDto.NOTE));
+                    newAppointment.setField(AppointmentDto.NO_SHOW_ID,
+                            rs.getInt(AppointmentDto.NO_SHOW_ID));
+                    newAppointment.setField(AppointmentDto.PAT_ID,
+                            rs.getInt(AppointmentDto.PAT_ID));
+                    newAppointment.setField(AppointmentDto.PRACT_SCHED_ID, 
+                            rs.getInt(AppointmentDto.PRACT_SCHED_ID));
+                    newAppointment.setField(AppointmentDto.START, 
+                            rs.getInt(AppointmentDto.START));
+                    retList.add(newAppointment);
                 }
+                return retList;
                 
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1013,16 +1101,6 @@ public class DataServiceImpl implements DataService {
 			}
 		}
         return null;
-    }
-
-    @Override
-    public PractitionerDto getPractitioner(int PractID) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<AppointmentDto> getAllAppointments(int schedPractId) {
-        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
 
