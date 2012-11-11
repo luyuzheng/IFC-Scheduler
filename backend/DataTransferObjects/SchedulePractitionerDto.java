@@ -58,7 +58,8 @@ public class SchedulePractitionerDto extends AbstractDto {
         return (Date) fieldsMap.get(DATE);
     }
     
-    public List<AppointmentDto> getAppointments(){
+    @SuppressWarnings("unchecked")
+	public List<AppointmentDto> getAppointments(){
         return (List<AppointmentDto>) fieldsMap.get(APPOINTMENTS);
     }
 }

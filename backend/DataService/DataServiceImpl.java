@@ -569,7 +569,6 @@ public class DataServiceImpl implements DataService {
 	public List<PractitionerDto> getAllPractitionersForDay(DayDto day) {
 		PreparedStatement st = null;
         ResultSet rs = null;
-        ResultSet appointments = null;
         
         try {
                 st = connection.prepareStatement(
@@ -589,7 +588,7 @@ public class DataServiceImpl implements DataService {
                             this.getPractitioner(rs.getInt("PractID")));
                     newPract.setField(SchedulePractitionerDto.APPOINTMENTS, 
                             this.getAllAppointments(rs.getInt(newPract.getPractSchedID())));
-                    
+                    retList.add(newPract);
                 }
                 
 	} catch (SQLException e) {
@@ -1054,7 +1053,6 @@ public class DataServiceImpl implements DataService {
     public List<AppointmentDto> getAllAppointments(int schedPractId) {
         PreparedStatement st = null;
         ResultSet rs = null;
-        ResultSet appointments = null;
         
         try {
                 st = connection.prepareStatement(
