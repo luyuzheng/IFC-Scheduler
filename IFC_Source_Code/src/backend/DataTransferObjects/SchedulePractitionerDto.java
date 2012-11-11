@@ -30,7 +30,7 @@ public class SchedulePractitionerDto extends AbstractDto {
         fieldsMap.put(APPOINTMENTS, null);
     }
     
-    public PractitionerDto getPractioner(){
+    public PractitionerDto getPractitioner(){
         return (PractitionerDto) fieldsMap.get(PRACT);
     }
     

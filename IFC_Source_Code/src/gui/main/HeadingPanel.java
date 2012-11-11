@@ -19,17 +19,18 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import data.Constants;
-import data.Room;
+import backend.DataTransferObjects.SchedulePractitionerDto;
+
+import gui.Constants;
 
 public class HeadingPanel extends JPanel implements FocusListener {
-	private Room room;
+	private SchedulePractitionerDto room;
 	private JTextArea text;
 	private RoomSubpanel rs;
 	private RoomPanel rp;
 	NewPractitionerListener npl;
 	
-	public HeadingPanel(Room room, RoomPanel rp, RoomSubpanel rs) {
+	public HeadingPanel(SchedulePractitionerDto room, RoomPanel rp, RoomSubpanel rs) {
 		this.rp = rp;
 		this.rs = rs;
 		this.room = room;
@@ -55,7 +56,7 @@ public class HeadingPanel extends JPanel implements FocusListener {
 		if (room.getPractitioner() == null) 
 			text.setText("No Practitioner Selected. \nDouble-click below to add Practitioner.");
 		else 
-			text.setText(room.getPractitioner().getName() + "\n" + room.getPractitioner().getType() + "\n" + room.getPractitioner().getNote());
+			text.setText(room.getPractitioner().getFirst() + " "+ room.getPractitioner().getLast() + "\n" + room.getPractitioner().getTypeName() + "\n" + room.getPractitioner().getNotes());
 			
 	}
 
