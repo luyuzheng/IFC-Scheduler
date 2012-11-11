@@ -1,4 +1,4 @@
-package DataService;
+package backend.DataService;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import DataTransferObjects.*;
+import backend.DataTransferObjects.*;
 
 public class DataServiceImpl implements DataService {
 

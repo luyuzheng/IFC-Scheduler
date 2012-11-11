@@ -1,4 +1,4 @@
-package DataTransferObjects;
+package backend.DataTransferObjects;
 
 import java.sql.Date;
 import java.util.HashMap;
