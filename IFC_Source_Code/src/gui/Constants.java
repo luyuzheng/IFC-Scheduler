@@ -2,7 +2,7 @@
  * Contains all the constants for the application
  */
 
-package data;
+package gui;
 
 import java.io.File;
 
