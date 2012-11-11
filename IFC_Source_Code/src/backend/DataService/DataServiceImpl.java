@@ -667,10 +667,10 @@ public class DataServiceImpl implements DataService {
 			st = connection.prepareStatement(
 					"INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
 
-			for (int i = start; i < end; i+=pract.getPractioner().getApptLength()){
+			for (int i = start; i < end; i+=pract.getPractitioner().getApptLength()){
 				newApt = new AppointmentDto();
-				newApt.setEnd(i + pract.getPractioner().getApptLength());
-				st.setInt(3, i + pract.getPractioner().getApptLength());
+				newApt.setEnd(i + pract.getPractitioner().getApptLength());
+				st.setInt(3, i + pract.getPractitioner().getApptLength());
 				newApt.setStart(i);
 				st.setInt(2, i);
 				newApt.setField(AppointmentDto.APPT_DATE, day.getDate());

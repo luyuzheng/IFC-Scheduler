@@ -1,10 +1,17 @@
 package backend.DataService;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
-import java.sql.Date;
-
-import backend.DataTransferObjects.*;
+import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.DayDto;
+import backend.DataTransferObjects.NoShowDto;
+import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.PractitionerDto;
+import backend.DataTransferObjects.SchedulePractitionerDto;
+import backend.DataTransferObjects.TypeDto;
+import backend.DataTransferObjects.WaitlistDto;
 
 /**
  * Interface for the data service backend for scheduler database.
@@ -125,7 +132,8 @@ public interface DataService {
      * change hours of operation for a practitioner on a day
      * should also remove any affected appointments
      */
-    public boolean changePractitionerHoursForDay(SchedulePractitionerDto practitioner, DayDto day, int start, int end);
+    public boolean changePractitionerHoursForDay(SchedulePractitionerDto practitioner, DayDto day,
+    		int start, int end);
     
     /**
      * Adds a patient to an appointment
