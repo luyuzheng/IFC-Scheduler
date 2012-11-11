@@ -412,7 +412,7 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public List<TypeDto> getAllPractitionerTypers() {
+	public List<TypeDto> getAllPractitionerTypes() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
