@@ -13,7 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import data.Constants;
+import gui.Constants;
 import data.Time;
 import data.TimeSlot;
 
