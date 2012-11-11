@@ -118,7 +118,7 @@ public class DayPanel extends JPanel {
 		ab = a;
 		patientButton.setEnabled(b);
 		if (b) {
-			if (ab.getAppointment().isFilled())
+			if (ab.getAppointment().getPatientID() != null)
 				patientButton.setAction(removePatAction);
 			else
 				patientButton.setAction(addPatAction);
