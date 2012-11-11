@@ -11,19 +11,19 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import data.Constants;
-import data.DaySaver;
-import data.Practitioner;
-import data.Room;
+import backend.DataTransferObjects.PractitionerDto;
+import backend.DataTransferObjects.SchedulePractitionerDto;
+
+import gui.Constants;
 
 public class RoomPanel extends JPanel {
 	HeadingPanel headingPanel;
 	RoomSubpanel roomSubpanel;
-	Room room;
+	SchedulePractitionerDto room;
 	NewPractitionerListener npl = new NewPractitionerListener(this, this.getParent());
 	DayPanel dp;
 	
-	public RoomPanel(Room room, DayPanel dp) {
+	public RoomPanel(SchedulePractitionerDto room, DayPanel dp) {
 		this.dp = dp;
 		this.room = room;
 		roomSubpanel = new RoomSubpanel(room, dp);
@@ -40,16 +40,16 @@ public class RoomPanel extends JPanel {
 	 * event, which opens up the Select Practitioner UI 
 	 * @param p the practitioner to set
 	 */
-	public void setPractitioner(Practitioner p) {
+	/**public void setPractitioner(PractitionerDto p) {
 		room.setPractitioner(p);
 		headingPanel.setText();
 		roomSubpanel.setAppointments();
 		if (p == null) addMouseListener(npl);
 		else removeMouseListener(npl);
 		new DaySaver().storeDay(dp.getDay());
-	}
+	}**/
 	
-	public Room getRoom() {
+	public SchedulePractitionerDto getRoom() {
 		return room;
 	}
 
