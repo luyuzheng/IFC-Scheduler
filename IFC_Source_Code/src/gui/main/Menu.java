@@ -9,6 +9,7 @@ import gui.sub.EditPractitionersUI;
 import gui.sub.HelpUI;
 import gui.sub.SelectPatientUI;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -18,16 +19,22 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.border.EmptyBorder;
 
 import data.Patient;
 
 public class Menu extends JMenuBar {
 	public Menu(MainWindow window) {
 		
+		final Font font= new Font("Arial", Font.PLAIN, 14);
+		
 		final MainWindow frame = window;
+		
+		setBorder(new EmptyBorder(5,5,5,5));
 
 		//file menu
-		JMenu fileMenu = new JMenu("File");
+		JMenu fileMenu = new JMenu("Administrator");
+		fileMenu.setFont(font);
 		
 		JMenuItem editPatientsItem = new JMenuItem("Edit Patients");
 		editPatientsItem.addActionListener(new ActionListener() {
@@ -36,6 +43,7 @@ public class Menu extends JMenuBar {
 				frame.refresh();
 			}
 		});
+		editPatientsItem.setFont(font);
 		fileMenu.add(editPatientsItem);
 		
 		JMenuItem editPractitionersItem = new JMenuItem("Edit Practitioners");
@@ -44,6 +52,7 @@ public class Menu extends JMenuBar {
 				EditPractitionersUI.ShowDialog(frame);
 			}
 		});
+		editPractitionersItem.setFont(font);
 		fileMenu.add(editPractitionersItem);
 		
 		JMenuItem editDefaultHoursItem = new JMenuItem("Edit Default Hours");
@@ -52,6 +61,7 @@ public class Menu extends JMenuBar {
 				DefaultTimeslotsUI.ShowDialog(frame);
 			}
 		});
+		editDefaultHoursItem.setFont(font);
 		fileMenu.add(editDefaultHoursItem);
 		
 		JMenuItem printItem = new JMenuItem("Print");
@@ -61,6 +71,7 @@ public class Menu extends JMenuBar {
 				else frame.getAppPanel().actionPerformed(e);
 			}
 		});
+		printItem.setFont(font);
 		fileMenu.add(printItem);
 		
 		fileMenu.addSeparator();
@@ -71,12 +82,14 @@ public class Menu extends JMenuBar {
 				System.exit(0);
 			}
 		});
+		byeMenuItem.setFont(font);
 		fileMenu.add(byeMenuItem);
 		
 		add(fileMenu);
 
 		//help menu
 		JMenu helpMenu = new JMenu("Help");
+		helpMenu.setFont(font);
 
 		JMenuItem helpItem = new JMenuItem("Help", KeyEvent.VK_H);    //This is how you add a hotkey
 		helpItem.addActionListener(new ActionListener() {
@@ -95,17 +108,19 @@ public class Menu extends JMenuBar {
 				frame.refresh();
 			}
 		});
+		helpItem.setFont(font);
 		helpMenu.add(helpItem);
 		
 		JMenuItem item = new JMenuItem("About...", KeyEvent.VK_A);    //This is how you add a hotkey
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				final String[] aboutMsg = { "Scheduling Program",
-				"Copyright \u00a9 2010 Aakash Jain, Rick Ducott; Cornell University" };
+				"Copyright \u00a9 2010 Aakash Jain, Rick Ducott; Cornell University \n\u00a9 2012 The Dev Squad \nClaire Cipriani, Kenneth Deakins, Jean Hooi Lee, Raisa Razzaque, Valerie Roske, Luyu Zheng; Cornell University" };
 				JOptionPane.showMessageDialog(frame, aboutMsg, "About",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
+		item.setFont(font);
 		helpMenu.add(item);
 
 		add(helpMenu);

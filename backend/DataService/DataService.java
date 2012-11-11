@@ -113,7 +113,7 @@ public interface DataService {
     /**
      * Retrives list of all practitioners in a day
      */
-    public List<PractitionerDto> getAllPractitionersForDay(DayDto day);
+    public List<SchedulePractitionerDto> getAllPractitionersForDay(DayDto day);
     
     /**
      * remove a practitioner from a scheduled day
@@ -182,11 +182,6 @@ public interface DataService {
      * Gets a day given a date
      */
     public DayDto getOrCreateDay(Date date);
-    
-    /*
-     * Gets a list of practioner's on a day, each with their own list of appointmnets
-     */
-    public List<SchedulePractitionerDto> getPractionersOnDay(DayDto day);
     
     /*
      * Gets a practioner from an ID
