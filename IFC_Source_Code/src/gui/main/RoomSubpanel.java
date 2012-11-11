@@ -13,7 +13,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import data.Appointment;
-import data.Constants;
+import gui.Constants;
 import data.Room;
 
 public class RoomSubpanel extends JPanel{
