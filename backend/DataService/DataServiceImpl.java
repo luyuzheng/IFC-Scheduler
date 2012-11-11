@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -622,14 +623,69 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public boolean checkAsNoShow(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
+		PreparedStatement st = null;
+
+        try {
+        	int patID = appointment.getPatientID();
+        	Date date = appointment.getApptDate();
+            st = connection.prepareStatement("INSERT INTO NoShow " +
+                    "(PatID, NoShowDate) " +
+                    "VALUES (?, ?)");
+            st.setInt(1, patID);
+            st.setDate(2, date);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } catch (NullPointerException e) {
+        	Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+        	lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
+        			" checked as no show");
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return false;
 	}
 
 	@Override
 	public boolean uncheckAsNoShow(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
+		PreparedStatement st = null;
+
+        try {
+        	int patID = appointment.getPatientID();
+        	Date date = appointment.getApptDate();
+            st = connection.prepareStatement("DELETE FROM NoShow WHERE " +
+                    "patID=? AND NoShowDate=?");
+            st.setInt(1, patID);
+            st.setDate(2, date);
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } catch (NullPointerException e) {
+        	Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+        	lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
+        			" checked as no show");
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return false;
 	}
 
 	@Override
@@ -662,9 +718,30 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public boolean removePatientFromWaitlist(PatientDto patient, String type) {
-		// TODO discuss: it would be easier if we used the waitlist ID to remove
-		return false;
+	public boolean removePatientFromWaitlist(PatientDto patient, TypeDto type) {
+		PreparedStatement st = null;
+
+        try {
+            st = connection.prepareStatement("DELETE FROM Waitlist WHERE " +
+                    "PatID=? AND TypeID=?");
+            st.setInt(1, patient.getPatID());
+            st.setInt(2, type.getTypeID());
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return false;
 	}
 
 	@Override
@@ -703,13 +780,36 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public boolean setHoursForDay(DayDto day) {
-		// TODO Auto-generated method stub
-		return false;
+		PreparedStatement st = null;
+
+        try {
+            st = connection.prepareStatement("INSERT INTO Day " +
+                    "(DayDate, StartTime, EndTime) " +
+                    "VALUES (?, ?, ?)");
+            st.setDate(1, day.getDate());
+            st.setTime(2, new Time(day.getStart()));
+            st.setTime(3, new Time(day.getEnd()));
+            st.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+            lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+            } catch (SQLException ex) {
+                Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                lgr.log(Level.WARNING, ex.getMessage(), ex);
+            }
+        }
+        return false;
 	}
 
 	@Override
 	public boolean setStatus(DayDto day) {
-		// TODO Auto-generated method stub
+		// TODO there's no status field for day... we could set the hours to null?
 		return false;
 	}
 }

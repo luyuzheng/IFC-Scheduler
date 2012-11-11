@@ -176,7 +176,7 @@ public interface DataService {
     /**
      * remove patient from waitlist
      */
-    public boolean removePatientFromWaitlist(PatientDto patient, String type);
+    public boolean removePatientFromWaitlist(PatientDto patient, TypeDto type);
     
     /**
      * get waitlist info
