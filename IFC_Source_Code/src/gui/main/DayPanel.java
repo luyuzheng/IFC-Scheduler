@@ -21,6 +21,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import backend.DataTransferObjects.DayDto;
+
 import java.util.Date;
 import data.DaySaver;
 import data.Practitioner;
@@ -28,7 +30,7 @@ import data.Room;
 import data.TimeSlot;
 
 public class DayPanel extends JPanel {
-	private Day day;
+	private DayDto day;
 	private JButton switchViewButton = new PanelButton("Month View");
 	private JButton patientButton = new PanelButton("Schedule Patient");
 	private JButton addPracButton = new PanelButton("Schedule Practitioner");
@@ -44,7 +46,7 @@ public class DayPanel extends JPanel {
 	private AppointmentSubpanel as;
 	private MainWindow mw;
 	
-	public DayPanel(Day day, MainWindow mw) {
+	public DayPanel(DayDto day, MainWindow mw) {
 		this.mw = mw;
 		setBackground(Color.WHITE);
 		this.day = day;
@@ -95,7 +97,7 @@ public class DayPanel extends JPanel {
 		add(buttonPanel);
 	}
 	
-	public Day getDay() {
+	public DayDto getDay() {
 		return day;
 	}
 	

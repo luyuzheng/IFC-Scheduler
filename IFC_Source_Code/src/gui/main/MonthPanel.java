@@ -24,15 +24,16 @@ import java.util.GregorianCalendar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import data.Constants;
-import data.Date;
+import backend.DataTransferObjects.DayDto;
+
+import gui.Constants;
+import java.util.Date;
 import data.Day;
 import data.DayLoader;
 import data.Practitioner;
-import data.Room;
 
 public class MonthPanel extends JScrollPane implements Printable, ActionListener {
-	Day day;
+	DayDto day;
 	Date d;
 	
 	public MonthPanel(DayPanel dp) {
@@ -40,7 +41,7 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		
 		JPanel panel = new JPanel(new GridLayout(6,7));
 
-		Day day = dp.getDay();
+		DayDto day = dp.getDay();
 		this.d = day.getDate();
 		
 		GregorianCalendar cal = new GregorianCalendar();
