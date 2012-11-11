@@ -2,13 +2,7 @@ package DataService;
 
 import java.util.List;
 
-import DataTransferObjects.AppointmentDto;
-import DataTransferObjects.DayDto;
-import DataTransferObjects.NoShowDto;
-import DataTransferObjects.PatientDto;
-import DataTransferObjects.PractitionerDto;
-import DataTransferObjects.TypeDto;
-import DataTransferObjects.WaitlistDto;
+import DataTransferObjects.*;
 
 /**
  * Interface for the data service backend for scheduler database.
@@ -98,7 +92,7 @@ public interface DataService {
     
     /** Retrieves a list of all practitioners
     */
-    public List<PractitionerDto> getAllPractioners();
+    public List<PractitionerDto> getAllPractitioners();
     
     /** Add a practitioner to the database
     */
@@ -192,4 +186,10 @@ public interface DataService {
      * set open or closed on day
      */
     public boolean setStatus(DayDto day);
+    
+    /*
+     * Schedules a practioner on a day
+     */
+    public SchedulePractitionerDto addPractitionerToDay(PractitionerDto pract, DayDto day, 
+        int start, int end);
 }

@@ -14,13 +14,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import DataTransferObjects.AppointmentDto;
-import DataTransferObjects.DayDto;
-import DataTransferObjects.NoShowDto;
-import DataTransferObjects.PatientDto;
-import DataTransferObjects.PractitionerDto;
-import DataTransferObjects.TypeDto;
-import DataTransferObjects.WaitlistDto;
+import DataTransferObjects.*;
 
 public class DataServiceImpl implements DataService {
 
@@ -444,7 +438,7 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public List<PractitionerDto> getAllPractioners() {
+	public List<PractitionerDto> getAllPractitioners() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -812,4 +806,69 @@ public class DataServiceImpl implements DataService {
 		// TODO there's no status field for day... we could set the hours to null?
 		return false;
 	}
+        
+     @Override
+     public SchedulePractitionerDto addPractitionerToDay(PractitionerDto pract, DayDto day, 
+        int start, int end){
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        
+        try {
+                st = connection.prepareStatement(
+			"INSERT INTO PractitionerScheduled (PractID, ScheduleDate, StartTime, EndTime) VALUES (?, ?, ?, ?)");
+                st.setInt(1, pract.getPractID());
+                st.setDate(2, day.getDate());
+                st.setInt(3, start);
+                st.setInt(4, end);
+                st.executeUpdate();
+                st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
+		rs = st.executeQuery();
+                
+                int pract_id = rs.getInt(1);
+                System.out.println(pract_id);
+                
+                AppointmentDto newApt = new AppointmentDto();
+                SchedulePractitionerDto returnDto = new SchedulePractitionerDto();
+                
+                List<AppointmentDto> appointments = new ArrayList<AppointmentDto>();
+                
+                returnDto.setField(SchedulePractitionerDto.DATE, day.getDate());
+                returnDto.setField(SchedulePractitionerDto.APPOINTMENTS, appointments);
+                returnDto.setField(SchedulePractitionerDto.PRACT, pract);
+                returnDto.setField(SchedulePractitionerDto.END, end);
+                returnDto.setField(SchedulePractitionerDto.START, start);
+                returnDto.setField(SchedulePractitionerDto.PRACT_SCHED_ID, pract_id);
+                
+                st = connection.prepareStatement(
+                        "INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
+                
+                for (int i = start; i < end; i+=pract.getApptLength()){
+                    newApt = new AppointmentDto();
+                    newApt.setEnd(i + pract.getApptLength());
+                    st.setInt(3, i + pract.getApptLength());
+                    newApt.setStart(i);
+                    st.setInt(2, i);
+                    newApt.setField(AppointmentDto.APPT_DATE, day.getDate());
+                    st.setDate(4, day.getDate());
+                    newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract_id);
+                    st.setInt(1, pract_id);
+                    appointments.add(newApt);
+                    st.executeQuery();
+                }
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return null;    
+    }
 }
