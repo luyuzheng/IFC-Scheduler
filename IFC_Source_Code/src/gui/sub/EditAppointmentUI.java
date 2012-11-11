@@ -18,24 +18,23 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import data.Appointment;
-import data.Patient;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.PatientDto;
 
 public class EditAppointmentUI extends JDialog implements ActionListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
 	private JButton okButton = new JButton("Save");
 	private JButton editButton = new JButton("Edit Patient");
-	//private JButton changeButton = new JButton("Change Patient");
-	//private JButton clearButton = new JButton("Clear");
 	private JButton cancelButton = new JButton("Cancel");
 	private JTextArea textArea;
 	private JTextArea noteArea;
 	private Font font= new Font("Tahoma",Font.PLAIN,14);
 	
-	private static Appointment appointment;
+	private static AppointmentDto appointment;
 	
-	private EditAppointmentUI(String name, Appointment a) {
+	private EditAppointmentUI(String name, AppointmentDto a) {
 		appointment = a;
 		setModal(true);
 		setTitle(name);
@@ -44,10 +43,12 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		setPreferredSize(new Dimension(350, 350));
 		setResizable(false);
 	
-		String text = "Time Slot: " + a.getTimeSlot().toString();
-		text += "\nPatient Name: " + a.getPatient().getFullName();
-		text += "\nPhone Number: " + a.getPatient().getNumberString();
-		text += "\nPatient Note: " + (a.getPatient().getNote()).replaceAll("\t\t", "\n");
+		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
+		
+		String text = "Time Slot: " + appointment.getStart().toString() + " - " + appointment.getEnd().toString();
+		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
+		text += "\nPhone Number: " + patient.getPhone();
+		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n"); // TODO: NEED TO DELETE REPLACEALL?
 
 		JPanel textPanel = new JPanel(new BorderLayout());
 		textArea = new JTextArea();
@@ -91,7 +92,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		buttonPanel.add(editButton);
 
 		okButton.addActionListener(this);
-		okButton.setActionCommand("ok");
+		okButton.setActionCommand("save");
 		okButton.setFont(font);
 		buttonPanel.add(okButton);
 		cancelButton.addActionListener(this);
@@ -114,7 +115,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static Appointment ShowDialog(Component owner, Appointment a) {
+	public static AppointmentDto ShowDialog(Component owner, AppointmentDto a) {
 		editAppointmentUI = new EditAppointmentUI("Appointment Details", a);
 		editAppointmentUI.pack();
 		editAppointmentUI.setLocationRelativeTo(owner);
@@ -123,16 +124,13 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("change")) {
-			Patient newPatient = SelectPatientUI.ShowDialog(this);
-			if (newPatient != null) {
-				appointment.setPatient(newPatient);
-			} else return;
+		if (e.getActionCommand().equals("save")) {
+			// Doesn't actually do anything important - edit patient saves any edits to patient info
+			// and notes are saved below
 		} else if (e.getActionCommand().equals("edit")) {
-			appointment.setPatient(EditPatientUI.ShowDialog(this, appointment.getPatient()));
-		}else if (e.getActionCommand().equals("clear")) {
-			appointment.setPatient(null);
-			appointment.setNote("");
+			PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
+			PatientDto editedPatient = EditPatientUI.ShowDialog(this, patient);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(editedPatient.getPatID(), appointment);
 		} else if (e.getActionCommand().equals("cancel")) {
 			editAppointmentUI.setVisible(false);
 			return;

@@ -19,6 +19,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import backend.DataTransferObjects.PatientDto;
+
 import data.Patient;
 import data.PhoneNumber;
 import data.managers.PatientManager;
@@ -36,7 +38,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
-	private static Patient p;
+	private static PatientDto p;
 	
 	private EditPatientUI(String name) {
 		setModal(true);
@@ -130,7 +132,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static Patient ShowDialog(Component owner, Patient pat) {
+	public static PatientDto ShowDialog(Component owner, PatientDto pat) {
 		p = pat;
 		editPatientUI = new EditPatientUI("Edit Patient");
 		editPatientUI.pack();

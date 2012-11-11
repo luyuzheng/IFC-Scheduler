@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
@@ -18,10 +19,11 @@ import backend.DataTransferObjects.PractitionerDto;
 public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private static DisplayPractitionerUI displayPractitionerUI;
 	
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton changeButton = new JButton("Change Practitioner");
 	private JButton clearButton = new JButton("Clear Room");
 	private JTextArea textArea;
+	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	private static PractitionerDto practitioner;
 	
@@ -46,7 +48,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		textArea.setHighlighter(null);
 		textArea.setText(text);
 		
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		okButton.addActionListener(this);
 		okButton.setActionCommand("ok");
 		buttonPanel.add(okButton);
@@ -63,7 +65,6 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		setResizable(false);
 		
 	}
-    
 	
 	public static PractitionerDto ShowDialog(Component owner, PractitionerDto p) {
 		displayPractitionerUI = new DisplayPractitionerUI("Edit Practitioner", p);
@@ -76,7 +77,9 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("change")) {
 			PractitionerDto p = SelectPractitionerUI.ShowDialog(this);
-			if (JOptionPane.showConfirmDialog(this, "Changing practitioners will clear all the appointments for this practitioner. Continue anyways?", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
+			JLabel msg = new JLabel("Changing practitioners will clear all the appointments for this practitioner. Continue anyways?");
+			msg.setFont(font);
+			if (JOptionPane.showConfirmDialog(this, msg, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 				return;
 			}
 			practitioner = p;
