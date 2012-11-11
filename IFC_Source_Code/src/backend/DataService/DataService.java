@@ -1,10 +1,10 @@
-package DataService;
+package backend.DataService;
 
 import java.util.List;
 
 import java.sql.Date;
 
-import DataTransferObjects.*;
+import backend.DataTransferObjects.*;
 
 /**
  * Interface for the data service backend for scheduler database.
@@ -113,7 +113,7 @@ public interface DataService {
     /**
      * Retrives list of all practitioners in a day
      */
-    public List<PractitionerDto> getAllPractitionersForDay(DayDto day);
+    public List<SchedulePractitionerDto> getAllPractitionersForDay(DayDto day);
     
     /**
      * remove a practitioner from a scheduled day

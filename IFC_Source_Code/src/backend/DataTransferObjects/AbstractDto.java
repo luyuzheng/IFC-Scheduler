@@ -1,4 +1,4 @@
-package DataTransferObjects;
+package backend.DataTransferObjects;
 
 import java.util.Map;
 import java.util.Map.Entry;

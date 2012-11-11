@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 import data.Appointment;
 import data.Patient;
@@ -48,6 +49,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		text += "\nPhone Number: " + a.getPatient().getNumberString();
 		text += "\nPatient Note: " + (a.getPatient().getNote()).replaceAll("\t\t", "\n");
 
+		JPanel textPanel = new JPanel(new BorderLayout());
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
@@ -57,12 +59,15 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		textArea.setHighlighter(null);
 		textArea.setText(text);
 		
-		//JPanel checkBoxPanel = new JPanel(new GridLayout(1, 2));
+		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JCheckBox noShowsCheckBox = new JCheckBox();
 		JLabel noShowsLabel = new JLabel("No Show");
 		noShowsLabel.setFont(font);
-		//checkBoxPanel.add(noShowsCheckBox);
-		//checkBoxPanel.add(noShowsLabel);
+		checkBoxPanel.add(noShowsCheckBox);
+		checkBoxPanel.add(noShowsLabel);
+		
+		textPanel.add(textArea, BorderLayout.NORTH);
+		textPanel.add(checkBoxPanel, BorderLayout.CENTER);
 		
 		JPanel notePanel = new JPanel(new BorderLayout());
 		JLabel noteLabel = new JLabel("Appointment Note:");
@@ -76,15 +81,10 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 
 		noteArea.setText((a.getNote()).replaceAll("\t\t", "\n"));
 		notePane.setViewportView(noteArea);
-		//notePanel.add(checkBoxPanel, BorderLayout.NORTH);
-		//notePanel.add(noteLabel, BorderLayout.CENTER);
-		//notePanel.add(notePane, BorderLayout.SOUTH);
-		//notePanel.add(noShowsCheckBox);
-		//notePanel.add(noShowsLabel);
 		notePanel.add(noteLabel, BorderLayout.NORTH);
 		notePanel.add(notePane, BorderLayout.CENTER);
 
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		editButton.addActionListener(this);
 		editButton.setActionCommand("edit");
 		editButton.setFont(font);
@@ -94,18 +94,18 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		okButton.setActionCommand("ok");
 		okButton.setFont(font);
 		buttonPanel.add(okButton);
-		//changeButton.addActionListener(this);
-		//changeButton.setActionCommand("change");
-		//buttonPanel.add(changeButton);
-		//clearButton.addActionListener(this);
-		//clearButton.setActionCommand("clear");
-		//buttonPanel.add(clearButton);
 		cancelButton.addActionListener(this);
 		cancelButton.setActionCommand("cancel");
 		cancelButton.setFont(font);
 		buttonPanel.add(cancelButton);
 		
-		add(textArea, BorderLayout.NORTH);
+		// Add borders to all panels
+		textPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		notePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		buttonPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		
+		//add(textArea, BorderLayout.NORTH);
+		add(textPanel, BorderLayout.NORTH);
 		add(notePanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		

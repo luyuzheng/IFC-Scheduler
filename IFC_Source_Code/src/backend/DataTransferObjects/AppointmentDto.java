@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package DataTransferObjects;
+package backend.DataTransferObjects;
 
 import java.sql.Date;
 import java.util.HashMap;
