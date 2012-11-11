@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import data.Constants;
+import gui.Constants;
 
 
 public class MonthHeadingPanel extends JPanel {

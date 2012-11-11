@@ -13,11 +13,11 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import data.Constants;
+import gui.Constants;
 import data.Date;
 import data.Day;
 import data.DayLoader;
-import data.Room;
+import backend.DataTransferObjects.SchedulePractitionerDto;
 
 public class DayBlock extends JPanel {
 

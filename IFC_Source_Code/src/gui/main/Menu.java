@@ -21,7 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
-import data.Patient;
+import backend.DataTransferObjects.PatientDto;
 
 public class Menu extends JMenuBar {
 	public Menu(MainWindow window) {

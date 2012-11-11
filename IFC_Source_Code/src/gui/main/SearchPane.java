@@ -24,9 +24,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import data.Appointment;
-import data.Patient;
-import data.Practitioner;
+import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.PractitionerDto;
 
 /**
  * SearchPane displays the search pane on the right-hand side of the application when the "Search" button is clicked.

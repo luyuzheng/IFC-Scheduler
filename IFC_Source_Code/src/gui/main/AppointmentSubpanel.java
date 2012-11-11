@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-import data.Room;
+import backend.DataTransferObjects.SchedulePractitionerDto;
 
 public class AppointmentSubpanel extends JPanel {
 	

@@ -26,6 +26,8 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
+import gui.Constants;
+
 
 public class AppointmentBlock extends JPanel implements FocusListener {
 
@@ -91,7 +93,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	public void setPatient(int patId) {
 		appointment.setPatientID(patId);
 		setText();
-		// TODO new DaySaver().storeDay(dp.getDay()); WHAT IS THISSSSSSS
+		// TODO new DaySaver().storeDay(dp.getDay()); WHAT IS THISSSSSSS GARBAGE
 	}
 
 	/**
