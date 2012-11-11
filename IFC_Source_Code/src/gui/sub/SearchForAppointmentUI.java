@@ -27,6 +27,9 @@ import data.Type;
 import data.managers.SearchManager;
 import data.managers.TypeManager;
 
+/**
+ * Displays the pop up window that allows the user to search for the next available appointment.
+ */
 public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private static SearchForAppointmentUI searchForAppointmentUI;
 	
@@ -45,6 +48,11 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private ArrayList<data.Type> types;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	/**
+	 * Constructor - creates the actual UI for the pop up window.
+	 * 
+	 * @param name - the title to be displayed at the top bar of the GUI
+	 */
 	public SearchForAppointmentUI(String name) {
 		setModal(true);
 		setTitle(name);
@@ -125,23 +133,33 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * Makes the pop up window visible when the "Search for Next Available Appointment" button is clicked.
+	 * 
+	 * @param owner - the component that owns this pane (the SearchPane)
+	 * @return an appointment
+	 */
 	public static Appointment ShowDialog(Component owner) {
 		searchForAppointmentUI = new SearchForAppointmentUI("Search for Next Available Appointment");
 		searchForAppointmentUI.pack();
 		searchForAppointmentUI.setLocationRelativeTo(owner);
 		searchForAppointmentUI.setVisible(true);
-		return a;
+		return a; // SHOULD IT ACTUALLY BE RETURNING AN ARRAYLIST OF APPOINTMENTS???
 	}
 	
+	/**
+	 * Checks if the Search or Cancel button has been hit. If conducting a search, the input information is sent to 
+	 * the search manager for processing. The window is then closed.
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Search") {
-			if (a == null) {
+			/*if (a == null) {
 				JLabel errorMessage = new JLabel("Please enter a practitioner's name.");
 				errorMessage.setFont(font);
 				JOptionPane.showMessageDialog(this, errorMessage, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			}
-			// Get search manager to search for practitioners and return results
+			}*/
+			// Get search manager to search for appointments and return results!!!
 		} 
 		searchForAppointmentUI.setVisible(false);
 	}

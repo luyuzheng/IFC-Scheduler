@@ -1,7 +1,3 @@
-/**
- * Represents that pane with the patient wait list.
- */
-
 package gui.main;
 
 import gui.main.listeners.WaitlistPatientListener;
@@ -37,6 +33,10 @@ import data.WaitingPatient;
 import data.managers.TypeManager;
 import data.managers.WaitlistManager;
 
+/**
+ * WaitListPane displays the wait list pane on the right-hand side of the application when the "Wait List" button is clicked.
+ * The user can add or remove patients from the wait list. The pane can be closed by clicking the "Hide Wait List" button.
+ */
 public class WaitListPane extends JPanel {
 	
 	private TypeManager tm = new TypeManager();
@@ -50,6 +50,12 @@ public class WaitListPane extends JPanel {
 	private ArrayList<Type> types;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	/**
+	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
+	 * labels and the table of results.
+	 * 
+	 * @param owner - the component that owns this pane
+	 */
 	public WaitListPane(Component owner) {
 		this.owner = owner;
 		setMinimumSize(new Dimension(0,0));
@@ -106,6 +112,10 @@ public class WaitListPane extends JPanel {
     	
 	}
 	
+	/**
+	 * This calls the appropriate pop up window to add a patient when the "Add Patient to Waitlist" button is clicked. 
+	 * It also resets the table model to include the appropriate types of columns.
+	 */
 	private final AbstractAction addPatientAction = new AbstractAction("Add Patient to Waitlist") {
 		public void actionPerformed(ActionEvent e) {
 			AddToWaitlistUI.ShowDialog(owner);
@@ -114,6 +124,11 @@ public class WaitListPane extends JPanel {
 			else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true));
 		}
 	};
+	
+	/**
+	 * This removes a patient from the table when the "Remove Patient from Waitlist" button is clicked. It also resets
+	 * the table model to include the appropriate types of columns if there are no more patients.
+	 */
 	private final AbstractAction removePatientAction = new AbstractAction("Remove Patient from Waitlist") {
 		public void actionPerformed(ActionEvent e) {
 			if (specTable.getSelectedRow() < 0) return;
@@ -133,17 +148,26 @@ public class WaitListPane extends JPanel {
 		}
 	}
 	
+	/**
+	 * This resets the model.
+	 */
 	public void resetModel() {
 		if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false));
 		else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true));
 	}
 	
+	/**
+	 * Displays the table of results after adding or removing a patient.
+	 */
 	public class WaitlistTableModel extends AbstractTableModel {
 
 		private String[] columnNames;
 		private boolean specific;
 		private ArrayList<WaitingPatient> waits;
 		
+		/**
+		 * Constructor to produce a wait list table model.
+		 */ 
 		public WaitlistTableModel(ArrayList<WaitingPatient> waits, boolean specific) {
 			this.waits = waits;
 			if (specific) columnNames = new String[] { "Date Added", "First Name", "Last Name", "Phone Number", "Comment" };
@@ -151,22 +175,49 @@ public class WaitListPane extends JPanel {
 			this.specific = specific;
 		}
 		
+		/**
+		 * Returns a representation of a waiting patient.
+		 * 
+		 * @param row - the row number in the table
+		 * @return the patient at a particular row number
+		 */
 		public WaitingPatient getPatient(int row) {
 			return waits.get(row);
 		}
 		
+		/**
+		 * Returns the number of columns in the table.
+		 * 
+		 * @return number of columns in the table
+		 */
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 		
+		/**
+		 * Returns the name of a specified column in the table.
+		 * 
+		 * @param col - the column number
+		 */
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
+		/**
+		 * Returns the number of patients on the wait list.
+		 * 
+		 * @returns the number of rows in the table
+		 */
 		public int getRowCount() {
 			return waits.size();
 		}
 
+		/**
+		 * Returns the cell of information specified at a particular row and column.
+		 * 
+		 * @param row - the row number
+		 * @param col - the column number
+		 */
 		public Object getValueAt(int row, int col) {
 			WaitingPatient p = waits.get(row);
 			if (col == 0) 
@@ -189,6 +240,10 @@ public class WaitListPane extends JPanel {
 		}
 	}
 	
+	/**
+	 * This class sets the table model to include the appropriate types of columns according to what has been selected in 
+	 * the JComboBox that allows the user to choose the type of service.
+	 */
 	public class BoxListener implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
 	        JComboBox cb = (JComboBox)e.getSource();

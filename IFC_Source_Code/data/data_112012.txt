@@ -11,3 +11,12 @@
 <11072012>
 <timeslot>16:00 - 20:00</timeslot>
 </11072012>
+<11082012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>0</practitioner>
+<16:00>0:<16:30>
+<practitioner>1</practitioner>
+<16:40>2:<17:20>
+<practitioner>2</practitioner>
+<17:30>1:here are some notes notes notes notes notes<18:00>
+</11082012>

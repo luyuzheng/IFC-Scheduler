@@ -1,7 +1,5 @@
 package gui.sub;
 
-import gui.main.WaitListPane.BoxListener;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -22,10 +20,12 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import data.Practitioner;
-import data.Type;
 import data.managers.SearchManager;
 import data.managers.TypeManager;
 
+/**
+ * Displays the pop up window that allows the user to search for a practitioner.
+ */
 public class SearchForPractitionerUI extends JDialog implements ActionListener {
 	private static SearchForPractitionerUI searchForPractitionerUI;
 	
@@ -41,6 +41,11 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 	private ArrayList<data.Type> types;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	/**
+	 * Constructor - creates the actual UI for the pop up window.
+	 * 
+	 * @param name - the title to be displayed at the top bar of the GUI
+	 */
 	public SearchForPractitionerUI(String name) {
 		setModal(true);
 		setTitle(name);
@@ -114,14 +119,25 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * Makes the pop up window visible when the "Search for a Practitioner" button is clicked.
+	 * 
+	 * @param owner - the component that owns this pane (the SearchPane)
+	 * @return a practitioner
+	 */
 	public static Practitioner ShowDialog(Component owner) {
 		searchForPractitionerUI = new SearchForPractitionerUI("Search for a Practitioner");
 		searchForPractitionerUI.pack();
 		searchForPractitionerUI.setLocationRelativeTo(owner);
 		searchForPractitionerUI.setVisible(true);
-		return p;
+		return p; // SHOULD BE AN ARRAYLIST OF PRACTITIONERS???
 	}
 	
+	/**
+	 * Checks if the Search or Cancel button has been hit. If conducting a search, the program checks to make sure that
+	 * input information has been given; otherwise, an error message is sent. The input information is then sent to 
+	 * the search manager for processing. Finally, the window is closed.
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Search") {
 			if (p == null) {
