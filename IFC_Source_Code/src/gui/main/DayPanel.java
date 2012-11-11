@@ -21,7 +21,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import data.Day;
+import java.util.Date;
 import data.DaySaver;
 import data.Practitioner;
 import data.Room;
