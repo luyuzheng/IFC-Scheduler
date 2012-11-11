@@ -18,7 +18,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import data.Appointment;
+import backend.DataTransferObjects.AppointmentDto;
 
 /**
  * AppointmentConfirmationPane displays the appointment confirmation pane on the right-hand side of the application
@@ -87,14 +87,14 @@ public class AppointmentConfirmationPane extends JPanel {
 	 */
 	public class AppointmentConfirmationTableModel extends AbstractTableModel {
 		private String[] columnNames;
-		private ArrayList<Appointment> confirm;
+		private ArrayList<AppointmentDto> confirm;
 
 		/**
 		 * Constructor to produce an appointment confirmation table model.
 		 * 
 		 * @param confirm - a list of appointments that need to be confirmed for a chosen day
 		 */
-		public AppointmentConfirmationTableModel(ArrayList<Appointment> confirm) {
+		public AppointmentConfirmationTableModel(ArrayList<AppointmentDto> confirm) {
 			this.confirm = confirm;
 			columnNames = new String[] {"Confirmed", "First Name", "Last Name", "Phone Number"};
 		}
@@ -105,7 +105,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		 * @param row - the row of the table where the desired appointment is located.
 		 * @return the appointment information for a selected row
 		 */
-		public Appointment getAppointment(int row) {
+		public AppointmentDto getAppointment(int row) {
 			return confirm.get(row);
 		}
 		
@@ -143,7 +143,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		 * @param col - the column number
 		 */
 		public Object getValueAt(int row, int col) {
-			Appointment appt = confirm.get(row);
+			AppointmentDto appt = confirm.get(row);
 			
 			if (col == 0) {
 				return appt.getConfirmed();

@@ -24,6 +24,9 @@ import javax.swing.JPanel;
 import backend.DataTransferObjects.DayDto;
 
 import java.util.Date;
+import backend.DataTransferObjects.PractitionerDto;
+import backend.DataTransferObjects.SchedulePractitionerDto;
+//import data.TimeSlot;
 
 public class DayPanel extends JPanel {
 	private DayDto day;

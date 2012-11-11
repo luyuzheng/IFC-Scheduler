@@ -30,7 +30,7 @@ import gui.Constants;
 import java.util.Date;
 import data.Day;
 import data.DayLoader;
-import data.Practitioner;
+import backend.DataTransferObjects.PractitionerDto;
 
 public class MonthPanel extends JScrollPane implements Printable, ActionListener {
 	DayDto day;
