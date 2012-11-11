@@ -13,7 +13,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import data.Appointment;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.PatientDto;
 
 /**
  * DisplayAppointmentConfirmationUI shows information about a patient's appointment when a patient in the table
@@ -31,7 +33,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 * @param name - the title to be displayed in the top bar of the pop up window
 	 * @param appt - the appointment information to be displayed
 	 */
-	private DisplayAppointmentConfirmationUI(String name, Appointment appt) {
+	private DisplayAppointmentConfirmationUI(String name, AppointmentDto appt) {
 		setModal(true);
 		setTitle(name);
 		
@@ -40,9 +42,11 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		JPanel infoPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		String text = "Date: " + appt.getDate().toFormalString() + "\n" +
-					  "Patient Name: " + appt.getPatient().getFullName() +
-					  "Phone Number: " + appt.getPatient().getNumber() +
+		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
+		
+		String text = "Date: " + appt.getApptDate().toString() + "\n" +
+					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() +
+					  "Phone Number: " + patient.getPhone() +
 					  "Confirmed: " + appt.getConfirmed();
 		
 		textArea = new JTextArea();
@@ -74,7 +78,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 * @param owner - the component that owns this pane (the AppointmentConfirmationListener)
 	 * @param appt  - the appointment information
 	 */
-	public static void ShowDialog(Component owner, Appointment appt) {
+	public static void ShowDialog(Component owner, AppointmentDto appt) {
 		displayAppointmentConfirmationUI = new DisplayAppointmentConfirmationUI("View Appointment", appt);
 		displayAppointmentConfirmationUI.pack();
 		displayAppointmentConfirmationUI.setLocationRelativeTo(owner);

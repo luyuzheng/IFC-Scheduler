@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,24 +19,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import data.Patient;
-import data.Type;
-import data.WaitingPatient;
-import data.managers.TypeManager;
-import data.managers.WaitlistManager;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.*;
 
 public class AddToWaitlistUI extends JDialog implements ActionListener {
 	private static AddToWaitlistUI addToWaitlistUI;
-	
-	private TypeManager tm = new TypeManager();
-	private WaitlistManager wm = new WaitlistManager();
 	
 	private JButton okButton = new JButton("Ok");
 	private JButton cancelButton = new JButton("Cancel");
 	private JButton selectPatientButton = new JButton("Select Patient");
 	
-	private static WaitingPatient p;
-	private Patient patient;
+	private PatientDto patient;
 	private JLabel patientLabel;
 	private JComboBox typeCombo;
 	private JTextArea commentArea;
@@ -62,7 +56,8 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 		typePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		JLabel typeLabel = new JLabel("Select Specific Wait List: ");
 		typeLabel.setFont(font);
-		typeCombo = new JComboBox(tm.getTypeList().toArray());
+		List<TypeDto> types = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+		typeCombo = new JComboBox(types.toArray());
 		typeCombo.setFont(font);
 		typePanel.add(typeLabel, BorderLayout.NORTH);
 		typePanel.add(typeCombo, BorderLayout.CENTER);
@@ -108,12 +103,11 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static WaitingPatient ShowDialog(Component owner) {
+	public static void ShowDialog(Component owner) {
 		addToWaitlistUI = new AddToWaitlistUI("Add to Waitlist");
 		addToWaitlistUI.pack();
 		addToWaitlistUI.setLocationRelativeTo(owner);
 		addToWaitlistUI.setVisible(true);
-		return p;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -122,13 +116,24 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please select a patient.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} 
-			data.Type type = (data.Type)typeCombo.getSelectedItem();
-			String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t");
-			p = new WaitingPatient(wm.getNewId(), patient, type, comment, System.currentTimeMillis());
-			wm.addWaitingPatient(p);
+			TypeDto type = (TypeDto)typeCombo.getSelectedItem();
+			//String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t");
+
+			List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
+			for (int i = 0; i < waitlist.size(); i++) {
+				// If patient is already on the waitlist, give a warning
+				if (waitlist.get(i).getPatient().getPatID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
+					JLabel errorMsg = new JLabel("This patient has already been added to the waitlist for this type of service.");
+					errorMsg.setFont(font);
+					JOptionPane.showConfirmDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
+				// Add patient to the waitlist
+				} else {
+					DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type);
+				}
+			}
 		} else if (e.getActionCommand().equals("select")) {
 			patient = SelectPatientUI.ShowDialog(this);
-			if (patient != null) patientLabel.setText(patient.getFullName());
+			if (patient != null) patientLabel.setText(patient.getFirst() + " " + patient.getLast());
 			return;
 		}
 		addToWaitlistUI.setVisible(false);

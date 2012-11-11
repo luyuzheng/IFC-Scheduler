@@ -28,9 +28,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import data.Patient;
-import data.PhoneNumber;
-import data.managers.PatientManager;
+import backend.DataTransferObjects.*;
 
 public class SelectPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static SelectPatientUI selectPatientUI;
@@ -52,7 +50,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 	private JTextField searchField = new JTextField();
 	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
-	private static Patient patient;
+	private static PatientDto patient;
 	
 	private SelectPatientUI(String name) {
 		patient = null;
@@ -233,7 +231,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	return panel;
     }
 	
-	public static Patient ShowDialog(Component owner) {
+	public static PatientDto ShowDialog(Component owner) {
 		selectPatientUI = new SelectPatientUI("Select Patient");
 		selectPatientUI.pack();
 		selectPatientUI.setLocationRelativeTo(owner);

@@ -18,10 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import data.Time;
-import data.TimeSlot;
-import data.managers.DefaultManager;
-
 public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 	
 	

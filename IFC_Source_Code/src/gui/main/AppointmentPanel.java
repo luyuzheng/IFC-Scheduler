@@ -28,12 +28,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import data.Appointment;
-import data.Constants;
-import data.Day;
-import data.Practitioner;
-import data.Room;
-import data.Time;
+import backend.DataTransferObjects.PractitionerDto;
 
 public class AppointmentPanel extends JScrollPane implements Printable, ActionListener {
 	Day day;
@@ -58,8 +53,8 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		else return s;
 	}
 
-	private String getPracInfo(Practitioner p, int lineLength) {
-		return formatString(p.getName() + " - " + p.getType().toString(), lineLength);
+	private String getPracInfo(PractitionerDto p, int lineLength) {
+		return formatString(p.getFirst() + " " + p.getLast() + " - " + p.getTypeName().toString(), lineLength);
 	}
 
 	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
