@@ -113,7 +113,7 @@ public interface DataService {
     /**
      * Retrives list of all practitioners in a day
      */
-    public List<PractitionerDto> getAllPractitionersForDay(DayDto day);
+    public List<SchedulePractitionerDto> getAllPractitionersForDay(DayDto day);
     
     /**
      * remove a practitioner from a scheduled day
