@@ -32,7 +32,7 @@ public class WaitlistDto extends AbstractDto {
         return (Integer) fieldsMap.get(WAITLIST_ID);
     }
     
-    public Integer getPatient(){
+    public Integer getPatientID(){
         return (Integer) fieldsMap.get(PATIENT);
     }
     

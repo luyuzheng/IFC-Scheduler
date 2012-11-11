@@ -122,7 +122,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 			List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
 			for (int i = 0; i < waitlist.size(); i++) {
 				// If patient is already on the waitlist, give a warning
-				if (waitlist.get(i).getPatient().getPatID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
+				if (waitlist.get(i).getPatientID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
 					JLabel errorMsg = new JLabel("This patient has already been added to the waitlist for this type of service.");
 					errorMsg.setFont(font);
 					JOptionPane.showConfirmDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
