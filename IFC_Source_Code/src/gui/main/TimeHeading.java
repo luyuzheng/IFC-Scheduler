@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import data.Constants;
-import data.Date;
+import gui.Constants;
+import java.util.Date;
 
 
 public class TimeHeading extends JPanel {
@@ -41,8 +41,9 @@ public class TimeHeading extends JPanel {
 		add(textArea, BorderLayout.CENTER);
 
 		GregorianCalendar cal = new GregorianCalendar();		
-		currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
-
+		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
+		currentDate = new Date();
+		
 		//textArea.setText(currentDate.toFormalString());
 		//textArea.setText("Today:\n"+(cal.get(Calendar.MONTH) + 1)+"-"+cal.get(Calendar.DATE)+",\n"+cal.get(Calendar.YEAR));
 		//textArea.setText(d.getMonth()+"/"+d.getDay());
