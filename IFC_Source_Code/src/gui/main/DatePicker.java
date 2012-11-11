@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.JPanel;
 
-import data.Date;
+import java.util.Date;
 
 public class DatePicker extends JPanel {
 	

@@ -19,7 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import data.Date;
+import java.util.Date;
 
 
 public class TinyMonthHeadingPanel extends JPanel {
@@ -115,8 +115,8 @@ public class TinyMonthHeadingPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			GregorianCalendar cal = new GregorianCalendar();
 			cal.setTimeInMillis(System.currentTimeMillis());
-			Date currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
-			
+			//Date currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
+			Date currentDate = new Date();
 			dp.setDate(currentDate);
 		}
 	};
