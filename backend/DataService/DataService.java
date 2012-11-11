@@ -122,25 +122,13 @@ public interface DataService {
      * remove a practitioner from a scheduled day
      * should also remove all appointments
      */
-    public boolean removePractitionerFromDay(int practId, DayDto day);
+    public boolean removePractitionerFromDay(int practSchedId, DayDto day);
     
     /**
      * change hours of operation for a practitioner on a day
      * should also remove any affected appointments
      */
-    public boolean changePractitionerHoursForDay(PractitionerDto practitioner, DayDto day);
-    
-    /**
-     * Create appointment when adding a practitioner to day
-     * this appointment is not yet assigned to a patient
-     */
-    public boolean addAppointmentsToDay(DayDto day, int patID);
-    
-    /**
-     *remove appointments when removing a practitioner from a day
-     * need to alert
-     */
-    public boolean removeAppointmentsFromDay(DayDto day, int patId);
+    public boolean changePractitionerHoursForDay(SchedulePractitionerDto practitioner, DayDto day, int start, int end);
     
     /**
      * Adds a patient to an appointment

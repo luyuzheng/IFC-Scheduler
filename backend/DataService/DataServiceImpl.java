@@ -579,28 +579,87 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public boolean removePractitionerFromDay(int practId, DayDto day) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	public boolean removePractitionerFromDay(int practSchedId, DayDto day) {
+                PreparedStatement st = null;
+                try {
+                    st = connection.prepareStatement("DELETE FROM PractitionerScheduled WHERE PractSchID = ?");
+                    st.setInt(1, practSchedId);
+                    st.executeQuery();
+                    st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchID = ?");
+                    st.setInt(1, practSchedId);
+                    st.executeQuery();
+                    return true;
+                }
+                catch (SQLException e) {
+                    Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                    lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
+        			" checked as no show");
+                } finally {
+                    try {
+                        if (st != null) {
+                            st.close();
+                         }
+                    } catch (SQLException ex) {
+                        Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+                        lgr.log(Level.WARNING, ex.getMessage(), ex);
+                    }
+                
+                }
+                return false;
+        }
+        
 	@Override
-	public boolean changePractitionerHoursForDay(PractitionerDto practitioner,
-			DayDto day) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean addAppointmentsToDay(DayDto day, int patID) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean removeAppointmentsFromDay(DayDto day, int patId) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean changePractitionerHoursForDay(SchedulePractitionerDto pract,
+			DayDto day, int start, int end) {
+		PreparedStatement st = null;
+        
+        try {
+                //delete previous appointments
+                st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchID = ?");
+                st.setInt(1, pract.getPractSchedID());
+                st.executeQuery();
+            
+                //set hours
+                pract.setStart(start);
+                pract.setEnd(end);
+            
+                AppointmentDto newApt = new AppointmentDto();
+                
+                List<AppointmentDto> appointments = new ArrayList<AppointmentDto>();
+                
+                pract.setField(SchedulePractitionerDto.APPOINTMENTS, appointments);;
+                
+                st = connection.prepareStatement(
+                        "INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
+                
+                for (int i = start; i < end; i+=pract.getPractioner().getApptLength()){
+                    newApt = new AppointmentDto();
+                    newApt.setEnd(i + pract.getPractioner().getApptLength());
+                    st.setInt(3, i + pract.getPractioner().getApptLength());
+                    newApt.setStart(i);
+                    st.setInt(2, i);
+                    newApt.setField(AppointmentDto.APPT_DATE, day.getDate());
+                    st.setDate(4, day.getDate());
+                    newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract.getPractSchedID());
+                    st.setInt(1, pract.getPractSchedID());
+                    appointments.add(newApt);
+                    st.executeQuery();
+                }
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;    
 	}
 
 	@Override
