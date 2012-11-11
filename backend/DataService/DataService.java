@@ -2,12 +2,9 @@ package DataService;
 
 import java.util.List;
 
-import DataTransferObjects.AppointmentDto;
-import DataTransferObjects.DayDto;
-import DataTransferObjects.NoShowDto;
-import DataTransferObjects.PatientDto;
-import DataTransferObjects.PractitionerDto;
-import DataTransferObjects.WaitlistDto;
+import java.sql.Date;
+
+import DataTransferObjects.*;
 
 /**
  * Interface for the data service backend for scheduler database.
@@ -97,7 +94,7 @@ public interface DataService {
     
     /** Retrieves a list of all practitioners
     */
-    public List<PractitionerDto> getAllPractioners();
+    public List<PractitionerDto> getAllPractitioners();
     
     /** Add a practitioner to the database
     */
@@ -119,33 +116,16 @@ public interface DataService {
     public List<PractitionerDto> getAllPractitionersForDay(DayDto day);
     
     /**
-     * get list of each practitioner's appointment on a day
-     */
-    public List<AppointmentDto> getPractitionersAppointments(int practID, DayDto day);
-    
-    /**
      * remove a practitioner from a scheduled day
      * should also remove all appointments
      */
-    public boolean removePractitionerFromDay(int practId, DayDto day);
+    public boolean removePractitionerFromDay(int practSchedId, DayDto day);
     
     /**
      * change hours of operation for a practitioner on a day
      * should also remove any affected appointments
      */
-    public boolean changePractitionerHoursForDay(PractitionerDto practitioner, DayDto day);
-    
-    /**
-     * Create appointment when adding a practitioner to day
-     * this appointment is not yet assigned to a patient
-     */
-    public boolean addAppointmentsToDay(DayDto day, int patID);
-    
-    /**
-     *remove appointments when removing a practitioner from a day
-     * need to alert
-     */
-    public boolean removeAppointmentsFromDay(DayDto day, int patId);
+    public boolean changePractitionerHoursForDay(SchedulePractitionerDto practitioner, DayDto day, int start, int end);
     
     /**
      * Adds a patient to an appointment
@@ -170,17 +150,17 @@ public interface DataService {
     /**
      * add patient to waitlist
      */
-    public boolean addPatientToWaitlist(PatientDto patient, String type);
+    public boolean addPatientToWaitlist(PatientDto patient, TypeDto type);
     
     /**
      * remove patient from waitlist
      */
-    public boolean removePatientFromWaitlist(PatientDto patient, String type);
+    public boolean removePatientFromWaitlist(PatientDto patient, TypeDto type);
     
     /**
      * get waitlist info
      */
-    public WaitlistDto getWaitlist();
+    public List<WaitlistDto> getWaitlist();
     
     /**
      * sets hours of operation for a day
@@ -191,4 +171,31 @@ public interface DataService {
      * set open or closed on day
      */
     public boolean setStatus(DayDto day);
+    
+    /*
+     * Schedules a practioner on a day
+     */
+    public SchedulePractitionerDto addPractitionerToDay(PractitionerDto pract, DayDto day, 
+        int start, int end);
+    
+    /*
+     * Gets a day given a date
+     */
+    public DayDto getOrCreateDay(Date date);
+    
+    /*
+     * Gets a list of practioner's on a day, each with their own list of appointmnets
+     */
+    public List<SchedulePractitionerDto> getPractionersOnDay(DayDto day);
+    
+    /*
+     * Gets a practioner from an ID
+     */
+    public PractitionerDto getPractitioner(int PractID);
+    
+    /*
+     * Gets all appointments for a scheduledPract 
+     */
+    public List<AppointmentDto> getAllAppointments(int schedPractId);
+    
 }

@@ -8,9 +8,9 @@ import java.util.HashMap;
 public class PatientDto extends AbstractDto {
 
     public static final String PATIENT_ID = "PatID";
-    public static final String FIRST = "First";
-    public static final String LAST = "Last";
-    public static final String PHONE = "Phone";
+    public static final String FIRST = "FirstName";
+    public static final String LAST = "LastName";
+    public static final String PHONE = "PhoneNumber";
     public static final String NOTES = "Notes";
 
     public static void main(String[] args) {

@@ -1,6 +1,5 @@
 package gui.main;
 
-import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.SearchForAppointmentUI;
 import gui.sub.SearchForPatientUI;
 import gui.sub.SearchForPractitionerUI;
@@ -29,6 +28,10 @@ import data.Appointment;
 import data.Patient;
 import data.Practitioner;
 
+/**
+ * SearchPane displays the search pane on the right-hand side of the application when the "Search" button is clicked.
+ * A person can search by patient, by practitioner, and by appointment. The pane can be closed by clicking the "Hide Search" button.
+ */
 public class SearchPane extends JPanel {
 	
 	private enum SearchType {
@@ -45,6 +48,12 @@ public class SearchPane extends JPanel {
 	private JButton searchForApptButton = new JButton("Search for an Open Appointment Time Slot");
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	/**
+	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
+	 * labels and the table of results.
+	 * 
+	 * @param owner - the component that owns this pane
+	 */
 	public SearchPane(Component owner) {
 		this.owner = owner;
 		setMinimumSize(new Dimension(0,0));
@@ -53,8 +62,6 @@ public class SearchPane extends JPanel {
 		
 		// Create radio button panel
 		JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-		JPanel searchAreaPanel = new JPanel(new GridLayout(0, 1));
-		JPanel searchResultsPanel = new JPanel(new BorderLayout());
 		
 		// Provide choice for type of search
 		JLabel typeOfSearchLabel = new JLabel("Choose a Search Option: ");
@@ -107,7 +114,7 @@ public class SearchPane extends JPanel {
 	}
 	
 	/**
-	 * 
+	 * This calls the appropriate pop up window when the "Search for a Patient" button is clicked.
 	 */
 	private final AbstractAction searchForPatientAction = new AbstractAction("Search for a Patient") {
 		public void actionPerformed(ActionEvent e) {
@@ -115,17 +122,31 @@ public class SearchPane extends JPanel {
 		}
 	};
 	
+	/**
+	 * This calls the appropriate pop up window when the "Search for a Practitioner" button is clicked.
+	 */
 	private final AbstractAction searchForPracAction = new AbstractAction("Search for a Practitioner") {
 		public void actionPerformed(ActionEvent e) {
 			SearchForPractitionerUI.ShowDialog(owner);
 		}
 	};
 	
+	/**
+	 * This calls the appropriate pop up window when the "Search for Next Available Appointment" button is clicked.
+	 */
 	private final AbstractAction searchForApptAction = new AbstractAction("Search for Next Available Appointment") {
 		public void actionPerformed(ActionEvent e) {
 			SearchForAppointmentUI.ShowDialog(owner);
 		}
 	};
+	
+	/**
+	 * Resets the table model.
+	 */
+	public void resetModel() {
+		// if such and such a button is clicked, set it to the correct model!!!
+		//table.setModel(new SearchTableModel(acm.getConfirmationList()));
+	}
 	
 	/**
 	 * Displays an empty table when first initialized (no search has been conducted yet).
@@ -134,22 +155,47 @@ public class SearchPane extends JPanel {
 		
 		private String columnNames[];
 		
+
+		/**
+		 * Constructor to produce an empty table model.
+		 */ 
 		public EmptyResultsTableModel() {
 			columnNames = new String[] {" ", " ", " ", " "};
 		}
 		
+		/**
+		 * Returns the number of columns in the table.
+		 * 
+		 * @return number of columns in the table
+		 */
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 		
+		/**
+		 * Returns the name of a specified column in the table.
+		 * 
+		 * @param col - the column number
+		 */
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 		
+		/**
+		 * Returns an empty number of rows in the table, since there are no search results yet.
+		 * 
+		 * @returns the number of rows in the table = 0
+		 */
 		public int getRowCount() {
 			return 0;
 		}
 		
+		/**
+		 * Returns no information because there are no search results.
+		 * 
+		 * @param row - the row number
+		 * @param col - the column number
+		 */
 		public Object getValueAt(int row, int col) {
 			return null;
 		}
@@ -163,23 +209,47 @@ public class SearchPane extends JPanel {
 		private String columnNames[];
 		private ArrayList<Patient> patients;
 		
+		/**
+		 * Constructor to produce a patient results table model.
+		 */ 
 		public PatientResultsTableModel(ArrayList<Patient> pat) {
 			patients = pat;
 			columnNames = new String[] { "First Name", "Last Name", "Phone Number", "Comments" /*, "Waitlisted", "No Show" */};
 		}
 		
+		/**
+		 * Returns the number of columns in the table.
+		 * 
+		 * @return number of columns in the table
+		 */
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 		
+		/**
+		 * Returns the name of a specified column in the table.
+		 * 
+		 * @param col - the column number
+		 */
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 		
+		/**
+		 * Returns the number of patients found in the search results.
+		 * 
+		 * @returns the number of rows in the table
+		 */
 		public int getRowCount() {
 			return patients.size();
 		}
 		
+		/**
+		 * Returns the cell of information specified at a particular row and column.
+		 * 
+		 * @param row - the row number
+		 * @param col - the column number
+		 */
 		public Object getValueAt(int row, int col) {
 			Patient p = patients.get(row);
 			if (col == 0) {
@@ -206,19 +276,47 @@ public class SearchPane extends JPanel {
 		private String columnNames[];
 		private ArrayList<Practitioner> practitioners;
 		
+		/**
+		 * Constructor to produce a practitioner results table model.
+		 */ 
 		public PractitionerResultsTableModel(ArrayList<Practitioner> prac) {
 			practitioners = prac;
 			columnNames = new String[] { "Name", "Type", "Appointment Length" };
 		}
 		
+		/**
+		 * Returns the number of columns in the table.
+		 * 
+		 * @return number of columns in the table
+		 */
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 		
+		/**
+		 * Returns the name of a specified column in the table.
+		 * 
+		 * @param col - the column number
+		 */
+		public String getColumnName(int col) {
+			return columnNames[col];
+		}
+		
+		/**
+		 * Returns the number of practitioners found in the search results.
+		 * 
+		 * @returns the number of rows in the table
+		 */
 		public int getRowCount() {
 			return practitioners.size();
 		}
 		
+		/**
+		 * Returns the cell of information specified at a particular row and column.
+		 * 
+		 * @param row - the row number
+		 * @param col - the column number
+		 */
 		public Object getValueAt(int row, int col) {
 			Practitioner p = practitioners.get(row);
 			if (col == 0) {
@@ -239,19 +337,47 @@ public class SearchPane extends JPanel {
 		private String columnNames[];
 		private ArrayList<Appointment> appointments;
 		
+		/**
+		 * Constructor to produce an appointment results table model.
+		 */ 
 		public AppointmentResultsTableModel(ArrayList<Appointment> appt) {
 			appointments = appt;
 			columnNames = new String[] { "Date", "Start Time", "Appointment Length" /*, "Practitioner" */};
 		}
 		
+		/**
+		 * Returns the number of columns in the table.
+		 * 
+		 * @return number of columns in the table
+		 */
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 		
+		/**
+		 * Returns the name of a specified column in the table.
+		 * 
+		 * @param col - the column number
+		 */
+		public String getColumnName(int col) {
+			return columnNames[col];
+		}
+		
+		/**
+		 * Returns the number of available appointments found in the search results.
+		 * 
+		 * @returns the number of rows in the table
+		 */
 		public int getRowCount() {
 			return appointments.size();
 		}
 		
+		/**
+		 * Returns the cell of information specified at a particular row and column.
+		 * 
+		 * @param row - the row number
+		 * @param col - the column number
+		 */
 		public Object getValueAt(int row, int col) {
 			Appointment a = appointments.get(row);
 			if (col == 0) {
@@ -265,33 +391,20 @@ public class SearchPane extends JPanel {
 	}
 	
 	/** 
-	 * Displays the appropriate search box depending on which search option
+	 * Displays the appropriate search pop up window depending on which search option
 	 * the user wants to use - search by patient, practitioner, or appointment slot. 
 	 */
 	public class ButtonListener implements ActionListener {
-		public void displayPatientSearchBox() {
-			
-		}
-		
-		public void displayPracSearchBox() {
-			
-		}
-		
-		public void displayApptSearchBox() {
-			
-		}
-		
 		public void actionPerformed(ActionEvent e) {
 			if (e.getActionCommand() == "Search for a Patient") {
-				displayPatientSearchBox();
 				clicked = SearchType.SEARCHBYPATIENT;
 			} else if (e.getActionCommand() == "Search for a Practitioner") {
-				displayPracSearchBox();
 				clicked = SearchType.SEARCHBYPRAC;
 			} else {
-				displayApptSearchBox();
 				clicked = SearchType.SEARCHBYAPPT;
 			}
+			// Reset the table to display the proper search results
+			resetModel();
 		}
 	}
 }

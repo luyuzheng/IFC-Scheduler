@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,6 +57,13 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		textArea.setHighlighter(null);
 		textArea.setText(text);
 		
+		//JPanel checkBoxPanel = new JPanel(new GridLayout(1, 2));
+		JCheckBox noShowsCheckBox = new JCheckBox();
+		JLabel noShowsLabel = new JLabel("No Show");
+		noShowsLabel.setFont(font);
+		//checkBoxPanel.add(noShowsCheckBox);
+		//checkBoxPanel.add(noShowsLabel);
+		
 		JPanel notePanel = new JPanel(new BorderLayout());
 		JLabel noteLabel = new JLabel("Appointment Note:");
 		noteLabel.setFont(font);
@@ -68,6 +76,11 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 
 		noteArea.setText((a.getNote()).replaceAll("\t\t", "\n"));
 		notePane.setViewportView(noteArea);
+		//notePanel.add(checkBoxPanel, BorderLayout.NORTH);
+		//notePanel.add(noteLabel, BorderLayout.CENTER);
+		//notePanel.add(notePane, BorderLayout.SOUTH);
+		//notePanel.add(noShowsCheckBox);
+		//notePanel.add(noShowsLabel);
 		notePanel.add(noteLabel, BorderLayout.NORTH);
 		notePanel.add(notePane, BorderLayout.CENTER);
 
