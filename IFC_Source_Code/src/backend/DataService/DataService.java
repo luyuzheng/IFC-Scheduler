@@ -1,7 +1,6 @@
 package backend.DataService;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 import backend.DataTransferObjects.AppointmentDto;
@@ -180,25 +179,29 @@ public interface DataService {
      */
     public boolean setStatus(DayDto day);
     
-    /*
+    /**
      * Schedules a practioner on a day
      */
     public SchedulePractitionerDto addPractitionerToDay(PractitionerDto pract, DayDto day, 
         int start, int end);
     
-    /*
+    /**
      * Gets a day given a date
      */
     public DayDto getOrCreateDay(Date date);
     
-    /*
+    /**
      * Gets a practioner from an ID
      */
     public PractitionerDto getPractitioner(int PractID);
     
-    /*
+    /**
      * Gets all appointments for a scheduledPract 
      */
     public List<AppointmentDto> getAllAppointments(int schedPractId);
     
+    /**
+     * Marks confirmation to true on both the DTO object and on the database.
+     */
+    public boolean confirmAppointment(AppointmentDto appointment);
 }

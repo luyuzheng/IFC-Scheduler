@@ -28,6 +28,7 @@ StartTime time,
 EndTime time,
 Status varchar(255),
 ApptDate date,
+Confirmation tinyint,
 Note text
 );
 

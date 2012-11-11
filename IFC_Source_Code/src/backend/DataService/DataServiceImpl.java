@@ -127,7 +127,7 @@ public class DataServiceImpl implements DataService {
 			}
 			st.setString(1, patient.getFirst());
 			st.setString(2, patient.getLast());
-			st.setLong(3, patient.getPhone()); //TODO: npe when getPhone returns null
+			st.setString(3, patient.getPhone());
 			st.setString(4, patient.getNotes());
 			st.executeUpdate();
 			return true;
@@ -1087,6 +1087,8 @@ public class DataServiceImpl implements DataService {
 						rs.getInt(AppointmentDto.PRACT_SCHED_ID));
 				newAppointment.setField(AppointmentDto.START, 
 						rs.getInt(AppointmentDto.START));
+				newAppointment.setField(AppointmentDto.CONFIRMATION,
+						rs.getInt(AppointmentDto.CONFIRMATION)==1);
 				retList.add(newAppointment);
 			}
 			return retList;
@@ -1105,6 +1107,34 @@ public class DataServiceImpl implements DataService {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public boolean confirmAppointment(AppointmentDto appointment) {
+		PreparedStatement st = null;
+
+		try {
+			appointment.setConfirmation(true);
+			st = connection.prepareStatement(
+					"UPDATE Appointment SET Confirmation=1" +
+					"WHERE ApptID=?");
+			st.setInt(1, appointment.getApptID());
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
 	}
 }
 

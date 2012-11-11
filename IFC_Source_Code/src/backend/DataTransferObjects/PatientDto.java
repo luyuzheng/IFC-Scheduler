@@ -38,8 +38,8 @@ public class PatientDto extends AbstractDto {
         return (String) getField(LAST);
     }
 
-    public Long getPhone() {
-        return (Long) getField(PHONE);
+    public String getPhone() {
+        return (String) getField(PHONE);
     }
 
     public String getNotes() {
@@ -61,7 +61,7 @@ public class PatientDto extends AbstractDto {
         return this;
     }
 
-    public PatientDto setPhone(Long phone) {
+    public PatientDto setPhone(String phone) {
         fieldsMap.put(PHONE, phone);
         return this;
     }

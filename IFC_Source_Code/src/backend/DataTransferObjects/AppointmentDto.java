@@ -20,6 +20,7 @@ public class AppointmentDto extends AbstractDto {
     public static final String END = "EndTime";
     public static final String APPT_DATE = "ApptDate";
     public static final String NOTE = "Note";
+    public static final String CONFIRMATION = "Confirmation";
     
      public AppointmentDto() {
         fieldsMap = new HashMap<String, Object>();
@@ -31,6 +32,7 @@ public class AppointmentDto extends AbstractDto {
         fieldsMap.put(END, null);
         fieldsMap.put(APPT_DATE, null);
         fieldsMap.put(NOTE, null);
+        fieldsMap.put(CONFIRMATION, false);
     }
     
     public Integer getApptID(){
@@ -88,10 +90,16 @@ public class AppointmentDto extends AbstractDto {
     public void setNote(String s){
         fieldsMap.put(NOTE, s);
     }
-    
-    //TODO -- truncates length of note to number of characters specified
+
     public String getShortNote(int length){
-    	return null;
+    	return getNote().substring(0, length);
     }
-    
+
+    public void setConfirmation(boolean confirm) {
+    	fieldsMap.put(CONFIRMATION, confirm);
+    }
+
+    public boolean getConfirmation() {
+    	return (Boolean) fieldsMap.get(CONFIRMATION);
+    }
 }
