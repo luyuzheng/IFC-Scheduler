@@ -31,9 +31,9 @@ public class DayPanel extends JPanel {
 	private Day day;
 	private JButton switchViewButton = new PanelButton("Month View");
 	private JButton patientButton = new PanelButton("Schedule Patient");
-	private JButton addPracButton = new PanelButton("Add Practitioner");
-	private JButton removePracButton = new PanelButton("Remove Practitioner");
-	private JButton setTimeSlotButton = new PanelButton("Time of Operation");
+	private JButton addPracButton = new PanelButton("Schedule Practitioner");
+	private JButton removePracButton = new PanelButton("Cancel Practitioner");
+	private JButton setTimeSlotButton = new PanelButton("Hours of Operation");
 	private JButton searchButton = new PanelButton("Search");
 	private JButton apptConfirmationButton = new PanelButton("Appointment Confirmations");
 	private JButton waitListButton = new PanelButton("Wait List");
@@ -85,11 +85,13 @@ public class DayPanel extends JPanel {
 		buttonPanel.add(switchViewButton);
 		buttonPanel.add(addPracButton);
 		buttonPanel.add(removePracButton);
-		buttonPanel.add(setTimeSlotButton);
 		buttonPanel.add(patientButton);
-		buttonPanel.add(searchButton);
 		buttonPanel.add(apptConfirmationButton);
 		buttonPanel.add(waitListButton);
+		buttonPanel.add(searchButton);
+		buttonPanel.add(setTimeSlotButton);
+		
+		
 		add(buttonPanel);
 	}
 	
@@ -135,7 +137,7 @@ public class DayPanel extends JPanel {
 	
 	public void clearRoom(RoomPanel panel) {
 		
-		if (JOptionPane.showConfirmDialog(mw, "Are you sure you want to remove this practitioner? This will clear any appointments that have been set.", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		if (JOptionPane.showConfirmDialog(mw, "Are you sure you want to remove this practitioner from the schedule? \nThis will cancel any appointments that have been set for this day.", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			if (panel == null) return;
 			panel.setPractitioner(null);
 			as.removeRoom(panel.getRoom());
@@ -150,7 +152,7 @@ public class DayPanel extends JPanel {
 		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
 	}
 	
-	private final AbstractAction removePracAction = new AbstractAction("<html>Remove Practitioner</html>") {
+	private final AbstractAction removePracAction = new AbstractAction("<html>Cancel Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
 			
 			clearRoom(rp);
@@ -165,10 +167,10 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
-	private final AbstractAction removePatAction = new AbstractAction("<html>Remove Patient</html>") {
+	private final AbstractAction removePatAction = new AbstractAction("<html>Cancel Appointment</html>") {
 		public void actionPerformed(ActionEvent e) {
 			AppointmentBlock block = ab;
-			if (JOptionPane.showConfirmDialog(mw, "Are you sure you'd like to clear this appointment?", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) block.clearAppt();
+			if (JOptionPane.showConfirmDialog(mw, "Are you sure you'd like to cancel this appointment?", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) block.clearAppt();
 		}
 	};
 	
@@ -178,7 +180,7 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
-	private final AbstractAction addPracAction = new AbstractAction("<html>Add Practitioner</html>") {
+	private final AbstractAction addPracAction = new AbstractAction("<html>Schedule Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
 			Practitioner p = SelectPractitionerUI.ShowDialog(mw);
 			if (p==null) return;
@@ -188,7 +190,7 @@ public class DayPanel extends JPanel {
 	};
 	
 	//private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Change <br>Hours of <br>Operation</html>") {
-	private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Change Work Hours<br>(for Selected Day)</html>") {
+	private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Hours of Operation</html>") {
 		public void actionPerformed(ActionEvent e) {
 			setTimeSlot(SelectTimeSlotUI.ShowDialog(mw));
 		}

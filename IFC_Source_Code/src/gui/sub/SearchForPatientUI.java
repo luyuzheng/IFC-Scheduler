@@ -20,6 +20,9 @@ import javax.swing.border.EmptyBorder;
 import data.Patient;
 import data.managers.SearchManager;
 
+/**
+ * Displays the pop up window that allows the user to search for a patient.
+ */
 public class SearchForPatientUI extends JDialog implements ActionListener {
 	private static SearchForPatientUI searchForPatientUI;
 	
@@ -35,6 +38,11 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	/**
+	 * Constructor - creates the actual UI for the pop up window.
+	 * 
+	 * @param name - the title to be displayed at the top bar of the GUI
+	 */
 	public SearchForPatientUI(String name) {
 		setModal(true);
 		setTitle(name);
@@ -85,14 +93,25 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * Makes the pop up window visible when the "Search for a Patient" button is clicked.
+	 * 
+	 * @param owner - the component that owns this pane (the SearchPane)
+	 * @return a patient
+	 */
 	public static Patient ShowDialog(Component owner) {
 		searchForPatientUI = new SearchForPatientUI("Search for a Patient");
 		searchForPatientUI.pack();
 		searchForPatientUI.setLocationRelativeTo(owner);
 		searchForPatientUI.setVisible(true);
-		return p;
+		return p; // SHOULD RETURN AN ARRAYLIST OF PATIENTS???
 	}
 	
+	/**
+	 * Checks if the Search or Cancel button has been hit. If conducting a search, the program checks to make sure that
+	 * input information has been given; otherwise, an error message is sent. The input information is then sent to 
+	 * the search manager for processing. Finally, the window is closed.
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Search") {
 			if (p == null) {

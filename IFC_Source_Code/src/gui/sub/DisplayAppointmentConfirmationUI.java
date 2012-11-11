@@ -15,6 +15,10 @@ import javax.swing.border.EmptyBorder;
 
 import data.Appointment;
 
+/**
+ * DisplayAppointmentConfirmationUI shows information about a patient's appointment when a patient in the table
+ * is clicked.
+ */
 public class DisplayAppointmentConfirmationUI extends JDialog implements ActionListener {
 	private static DisplayAppointmentConfirmationUI displayAppointmentConfirmationUI;
 	
@@ -22,6 +26,11 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	private JTextArea textArea;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	/**
+	 * Constructor - creates the actual UI to display the patient's appointment information
+	 * @param name - the title to be displayed in the top bar of the pop up window
+	 * @param appt - the appointment information to be displayed
+	 */
 	private DisplayAppointmentConfirmationUI(String name, Appointment appt) {
 		setModal(true);
 		setTitle(name);
@@ -59,6 +68,12 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		setResizable(false);
 	}
 	
+	/**
+	 * Makes the pop up window visible when a patient from the table is selected.
+	 * 
+	 * @param owner - the component that owns this pane (the AppointmentConfirmationListener)
+	 * @param appt  - the appointment information
+	 */
 	public static void ShowDialog(Component owner, Appointment appt) {
 		displayAppointmentConfirmationUI = new DisplayAppointmentConfirmationUI("View Appointment", appt);
 		displayAppointmentConfirmationUI.pack();
@@ -66,6 +81,9 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		displayAppointmentConfirmationUI.setVisible(true);
 	}
 	
+	/**
+	 * Closes the window once the user hits the "OK" button.
+	 */
 	public void actionPerformed(ActionEvent e) {
 		displayAppointmentConfirmationUI.setVisible(false);
 	}

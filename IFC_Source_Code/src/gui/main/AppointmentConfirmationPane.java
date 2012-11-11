@@ -1,8 +1,6 @@
 package gui.main;
 
-import gui.main.WaitListPane.WaitlistTableModel;
 import gui.main.listeners.AppointmentConfirmationListener;
-import gui.main.listeners.WaitlistPatientListener;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,11 +8,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -23,10 +18,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import data.Date;
 import data.Appointment;
-import data.managers.WaitlistManager;
 
+/**
+ * AppointmentConfirmationPane displays the appointment confirmation pane on the right-hand side of the application
+ * when the "Appointment Confirmation" button is clicked. A list of patients scheduled for a particular day will appear,
+ * allowing the user to easily find and check off which patients need to be contacted to confirm their appointments. The
+ * pane can be closed by clicking on the "Hide Appointment Confirmation" button that appears once the pane is open.
+ */
 public class AppointmentConfirmationPane extends JPanel {
 
 	private Component owner;
@@ -35,6 +34,13 @@ public class AppointmentConfirmationPane extends JPanel {
 	
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	/**
+	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
+	 * labels and the table of results.
+	 * 
+	 * @param owner - the component that owns this pane
+	 * @param dp - an instance of a DayPanel
+	 */
 	public AppointmentConfirmationPane(Component owner, DayPanel dp) {
 		this.owner = owner;
 		setMinimumSize(new Dimension(0,0));
@@ -69,34 +75,73 @@ public class AppointmentConfirmationPane extends JPanel {
     	add(scrollPane, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * Resets the table model.
+	 */
 	public void resetModel() {
 		//table.setModel(new AppointmentConfirmationTableModel(acm.getConfirmationList()));
 	}
 	
+	/**
+	 * AppointmentConfirmationTableModel creates the table itself, defining the rows and columns of the table.
+	 */
 	public class AppointmentConfirmationTableModel extends AbstractTableModel {
 		private String[] columnNames;
 		private ArrayList<Appointment> confirm;
 
+		/**
+		 * Constructor to produce an appointment confirmation table model.
+		 * 
+		 * @param confirm - a list of appointments that need to be confirmed for a chosen day
+		 */
 		public AppointmentConfirmationTableModel(ArrayList<Appointment> confirm) {
 			this.confirm = confirm;
 			columnNames = new String[] {"Confirmed", "First Name", "Last Name", "Phone Number"};
 		}
 		
+		/**
+		 * Gets the information for a selected appointment.
+		 * 
+		 * @param row - the row of the table where the desired appointment is located.
+		 * @return the appointment information for a selected row
+		 */
 		public Appointment getAppointment(int row) {
 			return confirm.get(row);
 		}
+		
+		/**
+		 * Returns the number of columns in the table.
+		 * 
+		 * @return number of columns in the table
+		 */
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 		
+		/**
+		 * Returns the name of a specified column in the table.
+		 * 
+		 * @param col - the column number
+		 */
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
+		/**
+		 * Returns the number of appointments to be confirmed for a chosen day.
+		 * 
+		 * @returns the number of rows in the table
+		 */
 		public int getRowCount() {
 			return confirm.size();
 		}
 
+		/**
+		 * Returns the cell of information specified at a particular row and column.
+		 * 
+		 * @param row - the row number
+		 * @param col - the column number
+		 */
 		public Object getValueAt(int row, int col) {
 			Appointment appt = confirm.get(row);
 			
