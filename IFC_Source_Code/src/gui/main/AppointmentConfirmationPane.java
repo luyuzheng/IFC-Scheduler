@@ -8,6 +8,8 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -50,7 +52,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		// Create heading for the appointment confirmation panel
 		JPanel apptConfirmationPanel = new JPanel(new GridLayout(0, 1));
 		apptConfirmationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		String date = dp.getDay().getDate().toFormalString();
+		String date = toFormalString(dp.getDay().getDate());
 		JLabel apptConfirmationLabel = new JLabel("Appointments to Confirm for " + date + ":");
 		apptConfirmationLabel.setFont(font);
 		
@@ -60,6 +62,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		
 		// Create panel to display patients for a particular day
 		JPanel tablePanel = new JPanel(new BorderLayout());
+		// list of people to confirm
 		AppointmentConfirmationTableModel model = new AppointmentConfirmationTableModel(new ArrayList<Appointment>()); // CHANGE THIS LATER!!!
 		table = new JTable(model);
 		table.setDragEnabled(true);
@@ -74,7 +77,12 @@ public class AppointmentConfirmationPane extends JPanel {
     	JScrollPane scrollPane = new JScrollPane(tablePanel);
     	add(scrollPane, BorderLayout.CENTER);
 	}
-	
+	// convert a date object to the mm/dd/yyyy format
+	private String toFormalString(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
+		return sdf.format(date);
+	}
+
 	/**
 	 * Resets the table model.
 	 */
