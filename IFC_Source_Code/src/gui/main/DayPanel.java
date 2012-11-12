@@ -21,15 +21,19 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.DayDto;
 
 import java.util.Date;
+import java.util.List;
+
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 import gui.TimeSlot;
 
 public class DayPanel extends JPanel {
 	private DayDto day;
+	private List<SchedulePractitionerDto> schedulePractitionerList;
 	private JButton switchViewButton = new PanelButton("Month View");
 	private JButton patientButton = new PanelButton("Schedule Patient");
 	private JButton addPracButton = new PanelButton("Schedule Practitioner");
@@ -120,30 +124,27 @@ public class DayPanel extends JPanel {
 		if (b) {
 			if (ab.getAppointment().getPatientID() != null)
 				patientButton.setAction(removePatAction);
-			else
+			else {
 				patientButton.setAction(addPatAction);
+			}
 		}
 		
 	}
 	
 	private void setTimeSlot(TimeSlot timeSlot) {
 		if (timeSlot == null) return;
-		Day newDay = new Day(timeSlot, day.getDate());
-		for (Room r : day.getRooms()) {
-			if (r.hasPrac()) newDay.addRoom(r.getPractitioner());
-		}
-		mw.setDay(newDay);
-		mw.setDate(day.getDate());
+		DataServiceImpl.GLOBAL_DATA_INSTANCE.setHoursForDay(day, timeSlot.getStartTime(), timeSlot.getEndTime());
+		day.setEnd(timeSlot.getEndTime());
+		day.setStart(timeSlot.getStartTime());
 	}
 	
 	public void clearRoom(RoomPanel panel) {
 		
 		if (JOptionPane.showConfirmDialog(mw, "Are you sure you want to remove this practitioner from the schedule? \nThis will cancel any appointments that have been set for this day.", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			if (panel == null) return;
-			panel.setPractitioner(null);
-			as.removeRoom(panel.getRoom());
-			day.removeRoom(panel.getRoom());
-			new DaySaver().storeDay(day);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitionerFromDay
+				(panel.getRoom().getPractSchedID(), day);
+			as.removeRoom(panel.getRoom().getPractSchedID());
 		}
 	}
 	
