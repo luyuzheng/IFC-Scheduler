@@ -14,8 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import gui.Constants;
-import data.Time;
-import data.TimeSlot;
+import gui.TimeSlot;
 
 
 public class TimesPanel extends JPanel {
