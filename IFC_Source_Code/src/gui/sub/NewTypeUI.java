@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -12,14 +13,11 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import data.Type;
-import data.managers.TypeManager;
+import backend.DataTransferObjects.*;
 
 public class NewTypeUI extends JDialog implements ActionListener {
 	private static NewTypeUI newTypeUI;
-	private static data.Type t;
-	
-	private TypeManager tm = new TypeManager();
+	private static TypeDto t;
 	
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
@@ -53,7 +51,7 @@ public class NewTypeUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static data.Type ShowDialog(Component owner) {
+	public static TypeDto ShowDialog(Component owner) {
 		t = null;
 		newTypeUI = new NewTypeUI();
 		newTypeUI.pack();
@@ -66,8 +64,7 @@ public class NewTypeUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("ok")) {
 			String type = typeField.getText();
 			if (type.equals("")) newTypeUI.setVisible(false);
-			t = new data.Type(tm.getNewId(), type);
-			tm.addType(t);
+			t = DataServiceImpl.GLOBAL_DATA_INSTANCE.addNewPractitionerType(type);
 		} 
 		newTypeUI.setVisible(false);
     }
