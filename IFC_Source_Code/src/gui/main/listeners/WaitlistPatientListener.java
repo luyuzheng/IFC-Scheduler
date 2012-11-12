@@ -15,8 +15,9 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
 
-import data.WaitingPatient;
-import data.managers.WaitlistManager;
+import backend.DataTransferObjects.WaitlistDto;
+
+//import data.managers.WaitlistManager;
 
 public class WaitlistPatientListener extends MouseAdapter {
 	

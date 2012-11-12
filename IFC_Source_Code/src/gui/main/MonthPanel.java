@@ -24,14 +24,16 @@ import java.util.GregorianCalendar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.DayDto;
+import backend.DataTransferObjects.SchedulePractitionerDto;
 
 import gui.Constants;
-import java.util.Date;
-import data.Day;
-import data.DayLoader;
+import java.sql.Date;
 import backend.DataTransferObjects.PractitionerDto;
 
+@SuppressWarnings("serial")
 public class MonthPanel extends JScrollPane implements Printable, ActionListener {
 	DayDto day;
 	Date d;
@@ -189,7 +191,6 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		
 		cal.roll(Calendar.MONTH, true);
 		
-		DayLoader dl = new DayLoader();
 		
 		for (int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
 			Date date = new Date(d.getMonth(), i, d.getYear());
@@ -197,18 +198,24 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 			rect.setRect (startx, starty, blockWidth, blockHeight);
 			g2d.draw(rect);
 			int offset = 1;
-			g2d.drawString(date.toFormalString(), (int)startx + 5, (int)starty + offset * f.getHeight());
+			g2d.drawString(date.toString(), (int)startx + 5, (int)starty + offset * f.getHeight());
 			offset++;
-			Day loadedDay = dl.loadDay(date);
-			if (loadedDay != null && loadedDay.getRooms() != null) {
-				for (Room r : loadedDay.getRooms()) {
-					if (r.hasPrac()) {
-						Practitioner p = r.getPractitioner();
-						String s = p.getType().toString();
-						if (r.isFull()) s = "*" + s;
-						g2d.drawString(formatString(s), (int)startx + 5, (int)starty + offset * f.getHeight());
-						offset++;
-					}
+			
+			DayDto loadedDay = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(date);
+			SchedulePractitionerDto scheduled = new SchedulePractitionerDto();
+			scheduled.setField(SchedulePractitionerDto.DATE, loadedDay);
+			
+			
+			if (loadedDay != null && scheduled.getAppointments() != null) {
+				for (AppointmentDto appt : scheduled.getAppointments()) {
+					
+						
+					PractitionerDto p = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPractitioner(appt.getPractSchedID());
+					String s = p.getTypeName();
+					//if (room.isFull()) s = "*" + s;
+					g2d.drawString(formatString(s), (int)startx + 5, (int)starty + offset * f.getHeight());
+					offset++;
+					
 				}
 			}
 			

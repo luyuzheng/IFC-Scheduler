@@ -13,7 +13,7 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import data.Appointment;
+import backend.DataTransferObjects.AppointmentDto;
 
 public class NewPatientListener extends MouseAdapter {
 	
@@ -28,12 +28,12 @@ public class NewPatientListener extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
-			Appointment a = owner.getAppointment();
-			if (owner.getAppointment().isFilled())
+			AppointmentDto a = owner.getAppointment();
+			if (owner.getAppointment() != null)
 				a = EditAppointmentUI.ShowDialog(parent,a);
 			else
-				a.setPatient(SelectPatientUI.ShowDialog(parent));
-			owner.setPatient(a.getPatient());
+				a.setPatientID(SelectPatientUI.ShowDialog(parent).getPatID());
+			owner.setPatient(a.getPatientID());
 			owner.setNote(a.getNote());
 		}
 	}
