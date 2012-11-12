@@ -156,7 +156,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 				t = DataServiceImpl.GLOBAL_DATA_INSTANCE.addNewPractitionerType(type);
 			}
 			
-			practitioner = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(practitioner);
+			practitioner = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(t.getTypeID(), name, name, apptLength, "", note);
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (pracTable.getSelectedRow() > -1)
 				practitioner = prac.get(pracTable.getSelectedRow());
@@ -185,11 +185,11 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		}
 
 		public Object getValueAt(int row, int col) {
-			Practitioner p = prac.get(row);
+			PractitionerDto p = prac.get(row);
 			if (col == 0) 
-				return p.getName();
+				return p.getFirst() + p.getLast();
 			else if (col == 1) 
-				return p.getType();
+				return p.getTypeName();
 			else
 				return p.getApptLength();
 		}
