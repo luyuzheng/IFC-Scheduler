@@ -43,11 +43,12 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
+		String confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
 		
 		String text = "Date: " + appt.getApptDate().toString() + "\n" +
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() +
 					  "Phone Number: " + patient.getPhone() +
-					  "Confirmed: " + appt.getConfirmed(); // TODO: WE NEED CONFIRMATIONS!!!
+					  "Confirmed: " + confirmed;
 		
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
