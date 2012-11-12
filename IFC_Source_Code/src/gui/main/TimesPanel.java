@@ -47,24 +47,29 @@ public class TimesPanel extends JPanel {
 			panel.setPreferredSize(new Dimension(Constants.TIMES_PANEL_WIDTH, (60-(min%60))*Constants.PIXELS_PER_MINUTE));
 			panel.setMinimumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, (60-(min%60))*Constants.PIXELS_PER_MINUTE));
 			panel.setMaximumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, (60-(min%60))*Constants.PIXELS_PER_MINUTE));
-			panel.add(new JLabel(start.toString()));
+			String timeSt = ((Integer) ((start / 60) % 12)).toString() + ":" + ((Integer) (start % 60)).toString();
+			String amPm = (((start / 60) % 12) == 0) ? "am" : "pm"; 
+			panel.add(new JLabel(timeSt + amPm));
 			add(panel);
-			start = start.addMinutes(60 - (min % 60));
+			start = start + 60 - min % 60;
 		}
 		
 		
-		while (start.timeInMinutes() + 60 <= end.timeInMinutes()) {
+		while (start + 60 <= end) {
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(215,255,215));
 			panel.setPreferredSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
 			panel.setMaximumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
 			panel.setMinimumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
-			JLabel startLabel= new JLabel(start.toString());
+			panel.setMaximumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, (60-(min%60))*Constants.PIXELS_PER_MINUTE));
+			String timeSt = ((Integer) ((start / 60) % 12)).toString() + ":" + ((Integer) (start % 60)).toString();
+			String amPm = (((start / 60) % 12) == 0) ? "am" : "pm"; 
+			JLabel startLabel= new JLabel(timeSt + amPm);
 			startLabel.setFont(new Font("Arial", Font.BOLD, 14));
 			panel.add(startLabel);
 			panel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
 			add(panel);
-			start = start.addMinutes(60);
+			start = start += 60;
 		}
 	}
 	
