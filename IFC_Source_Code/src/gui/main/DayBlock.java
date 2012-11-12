@@ -14,9 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import gui.Constants;
-import data.Date;
-import data.Day;
-import data.DayLoader;
+import java.sql.Date;
+
+import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
 public class DayBlock extends JPanel {
@@ -32,13 +32,15 @@ public class DayBlock extends JPanel {
 		String text = date.getDay() + "\n";
 		
 		DayLoader dl = new DayLoader();
-		Day d = dl.loadDay(date);
+		DayDto d = dl.loadDay(date);
 		if (color.equals(Color.WHITE) && d == null) color = new Color(220,220,220);
 		else if (color.equals(Color.WHITE)){
 			boolean hasPrac = false;
-			for (Room r : d.getRooms()) {
-				if (r.hasPrac()) {
-					text += r.getPractitioner().getName() + " - " + r.getPractitioner().getType();
+			for (SchedulePractitionerDto r : DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(d)) {
+				if (r.getPractSchedID() != null) {
+					text += r.getPractitioner().getFirst() + ' ' + 
+							r.getPractitioner().getLast() + " - " + 
+							r.getPractitioner().getTypeName();
 					if (r.isFull()) text += " *FULL* ";
 					text += "\n";
 					hasPrac = true;
