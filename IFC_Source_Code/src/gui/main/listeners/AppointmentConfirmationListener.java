@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
 
-import data.Appointment;
+import backend.DataTransferObjects.*;
 
 /**
  * Waits for mouse clicks on patients in appointment confirmation table. If a patient is double clicked,
@@ -36,7 +36,7 @@ public class AppointmentConfirmationListener extends MouseAdapter {
 		// Looking for double click events
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
-				Appointment appt = ((AppointmentConfirmationTableModel)owner.getModel()).getAppointment(owner.getSelectedRow());
+				AppointmentDto appt = ((AppointmentConfirmationTableModel)owner.getModel()).getAppointment(owner.getSelectedRow());
 				//DisplayAppointmentConfirmationUI.ShowDialog(parent.getParent(), appt);
 				//AppointmentConfirmationManager acm = new AppointmentConfirmationManager();
 				//acm.updateAppointmentConfirmation(appt);
