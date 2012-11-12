@@ -19,6 +19,8 @@ public class WaitlistDto extends AbstractDto {
     public static final String TYPE_NAME = "TypeName";
     public static final String DATE = "DatetimeEntered";
     
+    private PatientDto patient;
+    
     public WaitlistDto() {
         fieldsMap = new HashMap<String, Object>();
         fieldsMap.put(WAITLIST_ID, null);
@@ -35,7 +37,15 @@ public class WaitlistDto extends AbstractDto {
     public Integer getPatientID(){
         return (Integer) fieldsMap.get(PATIENT);
     }
-    
+
+    public PatientDto getPatient() {
+    	return patient;
+    }
+
+    public void setPatient(PatientDto patient) {
+    	this.patient = patient;
+    }
+
     public Integer getTypeID(){
         return (Integer) fieldsMap.get(TYPE_ID);
     }
