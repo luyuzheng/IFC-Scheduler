@@ -16,7 +16,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import data.Time;
 import gui.TimeSlot;
 
 public class SelectTimeSlotUI extends JDialog implements ActionListener {
