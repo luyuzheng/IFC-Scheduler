@@ -98,7 +98,7 @@ public class DatePicker extends JPanel {
 		focused.set(Calendar.DAY_OF_MONTH, day);	
 		focused.set(Calendar.MONTH, month + 1);
 		focused.set(Calendar.YEAR, year);
-		newDate= focused.getTime();
+		newDate = new Date(focused.getTime().getTime());
 		
 		//Date newDate = new Date(month, day, year);
 		setDate(newDate);
@@ -106,8 +106,7 @@ public class DatePicker extends JPanel {
 		//reportFocusGained(selectedBlock);		
 		TinyDayBlock b = new TinyDayBlock(this, newDate, Color.LIGHT_GRAY, false);
 		
-		focused.setTime(selectedBlock.getDate());
-		
+		focused.setTime(selectedBlock.getDate());	
 		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH) + 1);
 		curr.selectDay(day);
 		selectedBlock = b;
@@ -131,12 +130,20 @@ public class DatePicker extends JPanel {
 		} else
 			month--;
 		
-		newDate = new Date(month, day, year);
+		
+		focused.set(Calendar.DAY_OF_MONTH, day);	
+		focused.set(Calendar.MONTH, month + 1);
+		focused.set(Calendar.YEAR, year);
+		newDate = new Date(focused.getTime().getTime());
+		
+		
+		//newDate = new Date(month, day, year);
 		setDate(newDate);
 		//selectedBlock.setDate(newDate);
 		//reportFocusGained(selectedBlock);		
 		TinyDayBlock b = new TinyDayBlock(this, newDate, Color.LIGHT_GRAY, false);
-		curr.deselectDay(selectedBlock.getDate().getDay());
+		focused.setTime(selectedBlock.getDate());	
+		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH) + 1);
 		curr.selectDay(day);
 		selectedBlock = b;
 
@@ -148,16 +155,25 @@ public class DatePicker extends JPanel {
 	 * This method determines the behavior of clicking on a day in the month view.
 	 */
 	public void reportFocusGained(TinyDayBlock b) {
-		if (b.getDate().getMonth() == selectedBlock.getDate().getMonth()) {
+		
+		GregorianCalendar focused= new GregorianCalendar();
+		Date newDate1 = b.getDate();
+		focused.setTime(newDate1);
+		
+		GregorianCalendar block= new GregorianCalendar();
+		Date newDate2 = selectedBlock.getDate();
+		block.setTime(newDate2);		
+		
+		if (focused.get(Calendar.MONTH) == block.get(Calendar.MONTH)) {
 			if (mainWindow.inMonthView()) mainWindow.switchView();
-			curr.deselectDay(selectedBlock.getDate().getDay());
-			curr.selectDay(b.getDate().getDay());
+			curr.deselectDay(block.get(Calendar.DAY_OF_MONTH));
+			curr.selectDay(focused.get(Calendar.DAY_OF_MONTH));
 			selectedBlock = b;
 			mainWindow.setDate(b.getDate());
 		} else {
 			if (mainWindow.inMonthView()) mainWindow.switchView();
 			setDate(b.getDate());
-			curr.selectDay(b.getDate().getDay());
+			curr.selectDay(focused.get(Calendar.DAY_OF_MONTH));
 			selectedBlock = b;
 		}
 	}
