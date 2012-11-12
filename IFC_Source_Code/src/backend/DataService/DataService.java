@@ -40,7 +40,6 @@ public interface DataService {
 	 * Updates the specified field for the specified patient in the database and DTO
 	 *
 	 * @param name of the field to be updated (use constants in {@link PatientDto})
-	 * @param value
 	 * @return true if succeeded, false if failed
 	 */
 	public boolean updatePatient(String fieldName, Object value, PatientDto patient);
@@ -173,6 +172,10 @@ public interface DataService {
      */
     public boolean removePatientFromWaitlist(PatientDto patient, TypeDto type);
     
+    /**
+     * Adds comments to waitlist entry
+     */
+    public boolean commentWaitlist(WaitlistDto entry, String comment);
     /**
      * get waitlist info
      */

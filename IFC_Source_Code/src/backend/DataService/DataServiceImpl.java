@@ -861,6 +861,33 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
+	public boolean commentWaitlist(WaitlistDto entry, String comment) {
+		PreparedStatement st = null;
+
+		try {
+			st = connection.prepareStatement("UPDATE Waitlist SET Comment=? " +
+			"WHERE WaitlistID=?");
+			st.setString(1, comment);
+			st.setInt(2, entry.getWaitlistID());
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public List<WaitlistDto> getWaitlist() {
 		PreparedStatement st = null;
 		ResultSet rs = null;
