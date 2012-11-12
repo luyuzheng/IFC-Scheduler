@@ -9,10 +9,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.UIManager;
 
-import data.Date;
-import data.Day;
-import data.DayLoader;
-import data.DaySaver;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.DayDto;
+
+import java.sql.Date;
+
 
 /**
  * MainWindow combines all GUI components to produce the final application.
@@ -21,8 +22,7 @@ public class MainWindow extends JFrame {
 	
 	private AppointmentPanel ap;
 	private DayPanel dp;
-	private Day day;
-	private DayLoader dl;
+	private DayDto day;
 	private DatePicker cp;
 	private JPanel sidePanel;
 	private MonthPanel mp;
@@ -53,12 +53,8 @@ public class MainWindow extends JFrame {
 		} catch (Exception e) {}
 		
 		cp = new DatePicker(this);
+		day = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(cp.getDate());
 		
-		dl = new DayLoader();
-		day = dl.loadDay(cp.getDate());
-		if (day == null) {
-			day = new Day(cp.getDate());
-		}
 		dp = new DayPanel(day, this);
 		setLayout(new BorderLayout());
 		initComponents(dp);
@@ -335,7 +331,7 @@ public class MainWindow extends JFrame {
 	 * @return the day from the DayPanel
 	 * @see data.Day
 	 */
-	public Day getCurrentDay() {
+	public DayDto getCurrentDay() {
 		return dp.getDay();
 	}
 	
@@ -343,7 +339,7 @@ public class MainWindow extends JFrame {
 	 * Resets the date of the current day.
 	 */
 	public void refresh() {
-		setDate(dp.getDay().getDate());
+		DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(dp.getDay().getDate());
 	}
 	
 	/** 
@@ -389,12 +385,9 @@ public class MainWindow extends JFrame {
 	 * @see data.Date
 	 */
 	public void setDate(Date date) {
-		new DaySaver().storeDay(day);
-		day = dl.loadDay(date);
-		if (day == null) {
-			day = new Day(date);
-			new DaySaver().storeDay(day);
-		}
+
+		day = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(date);
+
 		dp = new DayPanel(day, this);
 		
 		if (inMonthView) {
@@ -439,7 +432,7 @@ public class MainWindow extends JFrame {
 	 * @param day - an instance of the Day class that represents a particular date.
 	 * @see data.day
 	 */
-	public void setDay(Day day) {
+	public void setDay(DayDto day) {
 		this.day = day;
 	}
 	
