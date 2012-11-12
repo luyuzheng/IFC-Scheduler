@@ -31,7 +31,7 @@ public class AppointmentSubpanel extends JPanel {
 		dp.registerAppointmentSubpanel(this);
 	}
 	
-	public void addRoom(Room room) {
+	public void addRoom(SchedulePractitionerDto room) {
 		if (rooms.size() == 0) remove(empty);
 		RoomPanel r = new RoomPanel(room, dp);
 		rooms.add(r);
@@ -39,7 +39,7 @@ public class AppointmentSubpanel extends JPanel {
 		revalidate();
 	}
 	
-	public void removeRoom(Room room) {
+	public void removeRoom(SchedulePractitionerDto room) {
 		ArrayList<RoomPanel> remRooms = new ArrayList<RoomPanel>();
 		for (RoomPanel r : rooms) {
 			if (r.getRoom().equals(room))
