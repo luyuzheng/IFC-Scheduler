@@ -5,6 +5,7 @@
 
 package gui.main.listeners;
 
+import backend.DataService.DataServiceImpl;
 import gui.main.AppointmentBlock;
 import gui.sub.EditAppointmentUI;
 import gui.sub.SelectPatientUI;
@@ -13,7 +14,7 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import data.Appointment;
+import backend.DataTransferObjects.*;
 
 public class NewPatientListener extends MouseAdapter {
 	
@@ -28,12 +29,14 @@ public class NewPatientListener extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
-			Appointment a = owner.getAppointment();
-			if (owner.getAppointment().isFilled())
+			AppointmentDto a = owner.getAppointment();
+			if (owner.getAppointment().getPatientID() != null)
 				a = EditAppointmentUI.ShowDialog(parent,a);
 			else
-				a.setPatient(SelectPatientUI.ShowDialog(parent));
-			owner.setPatient(a.getPatient());
+                                DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(
+                                        SelectPatientUI.ShowDialog(parent).getPatID(), a);
+				a.setPatientID(SelectPatientUI.ShowDialog(parent).getPatID());
+			owner.setPatient(SelectPatientUI.ShowDialog(parent).getPatID());
 			owner.setNote(a.getNote());
 		}
 	}
