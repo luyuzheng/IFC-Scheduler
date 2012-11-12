@@ -15,6 +15,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import backend.DataTransferObjects.*;
+import backend.DataTransferObjects.AppointmentDto;
 
 public class NewPatientListener extends MouseAdapter {
 	
@@ -30,6 +31,7 @@ public class NewPatientListener extends MouseAdapter {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
 			AppointmentDto a = owner.getAppointment();
+
 			if (owner.getAppointment().getPatientID() != null)
 				a = EditAppointmentUI.ShowDialog(parent,a);
 			else
@@ -37,6 +39,12 @@ public class NewPatientListener extends MouseAdapter {
                                         SelectPatientUI.ShowDialog(parent).getPatID(), a);
 				a.setPatientID(SelectPatientUI.ShowDialog(parent).getPatID());
 			owner.setPatient(SelectPatientUI.ShowDialog(parent).getPatID());
+
+			if (owner.getAppointment() != null)
+				a = EditAppointmentUI.ShowDialog(parent,a);
+			else
+				a.setPatientID(SelectPatientUI.ShowDialog(parent).getPatID());
+			owner.setPatient(a.getPatientID());
 			owner.setNote(a.getNote());
 		}
 	}
