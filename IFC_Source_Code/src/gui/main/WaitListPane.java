@@ -14,6 +14,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -28,10 +29,10 @@ import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import data.Type;
-import data.WaitingPatient;
-import data.managers.TypeManager;
-import data.managers.WaitlistManager;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.TypeDto;
+import backend.DataTransferObjects.WaitlistDto;
 
 /**
  * WaitListPane displays the wait list pane on the right-hand side of the application when the "Wait List" button is clicked.
@@ -39,15 +40,13 @@ import data.managers.WaitlistManager;
  */
 public class WaitListPane extends JPanel {
 	
-	private TypeManager tm = new TypeManager();
-	private WaitlistManager wm = new WaitlistManager();
 	private Component owner;
 	
 	private JTable specTable;
 	private JComboBox typeSelector;
 	private JButton addPatientButton = new JButton("Add Patient to List");
 	private JButton removePatientButton = new JButton("Remove Patient from List");
-	private ArrayList<Type> types;
+	private List<TypeDto> types;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
@@ -63,9 +62,10 @@ public class WaitListPane extends JPanel {
 		setLayout(new BorderLayout());
 		
 		JPanel typeSelectionPanel = new JPanel(new GridLayout(0,1));
-		types = tm.getTypeList();
-		Type general = new Type(-1, "View All");
-		types.add(0, general);
+		types = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+		//types = tm.getTypeList();
+		//TypeDto general = new TypeDto(-1, "View All");
+		//types.add(0, general);
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
 		typeSelector.addActionListener(new BoxListener());
@@ -95,7 +95,7 @@ public class WaitListPane extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 		
 		JPanel specTablePanel = new JPanel(new BorderLayout());
-		WaitlistTableModel model = new WaitlistTableModel(wm.getWaitList(), false);
+		WaitlistTableModel model = new WaitlistTableModel(getWaitList(), false);
 		specTable = new JTable(model);
 		specTable.setDragEnabled(true);
 		specTable.setFont(font);
@@ -119,9 +119,8 @@ public class WaitListPane extends JPanel {
 	private final AbstractAction addPatientAction = new AbstractAction("Add Patient to Waitlist") {
 		public void actionPerformed(ActionEvent e) {
 			AddToWaitlistUI.ShowDialog(owner);
-			wm.updateWaitlist();
-			if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false));
-			else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true));
+			if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(getWaitList(), false));
+			else specTable.setModel(new WaitlistTableModel(getWaitList(types.get(typeSelector.getSelectedIndex())), true));
 		}
 	};
 	
@@ -163,12 +162,12 @@ public class WaitListPane extends JPanel {
 
 		private String[] columnNames;
 		private boolean specific;
-		private ArrayList<WaitingPatient> waits;
+		private List<WaitlistDto> waits;
 		
 		/**
 		 * Constructor to produce a wait list table model.
 		 */ 
-		public WaitlistTableModel(ArrayList<WaitingPatient> waits, boolean specific) {
+		public WaitlistTableModel(List<WaitlistDto> waits, boolean specific) {
 			this.waits = waits;
 			if (specific) columnNames = new String[] { "Date Added", "First Name", "Last Name", "Phone Number", "Comment" };
 			else columnNames = new String[] { "Date Added", "First Name", "Last Name", "Phone Number", "Type", "Comment" };
@@ -181,7 +180,7 @@ public class WaitListPane extends JPanel {
 		 * @param row - the row number in the table
 		 * @return the patient at a particular row number
 		 */
-		public WaitingPatient getPatient(int row) {
+		public PatientDto getPatient(int row) {
 			return waits.get(row);
 		}
 		
@@ -241,14 +240,40 @@ public class WaitListPane extends JPanel {
 	}
 	
 	/**
+	 * Returns the full list of people on the wait list.
+	 * 
+	 * @return entire list of people on the wait list
+	 */
+	public List<WaitlistDto> getWaitList() {
+		return DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
+	}
+	
+	/**
+	 * Returns a waitlist filtered by a specified service type.
+	 * 
+	 * @param t - the type to filter the waitlist
+	 * @return a list of waitlist patients that have been filtered by a type
+	 */
+	public List<WaitlistDto> getWaitList(TypeDto t) {
+		List<WaitlistDto> sub = new ArrayList<WaitlistDto>();
+		List<WaitlistDto> fullWaitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
+		for (WaitlistDto w : fullWaitlist) {
+			if (w.getTypeID() == t.getTypeID())
+				sub.add(w);
+		}
+		return sub;
+	}
+	
+	/**
 	 * This class sets the table model to include the appropriate types of columns according to what has been selected in 
 	 * the JComboBox that allows the user to choose the type of service.
 	 */
 	public class BoxListener implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
 	        JComboBox cb = (JComboBox)e.getSource();
-	        if (cb.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false));
-	        else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(cb.getSelectedIndex())), true));
+	        List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
+	        if (cb.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(getWaitList(), false));
+	        else specTable.setModel(new WaitlistTableModel(getWaitList(types.get(cb.getSelectedIndex())), true));
 	    }
 	}
 

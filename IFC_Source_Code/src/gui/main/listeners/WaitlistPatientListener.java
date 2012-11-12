@@ -15,6 +15,8 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
 
+import backend.DataTransferObjects.PatientDto;
+
 import data.WaitingPatient;
 import data.managers.WaitlistManager;
 
@@ -32,7 +34,7 @@ public class WaitlistPatientListener extends MouseAdapter {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
-				WaitingPatient wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
+				PatientDto wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
 				String newComment = DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp);
 				wp.setComment(newComment);
 				WaitlistManager wm = new WaitlistManager();

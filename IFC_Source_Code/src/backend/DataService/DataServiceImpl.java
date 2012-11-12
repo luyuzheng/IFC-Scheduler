@@ -838,7 +838,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Waitlist");
+			st = connection.prepareStatement("SELECT * FROM Waitlist w, Patient p INNER JOIN ON w.PatID=p.PatID");
 			rs = st.executeQuery();
 			List<WaitlistDto> results = new ArrayList<WaitlistDto>();
 			while (rs.next()) {
