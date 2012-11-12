@@ -148,6 +148,34 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
+	public boolean updatePatient(String fieldName, Object value, PatientDto patient) {
+		PreparedStatement st = null;
+
+		try {
+			patient.setField(fieldName, value);
+			st = connection.prepareStatement(
+					"UPDATE Patient SET " + fieldName + "=? WHERE PatID=?");
+			st.setObject(1, value);
+			st.setInt(2, patient.getPatID());
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
+	}
+
+	@Override
 	public boolean removePatient(PatientDto patient) {
 		PreparedStatement st = null;
 
@@ -1147,4 +1175,3 @@ public class DataServiceImpl implements DataService {
 		return false;
 	}
 }
-

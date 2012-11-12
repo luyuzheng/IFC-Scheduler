@@ -35,6 +35,15 @@ public interface DataService {
      * @return true if succeeded, false if failed
      */
 	public boolean addPatient(PatientDto patient);
+
+	/**
+	 * Updates the specified field for the specified patient in the database and DTO
+	 *
+	 * @param name of the field to be updated (use constants in {@link PatientDto})
+	 * @param value
+	 * @return true if succeeded, false if failed
+	 */
+	public boolean updatePatient(String fieldName, Object value, PatientDto patient);
 	
 	/**
 	 * Removes a patient from the database using the PatID in the PatientDto
