@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import gui.Constants;
 
+@SuppressWarnings("serial")
 public class EmptyDayPanel extends JPanel {
 	JLabel textLabel;
 	

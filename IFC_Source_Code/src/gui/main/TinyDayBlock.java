@@ -15,8 +15,9 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import java.util.Date;
+import java.sql.Date;
 
+@SuppressWarnings("serial")
 public class TinyDayBlock extends JPanel implements FocusListener {
 
 	private JTextArea textArea = new JTextArea();

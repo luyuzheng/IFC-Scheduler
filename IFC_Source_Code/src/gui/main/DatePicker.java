@@ -14,10 +14,12 @@ import javax.swing.JPanel;
 
 import java.sql.Date;
 
+@SuppressWarnings("serial")
 public class DatePicker extends JPanel {
 	
 	private TinyDayBlock selectedBlock;
-	private MonthView prev, curr, next;
+	private MonthView curr;
+	//private MonthView prev, curr, next;
 	private MainWindow mainWindow;
 	private Date currentDate;
 	
@@ -27,14 +29,18 @@ public class DatePicker extends JPanel {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
 		
-		currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
+		currentDate = new Date(cal.getTimeInMillis());
+		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
 		
 		//prev = new MonthView(this, currentDate, MonthView.PREVIOUS_MONTH);
 		curr = new MonthView(this, currentDate, MonthView.CURRENT_MONTH);
 		//next = new MonthView(this, currentDate, MonthView.NEXT_MONTH);
 		
 		//reportFocusGained(selectedBlock);
-		curr.selectDay(selectedBlock.getDate().getDay());
+		Date focused = selectedBlock.getDate();
+		cal.setTime(focused);
+		curr.selectDay(cal.get(Calendar.DAY_OF_MONTH));
+		//curr.selectDay(selectedBlock.getDate().getDay());
 		
 		setLayout(new GridLayout(0,1));
 		//add(prev);
@@ -69,9 +75,19 @@ public class DatePicker extends JPanel {
 	}
 	
 	public void nextMonth() {
-		int day = curr.getDate().getDay();
-		int month = curr.getDate().getMonth();
-		int year = curr.getDate().getYear();
+			
+		GregorianCalendar focused= new GregorianCalendar();
+		focused.setTime(curr.getDate());
+		
+		
+		//int day = curr.getDate().getDay();
+		//int month = curr.getDate().getMonth();
+		//int year = curr.getDate().getYear();
+		
+		int day = focused.get(Calendar.DAY_OF_MONTH);
+		int month = focused.get(Calendar.MONTH) + 1;
+		int year = focused.get(Calendar.YEAR);
+				
 		if (month == 12) {
 			month = 1;
 			year++;

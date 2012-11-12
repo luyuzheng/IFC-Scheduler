@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import java.util.Date;
 
+@SuppressWarnings("serial")
 public class MonthView extends JPanel {
 	
 	public static int CURRENT_MONTH = 0;

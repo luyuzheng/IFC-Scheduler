@@ -12,8 +12,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+//import java.util.Calendar;
+//import java.util.GregorianCalendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -21,7 +21,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import backend.DataService.DataService;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
@@ -29,6 +28,7 @@ import backend.DataTransferObjects.PatientDto;
 import gui.Constants;
 
 
+@SuppressWarnings("serial")
 public class AppointmentBlock extends JPanel implements FocusListener {
 
 	AppointmentDto appointment;
