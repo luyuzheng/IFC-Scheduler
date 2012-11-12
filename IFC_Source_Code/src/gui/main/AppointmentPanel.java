@@ -23,15 +23,20 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.DayDto;
 import backend.DataTransferObjects.PractitionerDto;
+import backend.DataTransferObjects.SchedulePractitionerDto;
+import gui.Constants;
 
 public class AppointmentPanel extends JScrollPane implements Printable, ActionListener {
-	Day day;
+	DayDto day;
 	
 	ArrayList<Graphics2D> pages;
 
@@ -42,8 +47,9 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		AppointmentSubpanel as = new AppointmentSubpanel(dp);
 
 		day = dp.getDay();
-		for (Room r : day.getRooms()) 
+		for (SchedulePractitionerDto r : DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day)){
 			as.addRoom(r);
+		}
 		panel.add(as, BorderLayout.CENTER);
 		setViewportView(panel);
 	}
@@ -60,7 +66,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
 		
 		//# rooms
-		int r = day.getRooms().size();
+		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 
 		//set the font for the page
 		Font font = new Font("Arial", Font.PLAIN, 12);
@@ -79,50 +85,53 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		double timesWidth = 30.0;
 		
 		//end time is the end # minutes, currTime is the current time
-		int endTime = day.getTimeSlot().getEndTime().timeInMinutes();
-		Time currTime = day.getTimeSlot().getStartTime();
+		int endTime = day.getEnd();
+		int currTime = day.getStart();
 		
 		//current drawing point
 		int startx = Constants.PRINT_MARGINX;
 		int starty = Constants.PRINT_MARGINY;
 		
-		String[] dateSt = day.getDate().toPrintString();
+		String[] dateSt = toDateArray(day.getDate());
 		g2d.drawString(dateSt[0], startx + 5, starty + hgt);
 		g2d.drawString(dateSt[1], startx + 5, starty + 2*hgt);
 		
 		starty = Constants.PRINT_MARGINY + (int)topHeight;
 		
 		//leftover is the number of minutes in the first box (if it ends oddly)
-		int leftover = 60 - (currTime.timeInMinutes() % 60);
+		int leftover = 60 - (currTime % 60);
 		if (leftover > 0) {
 			Rectangle2D.Double topTime = new Rectangle2D.Double ();
 			topTime.setRect (startx, starty, timesWidth, leftover * Constants.PIXELS_PER_MINUTE);
 			g2d.draw(topTime);
-			String[] timeSt = currTime.toPrintString();
-			g2d.drawString(timeSt[0], startx + 5, starty + hgt);
-			g2d.drawString(timeSt[1], startx + 10, starty + 2*hgt);
+			String timeSt = ((Integer) ((currTime / 60) % 12)).toString() + ":" + ((Integer) (currTime % 60)).toString();
+			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
+			g2d.drawString(timeSt, startx + 5, starty + hgt);
+			g2d.drawString(amPm, startx + 10, starty + 2*hgt);
 			starty += leftover * Constants.PIXELS_PER_MINUTE;
-			currTime = currTime.addMinutes(leftover);
+			currTime+=leftover;
 		}
 		
-		while (currTime.timeInMinutes() + 60 < endTime) {
+		while (currTime + 60 < endTime) {
 			Rectangle2D.Double timeBlock = new Rectangle2D.Double ();
 			timeBlock.setRect (startx, starty, timesWidth, 60 * Constants.PIXELS_PER_MINUTE);
 			g2d.draw(timeBlock);
-			String[] timeSt = currTime.toPrintString();
-			g2d.drawString(timeSt[0], startx + 5, starty + hgt);
-			g2d.drawString(timeSt[1], startx + 10, starty + 2*hgt);
+			String timeSt = ((Integer) ((currTime / 60) % 12)).toString() + ":" + ((Integer) (currTime % 60)).toString();
+			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
+			g2d.drawString(timeSt, startx + 5, starty + hgt);
+			g2d.drawString(amPm, startx + 10, starty + 2*hgt);
 			starty += 60 * Constants.PIXELS_PER_MINUTE;
-			currTime = currTime.addMinutes(60);
+			currTime+=60;
 		}
 		
-		leftover = endTime - currTime.timeInMinutes();
+		leftover = endTime - currTime;
 		Rectangle2D.Double bottomTime = new Rectangle2D.Double ();
 		bottomTime.setRect (startx, starty, timesWidth, leftover * Constants.PIXELS_PER_MINUTE);
 		g2d.draw(bottomTime);
-		String[] timeSt = currTime.toPrintString();
-		g2d.drawString(timeSt[0], startx + 5, starty + hgt);
-		g2d.drawString(timeSt[1], startx + 10, starty + 2*hgt);
+		String timeSt = ((Integer) ((currTime / 60) % 12)).toString() + ":" + ((Integer) (currTime % 60)).toString();
+		String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
+		g2d.drawString(timeSt, startx + 5, starty + hgt);
+		g2d.drawString(amPm, startx + 10, starty + 2*hgt);
 		
 		width -= timesWidth;
 		double colWidth;
@@ -185,6 +194,14 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 
 
 		return g2d;
+	}
+
+	private String[] toDateArray(Date date) {
+		String full = date.toString();
+		String[] dateArray = new String[2];
+		dateArray[0] = full.substring(0, 3);
+		dateArray[1] = full.substring(5,9);
+		return dateArray;
 	}
 
 	public int print(Graphics graphics, PageFormat pageFormat, int page) {

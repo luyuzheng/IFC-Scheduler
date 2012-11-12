@@ -7,15 +7,13 @@ package gui.main;
 import gui.main.listeners.NewPractitionerListener;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-
 import javax.swing.JPanel;
 
-import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
-import gui.Constants;
+//import gui.Constants;
 
+@SuppressWarnings("serial")
 public class RoomPanel extends JPanel {
 	HeadingPanel headingPanel;
 	RoomSubpanel roomSubpanel;

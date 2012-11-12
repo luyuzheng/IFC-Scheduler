@@ -838,15 +838,24 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Waitlist w, Patient p INNER JOIN ON w.PatID=p.PatID");
+			st = connection.prepareStatement("SELECT * FROM Waitlist, Patient " +
+					"WHERE Waitlist.PatID=Patient.PatID");
 			rs = st.executeQuery();
 			List<WaitlistDto> results = new ArrayList<WaitlistDto>();
 			while (rs.next()) {
 				WaitlistDto entry = new WaitlistDto();
+				PatientDto patient = new PatientDto();
 				entry.setField(WaitlistDto.WAITLIST_ID, rs.getInt(WaitlistDto.WAITLIST_ID));
 				entry.setField(WaitlistDto.PATIENT, rs.getString(WaitlistDto.PATIENT));
 				entry.setField(WaitlistDto.TYPE_ID, rs.getString(WaitlistDto.TYPE_ID));
 				entry.setField(WaitlistDto.DATE, rs.getString(WaitlistDto.DATE));
+				entry.setField(WaitlistDto.COMMENTS, rs.getString(WaitlistDto.COMMENTS));
+				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
+				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
+				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
+				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+				entry.setPatient(patient);
 				results.add(entry);
 			}
 			return results;

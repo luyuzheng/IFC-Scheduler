@@ -8,12 +8,13 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 
-import data.TimeSlot;
+import gui.TimeSlot;
 
 public class SidePanel extends JPanel {
 	public SidePanel(DayPanel dp) {
 		setLayout(new BorderLayout());
 		add(new TimeHeading(dp.getDay().getDate()), BorderLayout.NORTH);
-		add(new TimesPanel(dp.getDay().getTimeSlot()), BorderLayout.CENTER);
+		
+		add(new TimesPanel(new TimeSlot(dp.getDay().getStart(),dp.getDay().getEnd())), BorderLayout.CENTER);
 	}
 }

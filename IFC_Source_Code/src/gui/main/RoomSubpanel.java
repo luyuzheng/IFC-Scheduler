@@ -6,7 +6,6 @@
 package gui.main;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -15,8 +14,9 @@ import javax.swing.JPanel;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
-import gui.Constants;
+//import gui.Constants;
 
+@SuppressWarnings("serial")
 public class RoomSubpanel extends JPanel{
 	private SchedulePractitionerDto room;
 	private DayPanel dp;

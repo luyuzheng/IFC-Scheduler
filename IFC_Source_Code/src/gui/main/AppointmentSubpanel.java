@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
+@SuppressWarnings("serial")
 public class AppointmentSubpanel extends JPanel {
 	
 	EmptyDayPanel empty = new EmptyDayPanel();

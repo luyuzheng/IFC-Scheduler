@@ -23,6 +23,7 @@ import backend.DataTransferObjects.SchedulePractitionerDto;
 
 import gui.Constants;
 
+@SuppressWarnings("serial")
 public class HeadingPanel extends JPanel implements FocusListener {
 	private SchedulePractitionerDto room;
 	private JTextArea text;

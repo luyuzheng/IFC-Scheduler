@@ -14,8 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import gui.Constants;
-import data.Time;
-import data.TimeSlot;
+import gui.TimeSlot;
 
 
 public class TimesPanel extends JPanel {
@@ -26,21 +25,21 @@ public class TimesPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(new Color(215,255,215));
 		if (slot == null)
-			this.slot = Constants.DEFAULT_TIMESLOT;
+			this.slot = new TimeSlot(Constants.DEFAULT_START_TIME, Constants.DEFAULT_END_TIME);
 		else
 			this.slot = slot;
 		setupPanel();
 	}
 	
 	public TimesPanel() {
-		this(Constants.DEFAULT_TIMESLOT);
+		this(new TimeSlot(Constants.DEFAULT_START_TIME, Constants.DEFAULT_END_TIME));
 	}
 	
 	private void setupPanel() {
-		Time start = slot.getStartTime();
-		Time end = slot.getEndTime();
+		int start = slot.getStartTime();
+		int end = slot.getEndTime();
 		
-		int min = start.timeInMinutes();
+		int min = start;
 		
 		if (min % 60 > 0) {
 			JPanel panel = new JPanel();

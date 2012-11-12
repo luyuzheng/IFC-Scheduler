@@ -7,13 +7,11 @@ import gui.sub.DefaultTimeslotsUI;
 import gui.sub.EditPatientsUI;
 import gui.sub.EditPractitionersUI;
 import gui.sub.HelpUI;
-import gui.sub.SelectPatientUI;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.io.File;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -21,8 +19,8 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
-import backend.DataTransferObjects.PatientDto;
 
+@SuppressWarnings("serial")
 public class Menu extends JMenuBar {
 	public Menu(MainWindow window) {
 		

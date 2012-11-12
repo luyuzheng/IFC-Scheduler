@@ -20,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 import gui.Constants;
 
 
+@SuppressWarnings("serial")
 public class MonthHeadingPanel extends JPanel {
 	private JTextArea text;
 	

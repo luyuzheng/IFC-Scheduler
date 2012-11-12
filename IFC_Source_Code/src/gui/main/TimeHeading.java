@@ -8,9 +8,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+//import java.util.Calendar;
+//import java.util.GregorianCalendar;
+//import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -21,6 +21,7 @@ import gui.Constants;
 import java.util.Date;
 
 
+@SuppressWarnings("serial")
 public class TimeHeading extends JPanel {
 	JTextArea textArea;
 	private Date currentDate;
@@ -40,7 +41,7 @@ public class TimeHeading extends JPanel {
 		textArea.setHighlighter(null);
 		add(textArea, BorderLayout.CENTER);
 
-		GregorianCalendar cal = new GregorianCalendar();		
+		//GregorianCalendar cal = new GregorianCalendar();		
 		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
 		currentDate = new Date();
 		

@@ -18,6 +18,7 @@ import java.sql.Date;
 /**
  * MainWindow combines all GUI components to produce the final application.
  */
+@SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 	
 	private AppointmentPanel ap;

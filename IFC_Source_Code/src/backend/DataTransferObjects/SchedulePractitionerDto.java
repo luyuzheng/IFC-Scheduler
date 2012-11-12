@@ -62,4 +62,10 @@ public class SchedulePractitionerDto extends AbstractDto {
 	public List<AppointmentDto> getAppointments(){
         return (List<AppointmentDto>) fieldsMap.get(APPOINTMENTS);
     }
+    
+    //TODO implement me, appointments full
+    public boolean isFull(){
+		return false;
+    	
+    }
 }
