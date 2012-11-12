@@ -71,5 +71,6 @@ CREATE TABLE IF NOT EXISTS Waitlist
 WaitlistID int NOT NULL PRIMARY KEY AUTO_INCREMENT, 
 PatID int,
 TypeID int,
-DatetimeEntered datetime
+DatetimeEntered datetime,
+Comments text
 );

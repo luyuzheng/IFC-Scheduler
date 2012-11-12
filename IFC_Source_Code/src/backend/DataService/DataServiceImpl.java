@@ -849,6 +849,7 @@ public class DataServiceImpl implements DataService {
 				entry.setField(WaitlistDto.PATIENT, rs.getString(WaitlistDto.PATIENT));
 				entry.setField(WaitlistDto.TYPE_ID, rs.getString(WaitlistDto.TYPE_ID));
 				entry.setField(WaitlistDto.DATE, rs.getString(WaitlistDto.DATE));
+				entry.setField(WaitlistDto.COMMENTS, rs.getString(WaitlistDto.COMMENTS));
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
