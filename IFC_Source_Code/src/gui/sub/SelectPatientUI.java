@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -29,11 +30,11 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 import backend.DataTransferObjects.*;
+import java.util.List;
 
 public class SelectPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static SelectPatientUI selectPatientUI;
-	private PatientManager pm = new PatientManager();
-	private ArrayList<Patient> pat = pm.getPatientList();
+	private ArrayList<PatientDto> pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 	
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
@@ -241,8 +242,10 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 	
 	public void updateTable() {
 		String filter = searchField.getText();
-		if (filter.equals("")) patTable.setModel(new PatTableModel(pat));
-		else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
+                patTable.setModel(new PatTableModel(pat));
+                //implement filters
+		//if (filter.equals("")) patTable.setModel(new PatTableModel(pat));
+                //else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -285,31 +288,13 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			}
 			
 			String noteText = note.getText().replaceAll("[\r\n]+", "\t\t"); //Added by Aakash on 12th feb to fix multiline note bug
-			int id = pm.getNewId();
 			
-			patient = new Patient(id, firstName, lastName, num, noteText);
-			Patient test = pm.patientExists(patient);
-			
-			if (test == null) pm.addPatient(patient);
-			else {
-				String text = "A patient exists by that name: \n" +
-					          "Name: " + patient.getFullName() + "\n" +
-					          "Phone Number: " + patient.getNumberString() + "\n" + 
-					          "Note: " + patient.getNote();
-				text += "\n\nContinue anyways?";
-				
-				if (JOptionPane.showConfirmDialog(this, text, "Patient Confirmation", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION)
-					pm.addPatient(patient);
-				else {
-					patient = null;
-					return;
-				}	
-			}
+			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(num, firstName, lastName, noteText);
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (patTable.getSelectedRow() > -1) {
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				patient = model.getPatient(patTable.getSelectedRow());
-				if (!patient.getNote().equals("") && JOptionPane.showConfirmDialog(this, "This patient has the following note attached: \"" + patient.getNote() + "\". Are you sure you want to continue?", "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, "This patient has the following note attached: \"" + patient.getNotes() + "\". Are you sure you want to continue?", "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
 					patient = null;
 					return;
 				}
@@ -323,7 +308,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			else {
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getSelectedRow()));
-				pat = pm.getPatientList();
+				pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 				return;
 			}
@@ -333,13 +318,13 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 	
 	class PatTableModel extends AbstractTableModel {
 
-		ArrayList<Patient> patients = new ArrayList<Patient>();
+		ArrayList<PatientDto> patients = new ArrayList<PatientDto>();
 		
-		public PatTableModel(ArrayList<Patient> patients) {
+		public PatTableModel(ArrayList<PatientDto> patients) {
 			this.patients = patients;
 		}
 		
-		public Patient getPatient(int row) {
+		public PatientDto getPatient(int row) {
 			return patients.get(row);
 		}
 		
@@ -358,15 +343,15 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 		}
 
 		public Object getValueAt(int row, int col) {
-			Patient p = patients.get(row);
+			PatientDto p = patients.get(row);
 			if (col == 0) 
-				return p.getFirstName();
+				return p.getFirst();
 			else  if (col == 1)
-				return p.getLastName();
+				return p.getLast();
 			else if (col == 2)
-				return p.getNumberString();
+				return p.getPhone();
 			else
-				return p.getNote();
+				return p.getNotes();
 		}
 		
 		public boolean isCellEditable(int row, int col) {
