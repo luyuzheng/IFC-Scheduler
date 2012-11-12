@@ -144,7 +144,7 @@ public class DayPanel extends JPanel {
 			if (panel == null) return;
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitionerFromDay
 				(panel.getRoom().getPractSchedID(), day);
-			as.removeRoom(panel.getRoom().getPractSchedID());
+			as.removeRoom(panel.getRoom());
 		}
 	}
 	
@@ -178,16 +178,17 @@ public class DayPanel extends JPanel {
 	
 	private final AbstractAction addPatAction = new AbstractAction("<html>Schedule Patient</html>") {
 		public void actionPerformed(ActionEvent e) {
-			ab.setPatient(SelectPatientUI.ShowDialog(ab.getParent()));
+			ab.setPatient(SelectPatientUI.ShowDialog(ab.getParent()).getPatID());
 		}
 	};
 	
 	private final AbstractAction addPracAction = new AbstractAction("<html>Schedule Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
-			Practitioner p = SelectPractitionerUI.ShowDialog(mw);
+			PractitionerDto p = SelectPractitionerUI.ShowDialog(mw);
 			if (p==null) return;
-			as.addRoom(day.addRoom(p));
-			new DaySaver().storeDay(day);
+			SchedulePractitionerDto room = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitionerToDay(
+					p, day, day.getStart(), day.getEnd());
+			as.addRoom(room);
 		}
 	};
 	
