@@ -387,9 +387,11 @@ public class DataServiceImpl implements DataService {
 		}
 		return -1;
 	}
+        
+        
 
 	@Override
-	public boolean addNewPractitionerType(String serviceType) {
+	public TypeDto addNewPractitionerType(String serviceType) {
 		PreparedStatement st = null;
 
 		//TODO: have this return the ID of the this object instead if possible
@@ -397,7 +399,8 @@ public class DataServiceImpl implements DataService {
 			st = connection.prepareStatement("INSERT INTO ServiceType (TypeName) VALUES (?)");
 			st.setString(1, serviceType);
 			st.executeUpdate();
-			return true;
+			return this.getType(serviceType);
+                        
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -411,7 +414,7 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
-		return false;
+		return null;
 	}
 
 	@Override
@@ -517,28 +520,41 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public boolean addPractitioner(PractitionerDto practitioner) {
+	public PractitionerDto addPractitioner(int typeID, String first, String last, int appLength, String phone, String notes) {
 		PreparedStatement st = null;
+                ResultSet rs = null;
 
 		try {
-			if (practitioner.getPractID() == null) {
-				st = connection.prepareStatement("INSERT INTO Practitioner " +
-						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes) " +
-				"VALUES (?, ?, ?, ?, ?, ?)");
-			} else {
-				st = connection.prepareStatement("INSERT INTO Practitioner " +
-						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes, PractID) " +
-				"VALUES (?, ?, ?, ?, ?, ?, ?)");
-				st.setInt(7, practitioner.getPractID());
-			}
-			st.setInt(1, practitioner.getTypeID());
-			st.setString(2, practitioner.getFirst());
-			st.setString(3, practitioner.getLast()); //TODO: npe when getPhone returns null
-			st.setInt(4, practitioner.getApptLength());
-			st.setString(5, practitioner.getPhone());
-			st.setString(6, practitioner.getNotes());
+			
+			st = connection.prepareStatement("INSERT INTO Practitioner " +
+					"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes) " +
+			"VALUES (?, ?, ?, ?, ?, ?)");
+			
+			st.setInt(1, typeID);
+			st.setString(2, first);
+			st.setString(3, last); //TODO: npe when getPhone returns null
+			st.setInt(4, appLength);
+			st.setString(5, phone);
+			st.setString(6, notes);
 			st.executeUpdate();
-			return true;
+                        
+                        st = connection.prepareStatement(
+                        "SELECT Max(PractID) FROM Practitioner"); //TODO: link to Type on Type_ID
+		
+                        rs = st.executeQuery();
+                        rs.next();
+                        PractitionerDto returnPract = new PractitionerDto();
+                
+                        returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
+                        returnPract.setField(PractitionerDto.FIRST, rs.getInt(PractitionerDto.FIRST));
+                        returnPract.setField(PractitionerDto.LAST, rs.getInt(PractitionerDto.LAST));
+                        returnPract.setField(PractitionerDto.NOTES, rs.getInt(PractitionerDto.NOTES));
+                        returnPract.setField(PractitionerDto.PHONE, rs.getInt(PractitionerDto.PHONE));
+                        returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
+                        returnPract.setField(PractitionerDto.TYPE_ID, rs.getInt(PractitionerDto.TYPE_ID));
+                        
+                        return returnPract;
+			
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -552,7 +568,7 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
-		return false;
+		return null;
 	}
 
 	// TODO: Remove appointments with this practitioner
@@ -595,8 +611,9 @@ public class DataServiceImpl implements DataService {
 			lgr.log(Level.SEVERE, "Tried to update practitioner without ID.\n");
 			return false;
 		}
-		// TODO: check that the ID exists in the table.
-		return addPractitioner(practitioner);
+		// TODO: check that the ID exists in the table. 
+                // TODO: Change this method
+		return false;
 	}
 
 	@Override
@@ -1244,5 +1261,10 @@ public class DataServiceImpl implements DataService {
 		}
 	}
 	return null;
+    }
+
+    @Override
+    public TypeDto getType(String type) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

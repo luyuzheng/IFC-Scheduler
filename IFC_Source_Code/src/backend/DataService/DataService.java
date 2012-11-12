@@ -3,14 +3,7 @@ package backend.DataService;
 import java.sql.Date;
 import java.util.List;
 
-import backend.DataTransferObjects.AppointmentDto;
-import backend.DataTransferObjects.DayDto;
-import backend.DataTransferObjects.NoShowDto;
-import backend.DataTransferObjects.PatientDto;
-import backend.DataTransferObjects.PractitionerDto;
-import backend.DataTransferObjects.SchedulePractitionerDto;
-import backend.DataTransferObjects.TypeDto;
-import backend.DataTransferObjects.WaitlistDto;
+import backend.DataTransferObjects.*;
 
 /**
  * Interface for the data service backend for scheduler database.
@@ -90,12 +83,18 @@ public interface DataService {
 	 */
 	public int getNoShowCountInLastSixMonths(PatientDto patient);
     
+        /**
+         * @param type name
+         * @return type
+         */
+        public TypeDto getType(String type);    
+        
     /**
      * Adds a new Practitioner type to the database
      * 
      * @param type
      */
-    public boolean addNewPractitionerType(String serviceType);
+    public TypeDto addNewPractitionerType(String serviceType);
     
     /**
      * Removed a Practitioner type from the database
@@ -118,7 +117,7 @@ public interface DataService {
     
     /** Add a practitioner to the database
     */
-    public boolean addPractitioner(PractitionerDto practitioner);
+    public PractitionerDto addPractitioner(int TypeID, String first, String last, int appLength, String PhoneNumber, String notes);
     
     /**
      * Remove a practitioner from the database
