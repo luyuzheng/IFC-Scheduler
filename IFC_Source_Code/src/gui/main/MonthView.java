@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
 
 import javax.swing.JPanel;
 
-import java.util.Date;
+import java.sql.Date;
 
 @SuppressWarnings("serial")
 public class MonthView extends JPanel {
