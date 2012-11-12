@@ -1201,4 +1201,48 @@ public class DataServiceImpl implements DataService {
 		}
 		return false;
 	}
+
+    @Override
+    public PatientDto addPatient(String phone, String first, String last, String notes) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+	try {
+		
+		st = connection.prepareStatement(
+			"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes) VALUES (?, ?, ?, ?)");
+		
+		st.setString(1, first);
+		st.setString(2, last);
+		st.setString(3, phone);
+		st.setString(4, notes);
+			st.executeUpdate();
+                        
+                st = connection.prepareStatement(
+                        "SELECT Max(PatID) FROM Patient");
+		rs = st.executeQuery();
+                rs.next();
+                PatientDto returnPatient = new PatientDto();
+                
+                returnPatient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+                returnPatient.setFirst(first);
+                returnPatient.setLast(last);
+                returnPatient.setNotes(notes);
+                returnPatient.setPhone(phone);
+                
+                return returnPatient;
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+	return null;
+    }
 }

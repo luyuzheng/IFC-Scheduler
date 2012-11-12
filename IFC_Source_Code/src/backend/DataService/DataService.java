@@ -36,6 +36,12 @@ public interface DataService {
      */
 	public boolean addPatient(PatientDto patient);
 
+        /**
+         * Adds a patient given the parameters
+         */
+        
+        public PatientDto addPatient(String phone, String first, String last, String notes);
+        
 	/**
 	 * Updates the specified field for the specified patient in the database and DTO
 	 *

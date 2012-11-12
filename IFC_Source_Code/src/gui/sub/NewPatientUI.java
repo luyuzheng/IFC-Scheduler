@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -23,16 +24,12 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import backend.DataTransferObjects.PatientDto;
-
-import data.Patient;
-import data.PhoneNumber;
-import data.managers.PatientManager;
+import backend.DataTransferObjects.*;
+import java.util.List;
 
 public class NewPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static NewPatientUI newPatientUI;
-	private PatientManager pm = new PatientManager();
-	private ArrayList<Patient> pat = pm.getPatientList();
+	private List<PatientDto> pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 	
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
@@ -171,9 +168,8 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 			
 			//String noteText = note.getText();
 			String noteText = note.getText().replaceAll("[\r\n]+", "\t\t"); //added by aakash on feb 12 to fix multiline note bug
-			int id = pm.getNewId();
 			
-			patient = new Patient(id, firstName, lastName, num, noteText);
+			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(patient);
 			Patient test = pm.patientExists(patient);
 			
 			if (test == null) pm.addPatient(patient);
