@@ -867,7 +867,8 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public boolean setHoursForDay(DayDto day) {
+	//TODO set hours for inputs
+	public boolean setHoursForDay(DayDto day, int start, int end) {
 		PreparedStatement st = null;
 
 		try {

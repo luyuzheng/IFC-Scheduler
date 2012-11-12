@@ -172,7 +172,7 @@ public interface DataService {
     /**
      * sets hours of operation for a day
      */
-    public boolean setHoursForDay(DayDto day);
+    public boolean setHoursForDay(DayDto day, int start, int end);
     
     /**
      * set open or closed on day
