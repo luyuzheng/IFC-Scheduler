@@ -29,7 +29,7 @@ import java.util.List;
 
 public class NewPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static NewPatientUI newPatientUI;
-	private List<PatientDto> pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 	
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
@@ -150,7 +150,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 				if (JOptionPane.showConfirmDialog(this, "The Phone Number field is blank. Would you like to continue?", "Missing Phone Number", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
 					return;
 			}
-			PhoneNumber num;
+			String num;
 			try {
 				if (blank) num = null;
 				else if (areaCode.length() != 3 || numberPart1.length() != 3 || numberPart2.length() != 4) {
@@ -160,7 +160,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 					int a = Integer.parseInt(areaCode);
 					int p1 = Integer.parseInt(numberPart1);
 					int p2 = Integer.parseInt(numberPart2);
-					num = new PhoneNumber(areaCode, numberPart1, numberPart2);//a, p1, p2);
+					num = areaCode + "-" + numberPart1 + "-" + numberPart2;//a, p1, p2);
 				}
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, "Please enter a valid phone number (###-###-####) or leave the field blank.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -176,7 +176,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 			if (patTable.getSelectedRow() > -1) {
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				patient = model.getPatient(patTable.getSelectedRow());
-				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, "This patient has the following note attached: \"" + patient.getNote() + "\". Are you sure you want to continue?", "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, "This patient has the following note attached: \"" + patient.getNotes() + "\". Are you sure you want to continue?", "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
 					patient = null;
 					return;
 				}
@@ -190,7 +190,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 			else {
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getSelectedRow()));
-				pat = pm.getPatientList();
+				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 				return;
 			}
@@ -206,7 +206,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 			this.patients = patients;
 		}
 		
-		public Patient getPatient(int row) {
+		public PatientDto getPatient(int row) {
 			return patients.get(row);
 		}
 		

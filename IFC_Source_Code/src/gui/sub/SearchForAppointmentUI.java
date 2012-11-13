@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import gui.main.WaitListPane.BoxListener;
 
 import java.awt.BorderLayout;
@@ -22,10 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import data.Appointment;
-import data.Type;
-import data.managers.SearchManager;
-import data.managers.TypeManager;
+import backend.DataTransferObjects.*;
 
 /**
  * Displays the pop up window that allows the user to search for the next available appointment.
@@ -33,10 +31,7 @@ import data.managers.TypeManager;
 public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private static SearchForAppointmentUI searchForAppointmentUI;
 	
-	private TypeManager tm = new TypeManager();
-	private SearchManager sm = new SearchManager();
-	
-	private static Appointment a;
+	private static AppointmentDto a;
 	private JCheckBox monday = new JCheckBox("Mon");
 	private JCheckBox tuesday = new JCheckBox("Tues");
 	private JCheckBox wednesday = new JCheckBox("Wed");
@@ -45,7 +40,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
 	private JComboBox typeSelector;
-	private ArrayList<data.Type> types;
+	private ArrayList<TypeDto> types;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
@@ -68,9 +63,9 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Create drop down box of types of services
-		types = tm.getTypeList();
-		data.Type general = new data.Type(-1, "View All");
-		types.add(0, general);
+		types = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+		//TypeDto general = new data.Type(-1, "View All"); TODO: VIEW ALL
+		//types.add(0, general);
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
 		//typeSelector.addActionListener(new BoxListener()); // PROBABLY NEED TO ADD THIS BACK IN LATER!!!
@@ -139,7 +134,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	 * @param owner - the component that owns this pane (the SearchPane)
 	 * @return an appointment
 	 */
-	public static Appointment ShowDialog(Component owner) {
+	public static AppointmentDto ShowDialog(Component owner) {
 		searchForAppointmentUI = new SearchForAppointmentUI("Search for Next Available Appointment");
 		searchForAppointmentUI.pack();
 		searchForAppointmentUI.setLocationRelativeTo(owner);
