@@ -63,7 +63,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		// Create panel to display patients for a particular day
 		JPanel tablePanel = new JPanel(new BorderLayout());
 		// list of people to confirm
-		AppointmentConfirmationTableModel model = new AppointmentConfirmationTableModel(new ArrayList<Appointment>()); // CHANGE THIS LATER!!!
+		AppointmentConfirmationTableModel model = new AppointmentConfirmationTableModel(new ArrayList<AppointmentDto>()); // CHANGE THIS LATER!!!
 		table = new JTable(model);
 		table.setDragEnabled(true);
 		table.setFont(font);

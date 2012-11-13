@@ -140,7 +140,8 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 			remove(panel);
 			panel = makeMainPanel();
 			//Added by Aakash on 14th feb to fix combolist practitioner-type bug
-			typeCombo.setSelectedIndex(tm.getMaxId());
+			typeCombo.setSelectedIndex(0); //TODO: figure out what maxId does, just dit his to make it compile -Kenny
+                        //typeCombo.setSelectedIndex(tm.getMaxId());
 			add(panel);
 			repaint();
 			validate();

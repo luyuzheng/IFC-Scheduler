@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -179,12 +180,11 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		
 		String noteText = note.getText().replaceAll("[\r\n]+", "\t\t");
 		
-		PatientManager pm = new PatientManager();
-		p.setFirstName(firstName);
-		p.setLastName(lastName);
-		p.setNote(noteText);
+		p.setFirst(firstName);
+		p.setLast(lastName);
+		p.setNotes(noteText);
 		p.setNumber(num);
-		pm.updatePatient(p);
+		DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePractitionerInfo(p);
 		
 		
 		editPatientUI.setVisible(false);

@@ -4,8 +4,11 @@
  */
 package backend.DataTransferObjects;
 
+import backend.DataService.DataServiceImpl;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.ArrayList;
+import backend.DataTransferObjects.*;
 
 /**
  *
@@ -43,6 +46,10 @@ public class DayDto extends AbstractDto {
     
     public void setEnd(Integer i){
         fieldsMap.put(END, i);
+    }
+    
+    public ArrayList<SchedulePractitionerDto> getRooms(){
+        return (ArrayList<SchedulePractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(this);
     }
 
 }

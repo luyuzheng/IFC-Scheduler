@@ -6,7 +6,7 @@ package backend.DataTransferObjects;
 
 import java.sql.Date;
 import java.util.HashMap;
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
@@ -59,8 +59,8 @@ public class SchedulePractitionerDto extends AbstractDto {
     }
     
     @SuppressWarnings("unchecked")
-	public List<AppointmentDto> getAppointments(){
-        return (List<AppointmentDto>) fieldsMap.get(APPOINTMENTS);
+	public ArrayList<AppointmentDto> getAppointments(){
+        return (ArrayList<AppointmentDto>) fieldsMap.get(APPOINTMENTS);
     }
     
     //TODO implement me, appointments full

@@ -70,4 +70,8 @@ public class PatientDto extends AbstractDto {
         fieldsMap.put(NOTES, notes);
         return this;
     }
+
+    public String getFullName() {
+        throw new UnsupportedOperationException("Not yet implemented"); //First+Last
+    }
 }
