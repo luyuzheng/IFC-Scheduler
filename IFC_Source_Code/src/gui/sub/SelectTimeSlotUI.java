@@ -79,7 +79,7 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("ok")) {
-			Time t1, t2;
+			int t1, t2;
 			String time1 = startTimeField.getText();
 			if (time1.equals("")) {
 				JOptionPane.showMessageDialog(this, "Please enter a start time.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -88,7 +88,7 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 				String hour = time1.replaceAll(":[0-5][0-9]", "");
 				String minute = time1.replaceAll("[0-2][0-9]:", "");
 				try { 
-					t1 = new Time(Integer.parseInt(hour), Integer.parseInt(minute));
+					t1 = Integer.parseInt(hour) * 60 + Integer.parseInt(minute);
 				} catch(Exception ex) {
 					JOptionPane.showMessageDialog(this, "Invalid start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -105,7 +105,7 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 				String hour = time2.replaceAll(":[0-5][0-9]", "");
 				String minute = time2.replaceAll("[0-2][0-9]:", "");
 				try { 
-					t2 = new Time(Integer.parseInt(hour), Integer.parseInt(minute));
+					t2 = 60 * Integer.parseInt(hour) + Integer.parseInt(minute);
 				} catch(Exception ex) {
 					JOptionPane.showMessageDialog(this, "Invalid end time.", "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
@@ -115,7 +115,7 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 				return;
 			}
 			
-			if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
