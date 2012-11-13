@@ -1061,7 +1061,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement(
-					"SELECT * WHERE DayDate = ?");
+					"SELECT * FROM Day WHERE DayDate=?");
 			st.setDate(1, date);
 			rs = st.executeQuery();
 
