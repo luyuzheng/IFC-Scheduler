@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,10 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import data.Practitioner;
-import data.Type;
-import data.managers.PractitionerManager;
-import data.managers.TypeManager;
+import backend.DataTransferObjects.*;
 
 public class EditPractitionerUI extends JDialog implements ActionListener {
 	private static EditPractitionerUI editPractitionerUI;
@@ -34,8 +32,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 
-	private static Practitioner p;
-	private TypeManager tm;
+	private static PractitionerDto p;
 
 	private JPanel panel;
 	private Font font= new Font("Tahoma", Font.PLAIN, 14);
@@ -53,10 +50,9 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 	}
 	
 	private JPanel makeMainPanel() {
-		tm = new TypeManager();
 
-		nameField.setText(p.getName());
-		note.setText((p.getNote()).replaceAll("\t\t", "\n"));
+		nameField.setText(p.getFirst() + p.getLast());
+		note.setText((p.getNotes()).replaceAll("\t\t", "\n"));
 		apptLengthField.setText("" + p.getApptLength());
 
 		JPanel panel = new JPanel(new BorderLayout());
@@ -85,10 +81,10 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		label = new JLabel("Type: ", JLabel.CENTER);
 		label.setFont(font);
 		typePanel.add(label, BorderLayout.NORTH);
-		typeCombo = new JComboBox(tm.getTypeList().toArray());
+		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
 		typeCombo.setSelectedIndex(0);
 		//Added by Aakash on 14th feb to fix combolist practitioner-type bug
-		typeCombo.setSelectedIndex(p.getType().getId());
+		typeCombo.setSelectedIndex(p.getTypeID());
 
 		typeCombo.setFont(font);
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());
@@ -128,7 +124,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 	}
 
 
-	public static Practitioner ShowDialog(Component owner, Practitioner pat) {
+	public static PractitionerDto ShowDialog(Component owner, PractitionerDto pat) {
 		p = pat;
 		editPractitionerUI = new EditPractitionerUI("Edit Practitioner");
 		editPractitionerUI.pack();
@@ -139,7 +135,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New Type")) {
-			data.Type t = NewTypeUI.ShowDialog(this);
+			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
 			remove(panel);
 			panel = makeMainPanel();
@@ -171,20 +167,19 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please select a type.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			data.Type t = (data.Type)typeCombo.getSelectedItem();
+			TypeDto t = (TypeDto)typeCombo.getSelectedItem();
 
-			PractitionerManager pm = new PractitionerManager();
 			int newApptLength = Integer.parseInt(apptLength);
 			if (p.getApptLength() == newApptLength) {
-				p.setName(name);
-				p.setNote(noteText);
-				p.setType(t);
-				pm.updatePractitioner(p);
+				p.setFirst(name);
+                                p.setLast(name);
+				p.setNotes(noteText);
+				p.setTypeID(t.getTypeID());
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePractitionerInfo(p);
 			} else {
-				Practitioner newPrac = new Practitioner(pm.getNewId(), name, t, newApptLength, noteText);
-				pm.retirePractitioner(p);
-				pm.addPractitioner(newPrac);
-				p = newPrac;
+                                DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(p);
+                     
+				p = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(t.getTypeID(), name, name, newApptLength, "" ,noteText);
 			}
 		}
 		editPractitionerUI.setVisible(false);
