@@ -36,7 +36,7 @@ public class DatePicker extends JPanel {
 		curr = new MonthView(this, currentDate, MonthView.CURRENT_MONTH);
 		//next = new MonthView(this, currentDate, MonthView.NEXT_MONTH);
 		
-		//reportFocusGained(selectedBlock);
+		reportFocusGained(selectedBlock);
 		Date focused = selectedBlock.getDate();
 		cal.setTime(focused);
 		curr.selectDay(cal.get(Calendar.DAY_OF_MONTH));
