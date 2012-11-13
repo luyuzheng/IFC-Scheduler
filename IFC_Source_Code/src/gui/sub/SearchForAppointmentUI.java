@@ -24,13 +24,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-<<<<<<< HEAD
-import backend.DataService.DataServiceImpl;
-import backend.DataTransferObjects.AppointmentDto;
-import backend.DataTransferObjects.TypeDto;
-=======
 import backend.DataTransferObjects.*;
->>>>>>> 0896bc4cdf3a803332f50cf528cde08ecd0f4d01
 
 /**
  * Displays the pop up window that allows the user to search for the next available appointment.
@@ -47,11 +41,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
 	private JComboBox typeSelector;
-<<<<<<< HEAD
-	private List<TypeDto> types;
-=======
 	private ArrayList<TypeDto> types;
->>>>>>> 0896bc4cdf3a803332f50cf528cde08ecd0f4d01
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
@@ -74,15 +64,9 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Create drop down box of types of services
-<<<<<<< HEAD
-		types = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
-		data.Type general = new data.Type(-1, "View All");
-		types.add(0, general);
-=======
 		types = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
 		//TypeDto general = new data.Type(-1, "View All"); TODO: VIEW ALL
 		//types.add(0, general);
->>>>>>> 0896bc4cdf3a803332f50cf528cde08ecd0f4d01
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
 		//typeSelector.addActionListener(new BoxListener()); // PROBABLY NEED TO ADD THIS BACK IN LATER!!!
