@@ -30,7 +30,7 @@ import backend.DataTransferObjects.PatientDto;
 
 public class EditPatientsUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPatientsUI editPatientsUI;
-	private List<PatientDto> pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 	
 	private JButton editButton = new JButton("Edit");
 	private JButton okButton = new JButton("Ok");
@@ -150,8 +150,9 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	
 	public void updateTable() {
 		String filter = searchField.getText();
-		if (filter.equals("")) patTable.setModel(new PatTableModel(pat));
-		else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
+                patTable.setModel(new PatTableModel(pat));
+		//if (filter.equals("")) patTable.setModel(new PatTableModel(pat)); TODO FILtered lists
+		//else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
 	}
 	
 	class PatTableModel extends AbstractTableModel {
@@ -218,20 +219,20 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 			if (patTable.getSelectedRow() < 0) return;
 			else {
 				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getSelectedRow()));
-				pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 				return;
 			}
 		} else if (e.getActionCommand().equals("new")) {
 			NewPatientUI.ShowDialog(this);
-			pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+			pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 			patTable.setModel(new PatTableModel(pat));
 			return;
 		} else if (e.getActionCommand().equals("remove")) {
 			if (patTable.getSelectedRow() < 0) return;
 			if (JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this patient? Removing this patient will not affect historical data, but you will no longer be able to schedule him or her.", "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
-				pm.retirePatient(model.getPatient(patTable.getSelectedRow()));
-				pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatient(model.getPatient(patTable.getSelectedRow()));
+				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 			}
 			return;	
