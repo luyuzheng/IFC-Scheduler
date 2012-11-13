@@ -229,4 +229,6 @@ public interface DataService {
     public boolean confirmAppointment(AppointmentDto appointment);
 
     public boolean updateWaitlist(WaitlistDto wp);
+
+    public void removePatientFromWaitlist(PatientDto patient, Integer typeID);
 }
