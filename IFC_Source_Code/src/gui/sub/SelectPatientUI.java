@@ -269,7 +269,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 				if (JOptionPane.showConfirmDialog(this, "The Phone Number field is blank. Would you like to continue?", "Missing Phone Number", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
 					return;
 			}
-			PhoneNumber num;
+			String num;
 			try {
 				if (blank) num = null;
 				else if (areaCode.length() != 3 || numberPart1.length() != 3 || numberPart2.length() != 4) {
@@ -280,7 +280,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 					//int p1 = Integer.parseInt(numberPart1);
 					//int p2 = Integer.parseInt(numberPart2);
 					//num = new PhoneNumber(a, p1, p2);
-					num = new PhoneNumber(areaCode, numberPart1, numberPart2);
+					num = areaCode + numberPart1 + numberPart2;
 				}
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(this, "Please enter a valid phone number (###-###-####) or leave the field blank.", "Error!", JOptionPane.ERROR_MESSAGE);
