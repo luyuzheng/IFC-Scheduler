@@ -124,6 +124,12 @@ public interface DataService {
      */
     public boolean removePractitioner(PractitionerDto practitioner);
     
+    /**
+     * @param patient with the fields to change
+     * @return 
+     */
+    public boolean updatePatient(PatientDto patient);
+    
     /** 
      * Change a practitioners info 
      */

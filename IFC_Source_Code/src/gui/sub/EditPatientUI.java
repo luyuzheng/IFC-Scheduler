@@ -184,7 +184,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		p.setLast(lastName);
 		p.setNotes(noteText);
 		p.setPhone(num);
-		DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePractitionerInfo(p);
+		DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePatient(p);
 		
 		
 		editPatientUI.setVisible(false);

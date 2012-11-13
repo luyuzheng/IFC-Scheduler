@@ -206,6 +206,8 @@ public class DataServiceImpl implements DataService {
 		}
 		return false;
 	}
+        
+        
 
 	@Override
 	public PatientDto getPatient(int PatID) {
@@ -1266,6 +1268,11 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public TypeDto getType(String type) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean updatePatient(PatientDto patient) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
