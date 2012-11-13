@@ -50,7 +50,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 		startTimeField1 = new JTextField();
 		
 		//startTimeField1.set
-		
+		/* TODO: THIS FUNCTION
 		startTimeField1.setFont(font);
 		endTimeField1 = new JTextField();
 		endTimeField1.setFont(font);
@@ -107,6 +107,8 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 		add(makeTimeSlotPanel(), BorderLayout.CENTER);
 		setResizable(false);
 		pack();
+                 *
+                 */
 	}
 	
 	public static void ShowDialog(Component owner) {
@@ -289,15 +291,15 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	return panel;
     }
 	
-	private Time checkTime(String time) {
-		Time t;
+	private Integer checkTime(String time) {
+		Integer t;
 		if (time.equals("")) {
 			return null;
 		} else if (time.matches("[0-2][0-9]:[0-5][0-9]")) {
 			String hour = time.replaceAll(":[0-5][0-9]", "");
 			String minute = time.replaceAll("[0-2][0-9]:", "");
 			try { 
-				t = new Time(Integer.parseInt(hour), Integer.parseInt(minute));
+				t = 60 * Integer.parseInt(hour) + Integer.parseInt(minute);
 			} catch(Exception ex) {
 				return null;
 			}
@@ -309,7 +311,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("ok")) {
-			Time t1, t2;
+			Integer t1, t2;
 			ArrayList<TimeSlot> slots = new ArrayList<TimeSlot>();
 			
 			t1 = checkTime(startTimeField1.getText());
@@ -317,7 +319,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 			if (t1 == null || t2 == null) {
 				JOptionPane.showMessageDialog(this, "All times must be valid format (00:00 - 23:59).", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			} else if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else{
@@ -329,7 +331,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 			if (t1 == null || t2 == null) {
 				JOptionPane.showMessageDialog(this, "All times must be valid format (00:00 - 23:59).", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			} else if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else{
@@ -341,7 +343,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 			if (t1 == null || t2 == null) {
 				JOptionPane.showMessageDialog(this, "All times must be valid format (00:00 - 23:59).", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			} else if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else{
@@ -353,7 +355,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 			if (t1 == null || t2 == null) {
 				JOptionPane.showMessageDialog(this, "All times must be valid format (00:00 - 23:59).", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			} else if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else{
@@ -365,7 +367,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 			if (t1 == null || t2 == null) {
 				JOptionPane.showMessageDialog(this, "All times must be valid format (00:00 - 23:59).", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			} else if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else{
@@ -377,7 +379,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 			if (t1 == null || t2 == null) {
 				JOptionPane.showMessageDialog(this, "All times must be valid format (00:00 - 23:59).", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			} else if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else{
@@ -389,14 +391,14 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 			if (t1 == null || t2 == null) {
 				JOptionPane.showMessageDialog(this, "All times must be valid format (00:00 - 23:59).", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			} else if (t1.timeInMinutes() >= t2.timeInMinutes()) {
+			} else if (t1 >= t2) {
 				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else{
 				slots.add(new TimeSlot(t1,t2));
 			}
-				
-			dm.storeTimeSlots(slots);
+			//TODO: STORE TIMES IN DATABASE	
+			//dm.storeTimeSlots(slots);
 		}
 		defaultTimeslotsUI.setVisible(false);
     }

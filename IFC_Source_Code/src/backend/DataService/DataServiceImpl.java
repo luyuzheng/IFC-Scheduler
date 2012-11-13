@@ -1075,10 +1075,10 @@ public class DataServiceImpl implements DataService {
 				st = connection.prepareStatement("INSERT INTO Day (DayDate, StartTime, EndTime) VALUES (?, ?, ?)");
 				retDay.setField(DayDto.DATE, date);
 				st.setDate(1, date);
-				//retDfay.setStart(default start);
-				//st.setInt(2, defaut start);
-				//retDay.setEnd(default end);
-				//st.setInt(3, default end);
+				retDay.setStart(gui.Constants.DEFAULT_START_TIME);
+				st.setInt(2, gui.Constants.DEFAULT_START_TIME);
+				retDay.setEnd(gui.Constants.DEFAULT_END_TIME);
+				st.setInt(3, gui.Constants.DEFAULT_END_TIME);
 				st.executeQuery();
 				return retDay;
 			}
@@ -1279,6 +1279,11 @@ public class DataServiceImpl implements DataService {
     @Override
     public boolean updateWaitlist(WaitlistDto wp) {
         //TODO: not supported yet
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void removePatientFromWaitlist(PatientDto patient, Integer typeID) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
