@@ -12,6 +12,8 @@ import java.util.GregorianCalendar;
 
 import javax.swing.JPanel;
 
+import backend.DataService.DataServiceImpl;
+
 import java.sql.Date;
 
 @SuppressWarnings("serial")
@@ -37,6 +39,7 @@ public class DatePicker extends JPanel {
 		//next = new MonthView(this, currentDate, MonthView.NEXT_MONTH);
 		
 		//reportFocusGained(selectedBlock);
+		selectedBlock = new TinyDayBlock(this, DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(currentDate).getDate(), true);
 		Date focused = selectedBlock.getDate();
 		cal.setTime(focused);
 		curr.selectDay(cal.get(Calendar.DAY_OF_MONTH));
