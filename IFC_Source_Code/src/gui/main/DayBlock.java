@@ -17,6 +17,7 @@ import gui.Constants;
 import java.sql.Date;
 
 import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.DayDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
 public class DayBlock extends JPanel {
@@ -31,8 +32,8 @@ public class DayBlock extends JPanel {
 		textArea = new JTextArea();
 		String text = date.getDay() + "\n";
 		
-		DayLoader dl = new DayLoader();
-		DayDto d = dl.loadDay(date);
+		DayDto d = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(date);
+		
 		if (color.equals(Color.WHITE) && d == null) color = new Color(220,220,220);
 		else if (color.equals(Color.WHITE)){
 			boolean hasPrac = false;

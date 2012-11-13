@@ -90,11 +90,11 @@ public class SearchPane extends JPanel {
 		JPanel resultsTablePanel = new JPanel(new BorderLayout());
 		AbstractTableModel model;
 		if (clicked == SearchType.SEARCHBYPATIENT) {
-			model = new PatientResultsTableModel(new ArrayList<Patient>()); // ACTUALLY NEED TO PASS IN A LIST OF PEOPLE HERE!!!
+			model = new PatientResultsTableModel(new ArrayList<PatientDto>()); // ACTUALLY NEED TO PASS IN A LIST OF PEOPLE HERE!!!
 		} else if (clicked == SearchType.SEARCHBYPRAC) {
-			model = new PractitionerResultsTableModel(new ArrayList<Practitioner>());
+			model = new PractitionerResultsTableModel(new ArrayList<PractitionerDto>());
 		} else if (clicked == SearchType.SEARCHBYAPPT) {
-			model = new AppointmentResultsTableModel(new ArrayList<Appointment>());
+			model = new AppointmentResultsTableModel(new ArrayList<AppointmentDto>());
 		} else { // Nothing clicked yet
 			model = new EmptyResultsTableModel();
 		}
@@ -207,12 +207,12 @@ public class SearchPane extends JPanel {
 	public class PatientResultsTableModel extends AbstractTableModel {
 		
 		private String columnNames[];
-		private ArrayList<Patient> patients;
+		private ArrayList<PatientDto> patients;
 		
 		/**
 		 * Constructor to produce a patient results table model.
 		 */ 
-		public PatientResultsTableModel(ArrayList<Patient> pat) {
+		public PatientResultsTableModel(ArrayList<PatientDto> pat) {
 			patients = pat;
 			columnNames = new String[] { "First Name", "Last Name", "Phone Number", "Comments" /*, "Waitlisted", "No Show" */};
 		}
@@ -251,15 +251,15 @@ public class SearchPane extends JPanel {
 		 * @param col - the column number
 		 */
 		public Object getValueAt(int row, int col) {
-			Patient p = patients.get(row);
+			PatientDto p = patients.get(row);
 			if (col == 0) {
-				return p.getFirstName();
+				return p.getFirst();
 			} else if (col == 1) {
-				return p.getLastName();
+				return p.getLast();
 			} else if (col == 2) {
-				return p.getNumberString();
+				return p.getPhone();
 			} else {
-				return p.getNote();
+				return p.getNotes();
 			/*} else if (col == 4) {
 				return p.isWaitlisted();
 			} else {
@@ -274,12 +274,12 @@ public class SearchPane extends JPanel {
 	public class PractitionerResultsTableModel extends AbstractTableModel {
 		
 		private String columnNames[];
-		private ArrayList<Practitioner> practitioners;
+		private ArrayList<PractitionerDto> practitioners;
 		
 		/**
 		 * Constructor to produce a practitioner results table model.
 		 */ 
-		public PractitionerResultsTableModel(ArrayList<Practitioner> prac) {
+		public PractitionerResultsTableModel(ArrayList<PractitionerDto> prac) {
 			practitioners = prac;
 			columnNames = new String[] { "Name", "Type", "Appointment Length" };
 		}
@@ -318,11 +318,11 @@ public class SearchPane extends JPanel {
 		 * @param col - the column number
 		 */
 		public Object getValueAt(int row, int col) {
-			Practitioner p = practitioners.get(row);
+			PractitionerDto p = practitioners.get(row);
 			if (col == 0) {
-				return p.getName();
+				return p.getFirst() + p.getLast();
 			} else if (col == 1) {
-				return p.getType();
+				return p.getTypeName();
 			} else {
 				return p.getApptLength();
 			}
@@ -335,12 +335,12 @@ public class SearchPane extends JPanel {
 	public class AppointmentResultsTableModel extends AbstractTableModel {
 		
 		private String columnNames[];
-		private ArrayList<Appointment> appointments;
+		private ArrayList<AppointmentDto> appointments;
 		
 		/**
 		 * Constructor to produce an appointment results table model.
 		 */ 
-		public AppointmentResultsTableModel(ArrayList<Appointment> appt) {
+		public AppointmentResultsTableModel(ArrayList<AppointmentDto> appt) {
 			appointments = appt;
 			columnNames = new String[] { "Date", "Start Time", "Appointment Length" /*, "Practitioner" */};
 		}
@@ -379,13 +379,13 @@ public class SearchPane extends JPanel {
 		 * @param col - the column number
 		 */
 		public Object getValueAt(int row, int col) {
-			Appointment a = appointments.get(row);
+			AppointmentDto a = appointments.get(row);
 			if (col == 0) {
-				return a.getDate();
+				return a.getApptDate();
 			} else if (col == 1){
-				return a.getTimeSlot().getStartTime();
+				return a.getStart();
 			} else {
-				return a.getTimeSlot().lengthInMinutes();
+				return a.getEnd() - a.getStart();
 			}
 		}
 	}

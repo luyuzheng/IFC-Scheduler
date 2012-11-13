@@ -1,5 +1,6 @@
 package gui.main;
 
+import backend.DataService.DataServiceImpl;
 import gui.main.listeners.AppointmentConfirmationListener;
 
 import java.awt.BorderLayout;
@@ -20,7 +21,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.*;
 
 /**
  * AppointmentConfirmationPane displays the appointment confirmation pane on the right-hand side of the application
@@ -63,7 +64,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		// Create panel to display patients for a particular day
 		JPanel tablePanel = new JPanel(new BorderLayout());
 		// list of people to confirm
-		AppointmentConfirmationTableModel model = new AppointmentConfirmationTableModel(new ArrayList<Appointment>()); // CHANGE THIS LATER!!!
+		AppointmentConfirmationTableModel model = new AppointmentConfirmationTableModel(new ArrayList<AppointmentDto>()); // CHANGE THIS LATER!!!
 		table = new JTable(model);
 		table.setDragEnabled(true);
 		table.setFont(font);
@@ -153,14 +154,16 @@ public class AppointmentConfirmationPane extends JPanel {
 		public Object getValueAt(int row, int col) {
 			AppointmentDto appt = confirm.get(row);
 			
+                        PatientDto pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
+                        
 			if (col == 0) {
-				return appt.getConfirmed();
+				return appt.getConfirmation();
 			} else if (col == 1) {
-				return appt.getPatient().getFirstName();
+				return pat.getFirst();
 			} else if (col ==2) {
-				return appt.getPatient().getLastName();
+				return pat.getLast();
 			} else {
-				return appt.getPatient().getNumberString();
+				return pat.getPhone();
 			}
 		}
 	}

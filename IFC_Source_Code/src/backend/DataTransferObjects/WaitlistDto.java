@@ -71,4 +71,12 @@ public class WaitlistDto extends AbstractDto {
     public void setComments(String comment) {
     	fieldsMap.put(COMMENTS, comment);
     }
+
+    public String getComment() {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    public void setComment(String newComment) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
 }

@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -28,19 +29,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import backend.DataTransferObjects.PractitionerDto;
-
-import data.Practitioner;
-import data.Type;
-import data.managers.PractitionerManager;
-import data.managers.TypeManager;
+import backend.DataTransferObjects.*;
 
 public class SelectPractitionerUI extends JDialog implements ActionListener {
 
-	private TypeManager tm = new TypeManager();
 	private static SelectPractitionerUI selectPractitionerUI;
-	private ArrayList<Practitioner> prac = new PractitionerManager().getPractitionerList();
-	
+	private ArrayList<PractitionerDto> prac = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 	private JTextField nameField = new JTextField();
 	private JComboBox typeCombo;
 	JTabbedPane tabbedPane;
@@ -147,8 +141,10 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	label.setFont(font);
     	typePanel.add(label, BorderLayout.NORTH);
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
-    	typeCombo = new JComboBox(tm.getTypeList().toArray());
-    	if (tm.getTypeList().size() > 0)
+        
+        ArrayList<TypeDto> typeList = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+    	typeCombo = new JComboBox(typeList.toArray());
+    	if (typeList.size() > 0)
     		typeCombo.setSelectedIndex(0);
     	typeCombo.setFont(font);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
@@ -197,9 +193,8 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New Type")) {
-			data.Type t = NewTypeUI.ShowDialog(this);
+			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
-			tm = new TypeManager();
 			tabbedPane.remove(1);
 			JComponent panel2 = makeNewPracPanel();
 			tabbedPane.addTab("New Practitioner", null, panel2,
@@ -217,7 +212,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please enter a name.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			String type = ((data.Type)typeCombo.getSelectedItem()).toString();
+			String type = ((TypeDto)typeCombo.getSelectedItem()).getTypeName();
 			if (type.equals("")) {
 				JOptionPane.showMessageDialog(this, "Please enter a type.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -235,16 +230,13 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 			}
 			String note = noteField.getText().replaceAll("[\r\n]+", "\t\t");
 			
-			int id = new PractitionerManager().getNewId();
-			TypeManager tm = new TypeManager();
-			data.Type t = tm.getType(type);
+			TypeDto t = DataServiceImpl.GLOBAL_DATA_INSTANCE.getType(type);
 			if (t == null) {
-				t = new data.Type(tm.getNewId(), type);
-				tm.addType(t);
+				t = DataServiceImpl.GLOBAL_DATA_INSTANCE.addNewPractitionerType(type);
 			}
 			
-			practitioner = new Practitioner(id, name, t, apptLength, note);
-			new PractitionerManager().addPractitioner(practitioner);
+			practitioner = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(
+                                t.getTypeID(), name, name, apptLength, "" , note);
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (pracTable.getSelectedRow() > -1)
 				practitioner = prac.get(pracTable.getSelectedRow());
@@ -273,11 +265,11 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 		}
 
 		public Object getValueAt(int row, int col) {
-			Practitioner p = prac.get(row);
+			PractitionerDto p = prac.get(row);
 			if (col == 0) 
-				return p.getName();
+				return p.getFirst() + p.getLast();
 			else if (col == 1) 
-				return p.getType();
+				return p.getTypeName();
 			else
 				return p.getApptLength();
 		}

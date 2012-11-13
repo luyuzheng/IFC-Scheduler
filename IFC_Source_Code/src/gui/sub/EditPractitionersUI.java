@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,13 +25,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
-import data.Practitioner;
-import data.managers.PractitionerManager;
+import backend.DataTransferObjects.*;
 
 public class EditPractitionersUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPractitionersUI editPractitionersUI;
-	private PractitionerManager pm = new PractitionerManager();
-	private ArrayList<Practitioner> prac = pm.getPractitionerList();
+	private ArrayList<PractitionerDto> prac = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 	
 	private JButton editButton = new JButton("Edit");
 	private JButton okButton = new JButton("OK");
@@ -157,19 +156,20 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 	
 	public void updateTable() {
 		String filter = searchField.getText();
-		if (filter.equals("")) pracTable.setModel(new PracTableModel(prac));
-		else pracTable.setModel(new PracTableModel(pm.getFilteredPractitionerList(filter)));
+                pracTable.setModel(new PracTableModel(prac));
+		//if (filter.equals("")) pracTable.setModel(new PracTableModel(prac)); TODO: FILTERS
+		//else pracTable.setModel(new PracTableModel(pm.getFilteredPractitionerList(filter)));
 	}
 	
 	class PracTableModel extends AbstractTableModel {
 
-		ArrayList<Practitioner> practitioners = new ArrayList<Practitioner>();
+		ArrayList<PractitionerDto> practitioners = new ArrayList<PractitionerDto>();
 		
-		public PracTableModel(ArrayList<Practitioner> practitioners) {
+		public PracTableModel(ArrayList<PractitionerDto> practitioners) {
 			this.practitioners = practitioners;
 		}
 		
-		public Practitioner getPractitioner(int row) {
+		public PractitionerDto getPractitioner(int row) {
 			return practitioners.get(row);
 		}
 		
@@ -188,15 +188,15 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 		}
 
 		public Object getValueAt(int row, int col) {
-			Practitioner p = practitioners.get(row);
+			PractitionerDto p = practitioners.get(row);
 			if (col == 0) 
-				return p.getName();
+				return p.getFirst() + p.getLast();
 			else  if (col == 1)
-				return p.getType().toString();
+				return p.getTypeName();
 			else if (col == 2)
 				return p.getApptLength();
 			else
-				return p.getNote();
+				return p.getNotes();
 		}
 		
 		public boolean isCellEditable(int row, int col) {
@@ -226,21 +226,22 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 			if (pracTable.getSelectedRow() < 0) return;
 			else {
 				EditPractitionerUI.ShowDialog(this, model.getPractitioner(pracTable.getSelectedRow()));
-				prac = pm.getPractitionerList();
+				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
 				return;
 			}
 		} else if (e.getActionCommand().equals("remove")) {
 			if (pracTable.getSelectedRow() < 0) return;
 			if (JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this practitioner? Removing this practitioner will not affect historical data, but you will no longer be able to schedule him or her.", "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
-				pm.retirePractitioner(model.getPractitioner(pracTable.getSelectedRow()));
-				prac = pm.getPractitionerList();
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(
+                                        model.getPractitioner(pracTable.getSelectedRow()));
+				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
 			}
 			return;	
 		} else if (e.getActionCommand().equals("new")) {
 			NewPractitionerUI.ShowDialog(this);
-			prac = pm.getPractitionerList();
+			prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 			pracTable.setModel(new PracTableModel(prac));
 			return;
 		}

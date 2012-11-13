@@ -3,14 +3,7 @@ package backend.DataService;
 import java.sql.Date;
 import java.util.List;
 
-import backend.DataTransferObjects.AppointmentDto;
-import backend.DataTransferObjects.DayDto;
-import backend.DataTransferObjects.NoShowDto;
-import backend.DataTransferObjects.PatientDto;
-import backend.DataTransferObjects.PractitionerDto;
-import backend.DataTransferObjects.SchedulePractitionerDto;
-import backend.DataTransferObjects.TypeDto;
-import backend.DataTransferObjects.WaitlistDto;
+import backend.DataTransferObjects.*;
 
 /**
  * Interface for the data service backend for scheduler database.
@@ -35,6 +28,20 @@ public interface DataService {
      * @return true if succeeded, false if failed
      */
 	public boolean addPatient(PatientDto patient);
+
+        /**
+         * Adds a patient given the parameters
+         */
+        
+        public PatientDto addPatient(String phone, String first, String last, String notes);
+        
+	/**
+	 * Updates the specified field for the specified patient in the database and DTO
+	 *
+	 * @param name of the field to be updated (use constants in {@link PatientDto})
+	 * @return true if succeeded, false if failed
+	 */
+	public boolean updatePatient(String fieldName, Object value, PatientDto patient);
 	
 	/**
 	 * Removes a patient from the database using the PatID in the PatientDto
@@ -76,12 +83,18 @@ public interface DataService {
 	 */
 	public int getNoShowCountInLastSixMonths(PatientDto patient);
     
+        /**
+         * @param type name
+         * @return type
+         */
+        public TypeDto getType(String type);    
+        
     /**
      * Adds a new Practitioner type to the database
      * 
      * @param type
      */
-    public boolean addNewPractitionerType(String serviceType);
+    public TypeDto addNewPractitionerType(String serviceType);
     
     /**
      * Removed a Practitioner type from the database
@@ -104,12 +117,18 @@ public interface DataService {
     
     /** Add a practitioner to the database
     */
-    public boolean addPractitioner(PractitionerDto practitioner);
+    public PractitionerDto addPractitioner(int TypeID, String first, String last, int appLength, String PhoneNumber, String notes);
     
     /**
      * Remove a practitioner from the database
      */
     public boolean removePractitioner(PractitionerDto practitioner);
+    
+    /**
+     * @param patient with the fields to change
+     * @return 
+     */
+    public boolean updatePatient(PatientDto patient);
     
     /** 
      * Change a practitioners info 
@@ -165,6 +184,10 @@ public interface DataService {
     public boolean removePatientFromWaitlist(PatientDto patient, TypeDto type);
     
     /**
+     * Adds comments to waitlist entry
+     */
+    public boolean commentWaitlist(WaitlistDto entry, String comment);
+    /**
      * get waitlist info
      */
     public List<WaitlistDto> getWaitlist();
@@ -204,4 +227,8 @@ public interface DataService {
      * Marks confirmation to true on both the DTO object and on the database.
      */
     public boolean confirmAppointment(AppointmentDto appointment);
+
+    public boolean updateWaitlist(WaitlistDto wp);
+
+    public void removePatientFromWaitlist(PatientDto patient, Integer typeID);
 }

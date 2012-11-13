@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -47,7 +48,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		lastNameField.setFont(font);
 		
 		if(p.getPhone()!=""){
-			String[] number = p.getNumberString().split("-");
+			String[] number = p.getPhone().split("-");
 			areaCodeField.setText(number[0]);
 			areaCodeField.setFont(font);
 			
@@ -157,7 +158,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 			if (JOptionPane.showConfirmDialog(this, "The Phone Number field is blank. Would you like to continue?", "Missing Phone Number", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
 				return;
 		}
-		PhoneNumber num;
+		String num;
 		try {
 			if (blank) num = null;
 			else if (areaCode.length() != 3 || numberPart1.length() != 3 || numberPart2.length() != 4) {
@@ -168,7 +169,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 //				int p1 = Integer.parseInt(numberPart1);
 //				int p2 = Integer.parseInt(numberPart2);
 //				num = new PhoneNumber(a, p1, p2);
-					num = new PhoneNumber(areaCode, numberPart1, numberPart2);
+				num = areaCode + "-" + numberPart1 + "-"+ numberPart2;
 			}
 		} catch (Exception ex) {
 			JLabel msg = new JLabel("Please enter a valid phone number (###-###-####) or leave the field blank.");
@@ -179,12 +180,11 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		
 		String noteText = note.getText().replaceAll("[\r\n]+", "\t\t");
 		
-		PatientManager pm = new PatientManager();
-		p.setFirstName(firstName);
-		p.setLastName(lastName);
-		p.setNote(noteText);
-		p.setNumber(num);
-		pm.updatePatient(p);
+		p.setFirst(firstName);
+		p.setLast(lastName);
+		p.setNotes(noteText);
+		p.setPhone(num);
+		DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePatient(p);
 		
 		
 		editPatientUI.setVisible(false);

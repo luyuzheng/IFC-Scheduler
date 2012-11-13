@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -22,16 +23,13 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
-import data.Practitioner;
-import data.Type;
-import data.managers.PractitionerManager;
-import data.managers.TypeManager;
+import backend.DataTransferObjects.*;
+import java.util.List;
 
 public class NewPractitionerUI extends JDialog implements ActionListener {
 
-	private TypeManager tm = new TypeManager();
 	private static NewPractitionerUI newPractitionerUI;
-	private ArrayList<Practitioner> prac = new PractitionerManager().getPractitionerList();
+	private List<PractitionerDto> prac = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 	
 	private JTextField nameField = new JTextField();
 	private JComboBox typeCombo;
@@ -41,7 +39,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	JTable pracTable;
 	
-	private static Practitioner practitioner;
+	private static PractitionerDto practitioner;
 	
 	private NewPractitionerUI(String name) {
 		practitioner = null;
@@ -75,8 +73,9 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	label = new JLabel("Practitioner Type: ");
     	typePanel.add(label, BorderLayout.NORTH);
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
-    	typeCombo = new JComboBox(tm.getTypeList().toArray());
-    	if (tm.getTypeList().size() > 0)
+        ArrayList<TypeDto> typeList = (ArrayList<TypeDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+    	typeCombo = new JComboBox(typeList.toArray());
+    	if (typeList.size() > 0)
     		typeCombo.setSelectedIndex(0);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	JButton newTypeButton = new JButton("New Type");
@@ -112,7 +111,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	return panel;
     }
 	
-	public static Practitioner ShowDialog(Component owner) {
+	public static PractitionerDto ShowDialog(Component owner) {
 		newPractitionerUI = new NewPractitionerUI("Create New Practitioner");
 		newPractitionerUI.pack();
 		newPractitionerUI.setLocationRelativeTo(owner);
@@ -122,9 +121,8 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New Type")) {
-			data.Type t = NewTypeUI.ShowDialog(this);
+			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
-			tm = new TypeManager();
 			removeAll();
 			add(makeNewPracPanel());
 			return;
@@ -135,7 +133,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, "Please enter a name.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			String type = ((Type)typeCombo.getSelectedItem()).toString();
+			String type = ((TypeDto)typeCombo.getSelectedItem()).getTypeName();
 			if (type.equals("")) {
 				JOptionPane.showMessageDialog(this, "Please enter a type.", "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
@@ -153,16 +151,12 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 			}
 			String note = noteField.getText().replaceAll("[\r\n]+", "\t\t");
 			
-			int id = new PractitionerManager().getNewId();
-			TypeManager tm = new TypeManager();
-			data.Type t = tm.getType(type);
+			TypeDto t = DataServiceImpl.GLOBAL_DATA_INSTANCE.getType(type);
 			if (t == null) {
-				t = new data.Type(tm.getNewId(), type);
-				tm.addType(t);
+				t = DataServiceImpl.GLOBAL_DATA_INSTANCE.addNewPractitionerType(type);
 			}
 			
-			practitioner = new Practitioner(id, name, t, apptLength, note);
-			new PractitionerManager().addPractitioner(practitioner);
+			practitioner = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(t.getTypeID(), name, name, apptLength, "", note);
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (pracTable.getSelectedRow() > -1)
 				practitioner = prac.get(pracTable.getSelectedRow());
@@ -191,11 +185,11 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		}
 
 		public Object getValueAt(int row, int col) {
-			Practitioner p = prac.get(row);
+			PractitionerDto p = prac.get(row);
 			if (col == 0) 
-				return p.getName();
+				return p.getFirst() + p.getLast();
 			else if (col == 1) 
-				return p.getType();
+				return p.getTypeName();
 			else
 				return p.getApptLength();
 		}

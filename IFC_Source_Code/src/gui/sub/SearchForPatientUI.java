@@ -17,8 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import data.Patient;
-import data.managers.SearchManager;
+import backend.DataTransferObjects.*;
 
 /**
  * Displays the pop up window that allows the user to search for a patient.
@@ -26,9 +25,8 @@ import data.managers.SearchManager;
 public class SearchForPatientUI extends JDialog implements ActionListener {
 	private static SearchForPatientUI searchForPatientUI;
 	
-	private SearchManager sm = new SearchManager();
 	
-	private static Patient p;
+	private static PatientDto p;
 	private JLabel searchLabel;
 	private JLabel firstNameLabel;
 	private JLabel lastNameLabel;
@@ -99,7 +97,7 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 	 * @param owner - the component that owns this pane (the SearchPane)
 	 * @return a patient
 	 */
-	public static Patient ShowDialog(Component owner) {
+	public static PatientDto ShowDialog(Component owner) {
 		searchForPatientUI = new SearchForPatientUI("Search for a Patient");
 		searchForPatientUI.pack();
 		searchForPatientUI.setLocationRelativeTo(owner);

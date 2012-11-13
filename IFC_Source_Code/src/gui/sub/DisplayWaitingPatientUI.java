@@ -15,8 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import backend.DataService.DataServiceImpl;
-import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.*;
 
 public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private static DisplayWaitingPatientUI displayWaitingPatientUI;
@@ -29,17 +28,15 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	
 	private static String comment;
 	
-	private DisplayWaitingPatientUI(String name, PatientDto waitingPatient) {
+	private DisplayWaitingPatientUI(String name, WaitlistDto wp) {
 		setModal(true);
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
 		
-		//DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(waiting)
-		
-		String text = "Patient Name: " + waitingPatient.getFirst() + " " + waitingPatient.getLast();
-		text += "\nPhone Number: " + waitingPatient.getPhone();
-		text += "\nPatient Note: " + waitingPatient.getNotes().replaceAll("\t\t", "\n");
+		String text = "Patient Name: " + wp.getPatient().getFullName();
+		text += "\nPhone Number: " + wp.getPatient().getPhone();
+		text += "\nPatient Note: " + wp.getPatient().getNotes().replaceAll("\t\t", "\n");
 
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
@@ -82,7 +79,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static String ShowDialog(Component owner, PatientDto waitp) {
+	public static String ShowDialog(Component owner, WaitlistDto waitp) {
 		displayWaitingPatientUI = new DisplayWaitingPatientUI("Edit Waitlist Entry", waitp);
 		displayWaitingPatientUI.pack();
 		displayWaitingPatientUI.setLocationRelativeTo(owner);

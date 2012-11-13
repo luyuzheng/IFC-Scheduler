@@ -13,7 +13,7 @@ import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import data.Practitioner;
+import backend.DataTransferObjects.PractitionerDto;
 
 public class NewPractitionerListener extends MouseAdapter {
 	
@@ -28,8 +28,8 @@ public class NewPractitionerListener extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) { 
-			Practitioner p; 
-			Practitioner old = owner.getRoom().getPractitioner();
+			PractitionerDto p; 
+			PractitionerDto old = owner.getRoom().getPractitioner();
 			if (old != null) 
 				p = DisplayPractitionerUI.ShowDialog(parent, old);
 			else

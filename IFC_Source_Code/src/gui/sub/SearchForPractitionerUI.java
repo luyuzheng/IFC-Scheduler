@@ -1,5 +1,6 @@
 package gui.sub;
 
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -19,9 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import data.Practitioner;
-import data.managers.SearchManager;
-import data.managers.TypeManager;
+import backend.DataTransferObjects.*;
 
 /**
  * Displays the pop up window that allows the user to search for a practitioner.
@@ -29,16 +28,13 @@ import data.managers.TypeManager;
 public class SearchForPractitionerUI extends JDialog implements ActionListener {
 	private static SearchForPractitionerUI searchForPractitionerUI;
 	
-	private TypeManager tm = new TypeManager();
-	private SearchManager sm = new SearchManager();
-	
-	private static Practitioner p;
+	private static PractitionerDto p;
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
 	private JComboBox typeSelector;
-	private ArrayList<data.Type> types;
+	private ArrayList<TypeDto> types;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
@@ -61,9 +57,9 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Create drop down box of types of services
-		types = tm.getTypeList();
-		data.Type general = new data.Type(-1, "View All");
-		types.add(0, general);
+		types = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+		//data.Type general = new data.Type(-1, "View All");
+		//types.add(0, general); TODE: VIEW ALL METHOD
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
 		//typeSelector.addActionListener(new BoxListener()); // PROBABLY NEED TO ADD THIS BACK IN LATER!!!
@@ -125,7 +121,7 @@ public class SearchForPractitionerUI extends JDialog implements ActionListener {
 	 * @param owner - the component that owns this pane (the SearchPane)
 	 * @return a practitioner
 	 */
-	public static Practitioner ShowDialog(Component owner) {
+	public static PractitionerDto ShowDialog(Component owner) {
 		searchForPractitionerUI = new SearchForPractitionerUI("Search for a Practitioner");
 		searchForPractitionerUI.pack();
 		searchForPractitionerUI.setLocationRelativeTo(owner);

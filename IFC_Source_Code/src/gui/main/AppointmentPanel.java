@@ -30,11 +30,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import backend.DataService.DataServiceImpl;
-import backend.DataTransferObjects.DayDto;
-import backend.DataTransferObjects.PractitionerDto;
-import backend.DataTransferObjects.SchedulePractitionerDto;
+import backend.DataTransferObjects.*;
 import gui.Constants;
 
+@SuppressWarnings("serial")
 public class AppointmentPanel extends JScrollPane implements Printable, ActionListener {
 	DayDto day;
 	
@@ -159,30 +158,31 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			rect.setRect (startx, starty, colWidth, topHeight);
 			g2d.draw(rect);
 
-			Practitioner p = day.getRooms().get(page*3 + j).getPractitioner();
+			PractitionerDto p = day.getRooms().get(page*3 + j).getPractitioner();
 			g2d.drawString(getPracInfo(p, lineLength), startx+5, starty+hgt);
-			g2d.drawString(formatString(p.getNote().replaceAll("\t\t", "\n"), lineLength), startx+5, starty+2*hgt);
-			ArrayList<Appointment> appts = day.getRooms().get(page*3 + j).getAppointments();
+			g2d.drawString(formatString(p.getNotes().replaceAll("\t\t", "\n"), lineLength), startx+5, starty+2*hgt);
+			ArrayList<AppointmentDto> appts = day.getRooms().get(page*3 + j).getAppointments();
 
 			starty += topHeight;
 
-			for (Appointment a : appts) {
-				int min = a.getTimeSlot().lengthInMinutes();
+			for (AppointmentDto a : appts) {
+				int min = a.getEnd() - a.getStart();
 				int blockHeight = min*Constants.PIXELS_PER_MINUTE;
 				Rectangle2D.Double apptBlock = new Rectangle2D.Double ();
 				apptBlock.setRect (startx, starty, colWidth, blockHeight);
 				g2d.draw(apptBlock);
 
-				String line1 = a.getTimeSlot().toString();
+				String line1 = a.getStart().toString() + a.getEnd().toString();
 				String line2 = "";
-				if (a.isFilled()) {
-					if (!a.getPatient().getNote().equals("")) line1 += "   " + a.getPatient().getNote().replaceAll("\t\t", "\n");
-					line2 = a.getPatient().getFullName() + " - " + a.getPatient().getNumberString();
+				if (a.getPatientID() != null) {
+                                        PatientDto pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(a.getPatientID());
+					if (!pat.getNotes().equals("")) line1 += "   " + pat.getNotes().replaceAll("\t\t", "\n");
+					line2 = pat.getFullName() + " - " + pat.getPhone();
 					if (line2.length() > lineLength) {
-						line2 = a.getPatient().getFirstName().substring(0,1) + ". " + a.getPatient().getLastName() + " - " + a.getPatient().getNumberString();
+						line2 = pat.getFirst().substring(0,1) + ". " + pat.getLast() + " - " + pat.getPhone();
 					}
 					if (line2.length() > lineLength) { 
-						line2 = formatString(a.getPatient().getNumberString() + " - " + a.getPatient().getFullName(), lineLength);
+						line2 = formatString(pat.getPhone() + " - " + pat.getFullName(), lineLength);
 					}
 				}
 				g2d.drawString(formatString(line1, lineLength), startx+5, starty+hgt);
