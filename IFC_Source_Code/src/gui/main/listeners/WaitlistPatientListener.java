@@ -5,6 +5,7 @@
 
 package gui.main.listeners;
 
+import backend.DataService.DataServiceImpl;
 import gui.main.WaitListPane;
 import gui.main.WaitListPane.WaitlistTableModel;
 import gui.sub.DisplayWaitingPatientUI;
@@ -33,11 +34,10 @@ public class WaitlistPatientListener extends MouseAdapter {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
-				WaitingPatient wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
+				WaitlistDto wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
 				String newComment = DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp);
 				wp.setComment(newComment);
-				WaitlistManager wm = new WaitlistManager();
-				wm.updateWaitingPatient(wp);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
 				WaitListPane wlp = (WaitListPane) parent;
 				wlp.resetModel();
 			}

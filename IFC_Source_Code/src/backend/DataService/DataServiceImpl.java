@@ -1275,4 +1275,10 @@ public class DataServiceImpl implements DataService {
     public boolean updatePatient(PatientDto patient) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public boolean updateWaitlist(WaitlistDto wp) {
+        //TODO: not supported yet
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -40,17 +40,12 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 	private JTextField endTimeField7;
 	private JButton okButton;
 	private JButton cancelButton;
-	private DefaultManager dm;
 	
 	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	private DefaultTimeslotsUI(String name) {
 		setModal(true);
-		setTitle(name);
-		
-		dm = new DefaultManager();
-		
-		
+		setTitle(name);		
 		
 		startTimeField1 = new JTextField();
 		

@@ -227,4 +227,6 @@ public interface DataService {
      * Marks confirmation to true on both the DTO object and on the database.
      */
     public boolean confirmAppointment(AppointmentDto appointment);
+
+    public boolean updateWaitlist(WaitlistDto wp);
 }

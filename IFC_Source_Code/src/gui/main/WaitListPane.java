@@ -1,5 +1,6 @@
 package gui.main;
 
+import backend.DataService.DataServiceImpl;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.AddToWaitlistUI;
 
@@ -28,10 +29,7 @@ import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
-import data.Type;
-import data.WaitingPatient;
-import data.managers.TypeManager;
-import data.managers.WaitlistManager;
+import backend.DataTransferObjects.*;
 
 /**
  * WaitListPane displays the wait list pane on the right-hand side of the application when the "Wait List" button is clicked.
@@ -39,15 +37,13 @@ import data.managers.WaitlistManager;
  */
 public class WaitListPane extends JPanel {
 	
-	private TypeManager tm = new TypeManager();
-	private WaitlistManager wm = new WaitlistManager();
 	private Component owner;
 	
 	private JTable specTable;
 	private JComboBox typeSelector;
 	private JButton addPatientButton = new JButton("Add Patient to List");
 	private JButton removePatientButton = new JButton("Remove Patient from List");
-	private ArrayList<Type> types;
+	private ArrayList<TypeDto> types;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
@@ -63,9 +59,9 @@ public class WaitListPane extends JPanel {
 		setLayout(new BorderLayout());
 		
 		JPanel typeSelectionPanel = new JPanel(new GridLayout(0,1));
-		types = tm.getTypeList();
-		Type general = new Type(-1, "View All");
-		types.add(0, general);
+		types = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+		//Type general = new Type(-1, "View All");
+		//types.add(0, general); TODO: VIEW ALL
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
 		typeSelector.addActionListener(new BoxListener());
@@ -95,7 +91,7 @@ public class WaitListPane extends JPanel {
 		add(topPanel, BorderLayout.NORTH);
 		
 		JPanel specTablePanel = new JPanel(new BorderLayout());
-		WaitlistTableModel model = new WaitlistTableModel(wm.getWaitList(), false);
+		WaitlistTableModel model = new WaitlistTableModel(DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false);
 		specTable = new JTable(model);
 		specTable.setDragEnabled(true);
 		specTable.setFont(font);
