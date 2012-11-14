@@ -15,6 +15,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -115,7 +116,7 @@ public class WaitListPane extends JPanel {
 	private final AbstractAction addPatientAction = new AbstractAction("Add Patient to Waitlist") {
 		public void actionPerformed(ActionEvent e) {
 			AddToWaitlistUI.ShowDialog(owner);
-                        specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
+            specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
 			//if (typeSelector.getSelectedIndex() == 0) specTable.setModel(
                         //        new WaitlistTableModel(wm.getWaitList(), false));
 			//else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true));
@@ -239,13 +240,38 @@ public class WaitListPane extends JPanel {
 	}
 	
 	/**
+	 * Returns the full list of people on the wait list.
+	 * 
+	 * @return entire list of people on the wait list
+	 */
+	public List<WaitlistDto> getWaitList() {
+		return DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
+	}
+	
+	/**
+	 * Returns a waitlist filtered by a specified service type.
+	 * 
+	 * @param t - the type to filter the waitlist
+	 * @return a list of waitlist patients that have been filtered by a type
+	 */
+	public List<WaitlistDto> getWaitList(TypeDto t) {
+		List<WaitlistDto> sub = new ArrayList<WaitlistDto>();
+		List<WaitlistDto> fullWaitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
+		for (WaitlistDto w : fullWaitlist) {
+			if (w.getTypeID() == t.getTypeID())
+				sub.add(w);
+		}
+		return sub;
+	}
+	
+	/**
 	 * This class sets the table model to include the appropriate types of columns according to what has been selected in 
 	 * the JComboBox that allows the user to choose the type of service.
 	 */
 	public class BoxListener implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
 	        JComboBox cb = (JComboBox)e.getSource();
-                specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
+            specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
 	        /*if (cb.getSelectedIndex() == 0) specTable.setModel( TODO:FILTER
                         new WaitlistTableModel(wm.getWaitList(), false));
 	        else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(cb.getSelectedIndex())), true));

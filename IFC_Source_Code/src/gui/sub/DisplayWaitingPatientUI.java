@@ -20,7 +20,7 @@ import backend.DataTransferObjects.*;
 public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private static DisplayWaitingPatientUI displayWaitingPatientUI;
 	
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 	private JTextArea textArea;
 	private JTextArea noteArea;

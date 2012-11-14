@@ -34,6 +34,7 @@ public class WaitlistPatientListener extends MouseAdapter {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
+
 				WaitlistDto wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
 				String newComment = DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp);
 				wp.setComment(newComment);

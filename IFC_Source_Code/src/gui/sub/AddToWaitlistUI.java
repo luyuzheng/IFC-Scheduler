@@ -25,7 +25,7 @@ import backend.DataTransferObjects.*;
 public class AddToWaitlistUI extends JDialog implements ActionListener {
 	private static AddToWaitlistUI addToWaitlistUI;
 	
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 	private JButton selectPatientButton = new JButton("Select Patient");
 	
@@ -117,7 +117,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 				return;
 			} 
 			TypeDto type = (TypeDto)typeCombo.getSelectedItem();
-			//String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t");
+			//String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t"); TODO: add in comments again?
 
 			List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
 			for (int i = 0; i < waitlist.size(); i++) {
