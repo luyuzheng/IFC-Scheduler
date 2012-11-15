@@ -1079,7 +1079,7 @@ public class DataServiceImpl implements DataService {
 				st.setInt(2, gui.Constants.DEFAULT_START_TIME);
 				retDay.setEnd(gui.Constants.DEFAULT_END_TIME);
 				st.setInt(3, gui.Constants.DEFAULT_END_TIME);
-				st.executeQuery();
+				st.executeUpdate();
 				return retDay;
 			}
 

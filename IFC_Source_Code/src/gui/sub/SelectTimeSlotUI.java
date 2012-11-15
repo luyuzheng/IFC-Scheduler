@@ -1,6 +1,7 @@
 package gui.sub;
 
 import java.awt.BorderLayout;
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;

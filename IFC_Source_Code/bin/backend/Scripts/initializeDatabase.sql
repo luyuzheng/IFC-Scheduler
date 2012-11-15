@@ -61,8 +61,8 @@ EndTime time
 CREATE TABLE IF NOT EXISTS Day
 (
 DayDate date NOT NULL PRIMARY KEY,
-StartTime time,
-EndTime time,
+StartTime int,
+EndTime int,
 Status varchar(255)
 );
 
