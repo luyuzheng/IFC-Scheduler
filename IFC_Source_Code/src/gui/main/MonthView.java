@@ -32,7 +32,9 @@ public class MonthView extends JPanel {
 		setMaximumSize(new Dimension(200, 185));
 		JPanel panel = new JPanel(new GridLayout(6,7));
 		
+		GregorianCalendar todayCal = new GregorianCalendar();
 		Date dateToday= dp.getDate();		
+		todayCal.setTime(dateToday);
 		this.date = date;
 		
 		GregorianCalendar cal = new GregorianCalendar();
@@ -76,18 +78,31 @@ public class MonthView extends JPanel {
 		cal.roll(Calendar.MONTH, false);
 		
 		for (int i = 1; i <= prevDays; i++) {
-			Date d = new Date(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays + i, cal.get(Calendar.YEAR));
-			panel.add(new TinyDayBlock(dp, d, Color.LIGHT_GRAY, false));
+			//Date d = new Date(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DATE) - prevDays + i, cal.get(Calendar.YEAR));
+			cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE) - prevDays + i);
+			cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
+			
+			//java.util.Date time = cal.getTime();
+			//long t = time.getTime();
+			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
+			
+			panel.add(new TinyDayBlock(dp, dt, Color.LIGHT_GRAY, false));
 		}
 		
 		cal.roll(Calendar.MONTH, true);
 		
 		for (int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-			Date d = new Date(m, i, cal.get(Calendar.YEAR));
+			//Date d = new Date(m, i, cal.get(Calendar.YEAR));
+			
+			cal.set(Calendar.DATE, i);
+			cal.set(Calendar.MONTH, m);
+			
 			boolean today = false;
-			if (cal.get(Calendar.MONTH)+1 == dateToday.getMonth() && i == dateToday.getDay() && 
-				cal.get(Calendar.YEAR) == dateToday.getYear()) today = true;
-			TinyDayBlock t = new TinyDayBlock(dp, d, today);
+			if (cal.get(Calendar.MONTH)+1 == todayCal.get(Calendar.MONTH) && i == todayCal.get(Calendar.DATE) && 
+				cal.get(Calendar.YEAR) == todayCal.get(Calendar.YEAR)) today = true;
+			
+			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
+			TinyDayBlock t = new TinyDayBlock(dp, dt, today);
 			if (today) dp.registerCurrentDay(t);
 			panel.add(t);
 			days.add(t);
@@ -96,8 +111,11 @@ public class MonthView extends JPanel {
 		cal.roll(Calendar.MONTH, true);
 		
 		for (int i = 1; i <= endDays; i++) {
-			Date d = new Date(cal.get(Calendar.MONTH) + 1, i, cal.get(Calendar.YEAR));
-			panel.add(new TinyDayBlock(dp, d, Color.LIGHT_GRAY, false));
+			//Date d = new Date(cal.get(Calendar.MONTH) + 1, i, cal.get(Calendar.YEAR));
+			cal.set(Calendar.DATE, i);
+			cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
+			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
+			panel.add(new TinyDayBlock(dp, dt, Color.LIGHT_GRAY, false));
 		}
 		
 		TinyMonthHeadingPanel mhp = new TinyMonthHeadingPanel(month, cal.get(Calendar.YEAR) + "", (mon == MonthView.CURRENT_MONTH), dp);
