@@ -21,7 +21,6 @@ public class DatePicker extends JPanel {
 	
 	private TinyDayBlock selectedBlock;
 	private MonthView curr;
-	//private MonthView prev, curr, next;
 	private MainWindow mainWindow;
 	private Date currentDate;
 	
@@ -32,31 +31,18 @@ public class DatePicker extends JPanel {
 		cal.setTimeInMillis(System.currentTimeMillis());
 		
 		currentDate = new Date(cal.getTimeInMillis());
-		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));		
-		
-		//prev = new MonthView(this, currentDate, MonthView.PREVIOUS_MONTH);
-		curr = new MonthView(this, currentDate, MonthView.CURRENT_MONTH);
-		//next = new MonthView(this, currentDate, MonthView.NEXT_MONTH);
-		
+		curr = new MonthView(this, currentDate, MonthView.CURRENT_MONTH);		
 
 		//reportFocusGained(selectedBlock);
 		selectedBlock = new TinyDayBlock(this, DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(currentDate).getDate(), false);
 		
-		//System.out.println(cal.get(Calendar.MONTH)+1);
-		//System.out.println(cal.get(Calendar.DATE));
-		//System.out.println(cal.get(Calendar.YEAR));
-		System.out.println(currentDate);
-		//System.out.println(DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(currentDate));
 		
 		//Date focused = selectedBlock.getDate();
 		//cal.setTime(focused);
-		curr.selectDay(cal.get(Calendar.DAY_OF_MONTH));
-		//curr.selectDay(selectedBlock.getDate().getDay());
+		curr.selectDay(cal.get(Calendar.DATE));
 		
 		setLayout(new GridLayout(0,1));
-		//add(prev);
 		add(curr);
-		//add(next);
 	}
 	
 	public Date getDate() {
@@ -68,20 +54,16 @@ public class DatePicker extends JPanel {
 	}
 	
 	public void setDate(Date d) {
-		//prev = new MonthView(this, d, MonthView.PREVIOUS_MONTH);
+		GregorianCalendar cal = new GregorianCalendar();
+		cal.setTime(selectedBlock.getDate());
 		curr = new MonthView(this, d, MonthView.CURRENT_MONTH);
-		//next = new MonthView(this, d, MonthView.NEXT_MONTH);
 		
 		removeAll();
-		//add(prev);
 		add(curr);
-		//add(next);
-		
 		repaint();
 		validate();
 		
-		
-		curr.selectDay(selectedBlock.getDate().getDay());
+		curr.selectDay(cal.get(Calendar.DATE));
 		mainWindow.setDate(d);		
 	}
 	
