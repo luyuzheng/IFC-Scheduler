@@ -1,6 +1,8 @@
 package gui.main.listeners;
 
+import gui.main.AppointmentConfirmationPane;
 import gui.main.AppointmentConfirmationPane.AppointmentConfirmationTableModel;
+import gui.sub.DisplayAppointmentConfirmationUI;
 
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -8,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
 
+import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.*;
 
 /**
@@ -37,11 +40,12 @@ public class AppointmentConfirmationListener extends MouseAdapter {
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
 				AppointmentDto appt = ((AppointmentConfirmationTableModel)owner.getModel()).getAppointment(owner.getSelectedRow());
-				//DisplayAppointmentConfirmationUI.ShowDialog(parent.getParent(), appt);
+				DisplayAppointmentConfirmationUI.ShowDialog(parent.getParent(), appt);
+				//TODO: Need a method to update appointments!
 				//AppointmentConfirmationManager acm = new AppointmentConfirmationManager();
 				//acm.updateAppointmentConfirmation(appt);
-				//AppointmentConfirmationPane acp = (AppointmentConfirmationPane) parent;
-				//acp.resetModel();
+				AppointmentConfirmationPane acp = (AppointmentConfirmationPane) parent;
+				acp.resetModel();
 			}
 		}
 	}

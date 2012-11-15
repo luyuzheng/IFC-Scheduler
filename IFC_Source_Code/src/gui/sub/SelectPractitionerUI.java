@@ -35,7 +35,8 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 
 	private static SelectPractitionerUI selectPractitionerUI;
 	private ArrayList<PractitionerDto> prac = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
-	private JTextField nameField = new JTextField();
+	private JTextField firstNameField = new JTextField();
+	private JTextField lastNameField = new JTextField();
 	private JComboBox typeCombo;
 	JTabbedPane tabbedPane;
 	private JTextField apptLengthField = new JTextField();
@@ -119,21 +120,28 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel topSubpanel = new JPanel(new GridLayout(0, 1));
     	
-    	JPanel nameLengthPanel = new JPanel(new BorderLayout());
-    	JPanel namePanel = new JPanel(new BorderLayout());
-    	JLabel label = new JLabel("Name: ");
-    	label.setFont(font);
-    	nameField.setFont(font);
-    	namePanel.add(label, BorderLayout.NORTH);
-    	namePanel.add(nameField, BorderLayout.CENTER);
+    	JPanel nameLengthPanel = new JPanel(new GridLayout(0, 3));
+    	JPanel firstNamePanel = new JPanel(new BorderLayout());
+    	JPanel lastNamePanel = new JPanel(new BorderLayout());
+    	JLabel firstNameLabel = new JLabel("First Name: ");
+    	JLabel lastNameLabel = new JLabel("Last Name: ");
+    	firstNameLabel.setFont(font);
+    	lastNameLabel.setFont(font);
+    	firstNameField.setFont(font);
+    	lastNameField.setFont(font);
+    	firstNamePanel.add(firstNameLabel, BorderLayout.NORTH);
+    	firstNamePanel.add(firstNameField, BorderLayout.CENTER);
+    	lastNamePanel.add(lastNameLabel, BorderLayout.NORTH);
+    	lastNamePanel.add(lastNameField, BorderLayout.CENTER);
     	JPanel lengthPanel = new JPanel(new BorderLayout());
-    	label = new JLabel("Appt Length (Min): ");
+    	JLabel label = new JLabel("Appt Length (Min): ");
     	label.setFont(font);
     	apptLengthField.setFont(font);
     	lengthPanel.add(label, BorderLayout.NORTH);
     	lengthPanel.add(apptLengthField, BorderLayout.CENTER);
-    	nameLengthPanel.add(namePanel, BorderLayout.CENTER);
-    	nameLengthPanel.add(lengthPanel, BorderLayout.EAST);
+    	nameLengthPanel.add(firstNamePanel);
+    	nameLengthPanel.add(lastNamePanel);
+    	nameLengthPanel.add(lengthPanel);
     	topSubpanel.add(nameLengthPanel);
     	
     	JPanel typePanel = new JPanel(new BorderLayout());
@@ -207,25 +215,37 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 			return;
 		}
 		else if (e.getActionCommand().equals("okNew")) {
-			String name = nameField.getText();
-			if (name.equals("")) {
-				JOptionPane.showMessageDialog(this, "Please enter a name.", "Error!", JOptionPane.ERROR_MESSAGE);
+			JLabel msg = new JLabel();
+			msg.setFont(font);
+			String firstName = firstNameField.getText();
+			if (firstName.equals("")) {
+				msg.setText( "Please enter a first name.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			String lastName = lastNameField.getText();
+			if (lastName.equals("")) {
+				msg.setText("Please enter a last name.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			String type = ((TypeDto)typeCombo.getSelectedItem()).getTypeName();
 			if (type.equals("")) {
-				JOptionPane.showMessageDialog(this, "Please enter a type.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter a type.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			int apptLength;
 			try {
 				apptLength = Integer.parseInt(apptLengthField.getText());
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, "Appointment Length must be an integer value.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Appointment Length must be an integer value.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			if (apptLength <= 0) {
-				JOptionPane.showMessageDialog(this, "Appointment length must be positive.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText( "Appointment length must be positive.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			String note = noteField.getText().replaceAll("[\r\n]+", "\t\t");
@@ -236,12 +256,13 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 			}
 			
 			practitioner = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(
-                                t.getTypeID(), name, name, apptLength, "" , note);
+                                t.getTypeID(), firstName, lastName, apptLength, "" , note);
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (pracTable.getSelectedRow() > -1)
 				practitioner = prac.get(pracTable.getSelectedRow());
 			else {
-				JOptionPane.showMessageDialog(this, "Please select one of the practitioners in the table, or add a new one.", "Error!", JOptionPane.ERROR_MESSAGE);
+				JLabel msg = new JLabel("Please select one of the practitioners in the table, or add a new one.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		}

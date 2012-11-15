@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -232,7 +233,8 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 			}
 		} else if (e.getActionCommand().equals("remove")) {
 			if (pracTable.getSelectedRow() < 0) return;
-			if (JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this practitioner? Removing this practitioner will not affect historical data, but you will no longer be able to schedule him or her.", "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+			JLabel msg = new JLabel("Are you sure you want to remove this practitioner? Removing this practitioner will not affect historical data, but you will no longer be able to schedule him or her.");
+			if (JOptionPane.showConfirmDialog(this, msg, "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(
                                         model.getPractitioner(pracTable.getSelectedRow()));
 				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();

@@ -25,7 +25,8 @@ import backend.DataTransferObjects.*;
 public class EditPractitionerUI extends JDialog implements ActionListener {
 	private static EditPractitionerUI editPractitionerUI;
 
-	private JTextField nameField = new JTextField();
+	private JTextField firstNameField = new JTextField();
+	private JTextField lastNameField = new JTextField();
 	private JComboBox typeCombo = new JComboBox();
 	private JTextArea note = new JTextArea();
 	private JTextField apptLengthField = new JTextField();
@@ -51,25 +52,36 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 	
 	private JPanel makeMainPanel() {
 
-		nameField.setText(p.getFirst() + p.getLast());
+		firstNameField.setText(p.getFirst());
+		lastNameField.setText(p.getLast());
 		note.setText((p.getNotes()).replaceAll("\t\t", "\n"));
 		apptLengthField.setText("" + p.getApptLength());
 
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel input = new JPanel(new GridLayout(0,1));
 
-		JPanel namePanel = new JPanel(new BorderLayout());
-		JLabel label = new JLabel("First Name: ");
-		label.setFont(font);
-		namePanel.add(label, BorderLayout.NORTH);
-		nameField.setColumns(15);
-		nameField.setFont(font);
-		namePanel.add(nameField, BorderLayout.CENTER);
+		JPanel namePanel = new JPanel(new GridLayout(0, 2));
+		JPanel firstNamePanel = new JPanel(new BorderLayout());
+		JPanel lastNamePanel = new JPanel(new BorderLayout());
+		JLabel firstNameLabel = new JLabel("First Name: ");
+		JLabel lastNameLabel = new JLabel("Last Name: ");
+		firstNameLabel.setFont(font);
+		lastNameLabel.setFont(font);
+		firstNamePanel.add(firstNameLabel, BorderLayout.NORTH);
+		firstNameField.setColumns(8);
+		firstNameField.setFont(font);
+		firstNamePanel.add(firstNameField, BorderLayout.CENTER);
+		lastNamePanel.add(lastNameLabel, BorderLayout.NORTH);
+		lastNameField.setColumns(8);
+		lastNameField.setFont(font);
+		lastNamePanel.add(lastNameField, BorderLayout.CENTER);
 
+		namePanel.add(firstNamePanel);
+		namePanel.add(lastNamePanel);
 		input.add(namePanel);
 
 		JPanel apptLengthPanel = new JPanel(new BorderLayout());
-		label = new JLabel("Appt Length: ", JLabel.CENTER);
+		JLabel label = new JLabel("Appt Length: ", JLabel.CENTER);
 		label.setFont(font);
 		apptLengthPanel.add(label, BorderLayout.NORTH);
 		apptLengthField.setFont(font);
@@ -147,40 +159,51 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 			validate();
 			return;
 		} else {
-			String name = nameField.getText();
-			if (name.equals("")) {
-				JOptionPane.showMessageDialog(this, "Please enter a name.", "Error!", JOptionPane.ERROR_MESSAGE);
+			JLabel msg = new JLabel();
+			msg.setFont(font);
+			String firstName = firstNameField.getText();
+			if (firstName.equals("")) {
+				msg.setText("Please enter a first name.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
+			}
+			String lastName = lastNameField.getText();
+			if (lastName.equals("")) {
+				msg.setText("Please enter a last name.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			}
 			String apptLength = apptLengthField.getText();
 			try {
 				int length = Integer.parseInt(apptLength);
 				if (length <= 0) {
-					JOptionPane.showMessageDialog(this, "Please enter a valid appointment length.", "Error!", JOptionPane.ERROR_MESSAGE);
+					msg.setText("Please enter a valid appointment length.");
+					JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, "Please enter a valid appointment length.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter a valid appointment length.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}		
 			String noteText = note.getText().replaceAll("[\r\n]+", "\t\t");
 			if (typeCombo.getSelectedIndex() < 0) {
-				JOptionPane.showMessageDialog(this, "Please select a type.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please select a type.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			TypeDto t = (TypeDto)typeCombo.getSelectedItem();
 
 			int newApptLength = Integer.parseInt(apptLength);
 			if (p.getApptLength() == newApptLength) {
-				p.setFirst(name);
-                                p.setLast(name);
+				p.setFirst(firstName);
+                p.setLast(lastName);
 				p.setNotes(noteText);
 				p.setTypeID(t.getTypeID());
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePractitionerInfo(p);
 			} else {
                                 DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(p);
                      
-				p = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(t.getTypeID(), name, name, newApptLength, "" ,noteText);
+				p = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(t.getTypeID(), firstName, lastName, newApptLength, "" ,noteText);
 			}
 		}
 		editPractitionerUI.setVisible(false);
