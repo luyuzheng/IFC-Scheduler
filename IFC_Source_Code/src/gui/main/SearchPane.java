@@ -2,7 +2,6 @@ package gui.main;
 
 import gui.sub.SearchForAppointmentUI;
 import gui.sub.SearchForPatientUI;
-import gui.sub.SearchForPractitionerUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -112,15 +111,6 @@ public class SearchPane extends JPanel {
 	private final AbstractAction searchForPatientAction = new AbstractAction("Search for a Patient") {
 		public void actionPerformed(ActionEvent e) {
 			SearchForPatientUI.ShowDialog(owner);
-		}
-	};
-	
-	/**
-	 * This calls the appropriate pop up window when the "Search for a Practitioner" button is clicked.
-	 */
-	private final AbstractAction searchForPracAction = new AbstractAction("Search for a Practitioner") {
-		public void actionPerformed(ActionEvent e) {
-			SearchForPractitionerUI.ShowDialog(owner);
 		}
 	};
 	
