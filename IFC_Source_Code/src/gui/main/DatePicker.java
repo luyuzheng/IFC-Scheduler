@@ -32,7 +32,7 @@ public class DatePicker extends JPanel {
 		cal.setTimeInMillis(System.currentTimeMillis());
 		
 		currentDate = new Date(cal.getTimeInMillis());
-		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
+		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));		
 		
 		//prev = new MonthView(this, currentDate, MonthView.PREVIOUS_MONTH);
 		curr = new MonthView(this, currentDate, MonthView.CURRENT_MONTH);
@@ -40,9 +40,16 @@ public class DatePicker extends JPanel {
 		
 
 		//reportFocusGained(selectedBlock);
-		selectedBlock = new TinyDayBlock(this, DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(currentDate).getDate(), true);
-		Date focused = selectedBlock.getDate();
-		cal.setTime(focused);
+		selectedBlock = new TinyDayBlock(this, DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(currentDate).getDate(), false);
+		
+		//System.out.println(cal.get(Calendar.MONTH)+1);
+		//System.out.println(cal.get(Calendar.DATE));
+		//System.out.println(cal.get(Calendar.YEAR));
+		System.out.println(currentDate);
+		//System.out.println(DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(currentDate));
+		
+		//Date focused = selectedBlock.getDate();
+		//cal.setTime(focused);
 		curr.selectDay(cal.get(Calendar.DAY_OF_MONTH));
 		//curr.selectDay(selectedBlock.getDate().getDay());
 		
@@ -74,7 +81,7 @@ public class DatePicker extends JPanel {
 		validate();
 		
 		
-		//curr.selectDay(selectedBlock.getDate().getDay());
+		curr.selectDay(selectedBlock.getDate().getDay());
 		mainWindow.setDate(d);		
 	}
 	
@@ -90,7 +97,7 @@ public class DatePicker extends JPanel {
 		//int year = curr.getDate().getYear();
 		
 		int day = focused.get(Calendar.DAY_OF_MONTH);
-		int month = focused.get(Calendar.MONTH) + 1;
+		int month = focused.get(Calendar.MONTH);
 		int year = focused.get(Calendar.YEAR);
 				
 		if (month == 12) {
@@ -100,7 +107,7 @@ public class DatePicker extends JPanel {
 			month++;
 		
 		focused.set(Calendar.DAY_OF_MONTH, day);	
-		focused.set(Calendar.MONTH, month + 1);
+		focused.set(Calendar.MONTH, month);
 		focused.set(Calendar.YEAR, year);
 		newDate = new Date(focused.getTime().getTime());
 		
@@ -111,7 +118,7 @@ public class DatePicker extends JPanel {
 		TinyDayBlock b = new TinyDayBlock(this, newDate, Color.LIGHT_GRAY, false);
 		
 		focused.setTime(selectedBlock.getDate());	
-		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH) + 1);
+		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH));
 		curr.selectDay(day);
 		selectedBlock = b;
 		//curr.selectDay(day);
@@ -126,7 +133,7 @@ public class DatePicker extends JPanel {
 		
 		
 		int day = focused.get(Calendar.DAY_OF_MONTH);
-		int month = focused.get(Calendar.MONTH) + 1;
+		int month = focused.get(Calendar.MONTH);
 		int year = focused.get(Calendar.YEAR);
 		if (month == 1) {
 			month = 12;
@@ -136,7 +143,7 @@ public class DatePicker extends JPanel {
 		
 		
 		focused.set(Calendar.DAY_OF_MONTH, day);	
-		focused.set(Calendar.MONTH, month + 1);
+		focused.set(Calendar.MONTH, month);
 		focused.set(Calendar.YEAR, year);
 		newDate = new Date(focused.getTime().getTime());
 		
@@ -147,7 +154,7 @@ public class DatePicker extends JPanel {
 		//reportFocusGained(selectedBlock);		
 		TinyDayBlock b = new TinyDayBlock(this, newDate, Color.LIGHT_GRAY, false);
 		focused.setTime(selectedBlock.getDate());	
-		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH) + 1);
+		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH));
 		curr.selectDay(day);
 		selectedBlock = b;
 

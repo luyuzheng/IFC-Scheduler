@@ -30,7 +30,7 @@ public class DayBlock extends JPanel {
 	
 	public DayBlock(Date date, Color color) {
 		textArea = new JTextArea();
-		String text = date.getDay() + "\n";
+		String text = date.getDate() + "\n";
 		
 		DayDto d = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(date);
 		

@@ -32,17 +32,25 @@ public class MonthView extends JPanel {
 		setMaximumSize(new Dimension(200, 185));
 		JPanel panel = new JPanel(new GridLayout(6,7));
 		
-		
-		GregorianCalendar current = new GregorianCalendar();
-		current.setTimeInMillis(System.currentTimeMillis());
-		Date dateToday = new Date(current.get(Calendar.MONTH)+1, current.get(Calendar.DATE), current.get(Calendar.YEAR));
+		Date dateToday= dp.getDate();
 		
 		this.date = date;
+		System.out.println(date);
+		System.out.println(date.getDate());
+		System.out.println(date.getYear());
+		
+		//cal.get(Calendar.DAY_OF_MONTH)
 		
 		GregorianCalendar cal = new GregorianCalendar();
-		cal.set(Calendar.MONTH, date.getMonth() - 1);
-		cal.set(Calendar.DATE, 1);
-		cal.set(Calendar.YEAR, date.getYear());
+		
+		cal.set(Calendar.MONTH, date.getMonth());
+		cal.set(Calendar.DATE, date.getDate());
+		cal.set(Calendar.YEAR, cal.get(Calendar.YEAR) - 1900);
+		
+		System.out.println(date.getDay());
+		System.out.println(date.getYear());
+		//System.out.println(cal.get(Calendar.DATE));
+		//System.out.println(cal.get(Calendar.YEAR));
 		
 		if (mon == MonthView.PREVIOUS_MONTH) {
 			if (cal.get(Calendar.MONTH) > 0) cal.roll(Calendar.MONTH, false);
