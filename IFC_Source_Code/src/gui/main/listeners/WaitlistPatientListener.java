@@ -37,7 +37,7 @@ public class WaitlistPatientListener extends MouseAdapter {
 
 				WaitlistDto wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
 				String newComment = DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp);
-				wp.setComment(newComment);
+				wp.setComments(newComment);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
 				WaitListPane wlp = (WaitListPane) parent;
 				wlp.resetModel();

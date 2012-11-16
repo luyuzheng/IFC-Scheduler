@@ -485,7 +485,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement("SELECT * FROM Practitioner " +
-					"INNER JOIN ServiceType where Practitioner.`TypeID` = ServiceType.TypeID");
+					"INNER JOIN ServiceType ON Practitioner.`TypeID` = ServiceType.TypeID");
 			rs = st.executeQuery();
 			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
 			PractitionerDto practitioner;
@@ -547,23 +547,40 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
                         
                         st = connection.prepareStatement(
-                        "SELECT Max(PractID) FROM Practitioner"); //TODO: link to Type on Type_ID
+                        "SELECT Max(PractID) FROM Practitioner"); 
 		
                         rs = st.executeQuery();
-                        rs.next();
-                        PractitionerDto returnPract = new PractitionerDto();
-                
-                        returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
-                        returnPract.setField(PractitionerDto.FIRST, rs.getInt(PractitionerDto.FIRST));
-                        returnPract.setField(PractitionerDto.LAST, rs.getInt(PractitionerDto.LAST));
-                        returnPract.setField(PractitionerDto.NOTES, rs.getInt(PractitionerDto.NOTES));
-                        returnPract.setField(PractitionerDto.PHONE, rs.getInt(PractitionerDto.PHONE));
-                        returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-                        TypeDto type = new TypeDto();
-                        type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
-                        type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
                         
-                        return returnPract;
+                        rs.next();
+                        
+                        int id = rs.getInt(1);
+                        
+                        System.out.println(id);
+                        
+                        st = connection.prepareStatement(
+                        "SELECT * FROM Practitioner INNER JOIN ServiceType ON Practitioner.TypeID = " +
+					"ServiceType.TypeID WHERE Practitioner.PractID=?");
+                        
+                        st.setInt(1, id);
+                        
+                        rs = st.executeQuery();
+                        
+                        if(rs.next()){
+                            PractitionerDto returnPract = new PractitionerDto();
+
+                            returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
+                            returnPract.setField(PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
+                            returnPract.setField(PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
+                            returnPract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
+                            returnPract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
+                            returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
+                            TypeDto type = new TypeDto();
+                            type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+                            type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+                            returnPract.setField(PractitionerDto.TYPE, type);
+
+                            return returnPract;
+                        }
 			
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -616,16 +633,41 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public boolean updatePractitionerInfo(PractitionerDto practitioner) {
-		if (practitioner.getPractID() == null) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Practitioner" +
+				"SET TypeID=?,FirstName=?,LastName=?,ApptLength=?,PhoneNumber=?,Notes=? " +
+				"WHERE PractID=?" );
+		st.setInt(1, practitioner.getTypeID());
+		st.setString(2, practitioner.getFirst());
+		st.setString(3,practitioner.getLast());
+		st.setInt(4,practitioner.getApptLength());
+		st.setString(5,practitioner.getPhone());
+		st.setString(6,  practitioner.getNotes());
+		st.setInt(7, practitioner.getPractID());
+		
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-			lgr.log(Level.SEVERE, "Tried to update practitioner without ID.\n");
-			return false;
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
-		// TODO: check that the ID exists in the table. 
-                // TODO: Change this method
-                // should modify 
-		return false;
 	}
+		return false;
+    }
 
 	@Override
 	public List<SchedulePractitionerDto> getAllPractitionersForDay(DayDto day) {
@@ -649,7 +691,7 @@ public class DataServiceImpl implements DataService {
 				newPract.setField(SchedulePractitionerDto.PRACT, 
 						this.getPractitioner(rs.getInt("PractID")));
 				newPract.setField(SchedulePractitionerDto.APPOINTMENTS, 
-						this.getAllAppointments(rs.getInt(newPract.getPractSchedID())));
+						this.getAllAppointments(newPract.getPractSchedID()));
 				retList.add(newPract);
 			}
 			return retList;
@@ -675,10 +717,10 @@ public class DataServiceImpl implements DataService {
 		try {
 			st = connection.prepareStatement("DELETE FROM PractitionerScheduled WHERE PractSchID = ?");
 			st.setInt(1, practSchedId);
-			st.executeQuery();
+			st.executeUpdate();
 			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchID = ?");
 			st.setInt(1, practSchedId);
-			st.executeQuery();
+			st.executeUpdate();
 			return true;
 		}
 		catch (SQLException e) {
@@ -755,15 +797,65 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public boolean addPatientToAppointment(int patID, AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Appointment " +
+				"SET Appointment.PatID=? WHERE Appointment.ApptID=?" );
+		st.setInt(1, patID);
+		st.setInt(2, appointment.getApptID());
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
 	}
+		return false;
+    }
+	
 
 	@Override
 	public boolean removePatientFromAppointment(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Appointment " +
+				"SET Appointment.PatID=NULL WHERE Appointment.ApptID=?" );
+		st.setInt(1, appointment.getApptID());
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
 	}
+		return false;
+    }
 
 	@Override
 	public boolean checkAsNoShow(AppointmentDto appointment) {
@@ -1008,13 +1100,11 @@ public class DataServiceImpl implements DataService {
 			st.setInt(3, start);
 			st.setInt(4, end);
 			st.executeUpdate();
-			st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
+                        st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
 			rs = st.executeQuery();
-
 			rs.next();
 
 			int pract_id = rs.getInt(1);
-			System.out.println(pract_id);
 
 			AppointmentDto newApt = new AppointmentDto();
 			SchedulePractitionerDto returnDto = new SchedulePractitionerDto();
@@ -1042,9 +1132,9 @@ public class DataServiceImpl implements DataService {
 				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract_id);
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
-				st.executeQuery();
+				st.executeUpdate();
 			}
-
+                        return returnDto;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -1113,8 +1203,9 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                    //Todo: fox this claire
-			st = connection.prepareStatement("SELECT * FROM Practitioner WHERE PractID=(?)");
+			st = connection.prepareStatement("SELECT * FROM Practitioner " +
+					"INNER JOIN ServiceType ON Practitioner.TypeID = " +
+					"ServiceType.TypeID WHERE Practitioner.PractID=(?)");
 			st.setInt(1, practID);
 			rs = st.executeQuery();
 			PractitionerDto pract = new PractitionerDto();
@@ -1315,15 +1406,74 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public boolean updatePatient(PatientDto patient) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Patient " +
+				"SET Patient.FirstName=?, Patient.LastName=?, Patient.PhoneNumber=?, Patient.Notes=?" +
+				" WHERE PatID = ?");
+		st.setString(1, patient.getFirst());
+		st.setString(2,patient.getLast());
+		st.setString(3,patient.getPhone());
+		st.setString(4,patient.getNotes());
+		st.setInt(5,patient.getPatID());
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+		return false;
     }
 
     @Override
-    public boolean updateWaitlist(WaitlistDto wp) {
-        //TODO: not supported yet
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean updateWaitlist(WaitlistDto wl) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Waitlist " +
+				"SET Waitlist.PatID=?, Waitlist.TypeID=?, Waitlist.DatetimeEntered=?, Waitlist.Comments=?" +
+				" WHERE Waitlist.WaitlistID = ?");
+		st.setInt(1, wl.getPatientID());
+		st.setInt(2,wl.getTypeID());
+		// This seems worrisome? will date work this way?
+		st.setDate(3,wl.getDate());
+		st.setString(4,wl.getComments());
+		st.setInt(5,wl.getWaitlistID());
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+		return false;
     }
-
     @Override
     public boolean removePatientFromWaitlist(WaitlistDto patient) {
         PreparedStatement st = null;
