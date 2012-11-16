@@ -215,7 +215,9 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patient WHERE PatID=(?)");
+			st = connection.prepareStatement("SELECT Patient.PatID, Patient.`FirstName`, " +
+					"Patient.`LastName`, Patient.PhoneNumber, Patient.Notes, COUNT(NoShow.NoShowID) " +
+					"FROM Patient INNER JOIN NoShow on Patient.`PatID` = NoShow.`PatID`WHERE Patient.PatID =(?)");
 			st.setInt(1, PatID);
 			rs = st.executeQuery();
 			PatientDto patient = new PatientDto();
@@ -225,6 +227,8 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.LAST, rs.getString(3));
 				patient.setField(PatientDto.PHONE, rs.getLong(4));
 				patient.setField(PatientDto.NOTES, rs.getString(5));
+				patient.setField(PatientDto.NO_SHOW, rs.getInt(6));
+				
 				return patient;
 			}
 
