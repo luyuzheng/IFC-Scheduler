@@ -50,22 +50,18 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTime(this.d);
 		
-		//cal.set(Calendar.DATE, 1);
-		//cal.set(Calendar.MONTH, d.getMonth() - 1);
-		//cal.set(Calendar.YEAR, d.getYear());
-		
 		String month = "December";
-		if (cal.get(Calendar.MONTH) == 1) month = "January";
-		else if (cal.get(Calendar.MONTH) == 2) month = "February";
-		else if (cal.get(Calendar.MONTH) == 3) month = "March";
-		else if (cal.get(Calendar.MONTH) == 4) month = "April";
-		else if (cal.get(Calendar.MONTH) == 5) month = "May";
-		else if (cal.get(Calendar.MONTH) == 6) month = "June";
-		else if (cal.get(Calendar.MONTH) == 7) month = "July";
-		else if (cal.get(Calendar.MONTH) == 8) month = "August";
-		else if (cal.get(Calendar.MONTH) == 9) month = "September";
-		else if (cal.get(Calendar.MONTH) == 10) month = "October";
-		else if (cal.get(Calendar.MONTH) == 11) month = "November";
+		if (cal.get(Calendar.MONTH) == 0) month = "January";
+		else if (cal.get(Calendar.MONTH) == 1) month = "February";
+		else if (cal.get(Calendar.MONTH) == 2) month = "March";
+		else if (cal.get(Calendar.MONTH) == 3) month = "April";
+		else if (cal.get(Calendar.MONTH) == 4) month = "May";
+		else if (cal.get(Calendar.MONTH) == 5) month = "June";
+		else if (cal.get(Calendar.MONTH) == 6) month = "July";
+		else if (cal.get(Calendar.MONTH) == 7) month = "August";
+		else if (cal.get(Calendar.MONTH) == 8) month = "September";
+		else if (cal.get(Calendar.MONTH) == 9) month = "October";
+		else if (cal.get(Calendar.MONTH) == 10) month = "November";
 		
 		month = month + " " + cal.get(Calendar.YEAR);
 		
@@ -74,12 +70,18 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		int prevDays = cal.get(Calendar.DAY_OF_WEEK) - 1; 
 		int endDays = 42 - cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays;
 		
+		/*System.out.println("Calendar.DAY_OF_WEEK: " + Calendar.DAY_OF_WEEK);
+		System.out.println("Calendar.DATE" + Calendar.DATE);
+		System.out.println("Calendar.MONTH" + cal.get(Calendar.MONTH));
+		System.out.println("Calendar.YEAR" + cal.get(Calendar.YEAR));
+		System.out.println("prevDays: " + prevDays);
+		System.out.println("endDays: " + endDays);*/
+		
 		cal.roll(Calendar.MONTH, false);
 		
 		for (int i = 1; i <= prevDays; i++) {
 			Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays + i, cal.get(Calendar.YEAR));
 			java.sql.Date date = new Date(c.getTime().getTime());
-			//Date date = new Date(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays + i, cal.get(Calendar.YEAR));
 			panel.add(new DayBlock(date, Color.LIGHT_GRAY));
 		}
 		
@@ -88,7 +90,6 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		for (int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
 			Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH), i, cal.get(Calendar.YEAR));
 			java.sql.Date date = new Date(c.getTime().getTime());
-			//Date date = new Date(d.getMonth(), i, d.getYear());
 			panel.add(new DayBlock(date));
 		}
 		
@@ -97,7 +98,6 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		for (int i = 1; i <= endDays; i++) {
 			Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH) + 1, i, cal.get(Calendar.YEAR));
 			java.sql.Date date = new Date(c.getTime().getTime());
-			//Date date = new Date(cal.get(Calendar.MONTH) + 1, i, cal.get(Calendar.YEAR));
 			panel.add(new DayBlock(date, Color.LIGHT_GRAY));
 		}
 		
@@ -133,17 +133,17 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		g2d.setFont(bigFont);
 		String heading;
 		int month = cal.get(Calendar.MONTH);
-		if (month == 1) heading = "January " + cal.get(Calendar.YEAR);
-		else if (month == 2) heading = "February " + cal.get(Calendar.YEAR);
-		else if (month == 3) heading = "March " + cal.get(Calendar.YEAR);
-		else if (month == 4) heading = "April " + cal.get(Calendar.YEAR);
-		else if (month == 5) heading = "May " + cal.get(Calendar.YEAR);
-		else if (month == 6) heading = "June " + cal.get(Calendar.YEAR);
-		else if (month == 7) heading = "July " + cal.get(Calendar.YEAR);
-		else if (month == 8) heading = "August " + cal.get(Calendar.YEAR);
-		else if (month == 9) heading = "September " + cal.get(Calendar.YEAR);
-		else if (month == 10) heading = "October " + cal.get(Calendar.YEAR);
-		else if (month == 11) heading = "November " + cal.get(Calendar.YEAR);
+		if (month == 0) heading = "January " + cal.get(Calendar.YEAR);
+		else if (month == 1) heading = "February " + cal.get(Calendar.YEAR);
+		else if (month == 2) heading = "March " + cal.get(Calendar.YEAR);
+		else if (month == 3) heading = "April " + cal.get(Calendar.YEAR);
+		else if (month == 4) heading = "May " + cal.get(Calendar.YEAR);
+		else if (month == 5) heading = "June " + cal.get(Calendar.YEAR);
+		else if (month == 6) heading = "July " + cal.get(Calendar.YEAR);
+		else if (month == 7) heading = "August " + cal.get(Calendar.YEAR);
+		else if (month == 8) heading = "September " + cal.get(Calendar.YEAR);
+		else if (month == 9) heading = "October " + cal.get(Calendar.YEAR);
+		else if (month == 10) heading = "November " + cal.get(Calendar.YEAR);
 		else heading = "December " + cal.get(Calendar.YEAR);
 		
 		FontMetrics f = g2d.getFontMetrics();
