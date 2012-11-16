@@ -804,9 +804,33 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public boolean removePatientFromAppointment(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Appointment " +
+				"SET Appointment.PatID=NULL WHERE Appointment.ApptID=?" );
+		st.setInt(1, appointment.getApptID());
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
 	}
+		return false;
+    }
 
 	@Override
 	public boolean checkAsNoShow(AppointmentDto appointment) {
