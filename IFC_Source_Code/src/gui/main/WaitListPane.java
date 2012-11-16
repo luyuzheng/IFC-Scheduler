@@ -132,7 +132,7 @@ public class WaitListPane extends JPanel {
 			if (specTable.getSelectedRow() < 0) return;
 			WaitlistTableModel model = (WaitlistTableModel)specTable.getModel();
 			WaitlistDto w = model.getPatient(specTable.getSelectedRow());
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(w.getPatient(), w.getTypeID()); //TODO: remove waitlistDto directly
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(w);
 			specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
                         /*if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false)); TODO: filter
 			else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true)); */

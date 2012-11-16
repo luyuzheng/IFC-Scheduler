@@ -1272,7 +1272,38 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public TypeDto getType(String type) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("SELECT * FROM ServiceType WHERE TypeName=?");
+		
+		st.setString(1, type);
+                rs = st.executeQuery();
+                        
+                if (rs.next()){
+                    TypeDto returnType = new TypeDto();
+                    returnType.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+                    returnType.setField(TypeDto.TYPE_NAME, type);
+                    return returnType;
+                }
+                else {
+                    return null;
+                }
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+        return null;
     }
 
     @Override
@@ -1287,7 +1318,7 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public void removePatientFromWaitlist(PatientDto patient, Integer typeID) {
+    public void removePatientFromWaitlist(WaitlistDto patient) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 }
