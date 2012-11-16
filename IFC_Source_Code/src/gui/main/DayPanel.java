@@ -143,8 +143,6 @@ public class DayPanel extends JPanel {
 		day.setEnd(timeSlot.getEndTime());
 		day.setStart(timeSlot.getStartTime());
 		sidePanel.refreshTimeSlot(timeSlot);
-		System.out.println("RESFRESHINGDFJSKDLFJDKSLFJ\n");
-		// Refresh the UI
 	}
 	
 	public void clearRoom(RoomPanel panel) {

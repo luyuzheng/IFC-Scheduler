@@ -30,5 +30,6 @@ public class SidePanel extends JPanel {
 		this.remove(timesPanel);
 		timesPanel = new TimesPanel(timeSlot);
 		add(timesPanel, BorderLayout.CENTER);
+		this.revalidate();
 	}
 }
