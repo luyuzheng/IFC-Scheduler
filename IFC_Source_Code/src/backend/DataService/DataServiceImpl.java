@@ -884,7 +884,7 @@ public class DataServiceImpl implements DataService {
 			try {
 				if (st != null) {
 					st.close();
-		\		}
+				}
 			} catch (SQLException ex) {
 				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
