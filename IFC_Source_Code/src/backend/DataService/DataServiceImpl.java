@@ -633,16 +633,41 @@ public class DataServiceImpl implements DataService {
 
 	@Override
 	public boolean updatePractitionerInfo(PractitionerDto practitioner) {
-		if (practitioner.getPractID() == null) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Practitioner" +
+				"SET TypeID=?,FirstName=?,LastName=?,ApptLength=?,PhoneNumber=?,Notes=? " +
+				"WHERE PractID=?" );
+		st.setInt(1, practitioner.getTypeID());
+		st.setString(2, practitioner.getFirst());
+		st.setString(3,practitioner.getLast());
+		st.setInt(4,practitioner.getApptLength());
+		st.setString(5,practitioner.getPhone());
+		st.setString(6,  practitioner.getNotes());
+		st.setInt(7, practitioner.getPractID());
+		
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-			lgr.log(Level.SEVERE, "Tried to update practitioner without ID.\n");
-			return false;
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
-		// TODO: check that the ID exists in the table. 
-                // TODO: Change this method
-                // should modify 
-		return false;
 	}
+		return false;
+    }
 
 	@Override
 	public List<SchedulePractitionerDto> getAllPractitionersForDay(DayDto day) {
