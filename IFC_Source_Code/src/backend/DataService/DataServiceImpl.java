@@ -1490,6 +1490,29 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public ArrayList<AppointmentDto> searchForAppointments(TypeDto type) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		st.execute();
+		//TODO: CLAIRE, list of query to get list of all appointments of type type (need to get type from PractSchedId->PractId->TypeID 
+              
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+        return null;
     }
 }
+    
+    
+
