@@ -547,23 +547,40 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
                         
                         st = connection.prepareStatement(
-                        "SELECT Max(PractID) FROM Practitioner"); //TODO: link to Type on Type_ID
+                        "SELECT Max(PractID) FROM Practitioner"); 
 		
                         rs = st.executeQuery();
-                        rs.next();
-                        PractitionerDto returnPract = new PractitionerDto();
-                
-                        returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
-                        returnPract.setField(PractitionerDto.FIRST, rs.getInt(PractitionerDto.FIRST));
-                        returnPract.setField(PractitionerDto.LAST, rs.getInt(PractitionerDto.LAST));
-                        returnPract.setField(PractitionerDto.NOTES, rs.getInt(PractitionerDto.NOTES));
-                        returnPract.setField(PractitionerDto.PHONE, rs.getInt(PractitionerDto.PHONE));
-                        returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-                        TypeDto type = new TypeDto();
-                        type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
-                        type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
                         
-                        return returnPract;
+                        rs.next();
+                        
+                        int id = rs.getInt(1);
+                        
+                        System.out.println(id);
+                        
+                        st = connection.prepareStatement(
+                        "SELECT * FROM Practitioner INNER JOIN ServiceType ON Practitioner.TypeID = " +
+					"ServiceType.TypeID WHERE Practitioner.PractID=?");
+                        
+                        st.setInt(1, id);
+                        
+                        rs = st.executeQuery();
+                        
+                        if(rs.next()){
+                            PractitionerDto returnPract = new PractitionerDto();
+
+                            returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
+                            returnPract.setField(PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
+                            returnPract.setField(PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
+                            returnPract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
+                            returnPract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
+                            returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
+                            TypeDto type = new TypeDto();
+                            type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+                            type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+
+
+                            return returnPract;
+                        }
 			
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1014,7 +1031,6 @@ public class DataServiceImpl implements DataService {
 			rs.next();
 
 			int pract_id = rs.getInt(1);
-			System.out.println(pract_id);
 
 			AppointmentDto newApt = new AppointmentDto();
 			SchedulePractitionerDto returnDto = new SchedulePractitionerDto();
@@ -1042,7 +1058,7 @@ public class DataServiceImpl implements DataService {
 				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract_id);
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
-				st.executeQuery();
+				st.executeUpdate();
 			}
 
 		} catch (SQLException e) {

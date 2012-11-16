@@ -188,7 +188,12 @@ public class DayPanel extends JPanel {
 			if (p==null) return;
 			SchedulePractitionerDto room = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitionerToDay(
 					p, day, day.getStart(), day.getEnd());
-			as.addRoom(room);
+                        if (room != null){
+                            as.addRoom(room);
+                        }
+                        else{
+                            System.out.println("null");
+                        }
 		}
 	};
 	
