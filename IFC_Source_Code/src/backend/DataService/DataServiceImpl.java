@@ -485,7 +485,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement("SELECT * FROM Practitioner " +
-					"INNER JOIN ServiceType where Practitioner.`TypeID` = ServiceType.TypeID");
+					"INNER JOIN ServiceType ON Practitioner.`TypeID` = ServiceType.TypeID");
 			rs = st.executeQuery();
 			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
 			PractitionerDto practitioner;
@@ -1113,8 +1113,9 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                    //Todo: fox this claire
-			st = connection.prepareStatement("SELECT * FROM Practitioner WHERE PractID=(?)");
+			st = connection.prepareStatement("SELECT * FROM Practitioner " +
+					"INNER JOIN ServiceType ON Practitioner.TypeID = " +
+					"ServiceType.TypeID WHERE Practitioner.PractID=(?)");
 			st.setInt(1, practID);
 			rs = st.executeQuery();
 			PractitionerDto pract = new PractitionerDto();
