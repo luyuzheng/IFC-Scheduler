@@ -32,6 +32,8 @@ import backend.DataTransferObjects.SchedulePractitionerDto;
 import gui.TimeSlot;
 
 public class DayPanel extends JPanel {
+	SidePanel sidePanel;
+	
 	private DayDto day;
 	private List<SchedulePractitionerDto> schedulePractitionerList;
 	private JButton switchViewButton = new PanelButton("Month View");
@@ -130,12 +132,17 @@ public class DayPanel extends JPanel {
 		}
 		
 	}
+
+	public void setSidePanel(SidePanel sidePanel) {
+		this.sidePanel = sidePanel;
+	}
 	
 	private void setTimeSlot(TimeSlot timeSlot) {
 		if (timeSlot == null) return;
 		DataServiceImpl.GLOBAL_DATA_INSTANCE.setHoursForDay(day, timeSlot.getStartTime(), timeSlot.getEndTime());
 		day.setEnd(timeSlot.getEndTime());
 		day.setStart(timeSlot.getStartTime());
+		sidePanel.refreshTimeSlot(timeSlot);
 	}
 	
 	public void clearRoom(RoomPanel panel) {
@@ -188,7 +195,9 @@ public class DayPanel extends JPanel {
 			if (p==null) return;
 			SchedulePractitionerDto room = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitionerToDay(
 					p, day, day.getStart(), day.getEnd());
-			as.addRoom(room);
+                        if (room != null){
+                            as.addRoom(room);
+                        }
 		}
 	};
 	

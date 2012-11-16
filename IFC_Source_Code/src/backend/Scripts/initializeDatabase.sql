@@ -24,8 +24,8 @@ ApptID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 PractSchedID int,
 PatID int,
 NoShowID int,
-StartTime time,
-EndTime time,
+StartTime int,
+EndTime int,
 Status varchar(255),
 ApptDate date,
 Confirmation tinyint,
@@ -54,8 +54,8 @@ CREATE TABLE IF NOT EXISTS PractitionerScheduled
 PractSchID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 PractID int,
 ScheduleDate date,
-StartTime time,
-EndTime time
+StartTime int,
+EndTime int
 );
 
 CREATE TABLE IF NOT EXISTS Day

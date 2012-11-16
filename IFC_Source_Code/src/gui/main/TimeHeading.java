@@ -43,7 +43,7 @@ public class TimeHeading extends JPanel {
 
 		//GregorianCalendar cal = new GregorianCalendar();		
 		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
-		currentDate = new Date();
+		currentDate = d;
 		
 		//textArea.setText(currentDate.toFormalString());
 		//textArea.setText("Today:\n"+(cal.get(Calendar.MONTH) + 1)+"-"+cal.get(Calendar.DATE)+",\n"+cal.get(Calendar.YEAR));
@@ -54,8 +54,8 @@ public class TimeHeading extends JPanel {
 	
 	// returns a string of the abbreviated month and date for the date object
 	public String shortDate(Date d){
-		String full = d.toString();
-		String sht = full.substring(4, 9);
-		return sht;
+		Date date = new Date(d.getTime());
+		String dateString = date.toString().substring(4, 10);
+		return dateString;
 	}
 }

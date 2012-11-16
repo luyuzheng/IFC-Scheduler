@@ -31,9 +31,10 @@ import backend.DataTransferObjects.*;
  */
 public class AppointmentConfirmationPane extends JPanel {
 
+	/** The component (main window) that owns this pane. */
 	private Component owner;
+	/** The table containing the patients for the day. */
 	private JTable table;
-	//private AppointmentConfirmationManager acm = new AppointmentConfirmationManager();
 	
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	

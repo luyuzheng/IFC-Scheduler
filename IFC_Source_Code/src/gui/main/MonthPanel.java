@@ -50,18 +50,24 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTime(this.d);
 		
+		//cal.set(Calendar.DATE, 1);
+		//cal.set(Calendar.MONTH, d.getMonth() - 1);
+		//cal.set(Calendar.YEAR, d.getYear());
+		
+		int m= cal.get(Calendar.MONTH) + 1;
+		
 		String month = "December";
-		if (cal.get(Calendar.MONTH) == 0) month = "January";
-		else if (cal.get(Calendar.MONTH) == 1) month = "February";
-		else if (cal.get(Calendar.MONTH) == 2) month = "March";
-		else if (cal.get(Calendar.MONTH) == 3) month = "April";
-		else if (cal.get(Calendar.MONTH) == 4) month = "May";
-		else if (cal.get(Calendar.MONTH) == 5) month = "June";
-		else if (cal.get(Calendar.MONTH) == 6) month = "July";
-		else if (cal.get(Calendar.MONTH) == 7) month = "August";
-		else if (cal.get(Calendar.MONTH) == 8) month = "September";
-		else if (cal.get(Calendar.MONTH) == 9) month = "October";
-		else if (cal.get(Calendar.MONTH) == 10) month = "November";
+		if (m == 1) month = "January";
+		else if (m == 2) month = "February";
+		else if (m == 3) month = "March";
+		else if (m == 4) month = "April";
+		else if (m == 5) month = "May";
+		else if (m == 6) month = "June";
+		else if (m == 7) month = "July";
+		else if (m == 8) month = "August";
+		else if (m == 9) month = "September";
+		else if (m == 10) month = "October";
+		else if (m == 11) month = "November";
 		
 		month = month + " " + cal.get(Calendar.YEAR);
 		

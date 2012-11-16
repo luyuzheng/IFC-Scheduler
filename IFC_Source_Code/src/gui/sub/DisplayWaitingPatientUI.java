@@ -55,7 +55,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		noteArea.setLineWrap(true);
 		noteArea.setWrapStyleWord(true);
 		noteArea.setFont(font);
-		noteArea.setText(wp.getComment().replaceAll("\t\t", "\n"));
+		noteArea.setText(wp.getComments().replaceAll("\t\t", "\n"));
 		notePane.setViewportView(noteArea);
 		notePanel.add(noteLabel, BorderLayout.NORTH);
 		notePanel.add(notePane, BorderLayout.CENTER);

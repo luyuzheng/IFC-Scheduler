@@ -2,6 +2,7 @@ package backend.DataService;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import backend.DataTransferObjects.*;
 
@@ -78,11 +79,6 @@ public interface DataService {
 	 */
 	public List<NoShowDto> getNoShowsByPatient(int PatID);
 	
-	/**
-	 * Returns a list of no shows in the last six months for the specified patient.
-	 */
-	public int getNoShowCountInLastSixMonths(PatientDto patient);
-    
         /**
          * @param type name
          * @return type
@@ -176,7 +172,7 @@ public interface DataService {
     /**
      * add patient to waitlist
      */
-    public boolean addPatientToWaitlist(PatientDto patient, TypeDto type);
+    public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type, String comments);
     
     /**
      * remove patient from waitlist
@@ -230,5 +226,8 @@ public interface DataService {
 
     public boolean updateWaitlist(WaitlistDto wp);
 
-     public boolean removePatientFromWaitlist(WaitlistDto patient);
+    public boolean removePatientFromWaitlist(WaitlistDto patient);
+    
+    public ArrayList<AppointmentDto> searchForAppointments(TypeDto type);
+    
 }

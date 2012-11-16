@@ -56,44 +56,46 @@ public class DatePicker extends JPanel {
 	public void setDate(Date d) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(selectedBlock.getDate());
+		System.out.print(d);
+		System.out.println(" setDate " + selectedBlock.getDate().toString());
+		curr.deselectDay(cal.get(Calendar.DATE));
 		curr = new MonthView(this, d, MonthView.CURRENT_MONTH);
 		
 		removeAll();
 		add(curr);
 		repaint();
 		validate();
+		//revalidate();
 		
 		curr.selectDay(cal.get(Calendar.DATE));
-		mainWindow.setDate(d);		
+		mainWindow.setDate(d);
 	}
 	
 	public void nextMonth() {
 			
 		GregorianCalendar focused= new GregorianCalendar();
 		Date newDate = curr.getDate();
+		System.out.println("# # # " + newDate.toString());
 		focused.setTime(newDate);
+		focused.add(Calendar.MONTH, 1);
+		System.out.println("# # # " + focused.getTime().toString());
 		
-		
-		//int day = curr.getDate().getDay();
-		//int month = curr.getDate().getMonth();
-		//int year = curr.getDate().getYear();
-		
-		int day = focused.get(Calendar.DAY_OF_MONTH);
-		int month = focused.get(Calendar.MONTH);
-		int year = focused.get(Calendar.YEAR);
-				
-		if (month == 12) {
-			month = 1;
-			year++;
-		} else
-			month++;
-		
-		focused.set(Calendar.DAY_OF_MONTH, day);	
-		focused.set(Calendar.MONTH, month);
-		focused.set(Calendar.YEAR, year);
+//		int day = focused.get(Calendar.DAY_OF_MONTH);
+//		int month = focused.get(Calendar.MONTH);
+//		int year = focused.get(Calendar.YEAR);
+//				
+//		if (month == 11) {
+//			month = 0;
+//			year++;
+//		} else
+//			month++;
+//		
+//		focused.set(Calendar.DAY_OF_MONTH, day);	
+//		focused.set(Calendar.MONTH, month);
+//		focused.set(Calendar.YEAR, year);
 		newDate = new Date(focused.getTime().getTime());
+		int day = focused.get(Calendar.DAY_OF_MONTH);
 		
-		//Date newDate = new Date(month, day, year);
 		setDate(newDate);
 		//selectedBlock.setDate(newDate);
 		//reportFocusGained(selectedBlock);		
@@ -103,8 +105,6 @@ public class DatePicker extends JPanel {
 		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH));
 		curr.selectDay(day);
 		selectedBlock = b;
-		//curr.selectDay(day);
-		//curr.selectDay(selectedBlock.getDate().getDay());
 	}
 	
 	public void prevMonth() {
@@ -117,8 +117,8 @@ public class DatePicker extends JPanel {
 		int day = focused.get(Calendar.DAY_OF_MONTH);
 		int month = focused.get(Calendar.MONTH);
 		int year = focused.get(Calendar.YEAR);
-		if (month == 1) {
-			month = 12;
+		if (month == 0) {
+			month = 11;
 			year--;
 		} else
 			month--;
@@ -129,8 +129,6 @@ public class DatePicker extends JPanel {
 		focused.set(Calendar.YEAR, year);
 		newDate = new Date(focused.getTime().getTime());
 		
-		
-		//newDate = new Date(month, day, year);
 		setDate(newDate);
 		//selectedBlock.setDate(newDate);
 		//reportFocusGained(selectedBlock);		
@@ -139,9 +137,6 @@ public class DatePicker extends JPanel {
 		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH));
 		curr.selectDay(day);
 		selectedBlock = b;
-
-		//curr.selectDay(day);
-		//curr.selectDay(selectedBlock.getDate().getDay());
 	}
 	
 	/**
@@ -166,6 +161,11 @@ public class DatePicker extends JPanel {
 		} else {
 			if (mainWindow.inMonthView()) mainWindow.switchView();
 			setDate(b.getDate());
+			System.out.println(block.get(Calendar.DAY_OF_MONTH));
+			curr.deselectDay(block.get(Calendar.DAY_OF_MONTH));
+			// TODO: I just added deselectDay here to fix a day highlighting bug
+			// however, it seems that it should not be necessary because when the month changes
+			// all of the tiny day blocks should be regenerated: THE TINYDAYBLOCKS MAY NOT BE REGENERATED!!
 			curr.selectDay(focused.get(Calendar.DAY_OF_MONTH));
 			selectedBlock = b;
 		}

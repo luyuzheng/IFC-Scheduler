@@ -38,11 +38,15 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	DayDto day;
 	
 	ArrayList<Graphics2D> pages;
+	
+	SidePanel sidePanel;
 
 	public AppointmentPanel(DayPanel dp) {
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new SidePanel(dp), BorderLayout.WEST);
+		sidePanel = new SidePanel(dp);
+		dp.setSidePanel(sidePanel);
+		panel.add(sidePanel, BorderLayout.WEST);
 		AppointmentSubpanel as = new AppointmentSubpanel(dp);
 
 		day = dp.getDay();
@@ -63,7 +67,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	}
 
 	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
-		
+		System.out.print("FirstFirsttest");
 		//# rooms
 		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 
@@ -149,9 +153,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			roomsLeft = 3;
 			lineLength = 30;
 		}
-		
+		System.out.println("FirstTest");
 
 		for (int j = 0; j < roomsLeft; j++) {
+                    System.out.println("OtherTest");
 			Rectangle2D.Double rect = new Rectangle2D.Double ();
 			startx = Constants.PRINT_MARGINX + (int)timesWidth + (int)colWidth*j;
 			starty = Constants.PRINT_MARGINY;
