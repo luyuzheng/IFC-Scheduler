@@ -485,7 +485,8 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Practitioner");
+			st = connection.prepareStatement("SELECT * FROM Practitioner " +
+					"INNER JOIN ServiceType where Practitioner.`TypeID` = ServiceType.TypeID");
 			rs = st.executeQuery();
 			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
 			PractitionerDto practitioner;
@@ -493,14 +494,17 @@ public class DataServiceImpl implements DataService {
 				practitioner = new PractitionerDto();
 				practitioner.setField(
 						PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-				//practitioner.setField(
-				//	TODO: BLARG	PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
+				TypeDto type = new TypeDto();
+				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+				practitioner.setField(
+						PractitionerDto.TYPE, type);
 				practitioner.setField(
 						PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
 				practitioner.setField(
 						PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
 				practitioner.setField(
-						PractitionerDto.APPT_LENGTH, rs.getString(PractitionerDto.APPT_LENGTH));
+						PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
 				practitioner.setField(
 						PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
 				practitioner.setField(
@@ -556,7 +560,9 @@ public class DataServiceImpl implements DataService {
                         returnPract.setField(PractitionerDto.NOTES, rs.getInt(PractitionerDto.NOTES));
                         returnPract.setField(PractitionerDto.PHONE, rs.getInt(PractitionerDto.PHONE));
                         returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-                        // TODO: BLARG        returnPract.setField(PractitionerDto.TYPE_ID, rs.getInt(PractitionerDto.TYPE_ID));
+                        TypeDto type = new TypeDto();
+                        type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+                        type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
                         
                         return returnPract;
 			
@@ -1121,8 +1127,9 @@ public class DataServiceImpl implements DataService {
 				pract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
 				pract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
 				pract.setField(PractitionerDto.PRACT_ID, rs.getString(PractitionerDto.PRACT_ID));
-            //TODO: BLARG				pract.setField(PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
-				//TODO:get TypeName
+				TypeDto type = new TypeDto();
+				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
 				return pract;
 			}
 			return null;
