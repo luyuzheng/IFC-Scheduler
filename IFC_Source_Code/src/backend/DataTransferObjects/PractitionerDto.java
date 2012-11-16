@@ -86,4 +86,8 @@ public class PractitionerDto extends AbstractDto {
     public TypeDto getType(){
         return (TypeDto) fieldsMap.get(TYPE);
     }
+    
+    public void setType(TypeDto t){
+        fieldsMap.put(TYPE, t);
+    }
 }
