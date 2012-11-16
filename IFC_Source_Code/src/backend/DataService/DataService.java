@@ -79,11 +79,6 @@ public interface DataService {
 	 */
 	public List<NoShowDto> getNoShowsByPatient(int PatID);
 	
-	/**
-	 * Returns a list of no shows in the last six months for the specified patient.
-	 */
-	public int getNoShowCountInLastSixMonths(PatientDto patient);
-    
         /**
          * @param type name
          * @return type

@@ -254,8 +254,10 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                        //Todo: NOShows Claire
-			st = connection.prepareStatement("SELECT * FROM Patient");
+			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
+					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
+					"From PatientLEFT JOIN (Select PatID, Count(NoShowID) as " +
+					"NumberOfNoShows from NoShowGroup by PatID) as temp ON temp.PatID = Patient.PatID");
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
@@ -265,6 +267,7 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+				patient.setField(PatientDto.NO_SHOW, rs.getString(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
@@ -360,39 +363,6 @@ public class DataServiceImpl implements DataService {
 		return null;
 	}
 
-	@Override
-	public int getNoShowCountInLastSixMonths(PatientDto patient) {
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = connection.prepareStatement(
-			"SELECT COUNT(*) FROM NoShows WHERE PatID=? AND NoShowDate>?}");
-			st.setInt(1, patient.getPatID());
-			Calendar today = Calendar.getInstance();
-			today.set(Calendar.HOUR_OF_DAY, 0);
-			today.add(Calendar.MONTH, -6);
-			st.setDate(2, new Date(today.getTime().getTime()));
-			rs = st.executeQuery();
-			// should only return single result.
-			if (rs.next()) {
-				return rs.getInt("COUNT(*)");
-			}
-		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-			lgr.log(Level.SEVERE, e.getMessage(), e);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-				lgr.log(Level.WARNING, ex.getMessage(), ex);
-			}
-		}
-		return -1;
-	}
         
         
 
