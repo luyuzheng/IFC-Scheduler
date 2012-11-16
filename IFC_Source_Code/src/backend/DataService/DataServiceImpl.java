@@ -396,7 +396,6 @@ public class DataServiceImpl implements DataService {
 	public TypeDto addNewPractitionerType(String serviceType) {
 		PreparedStatement st = null;
 
-		//TODO: have this return the ID of the this object instead if possible
 		try {
 			st = connection.prepareStatement("INSERT INTO ServiceType (TypeName) VALUES (?)");
 			st.setString(1, serviceType);
@@ -1248,6 +1247,7 @@ public class DataServiceImpl implements DataService {
                 returnPatient.setLast(last);
                 returnPatient.setNotes(notes);
                 returnPatient.setPhone(phone);
+                returnPatient.setField(PatientDto.NO_SHOW, 0);
                 
                 return returnPatient;
 	} catch (SQLException e) {

@@ -52,11 +52,6 @@ public class PatientDto extends AbstractDto {
         return (String) getField(NOTES);
     }
 
-    public PatientDto setPatID(int patID) {
-        fieldsMap.put(PATIENT_ID, patID);
-        return this;
-    }
-
     public PatientDto setFirst(String first) {
         fieldsMap.put(FIRST, first);
         return this;
@@ -78,6 +73,6 @@ public class PatientDto extends AbstractDto {
     }
 
     public String getFullName() {
-        throw new UnsupportedOperationException("Not yet implemented"); //First+Last
+        return this.getFirst() + " " + this.getLast();
     }
 }
