@@ -1331,6 +1331,7 @@ public class DataServiceImpl implements DataService {
 		
 		rs=st.executeQuery();
 		boolean updated = rs.rowUpdated();
+		return updated;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
