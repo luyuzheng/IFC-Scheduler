@@ -84,7 +84,10 @@ public class AppointmentDto extends AbstractDto {
     }
     
     public String getNote(){
-        return (String) fieldsMap.get(NOTE);
+        if (fieldsMap.get(NOTE) == null){
+            return "";
+        }
+        else return (String) fieldsMap.get(NOTE);
     }
     
     public void setNote(String s){

@@ -24,8 +24,8 @@ public class RoomSubpanel extends JPanel{
 	public RoomSubpanel(SchedulePractitionerDto room, DayPanel dp) {
 		this.dp = dp;
 		this.room = room;
-		//if (room.hasPrac()) 
-			//setAppointments();
+		
+                setAppointments();
 		setBorder(BorderFactory.createMatteBorder(0, 1, 1, 0, Color.BLACK));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(Color.LIGHT_GRAY);
