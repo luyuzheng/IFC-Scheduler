@@ -254,10 +254,11 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
+			/*st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
 					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
-					"From PatientLEFT JOIN (Select PatID, Count(NoShowID) as " +
-					"NumberOfNoShows from NoShowGroup by PatID) as temp ON temp.PatID = Patient.PatID");
+					"From Patient LEFT JOIN (Select PatID, Count(NoShowID) as " +
+					"NumberOfNoShows from NoShowGroup by PatID) as temp ON temp.PatID = Patient.PatID"); */
+                        st = connection.prepareStatement("Select * FROM Patient");
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
@@ -267,7 +268,7 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
-				patient.setField(PatientDto.NO_SHOW, rs.getString(PatientDto.NO_SHOW));
+				patient.setField(PatientDto.NO_SHOW, 0);//rs.getString(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
