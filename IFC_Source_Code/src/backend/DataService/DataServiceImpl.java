@@ -717,10 +717,10 @@ public class DataServiceImpl implements DataService {
 	public boolean removePractitionerFromDay(int practSchedId, DayDto day) {
 		PreparedStatement st = null;
 		try {
-			st = connection.prepareStatement("DELETE FROM PractitionerScheduled WHERE PractSchID = ?");
+			st = connection.prepareStatement("DELETE FROM PractitionerScheduled WHERE PractSchID=?");
 			st.setInt(1, practSchedId);
 			st.executeUpdate();
-			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchID = ?");
+			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchedID=?");
 			st.setInt(1, practSchedId);
 			st.executeUpdate();
 			return true;
@@ -1516,5 +1516,10 @@ public class DataServiceImpl implements DataService {
 		}
 	}
 		return false;
+    }
+
+    @Override
+    public ArrayList<AppointmentDto> searchForAppointments(TypeDto type) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

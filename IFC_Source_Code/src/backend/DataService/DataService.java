@@ -2,6 +2,7 @@ package backend.DataService;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.ArrayList;
 
 import backend.DataTransferObjects.*;
 
@@ -230,5 +231,8 @@ public interface DataService {
 
     public boolean updateWaitlist(WaitlistDto wp);
 
-     public boolean removePatientFromWaitlist(WaitlistDto patient);
+    public boolean removePatientFromWaitlist(WaitlistDto patient);
+    
+    public ArrayList<AppointmentDto> searchForAppointments(TypeDto type);
+    
 }
