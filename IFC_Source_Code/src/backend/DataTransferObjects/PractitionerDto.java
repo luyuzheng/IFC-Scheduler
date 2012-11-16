@@ -16,7 +16,7 @@ public class PractitionerDto extends AbstractDto {
     public static final String TYPE = "Type";
     public static final String FIRST = "FirstName";
     public static final String LAST = "LastName";
-    public static final String APPT_LENGTH = "ApptLenght";
+    public static final String APPT_LENGTH = "ApptLength";
     public static final String PHONE = "PhoneNumber";
     public static final String NOTES = "Notes";
     
