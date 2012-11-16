@@ -15,6 +15,8 @@ import javax.swing.JTextArea;
 
 import gui.Constants;
 import java.sql.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.DayDto;
@@ -30,7 +32,10 @@ public class DayBlock extends JPanel {
 	
 	public DayBlock(Date date, Color color) {
 		textArea = new JTextArea();
-		String text = date.getDate() + "\n";
+		Calendar cal = GregorianCalendar.getInstance();
+		cal.setTime(date);
+		//String text = date.getDate() + "\n";
+		String text = cal.get(Calendar.DATE) + "\n";
 		
 		DayDto d = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(date);
 		

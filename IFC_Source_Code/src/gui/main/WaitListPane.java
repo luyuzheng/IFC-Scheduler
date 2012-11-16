@@ -228,10 +228,10 @@ public class WaitListPane extends JPanel {
 			else if (col == 3)
 				return p.getPatient().getPhone();
 			else if (col == 4) {
-				if (specific) return p.getComment();
+				if (specific) return p.getComments();
 				else return p.getTypeName();
 			}
-			else return p.getComment();
+			else return p.getComments();
 		}
 		
 		public boolean isCellEditable(int row, int col) {
