@@ -1350,11 +1350,40 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public boolean updateWaitlist(WaitlistDto wp) {
-        //TODO: not supported yet
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean updateWaitlist(WaitlistDto wl) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Waitlist " +
+				"SET Waitlist.PatID=?, Waitlist.TypeID=?, Waitlist.DatetimeEntered=?, Waitlist.Comments=?" +
+				" WHERE Waitlist.WaitlistID = ?");
+		st.setInt(1, wl.getPatientID());
+		st.setInt(2,wl.getTypeID());
+		// This seems worrisome? will date work this way?
+		st.setDate(3,wl.getDate());
+		st.setString(4,wl.getComments());
+		st.setInt(5,wl.getWaitlistID());
+		
+		rs=st.executeQuery();
+		boolean updated = rs.rowUpdated();
+		return updated;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+		return false;
     }
-
     @Override
     public boolean removePatientFromWaitlist(WaitlistDto patient) {
         PreparedStatement st = null;
