@@ -927,15 +927,16 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type) {
+	public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type, String comments) {
 		PreparedStatement st = null;
 		try {
 			st = connection.prepareStatement("INSERT INTO Waitlist " +
-					"(PatID, TypeID, DatetimeEntered) " +
-			"VALUES (?, ?, ?)");
+					"(PatID, TypeID, DatetimeEntered, Comments) " +
+			"VALUES (?, ?, ?, ?)");
 			st.setInt(1, patient.getPatID());
 			st.setInt(2, type.getTypeID());
 			st.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
+                        st.setString(4, comments);
 			st.executeUpdate();
 			return null; //Todo: changge return type
 		} catch (SQLException e) {

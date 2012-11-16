@@ -117,7 +117,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 				return;
 			} 
 			TypeDto type = (TypeDto)typeCombo.getSelectedItem();
-			//String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t"); TODO: add in comments again?
+			String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t"); 
 			List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
 			for (int i = 0; i < waitlist.size(); i++) {
 				// If patient is already on the waitlist, give a warning
@@ -129,7 +129,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 				// Add patient to the waitlist
 				} 
 			}
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type, comment);
                         //Todo: Update view?
 		} else if (e.getActionCommand().equals("select")) {
 			patient = SelectPatientUI.ShowDialog(this);
