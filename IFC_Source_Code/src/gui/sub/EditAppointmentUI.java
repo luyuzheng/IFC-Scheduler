@@ -8,6 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -22,12 +24,13 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
-public class EditAppointmentUI extends JDialog implements ActionListener {
+public class EditAppointmentUI extends JDialog implements ActionListener, ItemListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
 	private JButton okButton = new JButton("Save");
 	private JButton editButton = new JButton("Edit Patient");
 	private JButton cancelButton = new JButton("Cancel");
+	JCheckBox noShowsCheckBox = new JCheckBox();
 	private JTextArea textArea;
 	private JTextArea noteArea;
 	private Font font= new Font("Tahoma",Font.PLAIN,14);
@@ -61,7 +64,6 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		textArea.setText(text);
 		
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JCheckBox noShowsCheckBox = new JCheckBox();
 		JLabel noShowsLabel = new JLabel("No Show");
 		noShowsLabel.setFont(font);
 		checkBoxPanel.add(noShowsCheckBox);
@@ -137,7 +139,13 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		}
 		appointment.setNote((noteArea.getText()).replaceAll("[\r\n]+", "\t\t"));
 		editAppointmentUI.setVisible(false);
-		
     }
-	
+
+	public void itemStateChanged(ItemEvent e) {
+		if (e.getStateChange() == ItemEvent.SELECTED) {
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
+		} else {
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
+		}
+	}
 }
