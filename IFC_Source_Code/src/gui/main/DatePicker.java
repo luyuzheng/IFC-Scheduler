@@ -56,12 +56,15 @@ public class DatePicker extends JPanel {
 	public void setDate(Date d) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(selectedBlock.getDate());
+		System.out.print(d);
+		System.out.println(" setDate " + selectedBlock.getDate().toString());
 		curr = new MonthView(this, d, MonthView.CURRENT_MONTH);
 		
 		removeAll();
 		add(curr);
 		repaint();
 		validate();
+		//revalidate();
 		
 		curr.selectDay(cal.get(Calendar.DATE));
 		mainWindow.setDate(d);		
@@ -72,21 +75,24 @@ public class DatePicker extends JPanel {
 		GregorianCalendar focused= new GregorianCalendar();
 		Date newDate = curr.getDate();
 		focused.setTime(newDate);
+		focused.add(Calendar.MONTH, 1);
+		System.out.println(focused.getTime());
 		
-		int day = focused.get(Calendar.DAY_OF_MONTH);
-		int month = focused.get(Calendar.MONTH);
-		int year = focused.get(Calendar.YEAR);
-				
-		if (month == 12) {
-			month = 1;
-			year++;
-		} else
-			month++;
-		
-		focused.set(Calendar.DAY_OF_MONTH, day);	
-		focused.set(Calendar.MONTH, month);
-		focused.set(Calendar.YEAR, year);
+//		int day = focused.get(Calendar.DAY_OF_MONTH);
+//		int month = focused.get(Calendar.MONTH);
+//		int year = focused.get(Calendar.YEAR);
+//				
+//		if (month == 11) {
+//			month = 0;
+//			year++;
+//		} else
+//			month++;
+//		
+//		focused.set(Calendar.DAY_OF_MONTH, day);	
+//		focused.set(Calendar.MONTH, month);
+//		focused.set(Calendar.YEAR, year);
 		newDate = new Date(focused.getTime().getTime());
+		int day = focused.get(Calendar.DAY_OF_MONTH);
 		
 		setDate(newDate);
 		//selectedBlock.setDate(newDate);
@@ -109,8 +115,8 @@ public class DatePicker extends JPanel {
 		int day = focused.get(Calendar.DAY_OF_MONTH);
 		int month = focused.get(Calendar.MONTH);
 		int year = focused.get(Calendar.YEAR);
-		if (month == 1) {
-			month = 12;
+		if (month == 0) {
+			month = 11;
 			year--;
 		} else
 			month--;

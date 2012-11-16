@@ -73,10 +73,9 @@ public class MonthView extends JPanel {
 		
 		//prevDays is the number of boxes in the upper left, before the first of the month, needed since the 
 		//calendar is going to be a 6x7 set of boxes. Calendar.SUNDAY is 1 and so forth, so we use day of week - 1
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		int prevDays = cal.get(Calendar.DAY_OF_WEEK) - 1; 
 		int endDays = (42 - cal.getActualMaximum(Calendar.DAY_OF_MONTH)) - prevDays;
-		System.out.println(cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-		System.out.println(prevDays);
 		
 		cal.add(Calendar.MONTH, -1);
 		
@@ -84,8 +83,6 @@ public class MonthView extends JPanel {
 			//Date d = new Date(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DATE) - prevDays + i, cal.get(Calendar.YEAR));
 			cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE) - prevDays + i);
 			//cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
-			
-			System.out.println(cal.get(Calendar.MONTH));
 			
 			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
 			
@@ -96,14 +93,12 @@ public class MonthView extends JPanel {
 		
 		for (int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
 			//Date d = new Date(m, i, cal.get(Calendar.YEAR));
-			System.out.println(cal.getActualMaximum(Calendar.DAY_OF_MONTH));
-			System.out.println(cal.get(Calendar.MONTH));
 			
 			cal.set(Calendar.DATE, i);
 			//cal.set(Calendar.MONTH, m);
 			
 			boolean today = false;
-			if (cal.get(Calendar.MONTH)+1 == todayCal.get(Calendar.MONTH) && i == todayCal.get(Calendar.DATE) && 
+			if (cal.get(Calendar.MONTH) == todayCal.get(Calendar.MONTH) && i == todayCal.get(Calendar.DATE) && 
 				cal.get(Calendar.YEAR) == todayCal.get(Calendar.YEAR)) today = true;
 			
 			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
@@ -117,15 +112,14 @@ public class MonthView extends JPanel {
 		cal.add(Calendar.MONTH, 1);
 		
 		for (int i = 1; i <= endDays; i++) {
-			System.out.print(endDays);
-			System.out.print("######");
-			System.out.println(cal.getActualMaximum(Calendar.DATE) - prevDays + i);
 			//Date d = new Date(cal.get(Calendar.MONTH) + 1, i, cal.get(Calendar.YEAR));
 			cal.set(Calendar.DATE, i);
 			//cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
 			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
 			panel.add(new TinyDayBlock(dp, dt, Color.LIGHT_GRAY, false));
 		}
+		
+		cal.add(Calendar.MONTH, -1);
 		
 		TinyMonthHeadingPanel mhp = new TinyMonthHeadingPanel(month, cal.get(Calendar.YEAR) + "", (mon == MonthView.CURRENT_MONTH), dp);
 		JPanel main = new JPanel(new BorderLayout());
