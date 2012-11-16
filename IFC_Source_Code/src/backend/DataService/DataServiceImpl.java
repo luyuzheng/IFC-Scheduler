@@ -1114,14 +1114,15 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
+                    //Todo: fox this claire
 			st = connection.prepareStatement("SELECT * FROM Practitioner WHERE PractID=(?)");
 			st.setInt(1, practID);
 			rs = st.executeQuery();
 			PractitionerDto pract = new PractitionerDto();
 
 			if (rs.next()) {
-				pract.setField(PractitionerDto.FIRST, rs.getInt(PractitionerDto.FIRST));
-				pract.setField(PractitionerDto.LAST, rs.getInt(PractitionerDto.LAST));
+				pract.setField(PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
+				pract.setField(PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
 				pract.setField(PractitionerDto.APPT_LENGTH, 
 						rs.getInt(PractitionerDto.APPT_LENGTH));
 				pract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
