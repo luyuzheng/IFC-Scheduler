@@ -254,6 +254,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
+                        //Todo: NOShows
 			st = connection.prepareStatement("SELECT * FROM Patient");
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
@@ -262,7 +263,7 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
-				patient.setField(PatientDto.PHONE, rs.getLong(PatientDto.PHONE));
+				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
 				results.add(patient);
 				patient = new PatientDto();
@@ -297,11 +298,11 @@ public class DataServiceImpl implements DataService {
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
 			while (rs.next()) {
-				// TODO: Will the columns always be the same order?
+				// TODO: No shows
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
-				patient.setField(PatientDto.PHONE, rs.getLong(PatientDto.PHONE));
+				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
 				results.add(patient);
 				patient = new PatientDto();
@@ -458,7 +459,7 @@ public class DataServiceImpl implements DataService {
 			while (rs.next()) {
 				TypeDto type = new TypeDto();
 				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
-				type.setField(TypeDto.TYPE_ID, rs.getString(TypeDto.TYPE_ID));
+				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
 				results.add(type);
 			}
 			return results;
@@ -926,9 +927,8 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public boolean addPatientToWaitlist(PatientDto patient, TypeDto type) {
+	public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type) {
 		PreparedStatement st = null;
-
 		try {
 			st = connection.prepareStatement("INSERT INTO Waitlist " +
 					"(PatID, TypeID, DatetimeEntered) " +
@@ -937,7 +937,7 @@ public class DataServiceImpl implements DataService {
 			st.setInt(2, type.getTypeID());
 			st.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
 			st.executeUpdate();
-			return true;
+			return null; //Todo: changge return type
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -951,7 +951,7 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
-		return false;
+		return null;
 	}
 
 	@Override
@@ -1014,6 +1014,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
+                        //Todo: link to Type
 			st = connection.prepareStatement("SELECT * FROM Waitlist, Patient " +
 					"WHERE Waitlist.PatID=Patient.PatID");
 			rs = st.executeQuery();
@@ -1022,9 +1023,8 @@ public class DataServiceImpl implements DataService {
 				WaitlistDto entry = new WaitlistDto();
 				PatientDto patient = new PatientDto();
 				entry.setField(WaitlistDto.WAITLIST_ID, rs.getInt(WaitlistDto.WAITLIST_ID));
-				entry.setField(WaitlistDto.PATIENT, rs.getString(WaitlistDto.PATIENT));
-				entry.setField(WaitlistDto.TYPE_ID, rs.getString(WaitlistDto.TYPE_ID));
-				entry.setField(WaitlistDto.DATE, rs.getString(WaitlistDto.DATE));
+				entry.setField(WaitlistDto.TYPE_ID, rs.getInt(WaitlistDto.TYPE_ID));
+				entry.setField(WaitlistDto.DATE, rs.getDate(WaitlistDto.DATE));
 				entry.setField(WaitlistDto.COMMENTS, rs.getString(WaitlistDto.COMMENTS));
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
@@ -1344,16 +1344,26 @@ public class DataServiceImpl implements DataService {
                         "SELECT Max(PatID) FROM Patient");
 		rs = st.executeQuery();
                 rs.next();
+                
+                int newId = rs.getInt(1);
+                
+                st = connection.prepareStatement("SELECT * FROM Patient WHERE PatID=?");
+                
+                st.setInt(1, newId);
+                
+                rs = st.executeQuery();
+                
+                if(rs.next()){
                 PatientDto returnPatient = new PatientDto();
-                
-                returnPatient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
-                returnPatient.setFirst(first);
-                returnPatient.setLast(last);
-                returnPatient.setNotes(notes);
-                returnPatient.setPhone(phone);
-                returnPatient.setField(PatientDto.NO_SHOW, 0);
-                
-                return returnPatient;
+                    returnPatient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+                    returnPatient.setFirst(first);
+                    returnPatient.setLast(last);
+                    returnPatient.setNotes(notes);
+                    returnPatient.setPhone(phone);
+                    returnPatient.setField(PatientDto.NO_SHOW, 0);
+
+                    return returnPatient;
+                }
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);

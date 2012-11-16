@@ -118,19 +118,19 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 			} 
 			TypeDto type = (TypeDto)typeCombo.getSelectedItem();
 			//String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t"); TODO: add in comments again?
-
 			List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
 			for (int i = 0; i < waitlist.size(); i++) {
 				// If patient is already on the waitlist, give a warning
+                                //TODO: I don't think this works as desired? Might have fixed, come back to
 				if (waitlist.get(i).getPatientID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
 					JLabel errorMsg = new JLabel("This patient has already been added to the waitlist for this type of service.");
 					errorMsg.setFont(font);
 					JOptionPane.showConfirmDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
 				// Add patient to the waitlist
-				} else {
-					DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type);
-				}
+				} 
 			}
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type);
+                        //Todo: Update view?
 		} else if (e.getActionCommand().equals("select")) {
 			patient = SelectPatientUI.ShowDialog(this);
 			if (patient != null) patientLabel.setText(patient.getFirst() + " " + patient.getLast());

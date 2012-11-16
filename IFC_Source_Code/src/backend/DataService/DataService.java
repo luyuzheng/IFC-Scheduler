@@ -176,7 +176,7 @@ public interface DataService {
     /**
      * add patient to waitlist
      */
-    public boolean addPatientToWaitlist(PatientDto patient, TypeDto type);
+    public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type);
     
     /**
      * remove patient from waitlist
