@@ -489,8 +489,8 @@ public class DataServiceImpl implements DataService {
 				practitioner = new PractitionerDto();
 				practitioner.setField(
 						PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-				practitioner.setField(
-						PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
+				//practitioner.setField(
+				//	TODO: BLARG	PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
 				practitioner.setField(
 						PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
 				practitioner.setField(
@@ -552,7 +552,7 @@ public class DataServiceImpl implements DataService {
                         returnPract.setField(PractitionerDto.NOTES, rs.getInt(PractitionerDto.NOTES));
                         returnPract.setField(PractitionerDto.PHONE, rs.getInt(PractitionerDto.PHONE));
                         returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-                        returnPract.setField(PractitionerDto.TYPE_ID, rs.getInt(PractitionerDto.TYPE_ID));
+                        // TODO: BLARG        returnPract.setField(PractitionerDto.TYPE_ID, rs.getInt(PractitionerDto.TYPE_ID));
                         
                         return returnPract;
 			
@@ -1117,7 +1117,7 @@ public class DataServiceImpl implements DataService {
 				pract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
 				pract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
 				pract.setField(PractitionerDto.PRACT_ID, rs.getString(PractitionerDto.PRACT_ID));
-				pract.setField(PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
+            //TODO: BLARG				pract.setField(PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
 				//TODO:get TypeName
 				return pract;
 			}
