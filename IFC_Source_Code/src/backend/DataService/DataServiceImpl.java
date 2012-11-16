@@ -254,19 +254,13 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-<<<<<<< HEAD
+
 			/*st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
 					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
 					"From Patient LEFT JOIN (Select PatID, Count(NoShowID) as " +
 					"NumberOfNoShows from NoShowGroup by PatID) as temp ON temp.PatID = Patient.PatID"); */
                         st = connection.prepareStatement("Select * FROM Patient");
-=======
-			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
-					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, " +
-					"temp.NumberOfNoShows From Patient LEFT JOIN (Select PatID, " +
-					"Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as " +
-					"temp ON temp.PatID = Patient.PatID");
->>>>>>> bdf1f85288f6b09ecd2ec079deaa79039adad531
+
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
@@ -1501,18 +1495,10 @@ public class DataServiceImpl implements DataService {
     public ArrayList<AppointmentDto> searchForAppointments(TypeDto type) {
         PreparedStatement st = null;
         ResultSet rs = null;
-        ArrayList<AppointmentDto> availableAppointments = new ArrayList<AppointmentDto>();
         try {
-        	st = connection.prepareStatement("Select * FROM Appointment INNER JOIN " +
-        			"Practitioner ON Practitioner.PractID= Appointment.PractSchedID " +
-        			"WHERE PatID IS NULL AND ApptDate > NOW() AND Practitioner.`TypeID` = ?");
-        	st.setInt(1, type.getTypeID());
-        	rs = st.executeQuery();
-        	while (rs.next()){
-        		availableAppointments;
-        	}
-        	
-		     
+		st.execute();
+		//TODO: CLAIRE, list of query to get list of all appointments of type type (need to get type from PractSchedId->PractId->TypeID 
+              
                 
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
