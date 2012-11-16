@@ -198,7 +198,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 				p.setFirst(firstName);
                 p.setLast(lastName);
 				p.setNotes(noteText);
-				p.setTypeID(t.getTypeID());
+				p.setType(t);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePractitionerInfo(p);
 			} else {
                                 DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(p);
