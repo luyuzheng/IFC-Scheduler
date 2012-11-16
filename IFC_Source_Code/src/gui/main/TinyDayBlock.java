@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import java.sql.Date;
+import java.util.Calendar;
 
 @SuppressWarnings("serial")
 public class TinyDayBlock extends JPanel implements FocusListener {
@@ -32,6 +33,7 @@ public class TinyDayBlock extends JPanel implements FocusListener {
 		this.date = date;
 		this.dp = dp;
 		
+		Calendar cal = Calendar.getInstance();
 		
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
@@ -41,7 +43,8 @@ public class TinyDayBlock extends JPanel implements FocusListener {
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		
-		textArea.setText(date.getDay() + "");
+		cal.setTime(date);
+		textArea.setText(cal.get(Calendar.DATE) + "");
 		
 		setLayout(new BorderLayout());
 		textArea.setFocusable(true);

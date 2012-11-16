@@ -80,8 +80,6 @@ public class TimesPanel extends JPanel {
 		
 		//render the last section if it's smaller than an hour
 		int leftover = end - start;
-		System.out.println(end % 60);
-		System.out.println(leftover);
 		if (leftover < 60) {
 			JPanel panel = new JPanel();
 			panel.setBackground(new Color(215,255,215));
