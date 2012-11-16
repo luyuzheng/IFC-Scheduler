@@ -675,8 +675,9 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
+                        //TODO: single query
 			st = connection.prepareStatement(
-					"SELECT * FROM PractitionerScheduled WHERE ScheduleDate = ?");
+					"SELECT * FROM PractitionerScheduled WHERE ScheduleDate =?");
 			st.setDate(1, day.getDate());
 			rs = st.executeQuery();
 			List<SchedulePractitionerDto> retList = new ArrayList<SchedulePractitionerDto>();
@@ -1221,7 +1222,8 @@ public class DataServiceImpl implements DataService {
 				TypeDto type = new TypeDto();
 				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
 				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
-				return pract;
+				pract.setField(PractitionerDto.TYPE, type);
+                                return pract;
 			}
 			return null;
 
