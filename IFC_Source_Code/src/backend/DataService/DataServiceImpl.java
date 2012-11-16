@@ -1014,16 +1014,19 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                        //Todo: link to Type Claire
-			st = connection.prepareStatement("SELECT * FROM Waitlist, Patient " +
-					"WHERE Waitlist.PatID=Patient.PatID");
+			st = connection.prepareStatement("SELECT * FROM Waitlist INNER JOIN Patient " +
+					"ON Waitlist.PatID=Patient.PatID INNER JOIN ServiceType ON" +
+					" Waitlist.TypeID = ServiceType.TypeID");
 			rs = st.executeQuery();
 			List<WaitlistDto> results = new ArrayList<WaitlistDto>();
 			while (rs.next()) {
 				WaitlistDto entry = new WaitlistDto();
 				PatientDto patient = new PatientDto();
 				entry.setField(WaitlistDto.WAITLIST_ID, rs.getInt(WaitlistDto.WAITLIST_ID));
-				entry.setField(WaitlistDto.TYPE_ID, rs.getInt(WaitlistDto.TYPE_ID));
+				TypeDto type = new TypeDto();
+				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+				entry.setField(WaitlistDto.TYPE, type);
 				entry.setField(WaitlistDto.DATE, rs.getDate(WaitlistDto.DATE));
 				entry.setField(WaitlistDto.COMMENTS, rs.getString(WaitlistDto.COMMENTS));
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
