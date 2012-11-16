@@ -82,8 +82,8 @@ public class MonthView extends JPanel {
 			cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE) - prevDays + i);
 			cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);
 			
-			//java.util.Date time = cal.getTime();
-			//long t = time.getTime();
+			System.out.println(cal.get(Calendar.YEAR));
+			
 			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
 			
 			panel.add(new TinyDayBlock(dp, dt, Color.LIGHT_GRAY, false));
