@@ -1499,9 +1499,8 @@ public class DataServiceImpl implements DataService {
 		st = connection.prepareStatement("DELETE FROM Waitlist WHERE PatID = ?");
 		
 		st.setInt(1, patient.getPatientID());
-                rs = st.executeQuery();
-                boolean deleted = rs.rowDeleted();
-                return deleted;
+                st.executeUpdate();
+                return true;
                 
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
