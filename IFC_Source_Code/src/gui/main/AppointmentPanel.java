@@ -38,11 +38,15 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	DayDto day;
 	
 	ArrayList<Graphics2D> pages;
+	
+	SidePanel sidePanel;
 
 	public AppointmentPanel(DayPanel dp) {
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(new SidePanel(dp), BorderLayout.WEST);
+		sidePanel = new SidePanel(dp);
+		dp.setSidePanel(sidePanel);
+		panel.add(sidePanel, BorderLayout.WEST);
 		AppointmentSubpanel as = new AppointmentSubpanel(dp);
 
 		day = dp.getDay();

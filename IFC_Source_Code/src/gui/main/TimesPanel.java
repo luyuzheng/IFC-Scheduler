@@ -62,7 +62,9 @@ public class TimesPanel extends JPanel {
 			panel.setMaximumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
 			panel.setMinimumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, 60*Constants.PIXELS_PER_MINUTE));
 			panel.setMaximumSize(new Dimension(Constants.TIMES_PANEL_WIDTH, (60-(min%60))*Constants.PIXELS_PER_MINUTE));
-			String timeSt = ((Integer) ((start / 60) % 12)).toString() + ":" + String.format("%02d", start % 60);
+			Integer hours = ((Integer) ((start / 60) % 12));
+			if (hours == 0) hours = 12;
+			String timeSt = hours.toString() + ":" + String.format("%02d", start % 60);
 			String amPm = (((start / 60) / 12) == 0) ? "am" : "pm"; 
 			JLabel startLabel= new JLabel(timeSt + amPm);
 			startLabel.setFont(new Font("Arial", Font.BOLD, 14));
