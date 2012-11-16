@@ -198,9 +198,6 @@ public class DayPanel extends JPanel {
                         if (room != null){
                             as.addRoom(room);
                         }
-                        else{
-                            System.out.println("null");
-                        }
 		}
 	};
 	

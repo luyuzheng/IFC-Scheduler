@@ -67,7 +67,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	}
 
 	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
-		
+		System.out.print("FirstFirsttest");
 		//# rooms
 		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 
@@ -153,9 +153,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			roomsLeft = 3;
 			lineLength = 30;
 		}
-		
+		System.out.println("FirstTest");
 
 		for (int j = 0; j < roomsLeft; j++) {
+                    System.out.println("OtherTest");
 			Rectangle2D.Double rect = new Rectangle2D.Double ();
 			startx = Constants.PRINT_MARGINX + (int)timesWidth + (int)colWidth*j;
 			starty = Constants.PRINT_MARGINY;

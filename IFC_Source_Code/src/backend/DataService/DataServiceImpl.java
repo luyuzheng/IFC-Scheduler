@@ -254,7 +254,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                        //Todo: NOShows
+                        //Todo: NOShows Claire
 			st = connection.prepareStatement("SELECT * FROM Patient");
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
@@ -541,7 +541,7 @@ public class DataServiceImpl implements DataService {
 			
 			st.setInt(1, typeID);
 			st.setString(2, first);
-			st.setString(3, last); //TODO: npe when getPhone returns null
+			st.setString(3, last); 
 			st.setInt(4, appLength);
 			st.setString(5, phone);
 			st.setString(6, notes);
@@ -884,7 +884,7 @@ public class DataServiceImpl implements DataService {
 			try {
 				if (st != null) {
 					st.close();
-				}
+		\		}
 			} catch (SQLException ex) {
 				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
@@ -1014,7 +1014,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                        //Todo: link to Type
+                        //Todo: link to Type Claire
 			st = connection.prepareStatement("SELECT * FROM Waitlist, Patient " +
 					"WHERE Waitlist.PatID=Patient.PatID");
 			rs = st.executeQuery();
