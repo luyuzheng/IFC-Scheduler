@@ -53,7 +53,7 @@ public class DataServiceImpl implements DataService {
 		serv.close();
 	}
 
-	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:8889", "testuser", "test623");
+	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:3306", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -577,7 +577,7 @@ public class DataServiceImpl implements DataService {
                             TypeDto type = new TypeDto();
                             type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
                             type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
-
+                            returnPract.setField(PractitionerDto.TYPE, type);
 
                             return returnPract;
                         }
