@@ -64,7 +64,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		this.setFocusable(true);
 		textArea.addFocusListener(this);
 		
-		if (appointment.getPatientID() != null) setBackground(new Color(238,238,255));
+		if (appointment.getPatientID() != null && appointment.getPatientID() != 0) setBackground(new Color(238,238,255));
 
 		setText();
 		
@@ -107,7 +107,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 */
 	public void focusGained(FocusEvent arg0) {
 		dp.setPatButtonEnabled(true, this);
-		if (appointment.getPatientID() != null) 
+		if (appointment.getPatientID() != null && appointment.getPatientID() != 0) 
 			setBackground(new Color(255,200,200));
 		else
 			setBackground(new Color(200,200,255));
@@ -119,7 +119,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 * of the block back to normal. Removes double-click mouse listener. 
 	 */
 	public void focusLost(FocusEvent arg0) {
-		if (appointment.getPatientID() != null)
+		if (appointment.getPatientID() != null && appointment.getPatientID() != 0)
 			setBackground(new Color(238, 238, 255));
 		else
 			setBackground(Color.WHITE);

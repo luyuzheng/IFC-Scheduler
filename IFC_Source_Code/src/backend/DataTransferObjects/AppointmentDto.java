@@ -44,6 +44,9 @@ public class AppointmentDto extends AbstractDto {
     }
     
     public Integer getPatientID(){
+        if ((Integer) fieldsMap.get(PAT_ID) == 0){
+            return null;
+        }
         return (Integer) fieldsMap.get(PAT_ID);
     }
     
