@@ -963,8 +963,8 @@ public class DataServiceImpl implements DataService {
 					"(DayDate, StartTime, EndTime) " +
 			"VALUES (?, ?, ?)");
 			st.setDate(1, day.getDate());
-			st.setTime(2, new Time(day.getStart()));
-			st.setTime(3, new Time(day.getEnd()));
+			st.setInt(2, day.getStart());
+			st.setInt(3, day.getEnd());
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
