@@ -130,10 +130,17 @@ public class MonthView extends JPanel {
 	}
 	
 	public void selectDay(int day) {
+		if (day >= days.size()) {
+			day = days.size();
+		}
 		days.get(day-1).select();
+		date = days.get(day-1).getDate();
 	}
 	
 	public void deselectDay(int day) {
+		if (day >= days.size()) {
+			day = days.size();
+		}
 		days.get(day-1).deselect();
 	}
 	
