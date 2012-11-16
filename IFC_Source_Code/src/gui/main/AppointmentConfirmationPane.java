@@ -145,6 +145,10 @@ public class AppointmentConfirmationPane extends JPanel {
 			return confirm.size();
 		}
 
+		 public boolean isCellEditable(int row, int col) { 
+			 return true; 
+		 }
+		 
 		/**
 		 * Returns the cell of information specified at a particular row and column.
 		 * 
@@ -154,10 +158,14 @@ public class AppointmentConfirmationPane extends JPanel {
 		public Object getValueAt(int row, int col) {
 			AppointmentDto appt = confirm.get(row);
 			
-                        PatientDto pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
+            PatientDto pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
                         
 			if (col == 0) {
-				return appt.getConfirmation();
+				if (appt.getConfirmation()) {
+					return Boolean.TRUE;
+				} else {
+					return Boolean.FALSE;
+				}
 			} else if (col == 1) {
 				return pat.getFirst();
 			} else if (col ==2) {
