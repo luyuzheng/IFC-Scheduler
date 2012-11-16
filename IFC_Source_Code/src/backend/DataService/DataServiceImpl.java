@@ -959,12 +959,12 @@ public class DataServiceImpl implements DataService {
 		PreparedStatement st = null;
 
 		try {
-			st = connection.prepareStatement("INSERT INTO Day " +
-					"(DayDate, StartTime, EndTime) " +
-			"VALUES (?, ?, ?)");
-			st.setDate(1, day.getDate());
-			st.setInt(2, day.getStart());
-			st.setInt(3, day.getEnd());
+			st = connection.prepareStatement("UPDATE Day " +
+					"SET StartTime=?, EndTime=? " +
+					"WHERE DayDate=?");
+			st.setInt(1, start);
+			st.setInt(2, end);
+			st.setDate(3, day.getDate());
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
