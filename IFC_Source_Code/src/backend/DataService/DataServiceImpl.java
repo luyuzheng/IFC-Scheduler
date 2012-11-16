@@ -666,7 +666,7 @@ public class DataServiceImpl implements DataService {
 				newPract.setField(SchedulePractitionerDto.PRACT, 
 						this.getPractitioner(rs.getInt("PractID")));
 				newPract.setField(SchedulePractitionerDto.APPOINTMENTS, 
-						this.getAllAppointments(rs.getInt(newPract.getPractSchedID())));
+						this.getAllAppointments(newPract.getPractSchedID()));
 				retList.add(newPract);
 			}
 			return retList;
@@ -692,10 +692,10 @@ public class DataServiceImpl implements DataService {
 		try {
 			st = connection.prepareStatement("DELETE FROM PractitionerScheduled WHERE PractSchID = ?");
 			st.setInt(1, practSchedId);
-			st.executeQuery();
+			st.executeUpdate();
 			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchID = ?");
 			st.setInt(1, practSchedId);
-			st.executeQuery();
+			st.executeUpdate();
 			return true;
 		}
 		catch (SQLException e) {
@@ -1025,9 +1025,8 @@ public class DataServiceImpl implements DataService {
 			st.setInt(3, start);
 			st.setInt(4, end);
 			st.executeUpdate();
-			st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
+                        st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
 			rs = st.executeQuery();
-
 			rs.next();
 
 			int pract_id = rs.getInt(1);
@@ -1060,7 +1059,7 @@ public class DataServiceImpl implements DataService {
 				appointments.add(newApt);
 				st.executeUpdate();
 			}
-
+                        return returnDto;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
