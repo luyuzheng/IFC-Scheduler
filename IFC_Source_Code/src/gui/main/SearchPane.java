@@ -143,7 +143,7 @@ public class SearchPane extends JPanel {
 		 * Constructor to produce an empty table model.
 		 */ 
 		public EmptyResultsTableModel() {
-			columnNames = new String[] {" ", " ", " ", " "};
+			columnNames = new String[] {" ", " ", " "};
 		}
 		
 		/**
@@ -197,7 +197,17 @@ public class SearchPane extends JPanel {
 		 */ 
 		public PatientResultsTableModel(ArrayList<PatientDto> pat) {
 			patients = pat;
-			columnNames = new String[] { "First Name", "Last Name", "Phone Number", "Comments" /*, "Waitlisted", "No Show" */};
+			columnNames = new String[] { "Name", "Phone Number", "Comments" /*, "Waitlisted", "No Show" */};
+		}
+		
+		/**
+		 * Gets the information for a selected patient.
+		 * 
+		 * @param row - the row of the table where the desired patient is located.
+		 * @return the patient information for a selected row
+		 */
+		public PatientDto getPatient(int row) {
+			return patients.get(row);
 		}
 		
 		/**
@@ -236,10 +246,8 @@ public class SearchPane extends JPanel {
 		public Object getValueAt(int row, int col) {
 			PatientDto p = patients.get(row);
 			if (col == 0) {
-				return p.getFirst();
+				return p.getFirst() + " " + p.getLast();
 			} else if (col == 1) {
-				return p.getLast();
-			} else if (col == 2) {
 				return p.getPhone();
 			} else {
 				return p.getNotes();
@@ -265,6 +273,16 @@ public class SearchPane extends JPanel {
 		public AppointmentResultsTableModel(ArrayList<AppointmentDto> appt) {
 			appointments = appt;
 			columnNames = new String[] { "Date", "Start Time", "Appointment Length" /*, "Practitioner" */};
+		}
+		
+		/**
+		 * Gets the information for a selected appointment.
+		 * 
+		 * @param row - the row of the table where the desired appointment is located.
+		 * @return the appointment information for a selected row
+		 */
+		public AppointmentDto getAppointment(int row) {
+			return appointments.get(row);
 		}
 		
 		/**

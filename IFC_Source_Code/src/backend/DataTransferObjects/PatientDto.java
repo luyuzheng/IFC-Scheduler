@@ -12,6 +12,7 @@ public class PatientDto extends AbstractDto {
     public static final String LAST = "LastName";
     public static final String PHONE = "PhoneNumber";
     public static final String NOTES = "Notes";
+    public static final String NO_SHOW = "NumberOfNoShows";
 
     public static void main(String[] args) {
         // main method for testing only, please delete
@@ -24,6 +25,11 @@ public class PatientDto extends AbstractDto {
         fieldsMap.put(LAST, null);
         fieldsMap.put(PHONE, null);
         fieldsMap.put(NOTES, null);
+        fieldsMap.put(NO_SHOW, null);
+    }
+    
+    public Integer getNoShows(){
+        return (Integer) fieldsMap.get(NO_SHOW);
     }
 
     public Integer getPatID() {
@@ -44,11 +50,6 @@ public class PatientDto extends AbstractDto {
 
     public String getNotes() {
         return (String) getField(NOTES);
-    }
-
-    public PatientDto setPatID(int patID) {
-        fieldsMap.put(PATIENT_ID, patID);
-        return this;
     }
 
     public PatientDto setFirst(String first) {
@@ -72,6 +73,6 @@ public class PatientDto extends AbstractDto {
     }
 
     public String getFullName() {
-        throw new UnsupportedOperationException("Not yet implemented"); //First+Last
+        return this.getFirst() + " " + this.getLast();
     }
 }

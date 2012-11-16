@@ -13,24 +13,22 @@ import java.util.HashMap;
 public class PractitionerDto extends AbstractDto {
     
     public static final String PRACT_ID = "PractID";
-    public static final String TYPE_ID = "TypeID";
-    public static final String TYPE_NAME = "TypeName";
+    public static final String TYPE = "Type";
     public static final String FIRST = "FirstName";
     public static final String LAST = "LastName";
-    public static final String APPT_LENGTH = "ApptLenght";
+    public static final String APPT_LENGTH = "ApptLength";
     public static final String PHONE = "PhoneNumber";
     public static final String NOTES = "Notes";
     
     public PractitionerDto() {
         fieldsMap = new HashMap<String, Object>();
         fieldsMap.put(PRACT_ID, null);
-        fieldsMap.put(TYPE_ID, null);
+        fieldsMap.put(TYPE, null);
         fieldsMap.put(FIRST, null);
         fieldsMap.put(LAST, null);
         fieldsMap.put(APPT_LENGTH, null);
         fieldsMap.put(PHONE, null);
         fieldsMap.put(NOTES, null);
-        fieldsMap.put(TYPE_NAME, null);
     }
     
     public Integer getPractID(){
@@ -38,15 +36,11 @@ public class PractitionerDto extends AbstractDto {
     }
     
     public Integer getTypeID(){
-        return (Integer) fieldsMap.get(TYPE_ID);
-    }
-    
-    public void setTypeID(int newID){
-        fieldsMap.put(TYPE_ID, newID);
+        return this.getType().getTypeID();
     }
     
     public String getTypeName(){
-        return (String) fieldsMap.get(TYPE_NAME);
+        return this.getType().getTypeName();
     }
     
     public String getFirst(){
@@ -87,5 +81,13 @@ public class PractitionerDto extends AbstractDto {
     
     public void setNotes(String s){
        fieldsMap.put(NOTES, s);
+    }
+    
+    public TypeDto getType(){
+        return (TypeDto) fieldsMap.get(TYPE);
+    }
+    
+    public void setType(TypeDto t){
+        fieldsMap.put(TYPE, t);
     }
 }

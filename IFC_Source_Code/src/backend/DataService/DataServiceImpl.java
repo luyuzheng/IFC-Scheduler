@@ -6,7 +6,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -215,7 +214,9 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patient WHERE PatID=(?)");
+			st = connection.prepareStatement("SELECT Patient.PatID, Patient.`FirstName`, " +
+					"Patient.`LastName`, Patient.PhoneNumber, Patient.Notes, COUNT(NoShow.NoShowID) " +
+					"FROM Patient INNER JOIN NoShow on Patient.`PatID` = NoShow.`PatID`WHERE Patient.PatID =(?)");
 			st.setInt(1, PatID);
 			rs = st.executeQuery();
 			PatientDto patient = new PatientDto();
@@ -223,8 +224,10 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(1));
 				patient.setField(PatientDto.FIRST, rs.getString(2));
 				patient.setField(PatientDto.LAST, rs.getString(3));
-				patient.setField(PatientDto.PHONE, rs.getLong(4));
+				patient.setField(PatientDto.PHONE, rs.getString(4));
 				patient.setField(PatientDto.NOTES, rs.getString(5));
+				patient.setField(PatientDto.NO_SHOW, rs.getInt(6));
+				
 				return patient;
 			}
 
@@ -396,7 +399,6 @@ public class DataServiceImpl implements DataService {
 	public TypeDto addNewPractitionerType(String serviceType) {
 		PreparedStatement st = null;
 
-		//TODO: have this return the ID of the this object instead if possible
 		try {
 			st = connection.prepareStatement("INSERT INTO ServiceType (TypeName) VALUES (?)");
 			st.setString(1, serviceType);
@@ -482,7 +484,8 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Practitioner");
+			st = connection.prepareStatement("SELECT * FROM Practitioner " +
+					"INNER JOIN ServiceType ON Practitioner.`TypeID` = ServiceType.TypeID");
 			rs = st.executeQuery();
 			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
 			PractitionerDto practitioner;
@@ -490,14 +493,17 @@ public class DataServiceImpl implements DataService {
 				practitioner = new PractitionerDto();
 				practitioner.setField(
 						PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
+				TypeDto type = new TypeDto();
+				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
 				practitioner.setField(
-						PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
+						PractitionerDto.TYPE, type);
 				practitioner.setField(
 						PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
 				practitioner.setField(
 						PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
 				practitioner.setField(
-						PractitionerDto.APPT_LENGTH, rs.getString(PractitionerDto.APPT_LENGTH));
+						PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
 				practitioner.setField(
 						PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
 				practitioner.setField(
@@ -553,7 +559,9 @@ public class DataServiceImpl implements DataService {
                         returnPract.setField(PractitionerDto.NOTES, rs.getInt(PractitionerDto.NOTES));
                         returnPract.setField(PractitionerDto.PHONE, rs.getInt(PractitionerDto.PHONE));
                         returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-                        returnPract.setField(PractitionerDto.TYPE_ID, rs.getInt(PractitionerDto.TYPE_ID));
+                        TypeDto type = new TypeDto();
+                        type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+                        type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
                         
                         return returnPract;
 			
@@ -956,12 +964,12 @@ public class DataServiceImpl implements DataService {
 		PreparedStatement st = null;
 
 		try {
-			st = connection.prepareStatement("INSERT INTO Day " +
-					"(DayDate, StartTime, EndTime) " +
-			"VALUES (?, ?, ?)");
-			st.setDate(1, day.getDate());
-			st.setTime(2, new Time(day.getStart()));
-			st.setTime(3, new Time(day.getEnd()));
+			st = connection.prepareStatement("UPDATE Day " +
+					"SET StartTime=?, EndTime=? " +
+					"WHERE DayDate=?");
+			st.setInt(1, start);
+			st.setInt(2, end);
+			st.setDate(3, day.getDate());
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -1105,21 +1113,24 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Practitioner WHERE PractID=(?)");
+			st = connection.prepareStatement("SELECT * FROM Practitioner " +
+					"INNER JOIN ServiceType ON Practitioner.TypeID = " +
+					"ServiceType.TypeID WHERE Practitioner.PractID=(?)");
 			st.setInt(1, practID);
 			rs = st.executeQuery();
 			PractitionerDto pract = new PractitionerDto();
 
 			if (rs.next()) {
-				pract.setField(PractitionerDto.FIRST, rs.getInt(PractitionerDto.FIRST));
-				pract.setField(PractitionerDto.LAST, rs.getInt(PractitionerDto.LAST));
+				pract.setField(PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
+				pract.setField(PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
 				pract.setField(PractitionerDto.APPT_LENGTH, 
 						rs.getInt(PractitionerDto.APPT_LENGTH));
 				pract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
 				pract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
 				pract.setField(PractitionerDto.PRACT_ID, rs.getString(PractitionerDto.PRACT_ID));
-				pract.setField(PractitionerDto.TYPE_ID, rs.getString(PractitionerDto.TYPE_ID));
-				//TODO:get TypeName
+				TypeDto type = new TypeDto();
+				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
 				return pract;
 			}
 			return null;
@@ -1248,6 +1259,7 @@ public class DataServiceImpl implements DataService {
                 returnPatient.setLast(last);
                 returnPatient.setNotes(notes);
                 returnPatient.setPhone(phone);
+                returnPatient.setField(PatientDto.NO_SHOW, 0);
                 
                 return returnPatient;
 	} catch (SQLException e) {
@@ -1268,7 +1280,38 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public TypeDto getType(String type) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("SELECT * FROM ServiceType WHERE TypeName=?");
+		
+		st.setString(1, type);
+                rs = st.executeQuery();
+                        
+                if (rs.next()){
+                    TypeDto returnType = new TypeDto();
+                    returnType.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+                    returnType.setField(TypeDto.TYPE_NAME, type);
+                    return returnType;
+                }
+                else {
+                    return null;
+                }
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+        return null;
     }
 
     @Override
@@ -1283,7 +1326,31 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public void removePatientFromWaitlist(PatientDto patient, Integer typeID) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public boolean removePatientFromWaitlist(WaitlistDto patient) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("DELETE FROM Waitlist WHERE PatID = ?");
+		
+		st.setInt(1, patient.getPatientID());
+                rs = st.executeQuery();
+                boolean deleted = rs.rowDeleted();
+                return deleted;
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+		return false;
     }
 }
