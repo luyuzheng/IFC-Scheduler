@@ -1,5 +1,5 @@
 /**
- * An appointment block is the actual square containing an appointment. 
+ * An appointment block is the square containing an appointment. 
  */
 
 package gui.main;
@@ -31,11 +31,16 @@ import gui.Constants;
 @SuppressWarnings("serial")
 public class AppointmentBlock extends JPanel implements FocusListener {
 
+	/** The appointment associated with an appointment block. */
 	AppointmentDto appointment;
+	/** The text of the appointment block. */
 	JTextArea textArea;
+	/** Patient Listener to schedule and cancel appointments. */
 	NewPatientListener npl = new NewPatientListener(this, this.getParent());
+	/** The Day Panel that contains the appointment block. */
 	DayPanel dp;
 
+	/** Constructs an appointment block object given an appointment and pointer to the Day Panel. */
 	public AppointmentBlock(AppointmentDto appointment, DayPanel dp) {
 
 		this.dp = dp;
@@ -93,12 +98,11 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	public void setPatient(int patId) {
 		appointment.setPatientID(patId);
 		setText();
-		// TODO new DaySaver().storeDay(dp.getDay()); WHAT IS THISSSSSSS GARBAGE
 	}
 
 	/**
-	 * When focus is gained, enable buttons on the "DayPanel" and change the background color
-	 * of the appointment block. Also, add a mouse listener to begin looking for double-click events.
+	 * When focus is gained, enables buttons on the "DayPanel" and change the background color
+	 * of the appointment block. Also, adds a mouse listener to begin looking for double-click events.
 	 */
 	public void focusGained(FocusEvent arg0) {
 		dp.setPatButtonEnabled(true, this);
@@ -110,8 +114,8 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	}
 
 	/**
-	 * When focus is lost, disable buttons on the "DayPanel" and change the background color
-	 * of the block back to normal. Remove double-click mouse listener. 
+	 * When focus is lost, disables buttons on the "DayPanel" and change the background color
+	 * of the block back to normal. Removes double-click mouse listener. 
 	 */
 	public void focusLost(FocusEvent arg0) {
 		if (appointment.getPatientID() != null)
@@ -123,14 +127,17 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		
 	}
 	
+	/** Clears the appointment block so that it shows up empty. */
 	public void clearAppt() {
 		appointment.setPatientID(null);
 	}
 	
+	/** Returns the appointment associated with an appointment block. */
 	public AppointmentDto getAppointment() {
 		return appointment;
 	}
 	
+	/** Sets the note associated with an appointment. */
 	public void setNote(String note) {
 		appointment.setNote(note);
 	}
