@@ -37,7 +37,7 @@ public class DayPanel extends JPanel {
 	private JButton switchViewButton = new PanelButton("Month View");
 	private JButton patientButton = new PanelButton("Schedule Patient");
 	private JButton addPracButton = new PanelButton("Schedule Practitioner");
-	private JButton removePracButton = new PanelButton("Cancel Practitioner");
+	private JButton removePracButton = new PanelButton("Remove Practitioner From Current Day");
 	private JButton setTimeSlotButton = new PanelButton("Hours of Operation");
 	private JButton searchButton = new PanelButton("Search");
 	private JButton apptConfirmationButton = new PanelButton("Appointment Confirmations");
@@ -154,7 +154,7 @@ public class DayPanel extends JPanel {
 		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
 	}
 	
-	private final AbstractAction removePracAction = new AbstractAction("<html>Cancel Practitioner</html>") {
+	private final AbstractAction removePracAction = new AbstractAction("<html>Remove Practitioner<br>From Current Day</html>") {
 		public void actionPerformed(ActionEvent e) {
 			
 			clearRoom(rp);
