@@ -28,4 +28,8 @@ public class TypeDto extends AbstractDto {
     public String getTypeName(){
         return (String) fieldsMap.get(TYPE_NAME);
     }
+    
+    public String toString() {
+    	return this.getTypeName();
+    }
 }
