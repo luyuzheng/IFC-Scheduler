@@ -1496,9 +1496,29 @@ public class DataServiceImpl implements DataService {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-		st.execute();
-		//TODO: CLAIRE, list of query to get list of all appointments of type type (need to get type from PractSchedId->PractId->TypeID 
-              
+        	st = connection.prepareStatement("SELECT * FROM Appointment " +
+        			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
+        			"Practitioner.PractID WHERE Practitioner.TypeID = ? AND " +
+        			"Appointment.PatID IS NULL");
+        	st.setInt(1,type.getTypeID());
+        	rs = st.executeQuery();
+        	
+        	ArrayList<AppointmentDto> aptList = new ArrayList<AppointmentDto>();
+			AppointmentDto newAppt;
+
+			while(rs.next()){
+				newAppt = new AppointmentDto();
+				
+				newAppt.setField(AppointmentDto.APPT_DATE, rs.getDate(AppointmentDto.APPT_DATE));
+				newAppt.setField(AppointmentDto.APPT_ID, rs.getInt(AppointmentDto.APPT_ID));
+				newAppt.setField(AppointmentDto.PRACT_SCHED_ID, rs.getInt(AppointmentDto.PRACT_SCHED_ID));
+				newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
+				newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
+				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
+				
+				aptList.add(newAppt);
+			return aptList;
+			}
                 
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
