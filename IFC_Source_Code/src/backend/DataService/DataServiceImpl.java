@@ -255,12 +255,11 @@ public class DataServiceImpl implements DataService {
 
 		try {
 
-			/*st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
+			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
 					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
 					"From Patient LEFT JOIN (Select PatID, Count(NoShowID) as " +
-					"NumberOfNoShows from NoShowGroup by PatID) as temp ON temp.PatID = Patient.PatID"); */
-                        st = connection.prepareStatement("Select * FROM Patient");
-
+					"NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID"); 
+                       
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
@@ -270,7 +269,8 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
-				patient.setField(PatientDto.NO_SHOW, 0);//rs.getString(PatientDto.NO_SHOW));
+				//TODO set to 0 if null
+				patient.setField(PatientDto.NO_SHOW, rs.getString(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
@@ -297,19 +297,25 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patient WHERE FirstName=? AND LastName=?");
+			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, Patient.LastName, " +
+					"Patient.PhoneNumber, Patient.Notes, " +
+					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+					"WHERE Patient.FirstName = ? AND Patient.LastName = ?");
 			st.setString(1, first);
 			st.setString(2, last);
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
 			while (rs.next()) {
-				// TODO: No shows
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+				// TODO: change to 0 if null
+				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
@@ -342,7 +348,6 @@ public class DataServiceImpl implements DataService {
 			List<NoShowDto> results = new ArrayList<NoShowDto>();
 			NoShowDto noShow = new NoShowDto();
 			while (rs.next()) {
-				// TODO: Will the columns always be the same order?
 				noShow.setField(NoShowDto.NOSHOW_ID, rs.getInt(NoShowDto.NOSHOW_ID));
 				noShow.setField(NoShowDto.PATIENT_ID, rs.getString(NoShowDto.PATIENT_ID));
 				noShow.setField(NoShowDto.DATE, rs.getString(NoShowDto.DATE));
