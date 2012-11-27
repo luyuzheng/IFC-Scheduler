@@ -232,5 +232,7 @@ public interface DataService {
     public boolean removePatientFromWaitlist(WaitlistDto patient);
     
     public ArrayList<AppointmentDto> searchForAppointments(TypeDto type);
+    
+    public boolean addNotesToAppointment(AppointmentDto appointment);
 
 }
