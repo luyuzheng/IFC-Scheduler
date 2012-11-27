@@ -786,9 +786,9 @@ public class DataServiceImpl implements DataService {
 		st.setInt(1, patID);
 		st.setInt(2, appointment.getApptID());
 		
-		rs=st.executeQuery();
-		boolean updated = rs.rowUpdated();
-		return updated;
+		st.executeUpdate();
+                
+		return true;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
