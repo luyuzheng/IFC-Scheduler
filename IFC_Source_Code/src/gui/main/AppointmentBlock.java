@@ -98,6 +98,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 */
 	public void setPatient(int patId) {
 		appointment.setPatientID(patId);
+                DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patId, appointment);
 		setText();
 	}
 
@@ -131,6 +132,8 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	/** Clears the appointment block so that it shows up empty. */
 	public void clearAppt() {
 		appointment.setPatientID(null);
+                DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromAppointment(appointment);
+                setText();
 	}
 	
 	/** Returns the appointment associated with an appointment block. */
@@ -141,6 +144,8 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	/** Sets the note associated with an appointment. */
 	public void setNote(String note) {
 		appointment.setNote(note);
+                //TODO: add database interaction
+                setText();
 	}
 	
 }

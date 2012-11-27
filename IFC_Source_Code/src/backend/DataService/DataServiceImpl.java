@@ -53,7 +53,7 @@ public class DataServiceImpl implements DataService {
 		serv.close();
 	}
 
-	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:8889", "testuser", "test623");
+	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:3306", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -816,9 +816,8 @@ public class DataServiceImpl implements DataService {
 				"SET Appointment.PatID=NULL WHERE Appointment.ApptID=?" );
 		st.setInt(1, appointment.getApptID());
 		
-		rs=st.executeQuery();
-		boolean updated = rs.rowUpdated();
-		return updated;
+		st.executeUpdate();
+		return true;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
