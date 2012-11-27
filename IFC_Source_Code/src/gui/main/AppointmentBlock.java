@@ -75,7 +75,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 * slot and patient. Otherwise, just the patient. 
 	 */
 	public void setText() {
-		JLabel timeslot= new JLabel(appointment.getStart().toString() + " - " + appointment.getEnd().toString());
+		JLabel timeslot= new JLabel(appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd());
 		timeslot.setFont(new Font("Arial",Font.BOLD, 14));
 		add(timeslot, BorderLayout.NORTH);
 		String text = "";

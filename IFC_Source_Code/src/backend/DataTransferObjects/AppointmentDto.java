@@ -108,4 +108,42 @@ public class AppointmentDto extends AbstractDto {
     public boolean getConfirmation() {
     	return (Boolean) fieldsMap.get(CONFIRMATION);
     }
+    
+    public String prettyPrintStart(){
+        int start = this.getStart() / 60 % 12;
+        if (start == 0){
+            start = 12;
+        }
+        String time;
+        int ampm = this.getStart() / 60 / 12 % 2;
+        if (ampm == 0){
+            time = "am";
+        }
+        else {
+            time = "pm";
+        }
+        
+        int end = this.getStart() % 60;
+        
+        return start + ":" + end + " " + time;
+    }
+    
+     public String prettyPrintEnd(){
+        int start = this.getEnd() / 60 % 12;
+        if (start == 0){
+            start = 12;
+        }
+        String time;
+        int ampm = this.getEnd() / 60 / 12 % 2;
+        if (ampm == 0){
+            time = "am";
+        }
+        else {
+            time = "pm";
+        }
+        
+        int end = this.getEnd() % 60;
+        
+        return start + ":" + end + " " + time;
+    }
 }
