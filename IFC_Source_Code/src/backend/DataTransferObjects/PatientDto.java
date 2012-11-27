@@ -49,6 +49,9 @@ public class PatientDto extends AbstractDto {
     }
 
     public String getNotes() {
+        if (getField(NOTES) == null){
+            return "";
+        }
         return (String) getField(NOTES);
     }
 
