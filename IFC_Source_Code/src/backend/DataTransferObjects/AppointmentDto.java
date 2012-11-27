@@ -146,4 +146,9 @@ public class AppointmentDto extends AbstractDto {
         
         return start + ":" + end + " " + time;
     }
+     
+    @Override
+    public boolean equals(Object other) {
+        return ((AppointmentDto) other).getApptID() == this.getApptID();
+    } 
 }
