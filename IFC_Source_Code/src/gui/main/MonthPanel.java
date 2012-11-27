@@ -77,11 +77,11 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		int endDays = 42 - cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays;
 		
 		/*System.out.println("Calendar.DAY_OF_WEEK: " + Calendar.DAY_OF_WEEK);
-		System.out.println("Calendar.DATE" + Calendar.DATE);
-		System.out.println("Calendar.MONTH" + cal.get(Calendar.MONTH));
-		System.out.println("Calendar.YEAR" + cal.get(Calendar.YEAR));
-		System.out.println("prevDays: " + prevDays);
-		System.out.println("endDays: " + endDays);*/
+		//System.out.println("Calendar.DATE" + Calendar.DATE);
+		//System.out.println("Calendar.MONTH" + cal.get(Calendar.MONTH));
+		//System.out.println("Calendar.YEAR" + cal.get(Calendar.YEAR));
+		//System.out.println("prevDays: " + prevDays);
+		//System.out.println("endDays: " + endDays);*/
 		
 		cal.roll(Calendar.MONTH, false);
 		

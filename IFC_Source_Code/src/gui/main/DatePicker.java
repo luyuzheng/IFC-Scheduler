@@ -56,8 +56,8 @@ public class DatePicker extends JPanel {
 	public void setDate(Date d) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(selectedBlock.getDate());
-		System.out.print(d);
-		System.out.println(" setDate " + selectedBlock.getDate().toString());
+		//System.out.print(d);
+		//System.out.println(" setDate " + selectedBlock.getDate().toString());
 		curr.deselectDay(cal.get(Calendar.DATE));
 		curr = new MonthView(this, d, MonthView.CURRENT_MONTH);
 		
@@ -75,10 +75,10 @@ public class DatePicker extends JPanel {
 			
 		GregorianCalendar focused= new GregorianCalendar();
 		Date newDate = curr.getDate();
-		System.out.println("# # # " + newDate.toString());
+		//System.out.println("# # # " + newDate.toString());
 		focused.setTime(newDate);
 		focused.add(Calendar.MONTH, 1);
-		System.out.println("# # # " + focused.getTime().toString());
+		//System.out.println("# # # " + focused.getTime().toString());
 		
 //		int day = focused.get(Calendar.DAY_OF_MONTH);
 //		int month = focused.get(Calendar.MONTH);
@@ -161,7 +161,7 @@ public class DatePicker extends JPanel {
 		} else {
 			if (mainWindow.inMonthView()) mainWindow.switchView();
 			setDate(b.getDate());
-			System.out.println(block.get(Calendar.DAY_OF_MONTH));
+			//System.out.println(block.get(Calendar.DAY_OF_MONTH));
 			curr.deselectDay(block.get(Calendar.DAY_OF_MONTH));
 			// TODO: I just added deselectDay here to fix a day highlighting bug
 			// however, it seems that it should not be necessary because when the month changes
