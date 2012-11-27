@@ -1,5 +1,5 @@
 /**
- * The TimesPanel lists every hour in the day's time slot. 
+ * The TimesPanel holds a time slot for a given day. 
  */
 
 package gui.main;
@@ -19,8 +19,10 @@ import gui.TimeSlot;
 
 public class TimesPanel extends JPanel {
 
+	/** The time slot associated with the times panel. */
 	private TimeSlot slot;
 	
+	/** Constructs a times panel given a time slot object. */
 	public TimesPanel(TimeSlot slot) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBackground(new Color(215,255,215));
@@ -31,10 +33,12 @@ public class TimesPanel extends JPanel {
 		setupPanel();
 	}
 	
+	/** Constructs a times panel with default time configurations. */
 	public TimesPanel() {
 		this(new TimeSlot(Constants.DEFAULT_START_TIME, Constants.DEFAULT_END_TIME));
 	}
 	
+	/** Sets up the times panel in the main appointment panel. */
 	private void setupPanel() {
 		int start = slot.getStartTime();
 		int end = slot.getEndTime();

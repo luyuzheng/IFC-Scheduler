@@ -27,6 +27,7 @@ public class NewPatientListener extends MouseAdapter {
 		this.parent = parent;
 	}
 	
+	/** Looks for double clicks to open the Select Patient dialog. */
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {

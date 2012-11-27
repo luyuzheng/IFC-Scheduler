@@ -22,6 +22,7 @@ public class RoomPanel extends JPanel {
 	NewPractitionerListener npl = new NewPractitionerListener(this, this.getParent());
 	DayPanel dp;
 	
+	/** Constructs a room panel given a practitioner to be scheduled on a particular day. */
 	public RoomPanel(SchedulePractitionerDto room, DayPanel dp) {
 		this.dp = dp;
 		this.room = room;
@@ -47,11 +48,13 @@ public class RoomPanel extends JPanel {
 		else removeMouseListener(npl);
 		//new DaySaver().storeDay(dp.getDay());
 	}
-	
+
+	/** Returns the scheduled practitioner associated with the room panel (i.e., a set of appointments). */
 	public SchedulePractitionerDto getRoom() {
 		return room;
 	}
 
+	/** Returns the day panel associated with the scheduled practitioners for the day. */
 	public DayPanel getDayPanel() {
 		return dp;
 	}

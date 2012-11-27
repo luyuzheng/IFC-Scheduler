@@ -1,5 +1,5 @@
 /**
- * Displays the small calendar.
+ * Displays the small calendar picker and handles some of its interactions.
  */
 
 package gui.main;
@@ -23,10 +23,12 @@ public class MonthView extends JPanel {
 	public static int PREVIOUS_MONTH = -1;
 	public static int NEXT_MONTH = 1;
 	
+	/** The selected date. */
 	private Date date;
-	
+	/** An array of all the days within a month. */
 	private ArrayList<TinyDayBlock> days = new ArrayList<TinyDayBlock>();
 	
+	/** Constructs a month view given the date picker, a selected date, and month identifier. */
 	public MonthView(DatePicker dp, Date date, int mon) {
 		setPreferredSize(new Dimension(200, 185));	//modified to 185 from 165
 		setMaximumSize(new Dimension(200, 185));
@@ -129,6 +131,7 @@ public class MonthView extends JPanel {
 		this.add(main, BorderLayout.CENTER);
 	}
 	
+	/** Selects the specified day block. */
 	public void selectDay(int day) {
 		if (day >= days.size()) {
 			day = days.size();
@@ -137,6 +140,7 @@ public class MonthView extends JPanel {
 		date = days.get(day-1).getDate();
 	}
 	
+	/** Deselects the specified day block. */
 	public void deselectDay(int day) {
 		if (day >= days.size()) {
 			day = days.size();
@@ -144,6 +148,7 @@ public class MonthView extends JPanel {
 		days.get(day-1).deselect();
 	}
 	
+	/** Returns the currently set date. */
 	public Date getDate() {
 		return date;
 	}

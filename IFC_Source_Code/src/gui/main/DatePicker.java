@@ -1,5 +1,6 @@
 /**
- * This class reports behaviors of what happens in the small calendar.
+ * This class reports behaviors of what happens in the small calendar. The small calendar is the interface that allows
+ * users to navigate between days and months.
  */
 
 package gui.main;
@@ -19,11 +20,16 @@ import java.sql.Date;
 @SuppressWarnings("serial")
 public class DatePicker extends JPanel {
 	
+	/** The date that is currently selected on the date picker. */
 	private TinyDayBlock selectedBlock;
+	/** The current month shown in the date picker. */
 	private MonthView curr;
+	/** The application window. */
 	private MainWindow mainWindow;
+	/** Today's date. */
 	private Date currentDate;
 	
+	/** Constructs the date picker within the main window. */
 	public DatePicker(MainWindow window) {
 		this.mainWindow = window;
 		setMaximumSize(new Dimension(200, 500));
@@ -45,14 +51,17 @@ public class DatePicker extends JPanel {
 		add(curr);
 	}
 	
+	/** Returns today's date as a Date object. */
 	public Date getDate() {
 		return currentDate;
 	}
 	
+	/** Sets the current day as selected in the date picker. */
 	public void registerCurrentDay(TinyDayBlock b) {
 		selectedBlock = b;
 	}
 	
+	/** Changes the currently selected day on the date picker.*/
 	public void setDate(Date d) {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(selectedBlock.getDate());
@@ -71,6 +80,7 @@ public class DatePicker extends JPanel {
 		mainWindow.setDate(d);
 	}
 	
+	/** Advances the date picker one month. */
 	public void nextMonth() {
 			
 		GregorianCalendar focused= new GregorianCalendar();
@@ -107,6 +117,7 @@ public class DatePicker extends JPanel {
 		selectedBlock = b;
 	}
 	
+	/** Goes back one month on the day picker. */
 	public void prevMonth() {
 		
 		GregorianCalendar focused= new GregorianCalendar();

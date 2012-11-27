@@ -19,6 +19,7 @@ import gui.Constants;
 public class EmptyDayPanel extends JPanel {
 	JLabel textLabel;
 	
+	/** Constructs the day panel when there are no practitioners and appointments scheduled for the day. */
 	public EmptyDayPanel() {
 		setLayout(new BorderLayout());
 		JPanel topPanel = new JPanel(new BorderLayout());

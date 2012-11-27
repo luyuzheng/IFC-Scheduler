@@ -21,6 +21,7 @@ public class RoomSubpanel extends JPanel{
 	private SchedulePractitionerDto room;
 	private DayPanel dp;
 	
+	/** Constructs a room subpanel given the practitioner to be schedule for a given day. */
 	public RoomSubpanel(SchedulePractitionerDto room, DayPanel dp) {
 		this.dp = dp;
 		this.room = room;
@@ -41,14 +42,15 @@ public class RoomSubpanel extends JPanel{
 			AppointmentBlock app = new AppointmentBlock(a,dp);
 			add(app);
 		}
-		/**if (room.getLeftover() > 0) {
+		/*if (room.getLeftover() > 0) {
 			JPanel leftover = new JPanel();
 			leftover.setPreferredSize(new Dimension(0,room.getLeftover()*Constants.PIXELS_PER_MINUTE));
 			leftover.setBackground(Color.LIGHT_GRAY);
 			add(leftover);
 		}**/
 	}
-	
+
+	/** Returns the day panel containing the rooms panel and subpanel. */
 	public DayPanel getDayPanel() {
 		return dp;
 	}

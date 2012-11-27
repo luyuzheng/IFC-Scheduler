@@ -1,5 +1,5 @@
 /**
- * Displays the entire monthly view. 
+ * Displays the entire month view, which shows all the days in the month and the practitioners scheduled on those days. 
  */
 
 package gui.main;
@@ -35,9 +35,12 @@ import backend.DataTransferObjects.PractitionerDto;
 
 @SuppressWarnings("serial")
 public class MonthPanel extends JScrollPane implements Printable, ActionListener {
-	DayDto day;
+	/* I don't think this is referenced anywhere... */
+	//DayDto day;
+	/** Current date that is being viewed in the month panel. */
 	Date d;
 	
+	/** Constructs a month panel given a day panel object. */
 	public MonthPanel(DayPanel dp) {
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
@@ -116,11 +119,13 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		setViewportView(main);
 	}
 	
+	/** Truncates text if it is too long to display in the month view. */
 	private String formatString(String s) {
 		if (s.length() > 13) return s.substring(0,11) + "..."; 
 		else return s;
 	}
 	
+	/** Builds the printable/viewable page containing all the days in the month. */
 	private Graphics buildPage(Graphics g, double width, double height, int page) {
 		
 		Calendar cal = GregorianCalendar.getInstance();
@@ -271,6 +276,7 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		return g;
 	}
 	
+	/** Prints the visible contents of the month panel of a given page.*/
 	public int print(Graphics graphics, PageFormat pageFormat, int page) {
 		
 		double width = pageFormat.getImageableWidth() - 2*Constants.PRINT_MARGINX;
@@ -287,6 +293,7 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 
 	}
 
+	/** Prints the month page. */
 	public void actionPerformed(ActionEvent e) {
 		PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPrintable(this);

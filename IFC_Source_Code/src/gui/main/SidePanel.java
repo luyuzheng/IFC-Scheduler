@@ -12,10 +12,14 @@ import gui.TimeSlot;
 
 public class SidePanel extends JPanel {
 
+	/** The day panel associated with a side panel. */
 	DayPanel dp;
+	/** The heading in the appointment panel that displays the current date. */
 	TimeHeading heading;
+	/** The times panel contained within the side panel. */
 	TimesPanel timesPanel;
 	
+	/** Constructs the side panel given the day panel. */
 	public SidePanel(DayPanel dp) {
 		this.dp = dp;
 		setLayout(new BorderLayout());
@@ -26,6 +30,7 @@ public class SidePanel extends JPanel {
 		add(timesPanel, BorderLayout.CENTER);
 	}
 	
+	/** Refreshes an appointment time slot to show updated information. */
 	public void refreshTimeSlot(TimeSlot timeSlot) {
 		this.remove(timesPanel);
 		timesPanel = new TimesPanel(timeSlot);

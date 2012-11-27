@@ -1,5 +1,5 @@
 /**
- * The time heading is currently the blank gray square in the top left hand side of the scroll pane area. 
+ * The time heading displays the current date in the appointment panel. 
  */
 
 package gui.main;
@@ -23,9 +23,12 @@ import java.util.Date;
 
 @SuppressWarnings("serial")
 public class TimeHeading extends JPanel {
+	/** The time heading text. */
 	JTextArea textArea;
+	/** The current date selected in the appointment panel. */
 	private Date currentDate;
 
+	/** Constructs a time heading given a date object. */
 	public TimeHeading(Date d) {
 		setLayout(new BorderLayout());
 		setBackground(new Color(215,255,215));
@@ -52,7 +55,7 @@ public class TimeHeading extends JPanel {
 		
 	}
 	
-	// returns a string of the abbreviated month and date for the date object
+	/** Returns a string of the abbreviated month and date for the date object. */
 	public String shortDate(Date d){
 		Date date = new Date(d.getTime());
 		String dateString = date.toString().substring(4, 10);

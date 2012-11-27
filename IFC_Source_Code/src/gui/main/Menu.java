@@ -1,5 +1,7 @@
 /**
- * Creates a menu bar for the frame
+ * Creates a menu bar for the scheduler with "Administrator" and "Help" submenus.
+ * These menus contain information not intended for the average user; it allows the 
+ * administrator to execute more complicated tasks. 
  */
 
 package gui.main;
@@ -22,18 +24,22 @@ import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class Menu extends JMenuBar {
+	
+	/** Constructs the menu bar for the scheduler given the main window object. */
 	public Menu(MainWindow window) {
 		
 		final Font font= new Font("Arial", Font.PLAIN, 14);
 		
+		/** The main window associated with the scheduler. */
 		final MainWindow frame = window;
 		
 		setBorder(new EmptyBorder(5,5,5,5));
 
-		//file menu
+		//Administrator menu
 		JMenu fileMenu = new JMenu("Administrator");
 		fileMenu.setFont(font);
 		
+		//Edit all patients
 		JMenuItem editPatientsItem = new JMenuItem("Edit Patients");
 		editPatientsItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -44,6 +50,7 @@ public class Menu extends JMenuBar {
 		editPatientsItem.setFont(font);
 		fileMenu.add(editPatientsItem);
 		
+		//Edit all practitioners
 		JMenuItem editPractitionersItem = new JMenuItem("Edit Practitioners");
 		editPractitionersItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -53,6 +60,7 @@ public class Menu extends JMenuBar {
 		editPractitionersItem.setFont(font);
 		fileMenu.add(editPractitionersItem);
 		
+		//Change defaults hours of operation by day of week
 		JMenuItem editDefaultHoursItem = new JMenuItem("Edit Default Hours");
 		editDefaultHoursItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -62,6 +70,7 @@ public class Menu extends JMenuBar {
 		editDefaultHoursItem.setFont(font);
 		fileMenu.add(editDefaultHoursItem);
 		
+		//Print the schedule for today
 		JMenuItem printItem = new JMenuItem("Print");
 		printItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -74,6 +83,7 @@ public class Menu extends JMenuBar {
 		
 		fileMenu.addSeparator();
 		
+		//Quit the scheduler
 		JMenuItem byeMenuItem = new JMenuItem("Quit");
 		byeMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -85,10 +95,11 @@ public class Menu extends JMenuBar {
 		
 		add(fileMenu);
 
-		//help menu
+		//Help menu
 		JMenu helpMenu = new JMenu("Help");
 		helpMenu.setFont(font);
 
+		//Displays help information
 		JMenuItem helpItem = new JMenuItem("Help", KeyEvent.VK_H);    //This is how you add a hotkey
 		helpItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -109,10 +120,11 @@ public class Menu extends JMenuBar {
 		helpItem.setFont(font);
 		helpMenu.add(helpItem);
 		
+		//Displays information about developers
 		JMenuItem item = new JMenuItem("About...", KeyEvent.VK_A);    //This is how you add a hotkey
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				final String[] aboutMsg = { "Scheduling Program",
+				final String[] aboutMsg = { "IFC Scheduling Program",
 				"Copyright \u00a9 2010 Aakash Jain, Rick Ducott; Cornell University \n\u00a9 2012 The Dev Squad \nClaire Cipriani, Kenneth Deakins, Jean Hooi Lee, Raisa Razzaque, Valerie Roske, Luyu Zheng; Cornell University" };
 				JOptionPane.showMessageDialog(frame, aboutMsg, "About",
 						JOptionPane.INFORMATION_MESSAGE);

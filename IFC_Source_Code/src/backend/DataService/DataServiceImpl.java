@@ -41,19 +41,22 @@ public class DataServiceImpl implements DataService {
 		//        serv.addPractitioner(newPractitioner);
 
 		for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
+
 			//System.out.println(patient);
 		}
 		//		TypeDto type = new TypeDto();
 		//		type.setField("TypeID", 1);
 		//		serv.addPatientToWaitlist(new PatientDto().setPatID(1), type);
 		for (WaitlistDto entry : serv.getWaitlist()) {
+
 			//System.out.println(entry);
+			
 		}
 		//System.out.println(serv.queryPatientByName("Dead", "Bowie").get(0));
 		serv.close();
 	}
 
-	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:3306", "testuser", "test623");
+	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:8889", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -805,6 +808,35 @@ public class DataServiceImpl implements DataService {
 		return false;
     }
 	
+	
+	public boolean addNotesToAppointment(AppointmentDto appointment) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE Appointment " +
+				"SET Appointment.Note=? WHERE Appointment.ApptID=?" );
+		st.setString(1, appointment.getNote());
+		st.setInt(2, appointment.getApptID());
+		
+		st.executeUpdate();
+		return true;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+		return false;
+    }
 
 	@Override
 	public boolean removePatientFromAppointment(AppointmentDto appointment) {

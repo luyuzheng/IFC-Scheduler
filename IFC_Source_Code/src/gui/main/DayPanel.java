@@ -1,7 +1,7 @@
 /**
  * The DayPanel is the panel on the left hand side of the application underneath the calendar. 
- * It holds buttons to add/remove patients, add/remove practitioners, add or remove a room, and 
- * change the time slot for the day. It also contains a table holding the names of patients with 
+ * It holds buttons to add/remove patients, add/remove practitioners, change the time slot 
+ * for the day, and so forth. It also contains a table holding the names of patients with 
  * appointments. 
  */
 
@@ -32,9 +32,12 @@ import backend.DataTransferObjects.SchedulePractitionerDto;
 import gui.TimeSlot;
 
 public class DayPanel extends JPanel {
+	/** The side panel with the time slot information for the day panel. */
 	SidePanel sidePanel;
 	
+	/** The day associated with the day panel; each day has its own day panel. */
 	private DayDto day;
+	/** The list of practitioners scheduled for the day. */
 	private List<SchedulePractitionerDto> schedulePractitionerList;
 	private JButton switchViewButton = new PanelButton("Month View");
 	private JButton patientButton = new PanelButton("Schedule Patient");
@@ -45,12 +48,13 @@ public class DayPanel extends JPanel {
 	private JButton apptConfirmationButton = new PanelButton("Appointment Confirmations");
 	private JButton waitListButton = new PanelButton("Wait List");
 	
-	
+	/** The panel that displays a scheduled practitioner and the appointments that practitioner has for the day. */
 	private RoomPanel rp;
 	private AppointmentBlock ab;
 	private AppointmentSubpanel as;
 	private MainWindow mw;
 	
+	/** Constructs a day panel given a day object and the main window. */
 	public DayPanel(DayDto day, MainWindow mw) {
 		this.mw = mw;
 		setBackground(Color.WHITE);
@@ -102,6 +106,7 @@ public class DayPanel extends JPanel {
 		add(buttonPanel);
 	}
 	
+	/** Returs the day associated with the day panel. */
 	public DayDto getDay() {
 		return day;
 	}
@@ -115,11 +120,13 @@ public class DayPanel extends JPanel {
 		this.as = as;
 	}
 	
+	/** Sets the "remove practitioner" button as clickable. */
 	public void setRemovePracButtonEnabled(boolean b, RoomPanel rp) {
 		this.rp = rp;
 		removePracButton.setEnabled(b);
 	}
 	
+	/** Sets the "schedule patient" button as clickable. */
 	public void setPatButtonEnabled(boolean b, AppointmentBlock a) {
 		ab = a;
 		patientButton.setEnabled(b);
@@ -133,10 +140,12 @@ public class DayPanel extends JPanel {
 		
 	}
 
+	/** Assigns the side panel containing time slot information to this day panel. */
 	public void setSidePanel(SidePanel sidePanel) {
 		this.sidePanel = sidePanel;
 	}
 	
+	/** Sets the time slots in the side panel for the day. */
 	private void setTimeSlot(TimeSlot timeSlot) {
 		if (timeSlot == null) return;
 		DataServiceImpl.GLOBAL_DATA_INSTANCE.setHoursForDay(day, timeSlot.getStartTime(), timeSlot.getEndTime());
@@ -145,6 +154,7 @@ public class DayPanel extends JPanel {
 		sidePanel.refreshTimeSlot(timeSlot);
 	}
 	
+	/** Removes a practitioner from the day's schedule and cancels their appointments. */
 	public void clearRoom(RoomPanel panel) {
 		
 		if (JOptionPane.showConfirmDialog(mw, "Are you sure you want to remove this practitioner from the schedule? \nThis will cancel any appointments that have been set for this day.", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -155,12 +165,17 @@ public class DayPanel extends JPanel {
 		}
 	}
 	
-	//Following method is added by Aakash
+	
+	/** 
+	 * Checks whether currently in month view, and determines the correct text to display for switching views.  
+	 * @author Aakash
+	 * */
 	public void isMonthViewValidate(){
 		if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Day View</html>");
 		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
 	}
 	
+	/** Removes a scheduled practitioner from the day upon clicking the "remove practitioner" button. */
 	private final AbstractAction removePracAction = new AbstractAction("<html>Remove Practitioner<br>From Current Day</html>") {
 		public void actionPerformed(ActionEvent e) {
 			
@@ -168,6 +183,7 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
+	/** Determines the correct text to display for switching between day and month views. */
 	public final AbstractAction switchViewAction = new AbstractAction("<html>Switch to Month View</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Month View</html>");
@@ -176,6 +192,7 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
+	/** Shows the warning dialog when attempting to cancel an appointment. */
 	private final AbstractAction removePatAction = new AbstractAction("<html>Cancel Appointment</html>") {
 		public void actionPerformed(ActionEvent e) {
 			AppointmentBlock block = ab;
@@ -183,12 +200,14 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
+	/** Shows the dialog for scheduling a patient to an appointment. */
 	private final AbstractAction addPatAction = new AbstractAction("<html>Schedule Patient</html>") {
 		public void actionPerformed(ActionEvent e) {
 			ab.setPatient(SelectPatientUI.ShowDialog(ab.getParent()).getPatID());
 		}
 	};
 	
+	/** Shows the dialog for scheduling a practitioner on a day. */
 	private final AbstractAction addPracAction = new AbstractAction("<html>Schedule Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
 			PractitionerDto p = SelectPractitionerUI.ShowDialog(mw);
@@ -201,7 +220,7 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
-	//private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Change <br>Hours of <br>Operation</html>") {
+	/** Shows the dialog for changing the hours of operation for a given day. */
 	private final AbstractAction changeTimeSlotAction = new AbstractAction("<html>Hours of Operation</html>") {
 		public void actionPerformed(ActionEvent e) {
 			setTimeSlot(SelectTimeSlotUI.ShowDialog(mw));
@@ -209,6 +228,7 @@ public class DayPanel extends JPanel {
 	};
 	
 	// TODO: Add search button functionality
+	/** Determines the correct text to display when the search split pane is active. */
 	private final AbstractAction searchAction = new AbstractAction("<html>Search</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (mw.showingSearch()) {
@@ -223,6 +243,7 @@ public class DayPanel extends JPanel {
 	};
 	
 	// TODO: Add no shows functionality
+	/** Determines the correct text to display when the appointment confirmation split pane is active. */
 	private final AbstractAction apptConfirmationAction = new AbstractAction("<html>Appointment <br> Confirmation</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (mw.showingApptConfirmation()) {
@@ -236,6 +257,7 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
+	/** Determines the correct text to display when the waitlist split pane is active. */
 	private final AbstractAction waitListAction = new AbstractAction("<html>Wait List</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (mw.showingWaitList()) {
@@ -250,6 +272,7 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
+	/** Changes the text to display if the waitlist pane is currently active. */
 	public void showingWaitList() {
 		if (mw.showingWaitList()) waitListButton.setText("<html>Hide Wait List</html>");
 	}

@@ -25,6 +25,7 @@ public class NewPractitionerListener extends MouseAdapter {
 		this.parent = parent;
 	}
 	
+	/** Looks for double-click events to show the Select Practitioner dialog. */
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) { 

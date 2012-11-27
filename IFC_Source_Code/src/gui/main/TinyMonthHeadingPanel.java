@@ -1,5 +1,5 @@
 /**
- * Creates the headings in the small calendar.
+ * Creates the headings in the date picker.
  */
 
 package gui.main;
@@ -26,6 +26,7 @@ public class TinyMonthHeadingPanel extends JPanel {
 	
 	final DatePicker dp;
 	
+	/** Constructs the heading panel for the date picker given the date picker object and the current date. */
 	public TinyMonthHeadingPanel(String month, String year, boolean current, DatePicker dp) {
 		this.dp = dp;
 		//setPreferredSize(new Dimension(200, 0));
@@ -105,12 +106,14 @@ public class TinyMonthHeadingPanel extends JPanel {
 			
 	}
 	
+	/** Loads the next month in the date picker. */
 	private final AbstractAction nextMonthAction = new AbstractAction(">") {
 		public void actionPerformed(ActionEvent e) {
 			dp.nextMonth();
 		}
 	};
 	
+	/** Jumps to today in the date picker. */
 	private final AbstractAction todayAction = new AbstractAction("  Today  ") {
 		public void actionPerformed(ActionEvent e) {
 			GregorianCalendar cal = new GregorianCalendar();
@@ -122,6 +125,7 @@ public class TinyMonthHeadingPanel extends JPanel {
 		}
 	};
 	
+	/** Loads the previous month in the date picker. */
 	private final AbstractAction prevMonthAction = new AbstractAction("<") {
 		public void actionPerformed(ActionEvent e) {
 			dp.prevMonth();

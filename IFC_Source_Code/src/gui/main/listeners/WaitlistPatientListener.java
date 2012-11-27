@@ -1,6 +1,5 @@
 /**
- * This listener handles mouse events that are supposed to open 
- * the Select Patient dialog. 
+ * This listener handles mouse events that occur in the waitlist pane. 
  */
 
 package gui.main.listeners;
@@ -30,6 +29,7 @@ public class WaitlistPatientListener extends MouseAdapter {
 		this.parent = parent;
 	}
 	
+	/** Displays a pop-up to add or remove a patient to the waitlist. */
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
