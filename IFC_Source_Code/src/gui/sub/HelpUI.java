@@ -1,3 +1,6 @@
+/** 
+ * Provides a manual for the scheduler and includes instructions on how to perform specific functions.
+ * */
 package gui.sub;
 
 import java.awt.BorderLayout;
@@ -167,7 +170,7 @@ public class HelpUI extends JDialog implements KeyListener, ActionListener {
 	
 	private static HelpUI helpUI;
 	
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 //	private JTextField helpText = new JTextField();
 	private JTextArea textArea;

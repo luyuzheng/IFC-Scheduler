@@ -1,6 +1,7 @@
 /**
- * The HeadingPanel is the panel above the list of appointments for a room/practitioner. It lists
- * information about the practitioner. It also provides a focus listener for gui manipulation.
+ * The HeadingPanel is the panel above the list of appointments for a room/practitioner. It contains
+ * information about the practitioner, such as name and practitioner type. It also provides a focus 
+ * listener for gui manipulation.
  */
 
 package gui.main;
@@ -25,12 +26,18 @@ import gui.Constants;
 
 @SuppressWarnings("serial")
 public class HeadingPanel extends JPanel implements FocusListener {
+	/** The scheduled practitioner. */
 	private SchedulePractitionerDto room;
+	/** The text to display in the heading panel. */
 	private JTextArea text;
+	/** The room subpanel containing the appointment blocks for the scheduled practitioner. */
 	private RoomSubpanel rs;
+	/** The heading and time slots for the scheduled practitioner. */
 	private RoomPanel rp;
+	/** The mouse listener for the heading panel. */
 	NewPractitionerListener npl;
 	
+	/** Constructs the heading panel based on the scheduled practitioner. */
 	public HeadingPanel(SchedulePractitionerDto room, RoomPanel rp, RoomSubpanel rs) {
 		this.rp = rp;
 		this.rs = rs;
@@ -53,6 +60,7 @@ public class HeadingPanel extends JPanel implements FocusListener {
 		text.addFocusListener(this);
 	}
 	
+	/** Sets the text for the heading panel. */
 	public void setText() {
 		if (room.getPractitioner() == null) 
 			text.setText("No Practitioner Selected. \nDouble-click below to add Practitioner.");

@@ -41,13 +41,13 @@ public class DataServiceImpl implements DataService {
 		//        serv.addPractitioner(newPractitioner);
 
 		for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
-			System.out.println(patient);
+		//	System.out.println(patient);
 		}
 		//		TypeDto type = new TypeDto();
 		//		type.setField("TypeID", 1);
 		//		serv.addPatientToWaitlist(new PatientDto().setPatID(1), type);
 		for (WaitlistDto entry : serv.getWaitlist()) {
-			System.out.println(entry);
+		//	System.out.println(entry);
 		}
 		//System.out.println(serv.queryPatientByName("Dead", "Bowie").get(0));
 		serv.close();
@@ -556,7 +556,7 @@ public class DataServiceImpl implements DataService {
                         
                         int id = rs.getInt(1);
                         
-                        System.out.println(id);
+                        //System.out.println(id);
                         
                         st = connection.prepareStatement(
                         "SELECT * FROM Practitioner INNER JOIN ServiceType ON Practitioner.TypeID = " +

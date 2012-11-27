@@ -228,7 +228,9 @@ public interface DataService {
      */
     public boolean confirmAppointment(AppointmentDto appointment);
 
+    /** Updates the waitlist when a patient has been added to it. */
     public boolean updateWaitlist(WaitlistDto wp);
 
+    /** Removes a patient from the waitlist. */
      public boolean removePatientFromWaitlist(WaitlistDto patient);
 }

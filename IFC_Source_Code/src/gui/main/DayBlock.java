@@ -1,5 +1,5 @@
 /**
- * Represents a day block in the month view
+ * Represents the square for a given day in the month view of the scheduler. Shows all the practitioners scheduled for that day.
  */
 
 package gui.main;
@@ -24,12 +24,15 @@ import backend.DataTransferObjects.SchedulePractitionerDto;
 
 public class DayBlock extends JPanel {
 
+	/** The text to be displayed in the day block, i.e. which practitioners are scheduled. */
 	private JTextArea textArea;
 	
+	/** Constructs a day block given a date object. */
 	public DayBlock(Date date) {
 		this(date, Color.WHITE);
 	}
 	
+	/** Constructs a day block given a date object and a background color. */
 	public DayBlock(Date date, Color color) {
 		textArea = new JTextArea();
 		Calendar cal = GregorianCalendar.getInstance();

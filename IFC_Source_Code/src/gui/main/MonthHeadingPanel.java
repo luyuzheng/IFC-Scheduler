@@ -24,6 +24,7 @@ import gui.Constants;
 public class MonthHeadingPanel extends JPanel {
 	private JTextArea text;
 	
+	/** Constructs the header for the month in month view given the month's name as a string. */
 	public MonthHeadingPanel(String month) {
 		setLayout(new BorderLayout());
 		

@@ -1,6 +1,7 @@
 /**
  * An appointment subpanel is the panel containing the set of rooms (but not the time indicators on the 
- * left hand side of the appointment panel. 
+ * left hand side of the appointment panel. So, the headings with practitioner information as well as
+ * all of the available appointment blocks for the day. 
  */
 
 package gui.main;
@@ -19,6 +20,7 @@ public class AppointmentSubpanel extends JPanel {
 	DayPanel dp;
 	ArrayList<RoomPanel> rooms = new ArrayList<RoomPanel>();
 	
+	/** Constructs an appointment subpanel given a day panel object. */
 	public AppointmentSubpanel(DayPanel dp) {
 		this.dp = dp;
 		GridLayout gl = new GridLayout(1,0);
@@ -32,6 +34,7 @@ public class AppointmentSubpanel extends JPanel {
 		dp.registerAppointmentSubpanel(this);
 	}
 	
+	/** Adds a practitioner to the day's schedule. */
 	public void addRoom(SchedulePractitionerDto room) {
 		if (rooms.size() == 0) remove(empty);
 		RoomPanel r = new RoomPanel(room, dp);
@@ -40,6 +43,7 @@ public class AppointmentSubpanel extends JPanel {
 		revalidate();
 	}
 	
+	/** Removes a practitioner from the day's schedule. */
 	public void removeRoom(SchedulePractitionerDto room) {
 		ArrayList<RoomPanel> remRooms = new ArrayList<RoomPanel>();
 		for (RoomPanel r : rooms) {

@@ -1,12 +1,7 @@
 /**
  * An appointment panel is a large scroll pane consisting of all headings, rooms, and time indicators. 
-<<<<<<< HEAD
- * It is the primary scheduling area of the application. 
- * PRINT OUT VERSION
-=======
  * It is the primary scheduling area of the application. This class encapsulates the panel in which all
  * of the appointments appear.
->>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76
  */
 
 package gui.main;
@@ -35,12 +30,14 @@ import gui.Constants;
 
 @SuppressWarnings("serial")
 public class AppointmentPanel extends JScrollPane implements Printable, ActionListener {
+	/** The date associated with the appointment panel. Each date has its own set of appointments. */
 	DayDto day;
-	
+	/** The collection of printable pages of the appointment panel. */
 	ArrayList<Graphics2D> pages;
-	
+	/** The side panel containing the time information for the appointment panel. */
 	SidePanel sidePanel;
 
+	/** Constructs the Appointment Panel given the Day Panel object. */
 	public AppointmentPanel(DayPanel dp) {
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		JPanel panel = new JPanel(new BorderLayout());
@@ -57,18 +54,21 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		setViewportView(panel);
 	}
 
+	/** Truncates a string if longer than a specified length, to support readability. */
 	private String formatString(String s, int lineLength) {
 		if (s.length() > lineLength) return s.substring(0, lineLength-3) + "...";
 		else return s;
 	}
 
+	/** Returns the full name and type of a practitioner as a String. */
 	private String getPracInfo(PractitionerDto p, int lineLength) {
 		return formatString(p.getFirst() + " " + p.getLast() + " - " + p.getTypeName().toString(), lineLength);
 	}
 
+	/** Builds the page to be printed/shown on the appointment panel. */
 	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
 		
-		//# rooms
+		//# rooms (i.e., the total number of practitioners scheduled for the day)
 		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 
 		//set the font for the page
@@ -82,7 +82,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		FontMetrics metrics = g2d.getFontMetrics(font);
 		int hgt = metrics.getHeight();
 
-		//top height is the height of the prac info box
+		//top height is the height of the practitioner info box
 		double topHeight = 2*hgt + 8;
 		//times width is the width of the left times panel
 		double timesWidth = 30.0;
@@ -200,6 +200,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		return g2d;
 	}
 
+	/** Returns a string representation of a given date. */
 	private String[] toDateArray(Date date) {
 		String full = date.toString();
 		String[] dateArray = new String[2];
@@ -208,6 +209,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		return dateArray;
 	}
 
+	/** Prints the visible contents of the appointment pane of a given page. */
 	public int print(Graphics graphics, PageFormat pageFormat, int page) {
 		double width = pageFormat.getImageableWidth() - 2*Constants.PRINT_MARGINX;
 		double height = pageFormat.getImageableHeight() - 2*Constants.PRINT_MARGINY;
@@ -224,6 +226,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 
 	}
 
+	/** Sets the view as printable and prints it. */
 	public void actionPerformed(ActionEvent e) {
 		PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPrintable(this);
