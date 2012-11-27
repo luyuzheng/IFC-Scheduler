@@ -14,8 +14,7 @@ import java.util.HashMap;
 public class WaitlistDto extends AbstractDto {
     
     public static final String WAITLIST_ID = "WaitlistID";
-    public static final String TYPE_ID = "TypeID";
-    public static final String TYPE_NAME = "TypeName";
+    public static final String TYPE = "Type";
     public static final String DATE = "DatetimeEntered";
     public static final String COMMENTS = "Comments";
     
@@ -24,8 +23,7 @@ public class WaitlistDto extends AbstractDto {
     public WaitlistDto() {
         fieldsMap = new HashMap<String, Object>();
         fieldsMap.put(WAITLIST_ID, null);
-        fieldsMap.put(TYPE_ID, null);
-        fieldsMap.put(TYPE_NAME, null);
+        fieldsMap.put(TYPE, null);
         fieldsMap.put(DATE, null);
         fieldsMap.put(COMMENTS, null);
     }
@@ -47,15 +45,15 @@ public class WaitlistDto extends AbstractDto {
     }
 
     public Integer getTypeID(){
-        return (Integer) fieldsMap.get(TYPE_ID);
+        return ((TypeDto) fieldsMap.get(TYPE)).getTypeID();
     }
     
-    public void setTypeID(Integer i){
-        fieldsMap.put(TYPE_ID, i);
+    public void setType(TypeDto t){
+        fieldsMap.put(TYPE, t);
     }
     
     public String getTypeName(){
-        return (String) fieldsMap.get(TYPE_NAME);
+        return ((TypeDto) fieldsMap.get(TYPE)).getTypeName();
     }
     
     public Date getDate(){

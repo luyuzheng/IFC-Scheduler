@@ -67,8 +67,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 
 	/** Builds the page to be printed/shown on the appointment panel. */
 	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
+
 		
 		//# rooms (i.e., the total number of practitioners scheduled for the day)
+		//System.out.print("FirstFirsttest");
 		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 
 		//set the font for the page
@@ -153,9 +155,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			roomsLeft = 3;
 			lineLength = 30;
 		}
-		
+		//System.out.println("FirstTest");
 
 		for (int j = 0; j < roomsLeft; j++) {
+                    //System.out.println("OtherTest");
 			Rectangle2D.Double rect = new Rectangle2D.Double ();
 			startx = Constants.PRINT_MARGINX + (int)timesWidth + (int)colWidth*j;
 			starty = Constants.PRINT_MARGINY;

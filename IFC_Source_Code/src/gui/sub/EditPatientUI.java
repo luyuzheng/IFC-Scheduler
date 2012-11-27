@@ -31,6 +31,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	private JTextField areaCodeField = new JTextField();
 	private JTextField numberPart1Field = new JTextField();
 	private JTextField numberPart2Field = new JTextField();
+	private JLabel numberOfNoShows = new JLabel();
 	private JButton okButton = new JButton("Ok");
 	private JButton cancelButton = new JButton("Cancel");
 	private Font font = new Font("Arial", Font.PLAIN, 16);
@@ -95,6 +96,11 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	phonePanel.add(numberPart2Field);
     	num.add(phonePanel, BorderLayout.CENTER);
     	input.add(num);
+    	
+    	JPanel noShowsPanel = new JPanel(new BorderLayout());
+    	numberOfNoShows.setText("Number of no shows: " + p.getNoShows());
+    	noShowsPanel.add(numberOfNoShows);
+    	input.add(noShowsPanel);
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Patient notes: ", JLabel.CENTER);

@@ -44,6 +44,9 @@ public class AppointmentDto extends AbstractDto {
     }
     
     public Integer getPatientID(){
+        if ((Integer) fieldsMap.get(PAT_ID) == null || (Integer) fieldsMap.get(PAT_ID) == 0){
+            return null;
+        }
         return (Integer) fieldsMap.get(PAT_ID);
     }
     
@@ -84,7 +87,10 @@ public class AppointmentDto extends AbstractDto {
     }
     
     public String getNote(){
-        return (String) fieldsMap.get(NOTE);
+        if (fieldsMap.get(NOTE) == null){
+            return "";
+        }
+        else return (String) fieldsMap.get(NOTE);
     }
     
     public void setNote(String s){

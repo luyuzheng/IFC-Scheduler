@@ -41,19 +41,22 @@ public class DataServiceImpl implements DataService {
 		//        serv.addPractitioner(newPractitioner);
 
 		for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
-		//	System.out.println(patient);
+
+			//System.out.println(patient);
 		}
 		//		TypeDto type = new TypeDto();
 		//		type.setField("TypeID", 1);
 		//		serv.addPatientToWaitlist(new PatientDto().setPatID(1), type);
 		for (WaitlistDto entry : serv.getWaitlist()) {
-		//	System.out.println(entry);
+
+			//System.out.println(entry);
+			
 		}
 		//System.out.println(serv.queryPatientByName("Dead", "Bowie").get(0));
 		serv.close();
 	}
 
-	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:3306", "testuser", "test623");
+	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:8889", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -254,8 +257,12 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                        //Todo: NOShows
-			st = connection.prepareStatement("SELECT * FROM Patient");
+
+			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
+					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
+					"From Patient LEFT JOIN (Select PatID, Count(NoShowID) as " +
+					"NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID"); 
+                       
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
@@ -265,6 +272,8 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+				//TODO set to 0 if null
+				patient.setField(PatientDto.NO_SHOW, rs.getString(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
@@ -291,19 +300,25 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM Patient WHERE FirstName=? AND LastName=?");
+			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, Patient.LastName, " +
+					"Patient.PhoneNumber, Patient.Notes, " +
+					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+					"WHERE Patient.FirstName = ? AND Patient.LastName = ?");
 			st.setString(1, first);
 			st.setString(2, last);
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
 			while (rs.next()) {
-				// TODO: No shows
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+				// TODO: change to 0 if null
+				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
@@ -336,7 +351,6 @@ public class DataServiceImpl implements DataService {
 			List<NoShowDto> results = new ArrayList<NoShowDto>();
 			NoShowDto noShow = new NoShowDto();
 			while (rs.next()) {
-				// TODO: Will the columns always be the same order?
 				noShow.setField(NoShowDto.NOSHOW_ID, rs.getInt(NoShowDto.NOSHOW_ID));
 				noShow.setField(NoShowDto.PATIENT_ID, rs.getString(NoShowDto.PATIENT_ID));
 				noShow.setField(NoShowDto.DATE, rs.getString(NoShowDto.DATE));
@@ -360,39 +374,6 @@ public class DataServiceImpl implements DataService {
 		return null;
 	}
 
-	@Override
-	public int getNoShowCountInLastSixMonths(PatientDto patient) {
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = connection.prepareStatement(
-			"SELECT COUNT(*) FROM NoShows WHERE PatID=? AND NoShowDate>?}");
-			st.setInt(1, patient.getPatID());
-			Calendar today = Calendar.getInstance();
-			today.set(Calendar.HOUR_OF_DAY, 0);
-			today.add(Calendar.MONTH, -6);
-			st.setDate(2, new Date(today.getTime().getTime()));
-			rs = st.executeQuery();
-			// should only return single result.
-			if (rs.next()) {
-				return rs.getInt("COUNT(*)");
-			}
-		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-			lgr.log(Level.SEVERE, e.getMessage(), e);
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-				lgr.log(Level.WARNING, ex.getMessage(), ex);
-			}
-		}
-		return -1;
-	}
         
         
 
@@ -541,7 +522,7 @@ public class DataServiceImpl implements DataService {
 			
 			st.setInt(1, typeID);
 			st.setString(2, first);
-			st.setString(3, last); //TODO: npe when getPhone returns null
+			st.setString(3, last); 
 			st.setInt(4, appLength);
 			st.setString(5, phone);
 			st.setString(6, notes);
@@ -717,10 +698,10 @@ public class DataServiceImpl implements DataService {
 	public boolean removePractitionerFromDay(int practSchedId, DayDto day) {
 		PreparedStatement st = null;
 		try {
-			st = connection.prepareStatement("DELETE FROM PractitionerScheduled WHERE PractSchID = ?");
+			st = connection.prepareStatement("DELETE FROM PractitionerScheduled WHERE PractSchID=?");
 			st.setInt(1, practSchedId);
 			st.executeUpdate();
-			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchID = ?");
+			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchedID=?");
 			st.setInt(1, practSchedId);
 			st.executeUpdate();
 			return true;
@@ -808,9 +789,9 @@ public class DataServiceImpl implements DataService {
 		st.setInt(1, patID);
 		st.setInt(2, appointment.getApptID());
 		
-		rs=st.executeQuery();
-		boolean updated = rs.rowUpdated();
-		return updated;
+		st.executeUpdate();
+                
+		return true;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -927,15 +908,16 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type) {
+	public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type, String comments) {
 		PreparedStatement st = null;
 		try {
 			st = connection.prepareStatement("INSERT INTO Waitlist " +
-					"(PatID, TypeID, DatetimeEntered) " +
-			"VALUES (?, ?, ?)");
+					"(PatID, TypeID, DatetimeEntered, Comments) " +
+			"VALUES (?, ?, ?, ?)");
 			st.setInt(1, patient.getPatID());
 			st.setInt(2, type.getTypeID());
 			st.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
+                        st.setString(4, comments);
 			st.executeUpdate();
 			return null; //Todo: changge return type
 		} catch (SQLException e) {
@@ -1014,16 +996,19 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                        //Todo: link to Type
-			st = connection.prepareStatement("SELECT * FROM Waitlist, Patient " +
-					"WHERE Waitlist.PatID=Patient.PatID");
+			st = connection.prepareStatement("SELECT * FROM Waitlist INNER JOIN Patient " +
+					"ON Waitlist.PatID=Patient.PatID INNER JOIN ServiceType ON" +
+					" Waitlist.TypeID = ServiceType.TypeID");
 			rs = st.executeQuery();
 			List<WaitlistDto> results = new ArrayList<WaitlistDto>();
 			while (rs.next()) {
 				WaitlistDto entry = new WaitlistDto();
 				PatientDto patient = new PatientDto();
 				entry.setField(WaitlistDto.WAITLIST_ID, rs.getInt(WaitlistDto.WAITLIST_ID));
-				entry.setField(WaitlistDto.TYPE_ID, rs.getInt(WaitlistDto.TYPE_ID));
+				TypeDto type = new TypeDto();
+				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+				entry.setField(WaitlistDto.TYPE, type);
 				entry.setField(WaitlistDto.DATE, rs.getDate(WaitlistDto.DATE));
 				entry.setField(WaitlistDto.COMMENTS, rs.getString(WaitlistDto.COMMENTS));
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
@@ -1495,9 +1480,8 @@ public class DataServiceImpl implements DataService {
 		st = connection.prepareStatement("DELETE FROM Waitlist WHERE PatID = ?");
 		
 		st.setInt(1, patient.getPatientID());
-                rs = st.executeQuery();
-                boolean deleted = rs.rowDeleted();
-                return deleted;
+                st.executeUpdate();
+                return true;
                 
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1514,4 +1498,52 @@ public class DataServiceImpl implements DataService {
 	}
 		return false;
     }
+
+    @Override
+    public ArrayList<AppointmentDto> searchForAppointments(TypeDto type) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+        	st = connection.prepareStatement("SELECT * FROM Appointment " +
+        			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
+        			"Practitioner.PractID WHERE Practitioner.TypeID = ? AND " +
+        			"Appointment.PatID IS NULL");
+        	st.setInt(1,type.getTypeID());
+        	rs = st.executeQuery();
+        	
+        	ArrayList<AppointmentDto> aptList = new ArrayList<AppointmentDto>();
+			AppointmentDto newAppt;
+
+			while(rs.next()){
+				newAppt = new AppointmentDto();
+				
+				newAppt.setField(AppointmentDto.APPT_DATE, rs.getDate(AppointmentDto.APPT_DATE));
+				newAppt.setField(AppointmentDto.APPT_ID, rs.getInt(AppointmentDto.APPT_ID));
+				newAppt.setField(AppointmentDto.PRACT_SCHED_ID, rs.getInt(AppointmentDto.PRACT_SCHED_ID));
+				newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
+				newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
+				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
+				
+				aptList.add(newAppt);
+			return aptList;
+			}
+                
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+        return null;
+    }
 }
+    
+    
+
