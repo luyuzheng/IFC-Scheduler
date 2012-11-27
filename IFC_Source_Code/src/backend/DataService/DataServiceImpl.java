@@ -787,7 +787,6 @@ public class DataServiceImpl implements DataService {
 		st.setInt(2, appointment.getApptID());
 		
 		st.executeUpdate();
-                
 		return true;
 		
 	} catch (SQLException e) {
