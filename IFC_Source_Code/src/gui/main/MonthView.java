@@ -102,7 +102,7 @@ public class MonthView extends JPanel {
 				cal.get(Calendar.YEAR) == todayCal.get(Calendar.YEAR)) today = true;
 			
 			java.sql.Date dt = new java.sql.Date(cal.getTime().getTime());
-			if (today) System.out.println("### today is " + dt);
+			//if (today) System.out.println("### today is " + dt);
 			TinyDayBlock t = new TinyDayBlock(dp, dt, today);
 			if (today) dp.registerCurrentDay(t);
 			panel.add(t);

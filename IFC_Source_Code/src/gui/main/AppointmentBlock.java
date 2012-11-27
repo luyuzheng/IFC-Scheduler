@@ -79,7 +79,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		timeslot.setFont(new Font("Arial",Font.BOLD, 14));
 		add(timeslot, BorderLayout.NORTH);
 		String text = "";
-                System.out.println(appointment.getPatientID());
+               // System.out.println(appointment.getPatientID());
 		if (appointment.getPatientID() != null && appointment.getPatientID() != 0){
 			int patientId= appointment.getPatientID();
 			PatientDto patient= DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(patientId); 
