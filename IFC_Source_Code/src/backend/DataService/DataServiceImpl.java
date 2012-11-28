@@ -23,8 +23,9 @@ public class DataServiceImpl implements DataService {
 		String user = "testuser";
 		String password = "test623";
 
-		DataService serv = DataServiceImpl.create("test", "192.168.0.13:3306", user, password);
+		//DataService serv = DataServiceImpl.create("test", "192.168.0.13:3306", user, password);
 
+		System.out.println(new Integer(1024) == null);
 		//		PatientDto newPatient = new PatientDto();
 		//		newPatient.setFirst("Dead").setLast("Bowie").setPhone(3215552314L).setNotes("ELE member");
 		//		serv.addPatient(newPatient);
@@ -40,20 +41,20 @@ public class DataServiceImpl implements DataService {
 		//        newPractitioner.setTypeID(1);
 		//        serv.addPractitioner(newPractitioner);
 
-		for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
+		//for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
 
 			//System.out.println(patient);
-		}
+		//}
 		//		TypeDto type = new TypeDto();
 		//		type.setField("TypeID", 1);
 		//		serv.addPatientToWaitlist(new PatientDto().setPatID(1), type);
-		for (WaitlistDto entry : serv.getWaitlist()) {
+		//for (WaitlistDto entry : serv.getWaitlist()) {
 
 			//System.out.println(entry);
 			
-		}
+		//}
 		//System.out.println(serv.queryPatientByName("Dead", "Bowie").get(0));
-		serv.close();
+		//serv.close();
 	}
 
 	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:3306", "testuser", "test623");
@@ -1139,7 +1140,9 @@ public class DataServiceImpl implements DataService {
 
 			st = connection.prepareStatement(
 					"INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
-
+			
+			PreparedStatement new_st = connection.prepareStatement("Select MAX(ApptID) as ID From Appointment");
+			
 			for (int i = start; i < end; i+=pract.getApptLength()){
 				newApt = new AppointmentDto();
 				newApt.setEnd(i + pract.getApptLength());
@@ -1152,8 +1155,14 @@ public class DataServiceImpl implements DataService {
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
 				st.executeUpdate();
-                                //SchedPractId of the appointment you just added TODO: Claire
+				
+				rs = new_st.executeQuery();
+                                rs.next();
+				newApt.setField(AppointmentDto.APPT_ID, rs.getInt("ID"));
+				
 			}
+			
+			
                         return returnDto;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
