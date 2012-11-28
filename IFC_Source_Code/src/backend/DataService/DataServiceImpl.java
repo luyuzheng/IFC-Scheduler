@@ -1495,7 +1495,7 @@ public class DataServiceImpl implements DataService {
 		st.setString(4,wl.getComments());
 		st.setInt(5,wl.getWaitlistID());
 		
-		st.executeQuery();
+		st.executeUpdate();
 		return true;
 		
 	} catch (SQLException e) {

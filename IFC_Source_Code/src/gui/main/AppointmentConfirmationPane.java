@@ -83,7 +83,7 @@ public class AppointmentConfirmationPane extends JPanel {
     	add(scrollPane, BorderLayout.CENTER);
 	}
 	
-	/** Returns a string of the current date in mm/dd/yyyy format. */
+	/** Returns a string of the current date in yyyy-mm-dd format. */
 	public String shortDate(Date d){
 		Date date = new Date(d.getTime());
 		String dateString = date.toString();
