@@ -90,4 +90,9 @@ public class PractitionerDto extends AbstractDto {
     public void setType(TypeDto t){
         fieldsMap.put(TYPE, t);
     }
+
+    @Override
+    public boolean equals(Object other) {
+   		return ((PractitionerDto) other).getPractID() == (this.getPractID());
+    }
 }
