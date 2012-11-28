@@ -67,4 +67,9 @@ public class SchedulePractitionerDto extends AbstractDto {
     public boolean isFull(){
 		return false; 	
     }
+    
+    @Override
+    public boolean equals(Object other) {
+        return ((SchedulePractitionerDto) other).getPractSchedID() == this.getPractSchedID();
+    }
 }

@@ -142,6 +142,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
     }
 
 	public void itemStateChanged(ItemEvent e) {
+                System.out.println("teessssttttt");
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
 		} else {

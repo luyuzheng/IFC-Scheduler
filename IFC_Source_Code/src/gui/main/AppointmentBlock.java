@@ -143,15 +143,9 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	
 	/** Sets the note associated with an appointment. */
 	public void setNote(String note) {
-                System.out.println("KENNNNNYYYY");
 		appointment.setNote(note);
-        boolean yes = DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
-        if (yes){
-        	System.out.println("YESS");
-        }
-        else{ 
-        	System.out.println("NOOOOO");
-        }
+        DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
+        
                 setText();
 	}
 	
