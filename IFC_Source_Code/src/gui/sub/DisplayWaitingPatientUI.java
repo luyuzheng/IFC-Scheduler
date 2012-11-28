@@ -50,7 +50,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		JPanel notePanel = new JPanel(new BorderLayout());
 		JLabel noteLabel = new JLabel("Appointment Note:");
 		JScrollPane notePane = new JScrollPane();
-		notePane.setPreferredSize(new Dimension(200,200));
+		notePane.setPreferredSize(new Dimension(500,250));
 		noteArea = new JTextArea();
 		noteArea.setLineWrap(true);
 		noteArea.setWrapStyleWord(true);
