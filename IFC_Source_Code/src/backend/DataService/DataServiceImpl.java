@@ -1555,7 +1555,6 @@ public class DataServiceImpl implements DataService {
 
         	st.setInt(1,typeId);
         	rs = st.executeQuery();
-        	
         	ArrayList<AppointmentDto> aptList = new ArrayList<AppointmentDto>();
 			AppointmentDto newAppt;
 
