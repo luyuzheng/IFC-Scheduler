@@ -36,7 +36,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
-	private JTextArea textArea;
+	//private JTextArea textArea;
 	private JTextArea noteArea;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
@@ -54,21 +54,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		
 		setLayout(new BorderLayout());
 
-		
-		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		okButton.addActionListener(this);
-		okButton.setActionCommand("ok");
-		okButton.setFont(font);
-		buttonPanel.add(okButton);
-		cancelButton.addActionListener(this);
-		cancelButton.setActionCommand("ok");
-		cancelButton.setFont(font);
-		buttonPanel.add(cancelButton);
-		
-		//add(textArea, BorderLayout.NORTH);
-		//add(notePanel, BorderLayout.CENTER);
-		add(buttonPanel, BorderLayout.SOUTH);
-		
+		add(panel);
 		setResizable(false);
 		
 	}
@@ -118,6 +104,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	aptTable.getTableHeader().setFont(font);
     	panel.add(aptTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(aptTable, BorderLayout.CENTER);
+    	    	
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("OK");
