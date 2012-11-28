@@ -55,10 +55,11 @@ public class MainWindow extends JFrame {
 		
 		cp = new DatePicker(this);
 		day = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(cp.getDate());
-		
 		dp = new DayPanel(day, this);
 		setLayout(new BorderLayout());
+		
 		initComponents(dp);
+		
 		setSize(new Dimension(800,600));
 		setJMenuBar(new Menu(this));
 		setExtendedState(MAXIMIZED_BOTH);
@@ -361,6 +362,7 @@ public class MainWindow extends JFrame {
 				repaint();
 				validate();
 			}
+			inMonthView= false;
 			
 		} else {
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
@@ -375,8 +377,10 @@ public class MainWindow extends JFrame {
 				repaint();
 				validate();
 			}
+			inMonthView= true;
 		}
-		inMonthView = !inMonthView;
+		//inMonthView = !inMonthView;
+		dp.isMonthViewValidate();
 	}
 	
 	/**
@@ -404,12 +408,14 @@ public class MainWindow extends JFrame {
 				repaint();
 				validate();
 			}
-		} else {
+		} else {			
+			
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
-				sidePanel.remove(dp);
-				sidePanel.add(dp, BorderLayout.NORTH);
-				sidePanel.repaint();
-				sidePanel.validate();
+				//sidePanel.remove(dp);
+				//sidePanel.add(dp, BorderLayout.CENTER);
+				//sidePanel.repaint();
+				//sidePanel.validate();
+				
 				dp.showingWaitList();
 				ap = new AppointmentPanel(dp);
 				pane.setLeftComponent(ap);
@@ -423,8 +429,9 @@ public class MainWindow extends JFrame {
 				validate();
 			}
 		}
-		//Added by Aakash
-		dp.isMonthViewValidate();
+		
+		dp.isMonthViewValidate();		
+		
 	}
 	
 	/**
