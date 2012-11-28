@@ -76,6 +76,7 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		
 		//prevDays is the number of boxes in the upper left, before the first of the month, needed since the 
 		//calendar is going to be a 6x7 set of boxes. Calendar.SUNDAY is 1 and so forth, so we use day of week - 1
+		cal.set(Calendar.DAY_OF_MONTH, 1);
 		int prevDays = cal.get(Calendar.DAY_OF_WEEK) - 1; 
 		int endDays = 42 - cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays;
 		
@@ -86,26 +87,31 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		//System.out.println("prevDays: " + prevDays);
 		//System.out.println("endDays: " + endDays);*/
 		
-		cal.roll(Calendar.MONTH, false);
+		//cal.roll(Calendar.MONTH, false);
 		
+		Calendar c = cal;
+		c.add(Calendar.MONTH, -1);
+		c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+		c.add(Calendar.DAY_OF_MONTH, (-1) * prevDays + 1);
+		System.out.println(c.getActualMaximum(Calendar.DAY_OF_MONTH));
 		for (int i = 1; i <= prevDays; i++) {
-			Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays + i, cal.get(Calendar.YEAR));
+			//Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays + i, cal.get(Calendar.YEAR));
 			java.sql.Date date = new Date(c.getTime().getTime());
 			panel.add(new DayBlock(date, Color.LIGHT_GRAY));
+			c.add(Calendar.DAY_OF_MONTH, 1);
 		}
-		
-		cal.roll(Calendar.MONTH, true);
-		
+
+		c.set(Calendar.DAY_OF_MONTH, 1);
 		for (int i = 1; i <= cal.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
-			Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH), i, cal.get(Calendar.YEAR));
+			c.set(Calendar.DAY_OF_MONTH, i);
 			java.sql.Date date = new Date(c.getTime().getTime());
 			panel.add(new DayBlock(date));
 		}
 		
-		cal.roll(Calendar.MONTH, true);
-		
+		c.add(Calendar.MONTH, 1);
+		c.set(Calendar.DAY_OF_MONTH, 1);
 		for (int i = 1; i <= endDays; i++) {
-			Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH) + 1, i, cal.get(Calendar.YEAR));
+			c.set(Calendar.DAY_OF_MONTH, i);
 			java.sql.Date date = new Date(c.getTime().getTime());
 			panel.add(new DayBlock(date, Color.LIGHT_GRAY));
 		}
