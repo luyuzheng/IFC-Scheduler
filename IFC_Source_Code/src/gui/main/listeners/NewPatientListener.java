@@ -32,21 +32,17 @@ public class NewPatientListener extends MouseAdapter {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
 			AppointmentDto a = owner.getAppointment();
-
+                        
 			if (owner.getAppointment().getPatientID() != null)
 				a = EditAppointmentUI.ShowDialog(parent,a);
-			else
+                        else {
+                                PatientDto patient = SelectPatientUI.ShowDialog(parent);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(
-						SelectPatientUI.ShowDialog(parent).getPatID(), a);
-			a.setPatientID(SelectPatientUI.ShowDialog(parent).getPatID());
-			owner.setPatient(SelectPatientUI.ShowDialog(parent).getPatID());
-
-			if (owner.getAppointment() != null)
-				a = EditAppointmentUI.ShowDialog(parent,a);
-			else
-				a.setPatientID(SelectPatientUI.ShowDialog(parent).getPatID());
-			owner.setPatient(a.getPatientID());
-			owner.setNote(a.getNote());
+						patient.getPatID(), a);
+                                a.setPatientID(patient.getPatID());
+                                owner.setPatient(patient.getPatID());
+                        }
+                        owner.setNote(a.getNote());
 		}
 	}
 }
