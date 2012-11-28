@@ -1156,6 +1156,7 @@ public class DataServiceImpl implements DataService {
 				st.executeUpdate();
 				
 				rs = new_st.executeQuery();
+                                rs.next();
 				newApt.setField(AppointmentDto.APPT_ID, rs.getInt("ID"));
 				
 			}
