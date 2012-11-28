@@ -1140,7 +1140,9 @@ public class DataServiceImpl implements DataService {
 
 			st = connection.prepareStatement(
 					"INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
-
+			
+			PreparedStatement new_st = connection.prepareStatement("Select MAX(ApptID) as ID From Appointment");
+			
 			for (int i = start; i < end; i+=pract.getApptLength()){
 				newApt = new AppointmentDto();
 				newApt.setEnd(i + pract.getApptLength());
@@ -1153,8 +1155,13 @@ public class DataServiceImpl implements DataService {
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
 				st.executeUpdate();
-                                //SchedPractId of the appointment you just added TODO: Claire
+				
+				rs = new_st.executeQuery();
+				newApt.setField(AppointmentDto.APPT_ID, rs.getInt("ID"));
+				
 			}
+			
+			
                         return returnDto;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
