@@ -1545,6 +1545,7 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public ArrayList<AppointmentDto> searchForAppointments(int typeId) {
+    	//TODO: Claire
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
