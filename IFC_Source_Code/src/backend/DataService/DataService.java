@@ -231,8 +231,10 @@ public interface DataService {
     /** Removes a patient from the waitlist. */
     public boolean removePatientFromWaitlist(WaitlistDto patient);
     
-    public ArrayList<AppointmentDto> searchForAppointments(TypeDto type);
+    public ArrayList<AppointmentDto> searchForAppointments(int typeid);
     
     public boolean addNotesToAppointment(AppointmentDto appointment);
+    
+    public ArrayList<PatientDto> getAllPatientsForDay(Date day);
 
 }
