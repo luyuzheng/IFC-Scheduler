@@ -1542,7 +1542,7 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public ArrayList<AppointmentDto> searchForAppointments(TypeDto type) {
+    public ArrayList<AppointmentDto> searchForAppointments(int typeId) {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
@@ -1550,7 +1550,7 @@ public class DataServiceImpl implements DataService {
         			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
         			"Practitioner.PractID WHERE Practitioner.TypeID = ? AND " +
         			"Appointment.PatID IS NULL");
-        	st.setInt(1,type.getTypeID());
+        	st.setInt(1,typeId);
         	rs = st.executeQuery();
         	
         	ArrayList<AppointmentDto> aptList = new ArrayList<AppointmentDto>();
