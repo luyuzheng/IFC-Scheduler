@@ -56,7 +56,7 @@ public class DataServiceImpl implements DataService {
 		serv.close();
 	}
 
-	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:3306", "testuser", "test623");
+	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:8889", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -1152,6 +1152,7 @@ public class DataServiceImpl implements DataService {
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
 				st.executeUpdate();
+                                //SchedPractId of the appointment you just added TODO: Claire
 			}
                         return returnDto;
 		} catch (SQLException e) {
