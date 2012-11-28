@@ -288,7 +288,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 		public Object getValueAt(int row, int col) {
 			PractitionerDto p = prac.get(row);
 			if (col == 0) 
-				return p.getFirst() + p.getLast();
+				return p.getFirst() + " " + p.getLast();
 			else if (col == 1) 
 				return p.getTypeName();
 			else
