@@ -32,7 +32,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private static DisplayWaitingPatientUI displayWaitingPatientUI;
 	
 	private ArrayList<AppointmentDto> apt;
-	private TypeDto type;
+	private JTable aptTable;
 	
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
@@ -46,13 +46,10 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		setModal(true);
 		setTitle(name);
 		
-		
-		apt= (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(wp.getTypeID());
-		
 		JComponent panel= displayAvailAppts();
 		panel.setPreferredSize(new Dimension(500,250));
 		
-			
+		apt= (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(wp.getTypeID());	
 		
 		setLayout(new BorderLayout());
 		/*
@@ -110,8 +107,9 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	//searchField.addKeyListener(this);
     	
     	
-    	patTable = new JTable(new ApptTableModel(pat)) {  
+    	aptTable = new JTable(new ApptTableModel(apt)) {  
     		//Implement table cell tool tips.
+    		/*
     		public String getToolTipText(MouseEvent e) {
     		    String tip = null;
     		    java.awt.Point p = e.getPoint();
@@ -123,57 +121,49 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     		    	String lastName = (String)model.getValueAt(rowIndex,1);
     		    	String phoneNumber = (String)model.getValueAt(rowIndex, 2);
     		    	String note = (String)model.getValueAt(rowIndex, 3);
-    		    	ArrayList<String> notes = breakupString(note, 50);
-    		    	if (notes.size() == 0 || notes.get(0).equals("")) {
-    		    		notes.clear();
-    		    		notes.add("None");
-    		    	}
+
     		    	
     		    	tip = "<html>Patient: " + firstName + " " + lastName + "<br>" +
     		    		  "Phone Number: " + phoneNumber + "<br>" + 
     		    		  "Notes: ";
-    		    	for (String s : notes) 
-    		    		tip += s + "<br>";
+
     		    	tip = tip.substring(0, tip.length() - 4);
     		    } else tip = "";
     		    return tip;
     		 
     		}
+    		*/
     	};
-    	patTable.setAutoCreateRowSorter(true);
-    	patTable.getTableHeader().setReorderingAllowed(false);
+    	aptTable.setAutoCreateRowSorter(true);
+    	aptTable.getTableHeader().setReorderingAllowed(false);
 
-    	patTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    	patTable.setFont(font);
-    	patTable.getTableHeader().setFont(font);
-    	panel.add(patTable.getTableHeader(), BorderLayout.PAGE_START);
-    	panel.add(patTable, BorderLayout.CENTER);
+    	aptTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	aptTable.setFont(font);
+    	aptTable.getTableHeader().setFont(font);
+    	panel.add(aptTable.getTableHeader(), BorderLayout.PAGE_START);
+    	panel.add(aptTable, BorderLayout.CENTER);
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
-    	editButton.setActionCommand("edit");
-    	editButton.addActionListener(this);
-    	editButton.setFont(font);
-    	buttonPanel.add(editButton);
-    	okButton1.setActionCommand("okOld");
-    	okButton1.addActionListener(this);
-    	okButton1.setFont(font);
-    	cancelButton1.addActionListener(this);
-    	cancelButton1.setFont(font);
-    	buttonPanel.add(okButton1);
-    	buttonPanel.add(cancelButton1);
+    	okButton.setActionCommand("OK");
+    	okButton.addActionListener(this);
+    	okButton.setFont(font);
+    	cancelButton.addActionListener(this);
+    	cancelButton.setFont(font);
+    	buttonPanel.add(okButton);
+    	buttonPanel.add(cancelButton);
     	
     	
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
         
-        searchField.setFont(font);
-        p.add(searchField, BorderLayout.NORTH);
+        //searchField.setFont(font);
+        //p.add(searchField, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
         return p;
 		
 		
-		return null;
+		//return null;
 	}
     
 	
