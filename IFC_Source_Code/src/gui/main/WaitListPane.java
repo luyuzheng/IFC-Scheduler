@@ -76,7 +76,7 @@ public class WaitListPane extends JPanel {
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
     	removePatientButton.setAction(removePatientAction);
     	addPatientButton.setAction(addPatientAction);
-    	JLabel actionLabel = new JLabel("Perform Action:");
+    	JLabel actionLabel = new JLabel(" ");
     	actionLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
     	actionLabel.setFont(font);
     	addPatientButton.setFont(font);

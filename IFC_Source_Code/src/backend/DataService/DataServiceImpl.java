@@ -218,9 +218,11 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT Patient.PatID, Patient.`FirstName`, " +
-					"Patient.`LastName`, Patient.PhoneNumber, Patient.Notes, COUNT(NoShow.NoShowID) " +
-					"FROM Patient INNER JOIN NoShow on Patient.`PatID` = NoShow.`PatID`WHERE Patient.PatID =(?)");
+			st = connection.prepareStatement("Select Patient.PatID, " +
+					"Patient.FirstName, Patient.LastName, Patient.PhoneNumber, " +
+					"Patient.Notes, temp.NumberOfNoShows  From Patient LEFT JOIN " +
+					"(Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow" +
+					" Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Patient.PatID = (?)");
 			st.setInt(1, PatID);
 			rs = st.executeQuery();
 			PatientDto patient = new PatientDto();
@@ -1493,7 +1495,7 @@ public class DataServiceImpl implements DataService {
 		st.setString(4,wl.getComments());
 		st.setInt(5,wl.getWaitlistID());
 		
-		st.executeQuery();
+		st.executeUpdate();
 		return true;
 		
 	} catch (SQLException e) {
@@ -1540,22 +1542,24 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public ArrayList<AppointmentDto> searchForAppointments(TypeDto type) {
+    public ArrayList<AppointmentDto> searchForAppointments(int typeId) {
+    	//TODO: Claire
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-//        	st = connection.prepareStatement("SELECT * FROM Appointment " +
-//        			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
-//        			"Practitioner.PractID WHERE Practitioner.TypeID = ? AND " +
-//        			"Appointment.PatID IS NULL");
         	st = connection.prepareStatement("SELECT * FROM Appointment,Practitioner," +
         			"PractitionerScheduled WHERE Appointment.PractSchedID = " +
         			"PractitionerScheduled.PractSchID AND PractitionerScheduled.PractID = " +
-        			"Practitioner.PractID AND Practitioner.TypeID = ? AND Appointment.PatID IS NULL" +
+        			"Practitioner.PractID AND Practitioner.TypeID=? AND Appointment.PatID IS NULL" +
         			" ORDER BY Appointment.ApptDate, Appointment.StartTime");
-        	st.setInt(1,type.getTypeID());
+//        	st.setInt(1,type.getTypeID());
+//        	st = connection.prepareStatement("SELECT * FROM Appointment " +
+//        			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
+//        			"Practitioner.PractID WHERE Practitioner.TypeID = (?) AND " +
+//        			"Appointment.PatID IS NULL");
+
+        	st.setInt(1,typeId);
         	rs = st.executeQuery();
-        	
         	ArrayList<AppointmentDto> aptList = new ArrayList<AppointmentDto>();
 			AppointmentDto newAppt;
 
@@ -1572,22 +1576,66 @@ public class DataServiceImpl implements DataService {
 				aptList.add(newAppt);
 			}
 			return aptList;
-                
-	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-		lgr.log(Level.SEVERE, e.getMessage(), e);
-	} finally {
-		try {
-			if (st != null) {
-				st.close();
-			}
-		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
-			lgr.log(Level.WARNING, ex.getMessage(), ex);
-		}
-	}
+
+        } catch (SQLException e) {
+        	Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+        	lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+        	try {
+        		if (st != null) {
+        			st.close();
+        		}
+        	} catch (SQLException ex) {
+        		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+        		lgr.log(Level.WARNING, ex.getMessage(), ex);
+        	}
+        }
         return null;
     }
+
+    @Override
+    public ArrayList<PatientDto> getAllPatientsForDay(Date day){
+    	PreparedStatement st = null;
+    	ResultSet rs = null;
+    	try {
+
+    		st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = '(?)' AND Appointment.PatID IS NOT NULL");
+
+    		st.setDate(1, day);
+    		rs = st.executeQuery();
+
+    		ArrayList<PatientDto> returnList = new ArrayList<PatientDto>();
+    		PatientDto newPat;
+
+    		while (rs.next()){
+    			newPat = new PatientDto();
+    			newPat.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
+    			newPat.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
+    			newPat.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
+    			newPat.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+    			newPat.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+    			newPat.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
+    			returnList.add(newPat);
+    		}
+    		return returnList;
+
+    	} catch (SQLException e) {
+    		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+    		lgr.log(Level.SEVERE, e.getMessage(), e);
+    	} finally {
+    		try {
+    			if (st != null) {
+    				st.close();
+    			}
+    		} catch (SQLException ex) {
+    			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+    			lgr.log(Level.WARNING, ex.getMessage(), ex);
+    		}
+    	}
+    	return null;
+    }
+
+
 }
     
     
