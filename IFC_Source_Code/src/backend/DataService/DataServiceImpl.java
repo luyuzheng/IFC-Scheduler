@@ -475,6 +475,7 @@ public class DataServiceImpl implements DataService {
 			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
 			PractitionerDto practitioner;
 			while (rs.next()) {
+                            if (rs.getInt("Active") != 0){
 				practitioner = new PractitionerDto();
 				practitioner.setField(
 						PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
@@ -494,6 +495,7 @@ public class DataServiceImpl implements DataService {
 				practitioner.setField(
 						PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
 				results.add(practitioner);
+                            }
 			}
 			return results;
 		} catch (SQLException e) {
@@ -520,15 +522,16 @@ public class DataServiceImpl implements DataService {
 		try {
 			
 			st = connection.prepareStatement("INSERT INTO Practitioner " +
-					"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Notes) " +
-			"VALUES (?, ?, ?, ?, ?, ?)");
+					"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Active, Notes) " +
+			"VALUES (?, ?, ?, ?, ?, ?, ?)");
 			
 			st.setInt(1, typeID);
 			st.setString(2, first);
 			st.setString(3, last); 
 			st.setInt(4, appLength);
 			st.setString(5, phone);
-			st.setString(6, notes);
+                        st.setInt(6, 7);
+			st.setString(7, notes);
 			st.executeUpdate();
                         
                         st = connection.prepareStatement(
@@ -594,8 +597,9 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, "Tried to delete practitioner without ID\n");
 				return false;
 			} else {
+                            //TODO: Claire change this to set Active = 0
 				st = connection.prepareStatement(
-				"DELETE FROM Practitioner WHERE PractID	=?");
+				"UPDATE Practitioner SET Practitioner.Active=0 WHERE PractID=?");
 				st.setInt(1, practitioner.getPractID());
 			}
 			st.executeUpdate();
