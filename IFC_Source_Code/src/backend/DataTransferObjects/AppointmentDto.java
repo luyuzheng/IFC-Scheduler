@@ -98,7 +98,15 @@ public class AppointmentDto extends AbstractDto {
     }
 
     public String getShortNote(int length){
-    	return getNote().substring(0, length);
+        if (length <= 0){
+            return "";
+        }
+        else if (getNote().length() <= length){
+            return getNote();
+        }
+        else {
+            return getNote().substring(0, length);
+        }
     }
 
     public void setConfirmation(boolean confirm) {
