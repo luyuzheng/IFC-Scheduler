@@ -1550,8 +1550,9 @@ public class DataServiceImpl implements DataService {
         try {
         	st = connection.prepareStatement("SELECT * FROM Appointment " +
         			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
-        			"Practitioner.PractID WHERE Practitioner.TypeID = ? AND " +
+        			"Practitioner.PractID WHERE Practitioner.TypeID = (?) AND " +
         			"Appointment.PatID IS NULL");
+
         	st.setInt(1,typeId);
         	rs = st.executeQuery();
         	
@@ -1569,8 +1570,9 @@ public class DataServiceImpl implements DataService {
 				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
 				
 				aptList.add(newAppt);
-			return aptList;
 			}
+
+			return aptList;
                 
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());

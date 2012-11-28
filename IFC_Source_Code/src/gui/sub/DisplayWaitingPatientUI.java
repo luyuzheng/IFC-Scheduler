@@ -45,40 +45,15 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private DisplayWaitingPatientUI(String name, WaitlistDto wp) {
 		setModal(true);
 		setTitle(name);
-		
+				
+		apt= DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(wp.getTypeID());
+		System.out.println(wp.getTypeID());
+		System.out.println(apt);
 		JComponent panel= displayAvailAppts();
 		panel.setPreferredSize(new Dimension(500,250));
 		
-		apt= (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(wp.getTypeID());	
-		
 		setLayout(new BorderLayout());
-		/*
-		String text = "Patient Name: " + wp.getPatient().getFullName();
-		text += "\nPhone Number: " + wp.getPatient().getPhone();
-		text += "\nPatient Note: " + wp.getPatient().getNotes().replaceAll("\t\t", "\n");
 
-		textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setFont(font);
-		textArea.setOpaque(false);
-		textArea.setHighlighter(null);
-		textArea.setText(text);
-		
-		JPanel notePanel = new JPanel(new BorderLayout());
-		JLabel noteLabel = new JLabel("Appointment Note:");
-		JScrollPane notePane = new JScrollPane();
-		notePane.setPreferredSize(new Dimension(500,250));
-		noteArea = new JTextArea();
-		noteArea.setLineWrap(true);
-		noteArea.setWrapStyleWord(true);
-		noteArea.setFont(font);
-		noteArea.setText(wp.getComments().replaceAll("\t\t", "\n"));
-		notePane.setViewportView(noteArea);
-		notePanel.add(noteLabel, BorderLayout.NORTH);
-		notePanel.add(notePane, BorderLayout.CENTER);
-		*/
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		okButton.addActionListener(this);
@@ -134,6 +109,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     		}
     		*/
     	};
+    	
     	aptTable.setAutoCreateRowSorter(true);
     	aptTable.getTableHeader().setReorderingAllowed(false);
 
