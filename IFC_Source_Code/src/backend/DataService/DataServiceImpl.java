@@ -1157,6 +1157,7 @@ public class DataServiceImpl implements DataService {
 				st.executeUpdate();
 				
 				rs = new_st.executeQuery();
+                                rs.next();
 				newApt.setField(AppointmentDto.APPT_ID, rs.getInt("ID"));
 				
 			}
@@ -1494,9 +1495,8 @@ public class DataServiceImpl implements DataService {
 		st.setString(4,wl.getComments());
 		st.setInt(5,wl.getWaitlistID());
 		
-		rs=st.executeQuery();
-		boolean updated = rs.rowUpdated();
-		return updated;
+		st.executeQuery();
+		return true;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
