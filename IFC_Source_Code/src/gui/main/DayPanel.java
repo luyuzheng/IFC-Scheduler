@@ -190,6 +190,8 @@ public class DayPanel extends JPanel {
 			if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Month View</html>");
 			else switchViewButton.setText("<html>Switch to <br>Day View</html>");
 			mw.switchView();
+			DayPanel dp= mw.getDayPanel();
+			dp.isMonthViewValidate();
 		}
 	};
 	
