@@ -32,4 +32,14 @@ public class TypeDto extends AbstractDto {
     public String toString() {
     	return this.getTypeName();
     }
+    
+    @Override
+    public boolean equals(Object other) {
+    	return other != null && ((TypeDto) other).getTypeID() == (this.getTypeID());
+    }
+    
+    @Override
+    public int hashCode() {
+    	return getTypeID();
+    }
 }

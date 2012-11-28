@@ -1,5 +1,8 @@
 package gui.sub;
 
+import gui.main.SearchPane;
+import gui.main.SearchPane.PatientResultsTableModel;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -8,16 +11,19 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import backend.DataTransferObjects.*;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.PatientDto;
 
 /**
  * Displays the pop up window that allows the user to search for a patient.
@@ -25,8 +31,7 @@ import backend.DataTransferObjects.*;
 public class SearchForPatientUI extends JDialog implements ActionListener {
 	private static SearchForPatientUI searchForPatientUI;
 	
-	
-	private static PatientDto p;
+	private static List<PatientDto> ps;
 	private JLabel searchLabel;
 	private JLabel firstNameLabel;
 	private JLabel lastNameLabel;
@@ -97,12 +102,12 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 	 * @param owner - the component that owns this pane (the SearchPane)
 	 * @return a patient
 	 */
-	public static PatientDto ShowDialog(Component owner) {
+	public static List<PatientDto> ShowDialog(Component owner) {
 		searchForPatientUI = new SearchForPatientUI("Search for a Patient");
 		searchForPatientUI.pack();
 		searchForPatientUI.setLocationRelativeTo(owner);
 		searchForPatientUI.setVisible(true);
-		return p; // SHOULD RETURN AN ARRAYLIST OF PATIENTS???
+		return ps;
 	}
 	
 	/**
@@ -112,13 +117,19 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Search") {
-			if (p == null) {
+			if (firstNameField.getText() == null || firstNameField.getText().isEmpty() ||
+					lastNameField.getText() == null || lastNameField.getText().isEmpty()) {
 				JLabel errorMessage = new JLabel("Please enter a patient's name.");
 				errorMessage.setFont(font);
 				JOptionPane.showMessageDialog(this, errorMessage, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			// Get search manager to search for the patient and return results
+			String first = firstNameField.getText();
+			String last = lastNameField.getText();
+			List<PatientDto> patients =
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.queryPatientByName(first, last);
+			ps = patients;
 		} 
 		searchForPatientUI.setVisible(false);
 	}

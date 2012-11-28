@@ -620,8 +620,8 @@ public class DataServiceImpl implements DataService {
         ResultSet rs = null;
         try {
 		
-		st = connection.prepareStatement("UPDATE Practitioner" +
-				"SET TypeID=?,FirstName=?,LastName=?,ApptLength=?,PhoneNumber=?,Notes=? " +
+		st = connection.prepareStatement("UPDATE Practitioner " +
+				"SET TypeID=?, FirstName=?, LastName=?, ApptLength=?, PhoneNumber=?, Notes=? " +
 				"WHERE PractID=?" );
 		st.setInt(1, practitioner.getTypeID());
 		st.setString(2, practitioner.getFirst());
@@ -631,10 +631,8 @@ public class DataServiceImpl implements DataService {
 		st.setString(6,  practitioner.getNotes());
 		st.setInt(7, practitioner.getPractID());
 		
-		
-		rs=st.executeQuery();
-		boolean updated = rs.rowUpdated();
-		return updated;
+		int updated = st.executeUpdate();
+		return updated != 0;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1546,10 +1544,15 @@ public class DataServiceImpl implements DataService {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-        	st = connection.prepareStatement("SELECT * FROM Appointment " +
-        			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
-        			"Practitioner.PractID WHERE Practitioner.TypeID = ? AND " +
-        			"Appointment.PatID IS NULL");
+//        	st = connection.prepareStatement("SELECT * FROM Appointment " +
+//        			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
+//        			"Practitioner.PractID WHERE Practitioner.TypeID = ? AND " +
+//        			"Appointment.PatID IS NULL");
+        	st = connection.prepareStatement("SELECT * FROM Appointment,Practitioner," +
+        			"PractitionerScheduled WHERE Appointment.PractSchedID = " +
+        			"PractitionerScheduled.PractSchID AND PractitionerScheduled.PractID = " +
+        			"Practitioner.PractID AND Practitioner.TypeID = ? AND Appointment.PatID IS NULL" +
+        			" ORDER BY Appointment.ApptDate, Appointment.StartTime");
         	st.setInt(1,type.getTypeID());
         	rs = st.executeQuery();
         	
@@ -1567,8 +1570,8 @@ public class DataServiceImpl implements DataService {
 				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
 				
 				aptList.add(newAppt);
-			return aptList;
 			}
+			return aptList;
                 
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
