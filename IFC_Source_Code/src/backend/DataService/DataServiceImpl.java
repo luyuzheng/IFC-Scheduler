@@ -1571,7 +1571,6 @@ public class DataServiceImpl implements DataService {
 				
 				aptList.add(newAppt);
 			}
-
 			return aptList;
                 
 	} catch (SQLException e) {
