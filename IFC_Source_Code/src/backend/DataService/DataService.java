@@ -234,5 +234,7 @@ public interface DataService {
     public ArrayList<AppointmentDto> searchForAppointments(TypeDto type);
     
     public boolean addNotesToAppointment(AppointmentDto appointment);
+    
+    public ArrayList<PatientDto> getAllPatientsForDay(Date day);
 
 }
