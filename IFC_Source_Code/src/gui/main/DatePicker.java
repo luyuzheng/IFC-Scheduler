@@ -164,13 +164,17 @@ public class DatePicker extends JPanel {
 		block.setTime(newDate2);		
 		
 		if (focused.get(Calendar.MONTH) == block.get(Calendar.MONTH)) {
-			if (mainWindow.inMonthView()) mainWindow.switchView();
+			if (mainWindow.inMonthView()) {
+				mainWindow.switchView();
+			}
 			curr.deselectDay(block.get(Calendar.DAY_OF_MONTH));
 			curr.selectDay(focused.get(Calendar.DAY_OF_MONTH));
 			selectedBlock = b;
 			mainWindow.setDate(b.getDate());
 		} else {
-			if (mainWindow.inMonthView()) mainWindow.switchView();
+			if (mainWindow.inMonthView()) {
+				mainWindow.switchView();
+			}
 			setDate(b.getDate());
 			//System.out.println(block.get(Calendar.DAY_OF_MONTH));
 			curr.deselectDay(block.get(Calendar.DAY_OF_MONTH));
@@ -179,6 +183,7 @@ public class DatePicker extends JPanel {
 			// all of the tiny day blocks should be regenerated: THE TINYDAYBLOCKS MAY NOT BE REGENERATED!!
 			curr.selectDay(focused.get(Calendar.DAY_OF_MONTH));
 			selectedBlock = b;
-		}
+			
+		}		
 	}
 }

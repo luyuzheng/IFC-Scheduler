@@ -465,4 +465,9 @@ public class MainWindow extends JFrame {
 	}
 	
 	
+	public DayPanel getDayPanel() {
+		return dp;
+	}
+	
+	
 }
