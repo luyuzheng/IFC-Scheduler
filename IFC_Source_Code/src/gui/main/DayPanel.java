@@ -174,6 +174,7 @@ public class DayPanel extends JPanel {
 		if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Day View</html>");
 		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
 	}
+
 	
 	/** Removes a scheduled practitioner from the day upon clicking the "remove practitioner" button. */
 	private final AbstractAction removePracAction = new AbstractAction("<html>Remove Practitioner<br>From Current Day</html>") {
