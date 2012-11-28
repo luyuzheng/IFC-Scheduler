@@ -65,7 +65,6 @@ public class SchedulePractitionerDto extends AbstractDto {
     
     //TODO implement me, appointments full
     public boolean isFull(){
-		return false;
-    	
+		return false; 	
     }
 }
