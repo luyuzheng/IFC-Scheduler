@@ -160,7 +160,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 			TypeDto type = (TypeDto) typeSelector.getSelectedItem();
 			System.out.println(type.getTypeID());
 			List<AppointmentDto> results =
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(type);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(type.getTypeID());
 			System.out.println(results);
 			if (results == null) {
 				results = new ArrayList<AppointmentDto>();
