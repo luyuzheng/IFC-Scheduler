@@ -1152,6 +1152,7 @@ public class DataServiceImpl implements DataService {
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
 				st.executeUpdate();
+                                //SchedPractId of the appointment you just added TODO: Claire
 			}
                         return returnDto;
 		} catch (SQLException e) {
