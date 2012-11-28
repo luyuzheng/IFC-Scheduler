@@ -1569,9 +1569,8 @@ public class DataServiceImpl implements DataService {
 				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
 				
 				aptList.add(newAppt);
-			return aptList;
 			}
-                
+			return aptList;
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
