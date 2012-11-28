@@ -787,6 +787,12 @@ public class DataServiceImpl implements DataService {
 		st = connection.prepareStatement("UPDATE Appointment " +
 				"SET Appointment.PatID=? WHERE Appointment.ApptID=?" );
 		st.setInt(1, patID);
+                if (appointment == null){
+                    System.out.println("test1");
+                }
+                else if (appointment.getApptID() == null){
+                    System.out.println("test2");
+                }
 		st.setInt(2, appointment.getApptID());
 		
 		st.executeUpdate();
