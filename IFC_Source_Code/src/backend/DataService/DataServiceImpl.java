@@ -915,6 +915,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement("DELETE FROM NoShow WHERE NoShowID=?");
+			System.out.println(appointment.getNoShowID());
 			st.setInt(1, appointment.getNoShowID());
 			st.executeUpdate();
 			return true;
