@@ -151,6 +151,8 @@ public class DayPanel extends JPanel {
 		DataServiceImpl.GLOBAL_DATA_INSTANCE.setHoursForDay(day, timeSlot.getStartTime(), timeSlot.getEndTime());
 		day.setEnd(timeSlot.getEndTime());
 		day.setStart(timeSlot.getStartTime());
+		as.resetHours(timeSlot);
+		// Edit the practitioner's times
 		sidePanel.refreshTimeSlot(timeSlot);
 	}
 	

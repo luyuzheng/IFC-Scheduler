@@ -4,9 +4,11 @@
 
 package gui.main;
 
+import gui.TimeSlot;
 import gui.main.listeners.NewPractitionerListener;
 
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 
 import backend.DataTransferObjects.PractitionerDto;
@@ -59,4 +61,18 @@ public class RoomPanel extends JPanel {
 		return dp;
 	}
 	
+	public void resetPractitionerHours(SchedulePractitionerDto room) {
+		this.room = room;
+		remove(headingPanel);
+		remove(roomSubpanel);
+		System.out.println(room);
+		roomSubpanel = new RoomSubpanel(room, dp);
+		headingPanel = new HeadingPanel(room, this, roomSubpanel);
+		setLayout(new BorderLayout());
+		add(headingPanel, BorderLayout.NORTH);
+		add(roomSubpanel, BorderLayout.CENTER);
+		addMouseListener(npl);
+		repaint();
+		revalidate();
+	}
 }

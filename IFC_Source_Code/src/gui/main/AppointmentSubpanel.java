@@ -6,11 +6,14 @@
 
 package gui.main;
 
+import gui.TimeSlot;
+
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
 @SuppressWarnings("serial")
@@ -58,4 +61,24 @@ public class AppointmentSubpanel extends JPanel {
 		revalidate();
 	}
 	
+	public void resetHours(TimeSlot timeSlot) {
+		ArrayList<RoomPanel> remRooms = new ArrayList<RoomPanel>();
+		for (RoomPanel rp : rooms) {
+			if (rp.room.getStart() > (timeSlot.getEndTime() - rp.room.getPractitioner().getApptLength()) ||
+					rp.room.getEnd() < (timeSlot.getStartTime() + rp.room.getPractitioner().getApptLength())) {
+				remRooms.add(rp);
+			} else {
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.changePractitionerHoursForDay(
+						rp.room, dp.getDay(), dp.getDay().getStart(),
+						dp.getDay().getEnd());
+				rp.resetPractitionerHours(rp.room);
+			}
+		}
+		for (RoomPanel rp : remRooms) {
+			removeRoom(rp.room);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitionerFromDay(
+					rp.room.getPractSchedID(), dp.getDay());
+		}
+		revalidate();
+	}
 }
