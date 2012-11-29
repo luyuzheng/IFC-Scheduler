@@ -30,9 +30,8 @@ import backend.DataTransferObjects.PatientDto;
 public class DisplayAppointmentConfirmationUI extends JDialog implements ActionListener {
 	private static DisplayAppointmentConfirmationUI displayAppointmentConfirmationUI;
 	
-	private AppointmentDto appointment;
+	private static AppointmentDto appointment;
 	
-	private String confirmed;
 	private JPanel infoPanel;
 	private JPanel buttonPanel;
 	private JPanel notePanel;
@@ -62,7 +61,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
-		confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
+		String confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
 		Date date = new Date(appt.getApptDate().getTime());
 		
 		String text = "Date: " + date.toString() + "\n" +
@@ -122,9 +121,8 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	}
 	
 	private void refreshPatientInfo(AppointmentDto appt) {
-		remove(infoPanel);
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
-		confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
+		String confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
 		Date date = new Date(appt.getApptDate().getTime());
 		
 		String text = "Date: " + date.toString() + "\n" +
@@ -133,8 +131,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 					  "Confirmed: " + confirmed;
 		
 		textArea.setText(text);
-		infoPanel.add(textArea);
-		add(infoPanel, BorderLayout.NORTH);
+		textArea.updateUI();
 	}
 	
 	/**
@@ -143,11 +140,12 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 * @param owner - the component that owns this pane (the AppointmentConfirmationListener)
 	 * @param appt  - the appointment information
 	 */
-	public static void ShowDialog(Component owner, AppointmentDto appt) {
+	public static AppointmentDto ShowDialog(Component owner, AppointmentDto appt) {
 		displayAppointmentConfirmationUI = new DisplayAppointmentConfirmationUI("View Appointment", appt);
 		displayAppointmentConfirmationUI.pack();
 		displayAppointmentConfirmationUI.setLocationRelativeTo(owner);
 		displayAppointmentConfirmationUI.setVisible(true);
+		return appointment;
 	}
 	
 	/**
@@ -155,7 +153,13 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "confirm") {
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appointment);
+			if (!appointment.getConfirmation()) {
+				appointment.setConfirmation(true);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appointment);
+			// TODO: Want to unconfirm
+			} else {
+
+			}
 			refreshPatientInfo(appointment);
 		} else if (e.getActionCommand() == "OK") {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);

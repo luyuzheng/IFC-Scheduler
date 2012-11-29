@@ -36,6 +36,8 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 	
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
+	private static int change = -1; // -1 if canceled, other is the typeID
+	
 	private AddToWaitlistUI(String name) {
 		setModal(true);
 		setTitle(name);
@@ -103,14 +105,16 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static void ShowDialog(Component owner) {
+	public static int ShowDialog(Component owner) {
 		addToWaitlistUI = new AddToWaitlistUI("Add to Waitlist");
 		addToWaitlistUI.pack();
 		addToWaitlistUI.setLocationRelativeTo(owner);
 		addToWaitlistUI.setVisible(true);
+		return change;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		change = -1;
 		if (e.getActionCommand().equals("ok")) {
 			if (patient == null) {
 				JOptionPane.showMessageDialog(this, "Please select a patient.", "Error!", JOptionPane.ERROR_MESSAGE);
@@ -126,11 +130,11 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 					JLabel errorMsg = new JLabel("This patient has already been added to the waitlist for this type of service.");
 					errorMsg.setFont(font);
 					JOptionPane.showConfirmDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
-				// Add patient to the waitlist
+				    return;
 				} 
 			}
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type, comment);
-                        //Todo: Update view?
+            change = type.getTypeID();
 		} else if (e.getActionCommand().equals("select")) {
 			patient = SelectPatientUI.ShowDialog(this);
 			if (patient != null) patientLabel.setText(patient.getFirst() + " " + patient.getLast());

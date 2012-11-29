@@ -211,8 +211,8 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		if (e.getActionCommand() == "confirm") {
 			if (table.getSelectedRow() >= 0) {
 				AppointmentDto appt = ((AppointmentConfirmationTableModel)table.getModel()).getAppointment(table.getSelectedRow());
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appt);
 				appt.setConfirmation(true);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appt);
 				resetModel();
 			}
 		}

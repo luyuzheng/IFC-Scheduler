@@ -65,7 +65,15 @@ public class WaitListPane extends JPanel {
 		//types.add(0, general); TODO: VIEW ALL
 		
 		
-		typeSelector = new JComboBox(types.toArray());
+		//typeSelector = new JComboBox(types.toArray());
+		TypeDto noFilter = new TypeDto();
+		noFilter.setField(TypeDto.TYPE_NAME, "All");
+		noFilter.setField(TypeDto.TYPE_ID, -1);
+		typeSelector = new JComboBox();
+		typeSelector.addItem(noFilter);
+		for (TypeDto type : types) {
+			typeSelector.addItem(type);
+		}
 		if (!types.isEmpty()) {
 			typeSelector.setSelectedIndex(0);
 		}
@@ -119,9 +127,17 @@ public class WaitListPane extends JPanel {
 	 */
 	private final AbstractAction addPatientAction = new AbstractAction("Add Patient to Waitlist") {
 		public void actionPerformed(ActionEvent e) {
-			AddToWaitlistUI.ShowDialog(owner);
-            specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
-			//if (typeSelector.getSelectedIndex() == 0) specTable.setModel(
+			int change = AddToWaitlistUI.ShowDialog(owner);
+			TypeDto type = (TypeDto) typeSelector.getSelectedItem();
+			if (change == -1) {
+				return;
+			} else if (change == type.getTypeID()) {
+				filter(typeSelector);
+			} else {
+				typeSelector.setSelectedIndex(0);
+				specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
+			}
+            //if (typeSelector.getSelectedIndex() == 0) specTable.setModel(
                         //        new WaitlistTableModel(wm.getWaitList(), false));
 			//else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true));
 		}
@@ -137,7 +153,8 @@ public class WaitListPane extends JPanel {
 			WaitlistTableModel model = (WaitlistTableModel)specTable.getModel();
 			WaitlistDto w = model.getPatient(specTable.getSelectedRow());
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(w);
-			specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
+			filter(typeSelector);
+			//specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
                         /*if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false)); TODO: filter
 			else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true)); */
 		}
@@ -275,7 +292,7 @@ public class WaitListPane extends JPanel {
 	public class BoxListener implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
 	        JComboBox cb = (JComboBox)e.getSource();
-            specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
+	        filter(cb);
 	        /*if (cb.getSelectedIndex() == 0) specTable.setModel( TODO:FILTER
                         new WaitlistTableModel(wm.getWaitList(), false));
 	        else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(cb.getSelectedIndex())), true));
@@ -283,4 +300,18 @@ public class WaitListPane extends JPanel {
 	    }
 	}
 
+	void filter(JComboBox cb) {
+		ArrayList<WaitlistDto> waitlist = (ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
+        if (((TypeDto)cb.getSelectedItem()).getTypeID() == -1) {
+        	specTable.setModel(new WaitlistTableModel(waitlist, false));
+        } else {
+        	ArrayList<WaitlistDto> filtered = new ArrayList<WaitlistDto>();
+        	for (WaitlistDto entry : waitlist) {
+        		if (entry.getTypeID() == ((TypeDto)cb.getSelectedItem()).getTypeID()) {
+        			filtered.add(entry);
+        		}
+        	}
+        	specTable.setModel(new WaitlistTableModel(filtered, false));
+        }
+	}
 }

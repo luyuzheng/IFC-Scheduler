@@ -127,7 +127,7 @@ public class AppointmentDto extends AbstractDto {
     }
 
     public boolean getConfirmation() {
-    	return (((Integer)fieldsMap.get(CONFIRMATION)) != 0);
+    	return (((Boolean)fieldsMap.get(CONFIRMATION)));
     }
     
     public String prettyPrintStart(){
