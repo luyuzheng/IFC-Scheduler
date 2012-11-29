@@ -22,6 +22,7 @@ public class AppointmentDto extends AbstractDto {
     public static final String NOTE = "Note";
     public static final String CONFIRMATION = "Confirmation";
     public static final String PATIENT = "Patient";
+    public static final String PRACTITIONER_NAME = "PractName";
     
      public AppointmentDto() {
         fieldsMap = new HashMap<String, Object>();
@@ -35,6 +36,7 @@ public class AppointmentDto extends AbstractDto {
         fieldsMap.put(NOTE, null);
         fieldsMap.put(PATIENT, null);
         fieldsMap.put(CONFIRMATION, false);
+        fieldsMap.put(PRACTITIONER_NAME, null);
     }
     
     public Integer getApptID(){
@@ -172,6 +174,10 @@ public class AppointmentDto extends AbstractDto {
         }
         return start + ":" + end + " " + time;
     }
+     
+     public String getPractName(){
+    	 return (String) this.fieldsMap.get(PRACTITIONER_NAME);
+     }
      
     @Override
     public boolean equals(Object other) {

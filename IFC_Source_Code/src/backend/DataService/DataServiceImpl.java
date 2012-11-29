@@ -763,6 +763,7 @@ public class DataServiceImpl implements DataService {
 				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract.getPractSchedID());
 				st.setInt(1, pract.getPractSchedID());
 				appointments.add(newApt);
+				newApt.setField(AppointmentDto.PRACTITIONER_NAME, pract.getPractitioner().getFirst() + " " + pract.getPractitioner().getLast());
 				st.executeQuery();
 			}
 
@@ -1154,6 +1155,7 @@ public class DataServiceImpl implements DataService {
 				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract_id);
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
+				//newApt.setField(AppointmentDto.PRACTITIONER_NAME, pract.getFirst() + ' ' + pract.getLast());
 				st.executeUpdate();
 				
 				rs = new_st.executeQuery();
@@ -1275,8 +1277,18 @@ public class DataServiceImpl implements DataService {
 	public List<AppointmentDto> getAllAppointments(int schedPractId) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		String name = null;
 
 		try {
+			st = connection.prepareStatement("Select FirstName, LastName FROM PractitionerScheduled INNER JOIN Practitioner ON PractitionerScheduled.PractID = Practitioner.PractID WHERE PractitionerScheduled.PractSchID = ?");
+			st.setInt(1, schedPractId);
+			rs = st.executeQuery();
+				if (rs.next()){
+					name = rs.getString("FirstName") + ' '+ rs.getString("LastName");
+				}
+			rs = null;
+			st = null;
+			
 			st = connection.prepareStatement(
 					"SELECT * FROM Appointment WHERE PractSchedID = ?");
 			st.setInt(1, schedPractId);
@@ -1305,6 +1317,7 @@ public class DataServiceImpl implements DataService {
 						rs.getInt(AppointmentDto.START));
 				newAppointment.setField(AppointmentDto.CONFIRMATION,
 						rs.getInt(AppointmentDto.CONFIRMATION)==1);
+				newAppointment.setField(AppointmentDto.PRACTITIONER_NAME, name);
 				retList.add(newAppointment);
 			}
 			return retList;
@@ -1569,6 +1582,7 @@ public class DataServiceImpl implements DataService {
 				newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
 				newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
 				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
+				newAppt.setField(AppointmentDto.PRACTITIONER_NAME, rs.getString(PractitionerDto.FIRST) + " "+ rs.getString(PractitionerDto.LAST));
 				
 				// manual filter of starttime
 	        	Calendar apptCal = Calendar.getInstance();
