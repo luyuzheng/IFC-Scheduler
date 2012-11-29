@@ -276,7 +276,7 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
 				//TODO set to 0 if null
-				patient.setField(PatientDto.NO_SHOW, rs.getString(PatientDto.NO_SHOW));
+				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
