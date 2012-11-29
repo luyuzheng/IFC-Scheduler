@@ -36,7 +36,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private ArrayList<AppointmentDto> apt;
 	private JTable aptTable;
 	
-	private PatientDto patient;
+	private WaitlistDto waitingPatient;
 	
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
@@ -50,10 +50,12 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		setModal(true);
 		setTitle(name);
 			
+		waitingPatient = wp;
+		
 		// Display patient information
 		JPanel infoPanel = new JPanel(new BorderLayout());
 		
-		patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(wp.getPatientID());
+		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(wp.getPatientID());
 		
 		String text = "Date Added: " + wp.getDate() + "\n" + 
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
@@ -167,14 +169,24 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("ok")) {
-			comment = noteArea.getText();
+		if (e.getActionCommand().equals("OK")) {
+			if (aptTable.getSelectedRow() >= 0) {
+				AppointmentDto appt = ((ApptTableModel)aptTable.getModel()).getAppointment(aptTable.getSelectedRow());
+				WaitlistDto waitlistPatient = getWaitlistPatient();
+				PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(waitlistPatient.getPatientID());
+				TypeDto type = DataServiceImpl.GLOBAL_DATA_INSTANCE.getType(waitlistPatient.getTypeName());
+				
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patient.getPatID(), appt);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(patient, type);
+			}
+			
+			//comment = noteArea.getText();
 		} 
 		displayWaitingPatientUI.setVisible(false);
     }
 	
-	public PatientDto getWaitlistPatient() {
-		return patient;
+	public WaitlistDto getWaitlistPatient() {
+		return waitingPatient;
 	}
 	
 	public class ApptTableModel extends AbstractTableModel {	

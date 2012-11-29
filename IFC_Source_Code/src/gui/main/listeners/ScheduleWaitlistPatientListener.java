@@ -11,6 +11,9 @@ import gui.sub.DisplayWaitingPatientUI.*;
 
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.TypeDto;
+import backend.DataTransferObjects.WaitlistDto;
 
 public class ScheduleWaitlistPatientListener extends MouseAdapter {
 	
@@ -28,8 +31,12 @@ public class ScheduleWaitlistPatientListener extends MouseAdapter {
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
 				AppointmentDto appt = ((ApptTableModel)owner.getModel()).getAppointment(owner.getSelectedRow());
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(
-					((DisplayWaitingPatientUI)parent).getWaitlistPatient().getPatID(), appt);
+				WaitlistDto waitlistPatient = ((DisplayWaitingPatientUI)parent).getWaitlistPatient();
+				PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(waitlistPatient.getPatientID());
+				TypeDto type = DataServiceImpl.GLOBAL_DATA_INSTANCE.getType(waitlistPatient.getTypeName());
+				
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patient.getPatID(), appt);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(patient, type);
 				parent.setVisible(false);
 			}
 		}
