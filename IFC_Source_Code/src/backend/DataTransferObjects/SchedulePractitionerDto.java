@@ -65,7 +65,13 @@ public class SchedulePractitionerDto extends AbstractDto {
     
     //TODO implement me, appointments full
     public boolean isFull(){
-		return false; 	
+        ArrayList<AppointmentDto> appointments = getAppointments();
+        for (int i = 0; i < appointments.size(); ++i){
+            if (appointments.get(i).getPatientID() == null || appointments.get(i).getPatientID() == 0){
+                return false;
+            }
+        }
+        return true;
     }
     
     @Override

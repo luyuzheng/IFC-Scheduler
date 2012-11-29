@@ -66,6 +66,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JLabel noShowsLabel = new JLabel("No Show");
 		noShowsLabel.setFont(font);
+                noShowsCheckBox.addItemListener(this);
 		checkBoxPanel.add(noShowsCheckBox);
 		checkBoxPanel.add(noShowsLabel);
 		

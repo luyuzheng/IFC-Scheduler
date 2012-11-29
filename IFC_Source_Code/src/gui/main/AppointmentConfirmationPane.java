@@ -54,7 +54,10 @@ public class AppointmentConfirmationPane extends JPanel {
 		// Create heading for the appointment confirmation panel
 		JPanel apptConfirmationPanel = new JPanel(new GridLayout(0, 1));
 		apptConfirmationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		String date = toFormalString(dp.getDay().getDate());
+
+		
+		String date= shortDate(dp.getDay().getDate());
+		
 		JLabel apptConfirmationLabel = new JLabel("Appointments to Confirm for " + date + ":");
 		apptConfirmationLabel.setFont(font);
 		
@@ -79,11 +82,14 @@ public class AppointmentConfirmationPane extends JPanel {
     	JScrollPane scrollPane = new JScrollPane(tablePanel);
     	add(scrollPane, BorderLayout.CENTER);
 	}
-	// convert a date object to the mm/dd/yyyy format
-	private String toFormalString(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
-		return sdf.format(date);
+	
+	/** Returns a string of the current date in yyyy-mm-dd format. */
+	public String shortDate(Date d){
+		Date date = new Date(d.getTime());
+		String dateString = date.toString();
+		return dateString;
 	}
+	
 
 	/**
 	 * Resets the table model.

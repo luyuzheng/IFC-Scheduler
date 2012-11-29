@@ -93,7 +93,6 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		c.add(Calendar.MONTH, -1);
 		c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
 		c.add(Calendar.DAY_OF_MONTH, (-1) * prevDays + 1);
-		System.out.println(c.getActualMaximum(Calendar.DAY_OF_MONTH));
 		for (int i = 1; i <= prevDays; i++) {
 			//Calendar c = new GregorianCalendar(cal.get(Calendar.MONTH) + 1, cal.getActualMaximum(Calendar.DAY_OF_MONTH) - prevDays + i, cal.get(Calendar.YEAR));
 			java.sql.Date date = new Date(c.getTime().getTime());

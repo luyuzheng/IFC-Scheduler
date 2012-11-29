@@ -94,9 +94,9 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		label.setFont(font);
 		typePanel.add(label, BorderLayout.NORTH);
 		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
-		typeCombo.setSelectedIndex(0);
+		//typeCombo.setSelectedIndex(0);
 		//Added by Aakash on 14th feb to fix combolist practitioner-type bug
-		typeCombo.setSelectedIndex(p.getTypeID());
+		typeCombo.setSelectedItem(p.getType());
 
 		typeCombo.setFont(font);
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());
@@ -152,13 +152,13 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 			remove(panel);
 			panel = makeMainPanel();
 			//Added by Aakash on 14th feb to fix combolist practitioner-type bug
-			typeCombo.setSelectedIndex(0); //TODO: figure out what maxId does, just dit his to make it compile -Kenny
+			typeCombo.setSelectedIndex(typeCombo.getItemCount()); //TODO: figure out what maxId does, just dit his to make it compile -Kenny
                         //typeCombo.setSelectedIndex(tm.getMaxId());
 			add(panel);
 			repaint();
 			validate();
 			return;
-		} else {
+		} else if (!e.getActionCommand().equals("Cancel")) {
 			JLabel msg = new JLabel();
 			msg.setFont(font);
 			String firstName = firstNameField.getText();

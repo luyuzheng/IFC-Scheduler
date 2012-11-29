@@ -12,6 +12,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -25,7 +26,6 @@ import javax.swing.table.AbstractTableModel;
 
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
-import backend.DataTransferObjects.PractitionerDto;
 
 /**
  * SearchPane displays the search pane on the right-hand side of the application when the "Search" button is clicked.
@@ -110,7 +110,13 @@ public class SearchPane extends JPanel {
 	 */
 	private final AbstractAction searchForPatientAction = new AbstractAction("Search for a Patient") {
 		public void actionPerformed(ActionEvent e) {
-			SearchForPatientUI.ShowDialog(owner);
+			List<PatientDto> results = SearchForPatientUI.ShowDialog(owner);
+			if (!(resultsTable.getModel() instanceof PatientResultsTableModel)) {
+				resultsTable.setModel(new PatientResultsTableModel(results));
+			} else {
+				((PatientResultsTableModel) resultsTable.getModel()).setPatients(results);
+				((PatientResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+			}
 		}
 	};
 	
@@ -119,7 +125,14 @@ public class SearchPane extends JPanel {
 	 */
 	private final AbstractAction searchForApptAction = new AbstractAction("Search for Next Available Appointment") {
 		public void actionPerformed(ActionEvent e) {
-			SearchForAppointmentUI.ShowDialog(owner);
+			ArrayList<AppointmentDto> results =
+				(ArrayList<AppointmentDto>) SearchForAppointmentUI.ShowDialog(owner);
+			if (!(resultsTable.getModel() instanceof AppointmentResultsTableModel)) {
+				resultsTable.setModel(new AppointmentResultsTableModel(results));
+			} else {
+				((AppointmentResultsTableModel) resultsTable.getModel()).setAppointments(results);
+				((AppointmentResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+			}
 		}
 	};
 	
@@ -128,7 +141,7 @@ public class SearchPane extends JPanel {
 	 */
 	public void resetModel() {
 		// if such and such a button is clicked, set it to the correct model!!!
-		//table.setModel(new SearchTableModel(acm.getConfirmationList()));
+		//TODO: table.setModel(new SearchTableModel(acm.getConfirmationList()));
 	}
 	
 	/**
@@ -190,12 +203,12 @@ public class SearchPane extends JPanel {
 	public class PatientResultsTableModel extends AbstractTableModel {
 		
 		private String columnNames[];
-		private ArrayList<PatientDto> patients;
+		private List<PatientDto> patients;
 		
 		/**
 		 * Constructor to produce a patient results table model.
 		 */ 
-		public PatientResultsTableModel(ArrayList<PatientDto> pat) {
+		public PatientResultsTableModel(List<PatientDto> pat) {
 			patients = pat;
 			columnNames = new String[] { "Name", "Phone Number", "Comments" /*, "Waitlisted", "No Show" */};
 		}
@@ -235,6 +248,10 @@ public class SearchPane extends JPanel {
 		 */
 		public int getRowCount() {
 			return patients.size();
+		}
+		
+		public void setPatients(List<PatientDto> patients) {
+			this.patients = patients; 
 		}
 		
 		/**
@@ -312,6 +329,10 @@ public class SearchPane extends JPanel {
 			return appointments.size();
 		}
 		
+		public void setAppointments(ArrayList<AppointmentDto> appointments) {
+			this.appointments = appointments;
+		}
+		
 		/**
 		 * Returns the cell of information specified at a particular row and column.
 		 * 
@@ -323,7 +344,10 @@ public class SearchPane extends JPanel {
 			if (col == 0) {
 				return a.getApptDate();
 			} else if (col == 1){
-				return a.getStart();
+				int hours = a.getStart() / 60;
+				int minutes = a.getStart() % 60;
+				String minute = minutes < 10 ? "0" + minutes : "" + minutes;
+				return hours + ":" + minute;
 			} else {
 				return a.getEnd() - a.getStart();
 			}

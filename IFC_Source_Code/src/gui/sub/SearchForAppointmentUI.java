@@ -1,8 +1,5 @@
 package gui.sub;
 
-import backend.DataService.DataServiceImpl;
-import gui.main.WaitListPane.BoxListener;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -12,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -21,10 +19,11 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import backend.DataTransferObjects.*;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.TypeDto;
 
 /**
  * Displays the pop up window that allows the user to search for the next available appointment.
@@ -32,7 +31,7 @@ import backend.DataTransferObjects.*;
 public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private static SearchForAppointmentUI searchForAppointmentUI;
 	
-	private static AppointmentDto a;
+	private static List<AppointmentDto> a;
 	private JCheckBox monday = new JCheckBox("Mon");
 	private JCheckBox tuesday = new JCheckBox("Tues");
 	private JCheckBox wednesday = new JCheckBox("Wed");
@@ -135,12 +134,12 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	 * @param owner - the component that owns this pane (the SearchPane)
 	 * @return an appointment
 	 */
-	public static AppointmentDto ShowDialog(Component owner) {
+	public static List<AppointmentDto> ShowDialog(Component owner) {
 		searchForAppointmentUI = new SearchForAppointmentUI("Search for Next Available Appointment");
 		searchForAppointmentUI.pack();
 		searchForAppointmentUI.setLocationRelativeTo(owner);
 		searchForAppointmentUI.setVisible(true);
-		return a; // SHOULD IT ACTUALLY BE RETURNING AN ARRAYLIST OF APPOINTMENTS???
+		return a;
 	}
 	
 	/**
@@ -149,14 +148,48 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Search") {
-			/*if (a == null) {
-				JLabel errorMessage = new JLabel("Please enter a practitioner's name.");
+			if (!monday.isSelected() && !tuesday.isSelected() && !wednesday.isSelected()
+					&& !thursday.isSelected() && !friday.isSelected()) {
+				JLabel errorMessage = new JLabel("Please select a day.");
 				errorMessage.setFont(font);
 				JOptionPane.showMessageDialog(this, errorMessage, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
-			}*/
+			}
 			// Get search manager to search for appointments and return results!!!
-		} 
+			// do manual filtering for day of the week
+			TypeDto type = (TypeDto) typeSelector.getSelectedItem();
+			System.out.println(type.getTypeID());
+			List<AppointmentDto> results =
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(type.getTypeID());
+			System.out.println(results);
+			if (results == null) {
+				results = new ArrayList<AppointmentDto>();
+			}
+			if (monday.isSelected() && tuesday.isSelected() && wednesday.isSelected()
+					&& thursday.isSelected() && friday.isSelected()) {
+				a = results;
+			} else {
+				ArrayList<AppointmentDto> filtered = new ArrayList<AppointmentDto>();
+				Calendar cal = Calendar.getInstance();
+				for (AppointmentDto appt : results) {
+					cal.setTime(appt.getApptDate());
+					int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+					if (dayOfWeek == Calendar.MONDAY && !monday.isSelected()) {
+						continue;
+					} else if (dayOfWeek == Calendar.TUESDAY && !tuesday.isSelected()) {
+						continue;
+					} else if (dayOfWeek == Calendar.WEDNESDAY && !wednesday.isSelected()) {
+						continue;
+					} else if (dayOfWeek == Calendar.THURSDAY && !thursday.isSelected()) {
+						continue;
+					} else if (dayOfWeek == Calendar.FRIDAY && !friday.isSelected()) {
+						continue;
+					}
+					filtered.add(appt);
+				}
+				a = filtered;
+			}
+		}
 		searchForAppointmentUI.setVisible(false);
 	}
 }

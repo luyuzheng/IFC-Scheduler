@@ -66,7 +66,7 @@ public class WaitListPane extends JPanel {
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
 		typeSelector.addActionListener(new BoxListener());
-		JLabel typeLabel = new JLabel("Select Practitioner Type:");
+		JLabel typeLabel = new JLabel("Filter Waitlist By Practitioner Type:");
 		typeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		typeSelector.setFont(font);
 		typeLabel.setFont(font);
@@ -76,7 +76,7 @@ public class WaitListPane extends JPanel {
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
     	removePatientButton.setAction(removePatientAction);
     	addPatientButton.setAction(addPatientAction);
-    	JLabel actionLabel = new JLabel("Perform Action:");
+    	JLabel actionLabel = new JLabel(" ");
     	actionLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
     	actionLabel.setFont(font);
     	addPatientButton.setFont(font);

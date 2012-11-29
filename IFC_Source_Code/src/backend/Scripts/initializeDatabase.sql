@@ -40,6 +40,7 @@ FirstName varchar(255),
 LastName varchar(255),
 ApptLength int,
 PhoneNumber varchar(255),
+Active int, 
 Notes text
 );
 

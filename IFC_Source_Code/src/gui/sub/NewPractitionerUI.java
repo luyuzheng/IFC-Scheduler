@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -85,8 +87,9 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
     	typeCombo = new JComboBox(typeList.toArray());
     	if (typeList.size() > 0)
-    		typeCombo.setSelectedIndex(0);
+    		typeCombo.setSelectedIndex(1);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
+    	
     	JButton newTypeButton = new JButton("New Type");
     	newTypeButton.addActionListener(this);
     	newTypeButton.setActionCommand("New Type");
