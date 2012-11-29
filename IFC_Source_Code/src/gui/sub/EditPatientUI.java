@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.Dimension;
 
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -101,7 +102,8 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	JPanel noShowsPanel = new JPanel(new BorderLayout());
     	numberOfNoShows.setText("Number of no shows: " + p.getNoShows());
     	numberOfNoShows.setFont(font);
-    	//TODO set numberOfNoShows to center alignment
+    	numberOfNoShows.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+    	numberOfNoShows.setHorizontalTextPosition(JLabel.CENTER);
     	noShowsPanel.add(numberOfNoShows);
     	input.add(noShowsPanel);
     	
