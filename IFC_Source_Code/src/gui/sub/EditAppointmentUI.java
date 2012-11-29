@@ -24,7 +24,7 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
-public class EditAppointmentUI extends JDialog implements ActionListener, ItemListener {
+public class EditAppointmentUI extends JDialog implements ActionListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
 	private JButton okButton = new JButton("Save");
@@ -108,12 +108,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 		okButton.setActionCommand("save");
 		okButton.setFont(font);
 		buttonPanel.add(okButton);
-		cancelButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				editAppointmentUI.setVisible(false);
-			}
-		}); // cancel should do nothing but close
+		cancelButton.addActionListener(this); 
 		cancelButton.setActionCommand("cancel");
 		cancelButton.setFont(font);
 		buttonPanel.add(cancelButton);
@@ -169,12 +164,12 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 	// I don't think this is how we wanna do this
 	// using itemStateChanged has to handle each state change
 	// I think it's better to read the state when save is clicked
-	public void itemStateChanged(ItemEvent e) {
-		if (e.getStateChange() == ItemEvent.SELECTED) {
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
-			System.out.println("otter");
-		} else {
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
-		}
-	}
+//	public void itemStateChanged(ItemEvent e) {
+//		if (e.getStateChange() == ItemEvent.SELECTED) {
+//			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
+//			System.out.println("otter");
+//		} else {
+//			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
+//		}
+//	}
 }

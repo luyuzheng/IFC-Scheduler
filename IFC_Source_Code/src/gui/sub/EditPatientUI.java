@@ -51,6 +51,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		
 		if(p.getPhone()!=""){
 			String phone= p.getPhone();
+			phone = phone.replaceAll("-| |\\)|\\(", "");
 			
 			areaCodeField.setText(phone.substring(0,3));
 			areaCodeField.setFont(font);
