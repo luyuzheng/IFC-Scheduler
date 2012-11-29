@@ -48,7 +48,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 	
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
 		
-		String text = "Time Slot: " + appointment.getStart().toString() + " - " + appointment.getEnd().toString();
+		String text = "Time Slot: " + appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd();
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
 		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n"); // TODO: NEED TO DELETE REPLACEALL?
@@ -66,7 +66,17 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JLabel noShowsLabel = new JLabel("No Show");
 		noShowsLabel.setFont(font);
-                noShowsCheckBox.addItemListener(this);
+		
+		//------TODO: MAKE THIS SHOW THE GODDAMN CHECKBOX PROPERLY---------
+		// (deleting this makes no shows increment properly, but then it doesn't
+		// display the check once the pop up is reopened)
+		if (appointment.isNoShow()) {
+			noShowsCheckBox.setSelected(true);
+		} else {
+			noShowsCheckBox.setSelected(false);
+		}
+		//-----------------------------------------------------------------
+        noShowsCheckBox.addItemListener(this);
 		checkBoxPanel.add(noShowsCheckBox);
 		checkBoxPanel.add(noShowsLabel);
 		
@@ -143,9 +153,9 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
     }
 
 	public void itemStateChanged(ItemEvent e) {
-                System.out.println("teessssttttt");
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
+			System.out.println("otter");
 		} else {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
 		}

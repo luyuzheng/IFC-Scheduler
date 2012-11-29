@@ -224,7 +224,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 			else if (col == 2)
 				return a.prettyPrintEnd();
 			else
-				return a.getPractSchedID();
+				return a.getPractName();
 		}
 		
 		public boolean isCellEditable(int row, int col) {

@@ -27,6 +27,7 @@ import backend.DataTransferObjects.DayDto;
 import java.util.Date;
 import java.util.List;
 
+import backend.DataTransferObjects.PatientDto;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 import gui.TimeSlot;
@@ -74,22 +75,30 @@ public class DayPanel extends JPanel {
 		//We don't want these focusable, so they won't disrupt the focus of the main calendar area
 		switchViewButton.setAction(switchViewAction);
 		switchViewButton.setFocusable(false);
+		switchViewButton.setActionCommand("switchView");
 		patientButton.setAction(addPatAction);
 		patientButton.setFocusable(false);
 		patientButton.setEnabled(false);
+		patientButton.setActionCommand("patient");
 		addPracButton.setFocusable(false);
 		addPracButton.setAction(addPracAction);
+		addPracButton.setActionCommand("addPrac");
 		removePracButton.setAction(removePracAction);
 		removePracButton.setFocusable(false);
 		removePracButton.setEnabled(false);
+		removePracButton.setActionCommand("removePrac");
+		setTimeSlotButton.setAction(changeTimeSlotAction);
 		setTimeSlotButton.setFocusable(false);
+		setTimeSlotButton.setActionCommand("setTimeSlot");
 		searchButton.setAction(searchAction);
 		searchButton.setFocusable(false);
+		searchButton.setActionCommand("search");
 		apptConfirmationButton.setAction(apptConfirmationAction);
 		apptConfirmationButton.setFocusable(false);
-		setTimeSlotButton.setAction(changeTimeSlotAction);
+		apptConfirmationButton.setActionCommand("apptConfirmation");
 		waitListButton.setAction(waitListAction);
 		waitListButton.setFocusable(true);
+		waitListButton.setActionCommand("waitList");
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
 		
@@ -208,7 +217,10 @@ public class DayPanel extends JPanel {
 	/** Shows the dialog for scheduling a patient to an appointment. */
 	private final AbstractAction addPatAction = new AbstractAction("<html>Schedule Patient</html>") {
 		public void actionPerformed(ActionEvent e) {
-			ab.setPatient(SelectPatientUI.ShowDialog(ab.getParent()).getPatID());
+			PatientDto patient = SelectPatientUI.ShowDialog(ab.getParent());
+			if (patient != null) {
+				ab.setPatient(patient.getPatID());
+			}
 		}
 	};
 	

@@ -29,6 +29,9 @@ public class PatientDto extends AbstractDto {
     }
     
     public Integer getNoShows(){
+    	if (fieldsMap.get(NO_SHOW) == null){
+    		return 0;
+    	}
         return (Integer) fieldsMap.get(NO_SHOW);
     }
 

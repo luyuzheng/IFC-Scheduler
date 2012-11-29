@@ -276,7 +276,7 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
 				//TODO set to 0 if null
-				patient.setField(PatientDto.NO_SHOW, rs.getString(PatientDto.NO_SHOW));
+				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
 			}
@@ -812,6 +812,7 @@ public class DataServiceImpl implements DataService {
 				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract.getPractSchedID());
 				st.setInt(1, pract.getPractSchedID());
 				appointments.add(newApt);
+				newApt.setField(AppointmentDto.PRACTITIONER_NAME, pract.getPractitioner().getFirst() + " " + pract.getPractitioner().getLast());
 				st.executeQuery();
 			}
 
@@ -962,12 +963,8 @@ public class DataServiceImpl implements DataService {
 		PreparedStatement st = null;
 
 		try {
-			int patID = appointment.getPatientID();
-			Date date = appointment.getApptDate();
-			st = connection.prepareStatement("DELETE FROM NoShow WHERE " +
-			"patID=? AND NoShowDate=?");
-			st.setInt(1, patID);
-			st.setDate(2, date);
+			st = connection.prepareStatement("DELETE FROM NoShow WHERE NoShowID=?");
+			st.setInt(1, appointment.getNoShowID());
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -1203,6 +1200,7 @@ public class DataServiceImpl implements DataService {
 				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract_id);
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
+				//newApt.setField(AppointmentDto.PRACTITIONER_NAME, pract.getFirst() + ' ' + pract.getLast());
 				st.executeUpdate();
 				
 				rs = new_st.executeQuery();
@@ -1324,8 +1322,18 @@ public class DataServiceImpl implements DataService {
 	public List<AppointmentDto> getAllAppointments(int schedPractId) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
+		String name = null;
 
 		try {
+			st = connection.prepareStatement("Select FirstName, LastName FROM PractitionerScheduled INNER JOIN Practitioner ON PractitionerScheduled.PractID = Practitioner.PractID WHERE PractitionerScheduled.PractSchID = ?");
+			st.setInt(1, schedPractId);
+			rs = st.executeQuery();
+				if (rs.next()){
+					name = rs.getString("FirstName") + ' '+ rs.getString("LastName");
+				}
+			rs = null;
+			st = null;
+			
 			st = connection.prepareStatement(
 					"SELECT * FROM Appointment WHERE PractSchedID = ?");
 			st.setInt(1, schedPractId);
@@ -1354,6 +1362,7 @@ public class DataServiceImpl implements DataService {
 						rs.getInt(AppointmentDto.START));
 				newAppointment.setField(AppointmentDto.CONFIRMATION,
 						rs.getInt(AppointmentDto.CONFIRMATION)==1);
+				newAppointment.setField(AppointmentDto.PRACTITIONER_NAME, name);
 				retList.add(newAppointment);
 			}
 			return retList;
@@ -1508,9 +1517,9 @@ public class DataServiceImpl implements DataService {
 		st.setString(4,patient.getNotes());
 		st.setInt(5,patient.getPatID());
 		
-		rs=st.executeQuery();
-		boolean updated = rs.rowUpdated();
-		return updated;
+		st.executeUpdate();
+		
+		return true;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1618,6 +1627,7 @@ public class DataServiceImpl implements DataService {
 				newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
 				newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
 				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
+				newAppt.setField(AppointmentDto.PRACTITIONER_NAME, rs.getString(PractitionerDto.FIRST) + " "+ rs.getString(PractitionerDto.LAST));
 				
 				// manual filter of starttime
 	        	Calendar apptCal = Calendar.getInstance();
@@ -1655,7 +1665,7 @@ public class DataServiceImpl implements DataService {
     	ResultSet rs = null;
     	try {
 
-    		st = connection.prepareStatement("Select * From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = '?' AND Appointment.PatID IS NOT NULL");
+    		st = connection.prepareStatement("Select * From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = ? AND Appointment.PatID IS NOT NULL");
 
     		st.setDate(1, day);
     		rs = st.executeQuery();
