@@ -597,7 +597,6 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, "Tried to delete practitioner without ID\n");
 				return false;
 			} else {
-                            //TODO: Claire change this to set Active = 0
 				st = connection.prepareStatement(
 				"UPDATE Practitioner SET Practitioner.Active=0 WHERE PractID=?");
 				st.setInt(1, practitioner.getPractID());
@@ -792,15 +791,10 @@ public class DataServiceImpl implements DataService {
 		st = connection.prepareStatement("UPDATE Appointment " +
 				"SET Appointment.PatID=? WHERE Appointment.ApptID=?" );
 		st.setInt(1, patID);
-                if (appointment == null){
-                    System.out.println("test1");
-                }
-                else if (appointment.getApptID() == null){
-                    System.out.println("test2");
-                }
 		st.setInt(2, appointment.getApptID());
 		
 		st.executeUpdate();
+                appointment.setPatient(DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(patID));
 		return true;
 		
 	} catch (SQLException e) {
@@ -859,6 +853,8 @@ public class DataServiceImpl implements DataService {
 				"SET Appointment.PatID=NULL WHERE Appointment.ApptID=?" );
 		st.setInt(1, appointment.getApptID());
 		
+                appointment.setPatient(null);
+                appointment.setPatientID(null);
 		st.executeUpdate();
 		return true;
 		
@@ -1605,18 +1601,19 @@ public class DataServiceImpl implements DataService {
     }
 
     @Override
-    public ArrayList<PatientDto> getAllPatientsForDay(Date day){
+    public ArrayList<AppointmentDto> getAllPatientsForDay(Date day){
     	PreparedStatement st = null;
     	ResultSet rs = null;
     	try {
 
-    		st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = '(?)' AND Appointment.PatID IS NOT NULL");
+    		st = connection.prepareStatement("Select * From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = '?' AND Appointment.PatID IS NOT NULL");
 
     		st.setDate(1, day);
     		rs = st.executeQuery();
 
-    		ArrayList<PatientDto> returnList = new ArrayList<PatientDto>();
+    		ArrayList<AppointmentDto> returnList = new ArrayList<AppointmentDto>();
     		PatientDto newPat;
+    		AppointmentDto newAppt;
 
     		while (rs.next()){
     			newPat = new PatientDto();
@@ -1626,7 +1623,20 @@ public class DataServiceImpl implements DataService {
     			newPat.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
     			newPat.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
     			newPat.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
-    			returnList.add(newPat);
+    			
+    			newAppt = new AppointmentDto();
+    			newAppt.setPatient(newPat);
+    			newAppt.setField(AppointmentDto.APPT_ID, rs.getInt(AppointmentDto.APPT_DATE));
+    			newAppt.setField(AppointmentDto.NO_SHOW_ID, rs.getInt(AppointmentDto.NO_SHOW_ID));
+    			newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
+    			newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
+    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getString(AppointmentDto.CONFIRMATION));
+    			newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
+    			newAppt.setField(AppointmentDto.APPT_DATE, rs.getString(AppointmentDto.APPT_DATE));
+    			newAppt.setField(AppointmentDto.PAT_ID, rs.getInt(AppointmentDto.PAT_ID));
+    			newAppt.setField(AppointmentDto.PRACT_SCHED_ID, rs.getInt(AppointmentDto.PRACT_SCHED_ID));
+    			
+    			returnList.add(newAppt);
     		}
     		return returnList;
 

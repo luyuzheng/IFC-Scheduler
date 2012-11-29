@@ -47,8 +47,6 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		setTitle(name);
 				
 		apt= DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(wp.getTypeID());
-		System.out.println(wp.getTypeID());
-		System.out.println(apt);
 		JComponent panel= displayAvailAppts();
 		panel.setPreferredSize(new Dimension(500,250));
 		
@@ -178,9 +176,9 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 			if (col == 0) 
 				return a.getApptDate();
 			else  if (col == 1)
-				return a.getStart();
+				return a.prettyPrintStart();
 			else if (col == 2)
-				return a.getEnd();
+				return a.prettyPrintEnd();
 			else
 				return a.getPractSchedID();
 		}
