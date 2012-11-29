@@ -1409,7 +1409,7 @@ public class DataServiceImpl implements DataService {
 		try {
 			appointment.setConfirmation(true);
 			st = connection.prepareStatement(
-					"UPDATE Appointment SET Confirmation=1" +
+					"UPDATE Appointment SET Confirmation=1 " +
 					"WHERE ApptID=?");
 			st.setInt(1, appointment.getApptID());
 			st.executeUpdate();
@@ -1710,7 +1710,7 @@ public class DataServiceImpl implements DataService {
     			newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
     			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getInt(AppointmentDto.CONFIRMATION));
     			newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
-    			newAppt.setField(AppointmentDto.APPT_DATE, rs.getString(AppointmentDto.APPT_DATE));
+    			newAppt.setField(AppointmentDto.APPT_DATE, rs.getDate(AppointmentDto.APPT_DATE));
     			newAppt.setField(AppointmentDto.PAT_ID, rs.getInt(AppointmentDto.PAT_ID));
     			newAppt.setField(AppointmentDto.PRACT_SCHED_ID, rs.getInt(AppointmentDto.PRACT_SCHED_ID));
     			

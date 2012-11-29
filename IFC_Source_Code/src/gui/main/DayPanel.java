@@ -115,7 +115,7 @@ public class DayPanel extends JPanel {
 		add(buttonPanel);
 	}
 	
-	/** Returs the day associated with the day panel. */
+	/** Returns the day associated with the day panel. */
 	public DayDto getDay() {
 		return day;
 	}
