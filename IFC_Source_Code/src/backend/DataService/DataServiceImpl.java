@@ -1602,7 +1602,7 @@ public class DataServiceImpl implements DataService {
     	ResultSet rs = null;
     	try {
 
-    		st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = '(?)' AND Appointment.PatID IS NOT NULL");
+    		st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = '?' AND Appointment.PatID IS NOT NULL");
 
     		st.setDate(1, day);
     		rs = st.executeQuery();
