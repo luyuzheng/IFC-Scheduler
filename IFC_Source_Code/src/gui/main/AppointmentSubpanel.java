@@ -10,10 +10,12 @@ import gui.TimeSlot;
 
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 
 import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
 @SuppressWarnings("serial")
@@ -71,6 +73,15 @@ public class AppointmentSubpanel extends JPanel {
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.changePractitionerHoursForDay(
 						rp.room, dp.getDay(), dp.getDay().getStart(),
 						dp.getDay().getEnd());
+				List<AppointmentDto> remove = new ArrayList<AppointmentDto>();
+				for (AppointmentDto appt : rp.room.getAppointments()) {
+					if (appt.getStart() < rp.room.getStart() || appt.getEnd() > rp.room.getEnd()) {
+						remove.add(appt);
+					}
+				}
+				for (AppointmentDto appt : remove) {
+					rp.room.getAppointments().remove(appt);
+				}
 				rp.resetPractitionerHours(rp.room);
 			}
 		}

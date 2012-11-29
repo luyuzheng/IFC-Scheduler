@@ -65,7 +65,6 @@ public class RoomPanel extends JPanel {
 		this.room = room;
 		remove(headingPanel);
 		remove(roomSubpanel);
-		System.out.println(room);
 		roomSubpanel = new RoomSubpanel(room, dp);
 		headingPanel = new HeadingPanel(room, this, roomSubpanel);
 		setLayout(new BorderLayout());
