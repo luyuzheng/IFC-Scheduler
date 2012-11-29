@@ -914,12 +914,8 @@ public class DataServiceImpl implements DataService {
 		PreparedStatement st = null;
 
 		try {
-			int patID = appointment.getPatientID();
-			Date date = appointment.getApptDate();
-			st = connection.prepareStatement("DELETE FROM NoShow WHERE " +
-			"patID=? AND NoShowDate=?");
-			st.setInt(1, patID);
-			st.setDate(2, date);
+			st = connection.prepareStatement("DELETE FROM NoShow WHERE NoShowID=?");
+			st.setInt(1, appointment.getNoShowID());
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -1472,9 +1468,9 @@ public class DataServiceImpl implements DataService {
 		st.setString(4,patient.getNotes());
 		st.setInt(5,patient.getPatID());
 		
-		rs=st.executeQuery();
-		boolean updated = rs.rowUpdated();
-		return updated;
+		st.executeUpdate();
+		
+		return true;
 		
 	} catch (SQLException e) {
 		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
