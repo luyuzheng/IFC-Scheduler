@@ -2,6 +2,7 @@ package gui.main;
 
 import backend.DataService.DataServiceImpl;
 import gui.main.listeners.AppointmentConfirmationListener;
+import gui.sub.DisplayWaitingPatientUI.ApptTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,10 +10,13 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,12 +33,16 @@ import backend.DataTransferObjects.*;
  * allowing the user to easily find and check off which patients need to be contacted to confirm their appointments. The
  * pane can be closed by clicking on the "Hide Appointment Confirmation" button that appears once the pane is open.
  */
-public class AppointmentConfirmationPane extends JPanel {
+public class AppointmentConfirmationPane extends JPanel implements ActionListener {
 
 	/** The component (main window) that owns this pane. */
 	private Component owner;
 	/** The table containing the patients for the day. */
 	private JTable table;
+
+	private DayPanel dp;
+	
+	private JButton confirmButton = new JButton("Confirm Selected Appointment");
 	
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
@@ -45,25 +53,37 @@ public class AppointmentConfirmationPane extends JPanel {
 	 * @param owner - the component that owns this pane
 	 * @param dp - an instance of a DayPanel
 	 */
-	public AppointmentConfirmationPane(Component owner, DayPanel dp) {
+	public AppointmentConfirmationPane(Component owner, DayPanel dayPanel) {
 		this.owner = owner;
+		this.dp = dayPanel;
 		setMinimumSize(new Dimension(0,0));
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout());
 		
 		// Create heading for the appointment confirmation panel
-		JPanel apptConfirmationPanel = new JPanel(new GridLayout(0, 1));
+		JPanel topPanel = new JPanel(new GridLayout(0, 1));
+		JPanel apptConfirmationPanel = new JPanel(new BorderLayout()); //new JPanel(new GridLayout(0, 1));
+		JPanel buttonPanel = new JPanel(new BorderLayout());
+		
 		apptConfirmationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
 		
 		String date= shortDate(dp.getDay().getDate());
 		
 		JLabel apptConfirmationLabel = new JLabel("Appointments to Confirm for " + date + ":");
 		apptConfirmationLabel.setFont(font);
 		
+		confirmButton.setFont(font);
+		confirmButton.setActionCommand("confirm");
+		confirmButton.addActionListener(this);
+		
 		// Add header label to the panel
 		apptConfirmationPanel.add(apptConfirmationLabel);
-		add(apptConfirmationPanel, BorderLayout.NORTH);
+		buttonPanel.add(confirmButton);
+		topPanel.add(apptConfirmationPanel);
+		topPanel.add(buttonPanel);
+		add(topPanel, BorderLayout.NORTH);
+		//apptConfirmationPanel.add(confirmButton);
+		//add(apptConfirmationPanel, BorderLayout.NORTH);
 		
 		// Create panel to display patients for a particular day
 		JPanel tablePanel = new JPanel(new BorderLayout());
@@ -96,7 +116,8 @@ public class AppointmentConfirmationPane extends JPanel {
 	 * Resets the table model.
 	 */
 	public void resetModel() {
-		//table.setModel(new AppointmentConfirmationTableModel(acm.getConfirmationList()));
+		table.setModel(new AppointmentConfirmationTableModel(
+				(ArrayList<AppointmentDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatientsForDay(dp.getDay().getDate())));
 	}
 	
 	/**
@@ -113,7 +134,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		 */
 		public AppointmentConfirmationTableModel(ArrayList<AppointmentDto> confirm) {
 			this.confirm = confirm;
-			columnNames = new String[] {"Confirmed", "First Name", "Last Name", "Phone Number"};
+			columnNames = new String[] {"Confirmed", "First Name", "Last Name", "Phone Number", "Notes"};
 		}
 		
 		/**
@@ -154,7 +175,7 @@ public class AppointmentConfirmationPane extends JPanel {
 		}
 
 		 public boolean isCellEditable(int row, int col) { 
-			 return true; 
+			 return false; 
 		 }
 		 
 		/**
@@ -170,16 +191,29 @@ public class AppointmentConfirmationPane extends JPanel {
                         
 			if (col == 0) {
 				if (appt.getConfirmation()) {
-					return Boolean.TRUE;
+					return "Yes";
 				} else {
-					return Boolean.FALSE;
+					return "No";
 				}
 			} else if (col == 1) {
 				return pat.getFirst();
-			} else if (col ==2) {
+			} else if (col == 2) {
 				return pat.getLast();
-			} else {
+			} else if (col == 3){
 				return pat.getPhone();
+			} else {
+				return appt.getNote();
+			}
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand() == "confirm") {
+			if (table.getSelectedRow() >= 0) {
+				AppointmentDto appt = ((AppointmentConfirmationTableModel)table.getModel()).getAppointment(table.getSelectedRow());
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appt);
+				appt.setConfirmation(true);
+				resetModel();
 			}
 		}
 	}
