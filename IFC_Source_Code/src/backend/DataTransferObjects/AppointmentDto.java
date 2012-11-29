@@ -142,10 +142,11 @@ public class AppointmentDto extends AbstractDto {
             time = "pm";
         }
         
+        
         int end = this.getStart() % 60;
         
         if (end < 10){
-            return start + ":" + end + "0 " + time;
+            return start + ":" + "0" + end + " " + time;
         }
         return start + ":" + end + " " + time;
     }
@@ -167,7 +168,7 @@ public class AppointmentDto extends AbstractDto {
         int end = this.getEnd() % 60;
         
         if (end < 10){
-            return start + ":" + end + "0 " + time;
+            return start + ":" + "0" + end + " " + time;
         }
         return start + ":" + end + " " + time;
     }
