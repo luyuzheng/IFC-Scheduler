@@ -63,6 +63,8 @@ public class WaitListPane extends JPanel {
 		types = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
 		//Type general = new Type(-1, "View All");
 		//types.add(0, general); TODO: VIEW ALL
+		
+		
 		typeSelector = new JComboBox(types.toArray());
 		if (!types.isEmpty()) {
 			typeSelector.setSelectedIndex(0);
