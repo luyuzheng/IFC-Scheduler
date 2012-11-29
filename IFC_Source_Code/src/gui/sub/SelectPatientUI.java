@@ -328,7 +328,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			return patients.get(row);
 		}
 		
-		private String[] columnNames = { "First Name", "Last Name", "Phone #", "Note" };
+		private String[] columnNames = { "First Name", "Last Name", "Phone #", "Note", "No Shows"};
 		
 		public int getColumnCount() {
 			return columnNames.length;
@@ -350,8 +350,12 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 				return p.getLast();
 			else if (col == 2)
 				return p.getPhone();
-			else
+			else if (col == 3)
 				return p.getNotes();
+			else {
+				Integer numNoShows = p.getNoShows();
+				return numNoShows.toString();
+			}
 		}
 		
 		public boolean isCellEditable(int row, int col) {
