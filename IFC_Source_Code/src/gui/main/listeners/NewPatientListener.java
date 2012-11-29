@@ -33,15 +33,16 @@ public class NewPatientListener extends MouseAdapter {
 		if (e.getClickCount() >= 2) {
 			AppointmentDto a = owner.getAppointment();
                         
-			if (owner.getAppointment().getPatientID() != null)
+			if (owner.getAppointment().getPatientID() != null) {
 				a = EditAppointmentUI.ShowDialog(parent,a);
-                        else {
-                                PatientDto patient = SelectPatientUI.ShowDialog(parent);
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(
-						patient.getPatID(), a);
-                                a.setPatientID(patient.getPatID());
-                                owner.setPatient(patient.getPatID());
-                        }
+			}
+            else {
+                    PatientDto patient = SelectPatientUI.ShowDialog(parent);
+                    DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(
+                    		patient.getPatID(), a);
+                    a.setPatientID(patient.getPatID());
+                    owner.setPatient(patient.getPatID());
+            }
                         owner.setNote(a.getNote());
 		}
 	}

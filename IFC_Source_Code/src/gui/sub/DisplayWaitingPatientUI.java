@@ -1,5 +1,7 @@
 package gui.sub;
 
+import gui.main.listeners.ScheduleWaitlistPatientListener;
+import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
@@ -34,9 +36,11 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private ArrayList<AppointmentDto> apt;
 	private JTable aptTable;
 	
+	private PatientDto patient;
+	
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
-	//private JTextArea textArea;
+	private JTextArea textArea;
 	private JTextArea noteArea;
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
@@ -45,7 +49,29 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private DisplayWaitingPatientUI(String name, WaitlistDto wp) {
 		setModal(true);
 		setTitle(name);
-				
+			
+		// Display patient information
+		JPanel infoPanel = new JPanel(new BorderLayout());
+		
+		patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(wp.getPatientID());
+		
+		String text = "Date Added: " + wp.getDate() + "\n" + 
+					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
+					  "Phone Number: " + patient.getPhone() + "\n" +
+					  "Type: " + wp.getTypeName() + "\n" +
+					  "Comments: " + wp.getComments() + "\n\n";
+		
+		textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		textArea.setEditable(false);
+		textArea.setFont(font);
+		textArea.setOpaque(false);
+		textArea.setHighlighter(null);
+		textArea.setText(text);
+		infoPanel.add(textArea);
+		
+		// Display available appointments to schedule person off of waitlist
 		apt= DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(wp.getTypeID());
 		System.out.println(wp.getTypeID());
 		System.out.println(apt);
@@ -54,7 +80,8 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		
 		setLayout(new BorderLayout());
 
-		add(panel);
+		add(infoPanel, BorderLayout.NORTH);
+		add(panel, BorderLayout.CENTER);
 		setResizable(false);
 		
 	}
@@ -102,6 +129,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	aptTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	aptTable.setFont(font);
     	aptTable.getTableHeader().setFont(font);
+    	aptTable.addMouseListener(new ScheduleWaitlistPatientListener(aptTable, this));
     	panel.add(aptTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(aptTable, BorderLayout.CENTER);
     	    	
@@ -147,7 +175,11 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		displayWaitingPatientUI.setVisible(false);
     }
 	
-	class ApptTableModel extends AbstractTableModel {	
+	public PatientDto getWaitlistPatient() {
+		return patient;
+	}
+	
+	public class ApptTableModel extends AbstractTableModel {	
 
 		ArrayList<AppointmentDto> appointments = new ArrayList<AppointmentDto>();
 		

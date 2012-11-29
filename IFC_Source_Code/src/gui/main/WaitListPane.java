@@ -63,8 +63,12 @@ public class WaitListPane extends JPanel {
 		types = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
 		//Type general = new Type(-1, "View All");
 		//types.add(0, general); TODO: VIEW ALL
+		
+		
 		typeSelector = new JComboBox(types.toArray());
-		typeSelector.setSelectedIndex(0);
+		if (!types.isEmpty()) {
+			typeSelector.setSelectedIndex(0);
+		}
 		typeSelector.addActionListener(new BoxListener());
 		JLabel typeLabel = new JLabel("Filter Waitlist By Practitioner Type:");
 		typeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
