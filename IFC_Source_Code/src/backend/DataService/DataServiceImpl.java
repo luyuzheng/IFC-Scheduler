@@ -791,15 +791,10 @@ public class DataServiceImpl implements DataService {
 		st = connection.prepareStatement("UPDATE Appointment " +
 				"SET Appointment.PatID=? WHERE Appointment.ApptID=?" );
 		st.setInt(1, patID);
-                if (appointment == null){
-                    System.out.println("test1");
-                }
-                else if (appointment.getApptID() == null){
-                    System.out.println("test2");
-                }
 		st.setInt(2, appointment.getApptID());
 		
 		st.executeUpdate();
+                appointment.setPatient(DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(patID));
 		return true;
 		
 	} catch (SQLException e) {
@@ -858,6 +853,8 @@ public class DataServiceImpl implements DataService {
 				"SET Appointment.PatID=NULL WHERE Appointment.ApptID=?" );
 		st.setInt(1, appointment.getApptID());
 		
+                appointment.setPatient(null);
+                appointment.setPatientID(null);
 		st.executeUpdate();
 		return true;
 		
