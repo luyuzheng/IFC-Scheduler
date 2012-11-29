@@ -129,7 +129,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 				if (waitlist.get(i).getPatientID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
 					JLabel errorMsg = new JLabel("This patient has already been added to the waitlist for this type of service.");
 					errorMsg.setFont(font);
-					JOptionPane.showConfirmDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
 				    return;
 				} 
 			}
