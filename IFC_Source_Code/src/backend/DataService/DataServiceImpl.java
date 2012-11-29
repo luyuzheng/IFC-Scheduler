@@ -597,7 +597,6 @@ public class DataServiceImpl implements DataService {
 				lgr.log(Level.WARNING, "Tried to delete practitioner without ID\n");
 				return false;
 			} else {
-                            //TODO: Claire change this to set Active = 0
 				st = connection.prepareStatement(
 				"UPDATE Practitioner SET Practitioner.Active=0 WHERE PractID=?");
 				st.setInt(1, practitioner.getPractID());
