@@ -49,7 +49,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		lastNameField.setText(p.getLast());
 		lastNameField.setFont(font);
 		
-		if(p.getPhone()!=""){
+		if(p.getPhone() != null){
 			String phone= p.getPhone();
 			
 			areaCodeField.setText(phone.substring(0,3));
