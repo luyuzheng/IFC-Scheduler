@@ -1659,7 +1659,7 @@ public class DataServiceImpl implements DataService {
     			newAppt.setField(AppointmentDto.NO_SHOW_ID, rs.getInt(AppointmentDto.NO_SHOW_ID));
     			newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
     			newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
-    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getString(AppointmentDto.CONFIRMATION));
+    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getInt(AppointmentDto.CONFIRMATION));
     			newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
     			newAppt.setField(AppointmentDto.APPT_DATE, rs.getString(AppointmentDto.APPT_DATE));
     			newAppt.setField(AppointmentDto.PAT_ID, rs.getInt(AppointmentDto.PAT_ID));
