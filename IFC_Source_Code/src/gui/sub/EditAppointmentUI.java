@@ -76,6 +76,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 			noShowsCheckBox.setSelected(false);
 		}
 		//-----------------------------------------------------------------
+
         noShowsCheckBox.addItemListener(this);
 		checkBoxPanel.add(noShowsCheckBox);
 		checkBoxPanel.add(noShowsLabel);
@@ -155,7 +156,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 	public void itemStateChanged(ItemEvent e) {
 		if (e.getStateChange() == ItemEvent.SELECTED) {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
-			System.out.println("otter");
+			
 		} else {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
 		}
