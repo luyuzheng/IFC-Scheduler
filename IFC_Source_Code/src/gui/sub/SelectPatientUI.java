@@ -294,7 +294,13 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			if (patTable.getSelectedRow() > -1) {
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				patient = model.getPatient(patTable.getSelectedRow());
+				
 				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, "This patient has the following note attached: \"" + patient.getNotes() + "\". Are you sure you want to continue?", "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+					patient = null;
+					return;
+				}
+
+				if (patient.getNoShows() > 1 && JOptionPane.showConfirmDialog(this, "This patient has " + patient.getNoShows() + " no-shows. Are you sure you want to continue?", "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
 					patient = null;
 					return;
 				}
