@@ -68,14 +68,14 @@ public class AppointmentDto extends AbstractDto {
     }
     
     public boolean isNoShow(){
-        return fieldsMap.get(NO_SHOW_ID) != null;
+        return fieldsMap.get(NO_SHOW_ID) != null && (Integer)fieldsMap.get(NO_SHOW_ID) != 0;
     }
     
     public Integer getNoShowID(){
         return (Integer) fieldsMap.get(NO_SHOW_ID);
     }
     
-    public void setNoShowID(int i){
+    public void setNoShowID(Integer i){
         fieldsMap.put(NO_SHOW_ID, i);
     }
     
