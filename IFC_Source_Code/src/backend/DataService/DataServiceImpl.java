@@ -1554,19 +1554,16 @@ public class DataServiceImpl implements DataService {
         	st = connection.prepareStatement("SELECT * FROM Appointment,Practitioner," +
         			"PractitionerScheduled WHERE Appointment.PractSchedID = " +
         			"PractitionerScheduled.PractSchID AND PractitionerScheduled.PractID = " +
-        			"Practitioner.PractID AND Practitioner.TypeID=? AND Appointment.PatID IS NULL" +
-        			" ORDER BY Appointment.ApptDate, Appointment.StartTime");
-//        	st.setInt(1,type.getTypeID());
-//        	st = connection.prepareStatement("SELECT * FROM Appointment " +
-//        			"INNER JOIN Practitioner ON Appointment.PractSchedID = " +
-//        			"Practitioner.PractID WHERE Practitioner.TypeID = (?) AND " +
-//        			"Appointment.PatID IS NULL");
-
+        			"Practitioner.PractID AND Practitioner.TypeID=? AND Appointment.ApptDate>=? " +
+        			"AND Appointment.PatID IS NULL ORDER BY Appointment.ApptDate, Appointment.StartTime");
         	st.setInt(1,typeId);
+        	st.setDate(2, new Date(new java.util.Date().getTime()));
         	rs = st.executeQuery();
         	ArrayList<AppointmentDto> aptList = new ArrayList<AppointmentDto>();
 			AppointmentDto newAppt;
 
+        	Calendar c = Calendar.getInstance();
+        	int currentMinutes = c.get(Calendar.HOUR_OF_DAY)*60 + c.get(Calendar.MINUTE);
 			while(rs.next()){
 				newAppt = new AppointmentDto();
 				
@@ -1577,7 +1574,17 @@ public class DataServiceImpl implements DataService {
 				newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
 				newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
 				
-				aptList.add(newAppt);
+				// manual filter of starttime
+	        	Calendar apptCal = Calendar.getInstance();
+	        	apptCal.setTime(newAppt.getApptDate());
+	        	if (apptCal.get(Calendar.DAY_OF_YEAR) == c.get(Calendar.DAY_OF_YEAR) &&
+	        			apptCal.get(Calendar.YEAR) == c.get(Calendar.YEAR)) {
+	        		if (newAppt.getStart() >= currentMinutes) {
+	        			aptList.add(newAppt);
+	        		}
+	        	} else {
+	        		aptList.add(newAppt);
+	        	}
 			}
 			return aptList;
 
