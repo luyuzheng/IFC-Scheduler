@@ -217,7 +217,11 @@ public class DayPanel extends JPanel {
 	/** Shows the dialog for scheduling a patient to an appointment. */
 	private final AbstractAction addPatAction = new AbstractAction("<html>Schedule Patient</html>") {
 		public void actionPerformed(ActionEvent e) {
-			AppointmentBlock onThisAppt = ab;
+			// needed to save the appt block - otherwise, when the SelectPatientUI pops up,
+			// the appt block loses focus and thus appt block information is lost
+			AppointmentBlock onThisAppt = ab; 
+			
+			// Schedule the patient
 			PatientDto patient = SelectPatientUI.ShowDialog(ab.getParent());
 			if (patient != null) {
 				onThisAppt.setPatient(patient.getPatID());
