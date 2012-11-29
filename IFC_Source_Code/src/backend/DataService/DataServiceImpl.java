@@ -735,8 +735,57 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			//delete previous appointments
-			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchID = ?");
+			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchedID = ? AND " +
+					"(Appointment.StartTime>? OR Appointment.EndTime<?)");
 			st.setInt(1, pract.getPractSchedID());
+			st.setInt(2, end - pract.getPractitioner().getApptLength());
+			st.setInt(3, start + pract.getPractitioner().getApptLength());
+			st.executeUpdate();
+
+			int newStart = pract.getStart();
+			int newEnd = pract.getEnd();
+			if (newStart < start) { 
+				newStart = start;
+			}
+			if (newEnd > end) {
+				newEnd = end;
+			}
+			st = connection.prepareStatement("UPDATE PractitionerScheduled SET " +
+					"StartTime=?,EndTime=?");
+			st.setInt(1, newStart);
+			st.setInt(2, newEnd);
+			st.executeUpdate();
+			//set hours
+			pract.setStart(newStart);
+			pract.setEnd(newEnd);
+
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;    
+	}
+	
+	@Override
+	public boolean resetPractitionerHoursForDay(SchedulePractitionerDto pract,
+			DayDto day, int start, int end) {
+		PreparedStatement st = null;
+
+		try {
+			//delete previous appointments
+			st = connection.prepareStatement("DELETE FROM Appointment WHERE PractSchedID = ?");
+			st.setInt(1, pract.getPractSchedID());
+			st.setInt(2, end - pract.getPractitioner().getApptLength());
+			st.setInt(3, start + pract.getPractitioner().getApptLength());
 			st.executeQuery();
 
 			//set hours
@@ -892,6 +941,7 @@ public class DataServiceImpl implements DataService {
 			
 			st = null;
 			
+			// TODO: is this a safe way to get the noshow ID back?
 			st = connection.prepareStatement("SELECT MAX(NoShowID) as ID From NoShow");
 			rs = st.executeQuery();
 			if (rs.next()){
@@ -937,6 +987,12 @@ public class DataServiceImpl implements DataService {
 			System.out.println(appointment.getNoShowID());
 			st.setInt(1, appointment.getNoShowID());
 			st.executeUpdate();
+			
+			st = connection.prepareStatement("UPDATE Appointment " +
+				"SET Appointment.NoShowID = NULL WHERE Appointment.ApptID=? ");
+			st.setInt(1, appointment.getApptID());
+			st.executeUpdate();
+			appointment.setNoShowID(null);
 			return true;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1264,7 +1320,7 @@ public class DataServiceImpl implements DataService {
 						rs.getInt(PractitionerDto.APPT_LENGTH));
 				pract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
 				pract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
-				pract.setField(PractitionerDto.PRACT_ID, rs.getString(PractitionerDto.PRACT_ID));
+				pract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
 				TypeDto type = new TypeDto();
 				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
 				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
@@ -1332,7 +1388,7 @@ public class DataServiceImpl implements DataService {
 				newAppointment.setField(AppointmentDto.START, 
 						rs.getInt(AppointmentDto.START));
 				newAppointment.setField(AppointmentDto.CONFIRMATION,
-						rs.getInt(AppointmentDto.CONFIRMATION)==1);
+						rs.getInt(AppointmentDto.CONFIRMATION)!=0);
 				newAppointment.setField(AppointmentDto.PRACTITIONER_NAME, name);
 				retList.add(newAppointment);
 			}
@@ -1660,7 +1716,7 @@ public class DataServiceImpl implements DataService {
     			newAppt.setField(AppointmentDto.NO_SHOW_ID, rs.getInt(AppointmentDto.NO_SHOW_ID));
     			newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
     			newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
-    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getString(AppointmentDto.CONFIRMATION));
+    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getInt(AppointmentDto.CONFIRMATION)!=0);
     			newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
     			newAppt.setField(AppointmentDto.APPT_DATE, rs.getString(AppointmentDto.APPT_DATE));
     			newAppt.setField(AppointmentDto.PAT_ID, rs.getInt(AppointmentDto.PAT_ID));

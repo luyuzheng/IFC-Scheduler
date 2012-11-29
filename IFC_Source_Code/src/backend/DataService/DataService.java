@@ -143,10 +143,17 @@ public interface DataService {
     public boolean removePractitionerFromDay(int practSchedId, DayDto day);
     
     /**
-     * change hours of operation for a practitioner on a day
-     * should also remove any affected appointments
+     * truncates hours of operation for a practitioner on a day
+     * DOES NOT CHANGE THE APPOINTMENTS
      */
     public boolean changePractitionerHoursForDay(SchedulePractitionerDto practitioner, DayDto day,
+    		int start, int end);
+    
+    /**
+     * Changes hours of operation for a practitioner on a day while reseting all appointments to
+     * that practitioner
+     */
+    public boolean resetPractitionerHoursForDay(SchedulePractitionerDto practitioner, DayDto day,
     		int start, int end);
     
     /**
