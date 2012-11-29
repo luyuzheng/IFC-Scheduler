@@ -21,6 +21,7 @@ public class AppointmentDto extends AbstractDto {
     public static final String APPT_DATE = "ApptDate";
     public static final String NOTE = "Note";
     public static final String CONFIRMATION = "Confirmation";
+    public static final String PATIENT = "Patient";
     
      public AppointmentDto() {
         fieldsMap = new HashMap<String, Object>();
@@ -32,6 +33,7 @@ public class AppointmentDto extends AbstractDto {
         fieldsMap.put(END, null);
         fieldsMap.put(APPT_DATE, null);
         fieldsMap.put(NOTE, null);
+        fieldsMap.put(PATIENT, null);
         fieldsMap.put(CONFIRMATION, false);
     }
     
@@ -48,6 +50,15 @@ public class AppointmentDto extends AbstractDto {
             return null;
         }
         return (Integer) fieldsMap.get(PAT_ID);
+    }
+    
+    //ONLY FOR USE IN APPOINTMENT CONFIRMATION
+    public PatientDto getPatient(){
+        return (PatientDto) fieldsMap.get(PATIENT);
+    }
+    
+    public void setPatient(PatientDto newPat){
+        fieldsMap.put(PATIENT, newPat);
     }
     
     public void setPatientID(Integer i){
