@@ -28,7 +28,7 @@ StartTime int,
 EndTime int,
 Status varchar(255),
 ApptDate date,
-Confirmation tinyint,
+Confirmation tinyint DEFAULT 0, 
 Note text
 );
 
