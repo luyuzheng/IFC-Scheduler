@@ -1,6 +1,8 @@
 package gui.sub;
 
 import backend.DataService.DataServiceImpl;
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -37,7 +39,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 	private JTextField areaCodeField = new JTextField();
 	private JTextField numberPart1Field = new JTextField();
 	private JTextField numberPart2Field = new JTextField();
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 	JTable patTable;
 	private JTextField searchField = new JTextField();
@@ -61,14 +63,18 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
     	JPanel input = new JPanel(new GridLayout(0,1));
     	JPanel fName = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("First Name: ");
+    	label.setFont(Constants.PARAGRAPH);
     	fName.add(label, BorderLayout.NORTH);
     	firstNameField.setColumns(15);
+    	firstNameField.setFont(Constants.PARAGRAPH);
     	fName.add(firstNameField, BorderLayout.CENTER);
     	
     	JPanel lName = new JPanel(new BorderLayout());
     	label = new JLabel("Last Name: ");
+    	label.setFont(Constants.PARAGRAPH);
     	lName.add(label, BorderLayout.NORTH);
     	lastNameField.setColumns(15);
+    	lastNameField.setFont(Constants.PARAGRAPH);
     	lName.add(lastNameField, BorderLayout.CENTER);
     	
     	JPanel names = new JPanel(new FlowLayout());
@@ -79,11 +85,15 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
     	
     	JPanel num = new JPanel(new BorderLayout());
     	label = new JLabel("Phone Number: ", JLabel.CENTER);
+    	label.setFont(Constants.PARAGRAPH);
     	num.add(label, BorderLayout.NORTH);
     	JPanel phonePanel = new JPanel(new FlowLayout());
     	areaCodeField.setColumns(5);
+    	areaCodeField.setFont(Constants.PARAGRAPH);
     	numberPart1Field.setColumns(5);
+    	numberPart1Field.setFont(Constants.PARAGRAPH);
     	numberPart2Field.setColumns(7);
+    	numberPart2Field.setFont(Constants.PARAGRAPH);
     	phonePanel.add(areaCodeField);
     	phonePanel.add(numberPart1Field);
     	phonePanel.add(numberPart2Field);
@@ -92,8 +102,9 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Patient notes: ", JLabel.CENTER);
+    	label.setFont(Constants.PARAGRAPH);
     	notePanel.add(label, BorderLayout.NORTH);
-    	note.setFont(phonePanel.getFont());
+    	note.setFont(Constants.PARAGRAPH);
     	//note.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
     	note.setLineWrap(true);
     	note.setWrapStyleWord(true);
@@ -103,7 +114,9 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("okNew");
     	okButton.addActionListener(this);
+    	okButton.setFont(Constants.DIALOG);
     	cancelButton.addActionListener(this);
+    	cancelButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	

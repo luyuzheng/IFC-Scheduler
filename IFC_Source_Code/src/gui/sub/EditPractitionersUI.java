@@ -127,7 +127,7 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
         p.add(searchField, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
-        p.setPreferredSize(new Dimension(500, 250));
+        p.setPreferredSize(new Dimension(550, 250));
         return p;
     }
 	
@@ -191,7 +191,7 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 		public Object getValueAt(int row, int col) {
 			PractitionerDto p = practitioners.get(row);
 			if (col == 0) 
-				return p.getFirst() + p.getLast();
+				return p.getFirst() + " " + p.getLast();
 			else  if (col == 1)
 				return p.getTypeName();
 			else if (col == 2)

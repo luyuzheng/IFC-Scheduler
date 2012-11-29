@@ -33,7 +33,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 	
 	private JButton editButton = new JButton("Edit");
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton newButton = new JButton("New");
 	private JButton removeButton = new JButton("Remove");
 	private JTable patTable;
@@ -89,6 +89,8 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     	patTable.getTableHeader().setReorderingAllowed(false);
     	patTable.getTableHeader().setFont(font);
 
+    	patTable.setFont(font);
+    	
     	patTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	panel.add(patTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(patTable, BorderLayout.CENTER);
@@ -117,10 +119,12 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
         
+        searchField.setFont(font);
+        
         p.add(searchField, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
-        p.setPreferredSize(new Dimension(275,250));
+        p.setPreferredSize(new Dimension(500,250));
         return p;
     }
 	

@@ -43,7 +43,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	JTable pracTable;
 	
-	private Font font = new Font("Arial", Font.PLAIN, 16);
+	private Font font = new Font("Arial", Font.PLAIN, 14);
 	
 	private static PractitionerDto practitioner;
 	
@@ -52,7 +52,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		setModal(true);
 		setTitle(name);
 		setLayout(new GridLayout(1,1));
-		setPreferredSize(new Dimension(275,250));
+		setPreferredSize(new Dimension(400,250));
 		add(makeNewPracPanel());
 		setResizable(false);
 	}
@@ -67,32 +67,43 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	JPanel lastNamePanel = new JPanel(new BorderLayout());
     	JLabel firstNameLabel = new JLabel("First Name: ");
     	JLabel lastNameLabel = new JLabel("Last Name: ");
+    	firstNameLabel.setFont(font);
+    	firstNameField.setFont(font);
     	firstNamePanel.add(firstNameLabel, BorderLayout.NORTH);
     	firstNamePanel.add(firstNameField, BorderLayout.CENTER);
+    	lastNameLabel.setFont(font);
+    	lastNameField.setFont(font);
     	lastNamePanel.add(lastNameLabel, BorderLayout.NORTH);
     	lastNamePanel.add(lastNameField, BorderLayout.CENTER);
     	JPanel lengthPanel = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("Appt Length (Min): ");
+    	label.setFont(font);
+    	apptLengthField.setFont(font);
     	lengthPanel.add(label, BorderLayout.NORTH);
     	lengthPanel.add(apptLengthField, BorderLayout.CENTER);
+    	
     	nameLengthPanel.add(firstNamePanel);
     	nameLengthPanel.add(lastNamePanel);
     	nameLengthPanel.add(lengthPanel);
     	topSubpanel.add(nameLengthPanel);
     	
+    	
     	JPanel typePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner Type: ");
+    	label.setFont(font);
     	typePanel.add(label, BorderLayout.NORTH);
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
     	typeCombo = new JComboBox(typeList.toArray());
     	if (typeList.size() > 0)
-    		typeCombo.setSelectedIndex(1);
+    		typeCombo.setSelectedIndex(0);
+    	typeCombo.setFont(font);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	
     	JButton newTypeButton = new JButton("New Type");
     	newTypeButton.addActionListener(this);
     	newTypeButton.setActionCommand("New Type");
+    	newTypeButton.setFont(font);
     	typeComboPanel.add(newTypeButton, BorderLayout.EAST);
     	typePanel.add(typeComboPanel, BorderLayout.CENTER);
     	topSubpanel.add(typePanel);
@@ -103,6 +114,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner notes: ", JLabel.CENTER);
+    	label.setFont(font);
     	notePanel.add(label, BorderLayout.NORTH);
     	noteField.setFont(font);
     	noteField.setLineWrap(true);
@@ -114,7 +126,9 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("okNew");
     	okButton.addActionListener(this);
+    	okButton.setFont(font);
     	cancelButton.addActionListener(this);
+    	cancelButton.setFont(font);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	
