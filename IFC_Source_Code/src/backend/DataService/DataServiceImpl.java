@@ -927,6 +927,7 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public boolean checkAsNoShow(AppointmentDto appointment) {
 		PreparedStatement st = null;
+		ResultSet rs = null;
 
 		try {
 			int patID = appointment.getPatientID();
@@ -937,6 +938,24 @@ public class DataServiceImpl implements DataService {
 			st.setInt(1, patID);
 			st.setDate(2, date);
 			st.executeUpdate();
+			
+			st = null;
+			
+			st = connection.prepareStatement("SELECT MAX(NoShowID) as ID From NoShow");
+			rs = st.executeQuery();
+			if (rs.next()){
+				appointment.setNoShowID(rs.getInt("ID"));
+			}
+			st = null;
+			rs = null;
+			
+			
+			st = connection.prepareStatement("UPDATE Appointment " +
+				"SET Appointment.NoShowID = ? WHERE Appointment.ApptID=? ");
+			st.setInt(1, appointment.getNoShowID());
+			st.setInt(2, appointment.getApptID());
+			st.executeUpdate();
+			
 			return true;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1689,7 +1708,7 @@ public class DataServiceImpl implements DataService {
     			newAppt.setField(AppointmentDto.NO_SHOW_ID, rs.getInt(AppointmentDto.NO_SHOW_ID));
     			newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
     			newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
-    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getString(AppointmentDto.CONFIRMATION));
+    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getInt(AppointmentDto.CONFIRMATION));
     			newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
     			newAppt.setField(AppointmentDto.APPT_DATE, rs.getString(AppointmentDto.APPT_DATE));
     			newAppt.setField(AppointmentDto.PAT_ID, rs.getInt(AppointmentDto.PAT_ID));
