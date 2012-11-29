@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,6 +28,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+
+import gui.Constants;
 
 public class HelpUI extends JDialog implements KeyListener, ActionListener {
 
@@ -171,9 +174,12 @@ public class HelpUI extends JDialog implements KeyListener, ActionListener {
 	private static HelpUI helpUI;
 	
 	private JButton okButton = new JButton("OK");
-	private JButton cancelButton = new JButton("Cancel");
+//	private JButton cancelButton = new JButton("Cancel");
 //	private JTextField helpText = new JTextField();
 	private JTextArea textArea;
+	
+
+	
 
 	public HelpUI(String s) {
 		setModal(true);
@@ -214,13 +220,14 @@ public class HelpUI extends JDialog implements KeyListener, ActionListener {
 
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("ok");
+    	okButton.setFont(Constants.DIALOG);
     	okButton.addActionListener(this);
     	buttonPanel.add(okButton);
     	
-    	cancelButton.setActionCommand("cancel");
-    	cancelButton.addActionListener(this);
-    	buttonPanel.add(cancelButton);
-    	
+//    	cancelButton.setActionCommand("cancel");
+//    	cancelButton.addActionListener(this);
+//    	buttonPanel.add(cancelButton);
+    	textArea.setFont(Constants.PARAGRAPH);
     	panel.add(textArea,BorderLayout.NORTH);
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
@@ -271,8 +278,6 @@ public class HelpUI extends JDialog implements KeyListener, ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("ok")) {
 			helpUI.setVisible(false);
-		} else if (e.getActionCommand().equals("cancel")) {
-			helpUI.setVisible(false);
-		}
+		} 
 	}
 }
