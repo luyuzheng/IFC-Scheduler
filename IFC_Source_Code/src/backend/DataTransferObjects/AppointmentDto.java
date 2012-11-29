@@ -52,6 +52,7 @@ public class AppointmentDto extends AbstractDto {
         return (Integer) fieldsMap.get(PAT_ID);
     }
     
+    //ONLY FOR USE IN APPOINTMENT CONFIRMATION
     public PatientDto getPatient(){
         return (PatientDto) fieldsMap.get(PATIENT);
     }
