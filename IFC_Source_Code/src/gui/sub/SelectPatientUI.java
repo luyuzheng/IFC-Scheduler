@@ -242,7 +242,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 	
 	public void updateTable() {
 		String filter = searchField.getText();
-                patTable.setModel(new PatTableModel(pat));
+        patTable.setModel(new PatTableModel(pat));
                 //implement filters
 		//if (filter.equals("")) patTable.setModel(new PatTableModel(pat));
                 //else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
