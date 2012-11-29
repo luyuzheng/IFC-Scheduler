@@ -32,7 +32,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	private JTextField numberPart1Field = new JTextField();
 	private JTextField numberPart2Field = new JTextField();
 	private JLabel numberOfNoShows = new JLabel();
-	private JButton okButton = new JButton("Ok");
+	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
@@ -49,14 +49,15 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		lastNameField.setFont(font);
 		
 		if(p.getPhone()!=""){
-			String[] number = p.getPhone().split("-");
-			areaCodeField.setText(number[0]);
+			String phone= p.getPhone();
+			
+			areaCodeField.setText(phone.substring(0,3));
 			areaCodeField.setFont(font);
 			
-			numberPart1Field.setText(number[1]);
+			numberPart1Field.setText(phone.substring(3,6));
 			numberPart1Field.setFont(font);
 			
-			numberPart2Field.setText(number[2]);
+			numberPart2Field.setText(phone.substring(6,phone.length()));
 			numberPart2Field.setFont(font);
 		}
 		note.setText((p.getNotes()).replaceAll("\t\t", "\n")) ;
@@ -99,6 +100,8 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	JPanel noShowsPanel = new JPanel(new BorderLayout());
     	numberOfNoShows.setText("Number of no shows: " + p.getNoShows());
+    	numberOfNoShows.setFont(font);
+    	//TODO set numberOfNoShows to center alignment
     	noShowsPanel.add(numberOfNoShows);
     	input.add(noShowsPanel);
     	
