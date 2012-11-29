@@ -1711,7 +1711,7 @@ public class DataServiceImpl implements DataService {
     			
     			newAppt = new AppointmentDto();
     			newAppt.setPatient(newPat);
-    			newAppt.setField(AppointmentDto.APPT_ID, rs.getInt(AppointmentDto.APPT_DATE));
+    			newAppt.setField(AppointmentDto.APPT_ID, rs.getInt(AppointmentDto.APPT_ID));
     			newAppt.setField(AppointmentDto.NO_SHOW_ID, rs.getInt(AppointmentDto.NO_SHOW_ID));
     			newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
     			newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
