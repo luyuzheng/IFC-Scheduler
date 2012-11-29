@@ -941,6 +941,7 @@ public class DataServiceImpl implements DataService {
 			
 			st = null;
 			
+			// TODO: is this a safe way to get the noshow ID back?
 			st = connection.prepareStatement("SELECT MAX(NoShowID) as ID From NoShow");
 			rs = st.executeQuery();
 			if (rs.next()){
@@ -985,6 +986,12 @@ public class DataServiceImpl implements DataService {
 			st = connection.prepareStatement("DELETE FROM NoShow WHERE NoShowID=?");
 			st.setInt(1, appointment.getNoShowID());
 			st.executeUpdate();
+			
+			st = connection.prepareStatement("UPDATE Appointment " +
+				"SET Appointment.NoShowID = NULL WHERE Appointment.ApptID=? ");
+			st.setInt(1, appointment.getApptID());
+			st.executeUpdate();
+			appointment.setNoShowID(null);
 			return true;
 		} catch (SQLException e) {
 			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
@@ -1380,7 +1387,7 @@ public class DataServiceImpl implements DataService {
 				newAppointment.setField(AppointmentDto.START, 
 						rs.getInt(AppointmentDto.START));
 				newAppointment.setField(AppointmentDto.CONFIRMATION,
-						rs.getInt(AppointmentDto.CONFIRMATION)==1);
+						rs.getInt(AppointmentDto.CONFIRMATION)!=0);
 				newAppointment.setField(AppointmentDto.PRACTITIONER_NAME, name);
 				retList.add(newAppointment);
 			}
@@ -1708,7 +1715,7 @@ public class DataServiceImpl implements DataService {
     			newAppt.setField(AppointmentDto.NO_SHOW_ID, rs.getInt(AppointmentDto.NO_SHOW_ID));
     			newAppt.setField(AppointmentDto.START, rs.getInt(AppointmentDto.START));
     			newAppt.setField(AppointmentDto.END, rs.getInt(AppointmentDto.END));
-    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getInt(AppointmentDto.CONFIRMATION));
+    			newAppt.setField(AppointmentDto.CONFIRMATION, rs.getInt(AppointmentDto.CONFIRMATION)!=0);
     			newAppt.setField(AppointmentDto.NOTE, rs.getString(AppointmentDto.NOTE));
     			newAppt.setField(AppointmentDto.APPT_DATE, rs.getDate(AppointmentDto.APPT_DATE));
     			newAppt.setField(AppointmentDto.PAT_ID, rs.getInt(AppointmentDto.PAT_ID));

@@ -24,7 +24,7 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
-public class EditAppointmentUI extends JDialog implements ActionListener, ItemListener {
+public class EditAppointmentUI extends JDialog implements ActionListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
 	private JButton okButton = new JButton("Save");
@@ -76,7 +76,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 			noShowsCheckBox.setSelected(false);
 		}
 		//-----------------------------------------------------------------
-        noShowsCheckBox.addItemListener(this);
+        //noShowsCheckBox.addItemListener(this);
 		checkBoxPanel.add(noShowsCheckBox);
 		checkBoxPanel.add(noShowsLabel);
 		
@@ -108,7 +108,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 		okButton.setActionCommand("save");
 		okButton.setFont(font);
 		buttonPanel.add(okButton);
-		cancelButton.addActionListener(this);
+		cancelButton.addActionListener(this); 
 		cancelButton.setActionCommand("cancel");
 		cancelButton.setFont(font);
 		buttonPanel.add(cancelButton);
@@ -140,10 +140,19 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 		if (e.getActionCommand().equals("save")) {
 			// Doesn't actually do anything important - edit patient saves any edits to patient info
 			// and notes are saved below
+			// Luyu: I'm making this save the noShow status
+			if (noShowsCheckBox.isSelected() && !appointment.isNoShow()) {
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
+			} else if (!noShowsCheckBox.isSelected() && appointment.isNoShow()) {
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
+			} else {
+				// nothing needs to be done
+			}
 		} else if (e.getActionCommand().equals("edit")) {
 			PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
 			PatientDto editedPatient = EditPatientUI.ShowDialog(this, patient);
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(editedPatient.getPatID(), appointment);
+			return;
 		} else if (e.getActionCommand().equals("cancel")) {
 			editAppointmentUI.setVisible(false);
 			return;
@@ -152,12 +161,15 @@ public class EditAppointmentUI extends JDialog implements ActionListener, ItemLi
 		editAppointmentUI.setVisible(false);
     }
 
-	public void itemStateChanged(ItemEvent e) {
-		if (e.getStateChange() == ItemEvent.SELECTED) {
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
-			System.out.println("otter");
-		} else {
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
-		}
-	}
+	// I don't think this is how we wanna do this
+	// using itemStateChanged has to handle each state change
+	// I think it's better to read the state when save is clicked
+//	public void itemStateChanged(ItemEvent e) {
+//		if (e.getStateChange() == ItemEvent.SELECTED) {
+//			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
+//			System.out.println("otter");
+//		} else {
+//			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
+//		}
+//	}
 }
