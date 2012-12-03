@@ -88,6 +88,8 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 			if (patient.getPhone() == null) text += "No Phone # Specified";
 			else text += patient.getPhone();
 			if (!appointment.getNote().equals("")) text += "\n\nNote: " + appointment.getShortNote(50).replaceAll("\t\t", " ");
+			if (appointment.getConfirmation()) text += "\n\n*CONFIRMED";
+			if (appointment.getNoShowID() != null && appointment.getNoShowID() > 0) text += "\n\n*NO SHOW";
 		} 
 		textArea.setText(text);
 	}
