@@ -1,6 +1,7 @@
 package gui.main;
 
 import backend.DataService.DataServiceImpl;
+import gui.Constants;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.AddToWaitlistUI;
 
@@ -45,7 +46,6 @@ public class WaitListPane extends JPanel {
 	private JButton addPatientButton = new JButton("Add Patient to List");
 	private JButton removePatientButton = new JButton("Remove Patient from List");
 	private ArrayList<TypeDto> types;
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
 	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
@@ -80,8 +80,8 @@ public class WaitListPane extends JPanel {
 		typeSelector.addActionListener(new BoxListener());
 		JLabel typeLabel = new JLabel("Filter Waitlist By Practitioner Type:");
 		typeLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		typeSelector.setFont(font);
-		typeLabel.setFont(font);
+		typeSelector.setFont(Constants.DIALOG);
+		typeLabel.setFont(Constants.DIALOG);
 		typeSelectionPanel.add(typeLabel);
 		typeSelectionPanel.add(typeSelector);
 		
@@ -90,9 +90,9 @@ public class WaitListPane extends JPanel {
     	addPatientButton.setAction(addPatientAction);
     	JLabel actionLabel = new JLabel(" ");
     	actionLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-    	actionLabel.setFont(font);
-    	addPatientButton.setFont(font);
-    	removePatientButton.setFont(font);
+    	actionLabel.setFont(Constants.DIALOG);
+    	addPatientButton.setFont(Constants.DIALOG);
+    	removePatientButton.setFont(Constants.DIALOG);
     	buttonPanel.add(actionLabel);
     	buttonPanel.add(addPatientButton);
     	buttonPanel.add(removePatientButton);
@@ -107,12 +107,12 @@ public class WaitListPane extends JPanel {
 		WaitlistTableModel model = new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false);
 		specTable = new JTable(model);
 		specTable.setDragEnabled(true);
-		specTable.setFont(font);
+		specTable.setFont(Constants.DIALOG);
 		specTable.addMouseListener(new WaitlistPatientListener(specTable, this));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		specTable.setAutoCreateRowSorter(true);
     	specTable.getTableHeader().setReorderingAllowed(false);
-    	specTable.getTableHeader().setFont(font);
+    	specTable.getTableHeader().setFont(Constants.DIALOG);
     	specTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	specTablePanel.add(specTable.getTableHeader(), BorderLayout.PAGE_START);
     	specTablePanel.add(specTable, BorderLayout.CENTER);

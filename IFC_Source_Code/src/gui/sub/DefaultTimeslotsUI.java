@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import gui.Constants;
 import gui.TimeSlot;
 
 public class DefaultTimeslotsUI extends JDialog implements ActionListener {
@@ -41,7 +42,6 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 	private JButton okButton;
 	private JButton cancelButton;
 	
-	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	private DefaultTimeslotsUI(String name) {
 		setModal(true);
@@ -125,11 +125,9 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	JLabel note = new JLabel(" NOTE: All times must be entered in military time (00:00 - 23:59).");
     	panel.add(note);
     	
-    	Font font = new Font("Arial", Font.BOLD, 16);
-    	
     	JPanel main1 = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("Sunday  ");
-    	label.setFont(font);
+    	label.setFont(Constants.HEADER);
     	JPanel labelPanel = new JPanel(new BorderLayout());
     	labelPanel.setPreferredSize(new Dimension(80, 0));
     	labelPanel.add(label);
@@ -151,7 +149,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	
     	JPanel main2 = new JPanel(new BorderLayout());
     	label = new JLabel("Monday  ");
-    	label.setFont(font);
+    	label.setFont(Constants.HEADER);
     	labelPanel = new JPanel(new BorderLayout());
     	labelPanel.setPreferredSize(new Dimension(80, 0));
     	labelPanel.add(label);
@@ -172,7 +170,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	
     	JPanel main3 = new JPanel(new BorderLayout());
     	label = new JLabel("Tuesday  ");
-    	label.setFont(font);
+    	label.setFont(Constants.HEADER);
     	labelPanel = new JPanel(new BorderLayout());
     	labelPanel.setPreferredSize(new Dimension(80, 0));
     	labelPanel.add(label);
@@ -193,7 +191,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	
     	JPanel main4= new JPanel(new BorderLayout());
     	label = new JLabel("Wednesday  ");
-    	label.setFont(font);
+    	label.setFont(Constants.HEADER);
     	labelPanel = new JPanel(new BorderLayout());
     	labelPanel.setPreferredSize(new Dimension(80, 0));
     	labelPanel.add(label);
@@ -214,7 +212,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	
     	JPanel main5 = new JPanel(new BorderLayout());
     	label = new JLabel("Thursday  ");
-    	label.setFont(font);
+    	label.setFont(Constants.HEADER);
     	labelPanel = new JPanel(new BorderLayout());
     	labelPanel.setPreferredSize(new Dimension(80, 0));
     	labelPanel.add(label);
@@ -235,7 +233,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	
     	JPanel main6 = new JPanel(new BorderLayout());
     	label = new JLabel("Friday  ");
-    	label.setFont(font);
+    	label.setFont(Constants.HEADER);
     	labelPanel = new JPanel(new BorderLayout());
     	labelPanel.setPreferredSize(new Dimension(80, 0));
     	labelPanel.add(label);
@@ -256,7 +254,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	
     	JPanel main7 = new JPanel(new BorderLayout());
     	label = new JLabel("Saturday  ");
-    	label.setFont(font);
+    	label.setFont(Constants.HEADER);
     	labelPanel = new JPanel(new BorderLayout());
     	labelPanel.setPreferredSize(new Dimension(80, 0));
     	labelPanel.add(label);
@@ -281,8 +279,8 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
     	okButton.setActionCommand("ok");
     	okButton.addActionListener(this);
     	cancelButton.addActionListener(this);
-    	okButton.setFont(font);
-    	cancelButton.setFont(font);
+    	okButton.setFont(Constants.DIALOG);
+    	cancelButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	

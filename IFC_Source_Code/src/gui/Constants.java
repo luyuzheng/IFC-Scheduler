@@ -47,6 +47,8 @@ public class Constants {
 	public static final Font PARAGRAPH_BOLD = new Font("Arial", Font.BOLD, 14);
 	/** Default font for dialog buttons */
 	public static final Font DIALOG = new Font("Arial", Font.PLAIN, 16);
+	/** Default font for printable text **/
+	public static final Font PRINTABLE = new Font("Arial", Font.PLAIN, 12);
 	
 	/** The horizontal print margin, in pixels */
 	public static final int PRINT_MARGINX = 25;

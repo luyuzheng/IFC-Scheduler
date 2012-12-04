@@ -73,15 +73,12 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		//System.out.print("FirstFirsttest");
 		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 
-		//set the font for the page
-		Font font = new Font("Arial", Font.PLAIN, 12);
-
 		//create the graphics object
 		Graphics2D g2d = (Graphics2D) g.create();
 		
 		//set the font, find the line height
-		g2d.setFont(font);
-		FontMetrics metrics = g2d.getFontMetrics(font);
+		g2d.setFont(Constants.PRINTABLE);
+		FontMetrics metrics = g2d.getFontMetrics(Constants.PRINTABLE);
 		int hgt = metrics.getHeight();
 
 		//top height is the height of the practitioner info box

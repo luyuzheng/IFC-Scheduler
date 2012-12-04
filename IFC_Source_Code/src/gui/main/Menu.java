@@ -5,6 +5,7 @@
  */
 
 package gui.main;
+import gui.Constants;
 import gui.sub.DefaultTimeslotsUI;
 import gui.sub.EditPatientsUI;
 import gui.sub.EditPractitionersUI;
@@ -27,8 +28,7 @@ public class Menu extends JMenuBar {
 	
 	/** Constructs the menu bar for the scheduler given the main window object. */
 	public Menu(MainWindow window) {
-		
-		final Font font= new Font("Arial", Font.PLAIN, 14);
+
 		
 		/** The main window associated with the scheduler. */
 		final MainWindow frame = window;
@@ -37,7 +37,7 @@ public class Menu extends JMenuBar {
 
 		//Administrator menu
 		JMenu fileMenu = new JMenu("Administrator");
-		fileMenu.setFont(font);
+		fileMenu.setFont(Constants.PARAGRAPH);
 		
 		//Edit all patients
 		JMenuItem editPatientsItem = new JMenuItem("Edit Patients");
@@ -47,7 +47,7 @@ public class Menu extends JMenuBar {
 				frame.refresh();
 			}
 		});
-		editPatientsItem.setFont(font);
+		editPatientsItem.setFont(Constants.PARAGRAPH);
 		fileMenu.add(editPatientsItem);
 		
 		//Edit all practitioners
@@ -57,7 +57,7 @@ public class Menu extends JMenuBar {
 				EditPractitionersUI.ShowDialog(frame);
 			}
 		});
-		editPractitionersItem.setFont(font);
+		editPractitionersItem.setFont(Constants.PARAGRAPH);
 		fileMenu.add(editPractitionersItem);
 		
 		//Change defaults hours of operation by day of week
@@ -67,7 +67,7 @@ public class Menu extends JMenuBar {
 				DefaultTimeslotsUI.ShowDialog(frame);
 			}
 		});
-		editDefaultHoursItem.setFont(font);
+		editDefaultHoursItem.setFont(Constants.PARAGRAPH);
 		fileMenu.add(editDefaultHoursItem);
 		
 		//Print the schedule for today
@@ -78,7 +78,7 @@ public class Menu extends JMenuBar {
 				else frame.getAppPanel().actionPerformed(e);
 			}
 		});
-		printItem.setFont(font);
+		printItem.setFont(Constants.PARAGRAPH);
 		fileMenu.add(printItem);
 		
 		fileMenu.addSeparator();
@@ -90,14 +90,14 @@ public class Menu extends JMenuBar {
 				System.exit(0);
 			}
 		});
-		byeMenuItem.setFont(font);
+		byeMenuItem.setFont(Constants.PARAGRAPH);
 		fileMenu.add(byeMenuItem);
 		
 		add(fileMenu);
 
 		//Help menu
 		JMenu helpMenu = new JMenu("Help");
-		helpMenu.setFont(font);
+		helpMenu.setFont(Constants.PARAGRAPH);
 
 		//Displays help information
 		JMenuItem helpItem = new JMenuItem("Help", KeyEvent.VK_H);    //This is how you add a hotkey
@@ -117,7 +117,7 @@ public class Menu extends JMenuBar {
 				frame.refresh();
 			}
 		});
-		helpItem.setFont(font);
+		helpItem.setFont(Constants.PARAGRAPH);
 		helpMenu.add(helpItem);
 		
 		//Displays information about developers
@@ -130,7 +130,7 @@ public class Menu extends JMenuBar {
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-		item.setFont(font);
+		item.setFont(Constants.PARAGRAPH);
 		helpMenu.add(item);
 
 		add(helpMenu);
