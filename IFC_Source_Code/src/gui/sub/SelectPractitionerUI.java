@@ -1,19 +1,18 @@
 package gui.sub;
 
-import backend.DataService.DataServiceImpl;
 import gui.Constants;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -28,15 +27,21 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import backend.DataTransferObjects.*;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.PractitionerDto;
+import backend.DataTransferObjects.TypeDto;
 
-public class SelectPractitionerUI extends JDialog implements ActionListener {
+public class SelectPractitionerUI extends JDialog implements ActionListener,ListSelectionListener {
 
 	private static SelectPractitionerUI selectPractitionerUI;
 	private ArrayList<PractitionerDto> prac = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
+	private JTextField startTimeField = new JTextField("NOT WORKING YET");
+	private JTextField endTimeField = new JTextField();
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
 	private JComboBox typeCombo;
@@ -84,6 +89,18 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     private JComponent makeExisPracPanel() {
     	JPanel p = new JPanel(new BorderLayout());
     	JPanel panel = new JPanel(new BorderLayout());
+    	
+    	JPanel hoursPanel = new JPanel(new BorderLayout());
+    	JPanel hoursFieldPanel = new JPanel();
+    	hoursFieldPanel.setLayout(new BoxLayout(hoursFieldPanel, BoxLayout.X_AXIS));
+    	JLabel hoursLabel = new JLabel("Work hours (00:00 - 23:59)");
+    	hoursLabel.setFont(Constants.PARAGRAPH);
+    	hoursFieldPanel.add(startTimeField);
+    	hoursFieldPanel.add(new JLabel("  -  "));
+    	hoursFieldPanel.add(endTimeField);
+    	hoursPanel.add(hoursLabel, BorderLayout.PAGE_START);
+    	hoursPanel.add(hoursFieldPanel, BorderLayout.CENTER);
+    	
     	pracTable = new JTable(new PracTableModel());
     	pracTable.getTableHeader().setReorderingAllowed(false);
     	TableColumn column = null;
@@ -112,6 +129,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(panel);
         //scrollPane.setPreferredSize(new Dimension(410,200));
         
+        p.add(hoursPanel, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
         return p;
@@ -270,6 +288,20 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 		}
 		selectPractitionerUI.setVisible(false);
     }
+	
+	@Override
+	public void valueChanged(ListSelectionEvent le) {
+		if (pracTable.getSelectedRow() > -1) {
+			PractitionerDto pract = prac.get(pracTable.getSelectedColumn());
+			
+			
+			
+			startTimeField.setText("NOT WORKING YET");
+		} else {
+			startTimeField.setText("NOT WORKING YET");
+			endTimeField.setText("");
+		}
+	}
 	
 	class PracTableModel extends AbstractTableModel {
 
