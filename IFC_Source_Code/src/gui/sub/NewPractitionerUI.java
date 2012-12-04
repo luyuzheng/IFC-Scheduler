@@ -1,6 +1,8 @@
 package gui.sub;
 
 import backend.DataService.DataServiceImpl;
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -42,8 +44,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 	JTable pracTable;
-	
-	private Font font = new Font("Arial", Font.PLAIN, 14);
+
 	
 	private static PractitionerDto practitioner;
 	
@@ -67,18 +68,18 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	JPanel lastNamePanel = new JPanel(new BorderLayout());
     	JLabel firstNameLabel = new JLabel("First Name: ");
     	JLabel lastNameLabel = new JLabel("Last Name: ");
-    	firstNameLabel.setFont(font);
-    	firstNameField.setFont(font);
+    	firstNameLabel.setFont(Constants.PARAGRAPH);
+    	firstNameField.setFont(Constants.PARAGRAPH);
     	firstNamePanel.add(firstNameLabel, BorderLayout.NORTH);
     	firstNamePanel.add(firstNameField, BorderLayout.CENTER);
-    	lastNameLabel.setFont(font);
-    	lastNameField.setFont(font);
+    	lastNameLabel.setFont(Constants.PARAGRAPH);
+    	lastNameField.setFont(Constants.PARAGRAPH);
     	lastNamePanel.add(lastNameLabel, BorderLayout.NORTH);
     	lastNamePanel.add(lastNameField, BorderLayout.CENTER);
     	JPanel lengthPanel = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("Appt Length (Min): ");
-    	label.setFont(font);
-    	apptLengthField.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
+    	apptLengthField.setFont(Constants.PARAGRAPH);
     	lengthPanel.add(label, BorderLayout.NORTH);
     	lengthPanel.add(apptLengthField, BorderLayout.CENTER);
     	
@@ -90,20 +91,20 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel typePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner Type: ");
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	typePanel.add(label, BorderLayout.NORTH);
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
     	typeCombo = new JComboBox(typeList.toArray());
     	if (typeList.size() > 0)
     		typeCombo.setSelectedIndex(0);
-    	typeCombo.setFont(font);
+    	typeCombo.setFont(Constants.DIALOG);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	
     	JButton newTypeButton = new JButton("New Type");
     	newTypeButton.addActionListener(this);
     	newTypeButton.setActionCommand("New Type");
-    	newTypeButton.setFont(font);
+    	newTypeButton.setFont(Constants.DIALOG);
     	typeComboPanel.add(newTypeButton, BorderLayout.EAST);
     	typePanel.add(typeComboPanel, BorderLayout.CENTER);
     	topSubpanel.add(typePanel);
@@ -114,9 +115,9 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner notes: ", JLabel.CENTER);
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	notePanel.add(label, BorderLayout.NORTH);
-    	noteField.setFont(font);
+    	noteField.setFont(Constants.PARAGRAPH);
     	noteField.setLineWrap(true);
     	noteField.setWrapStyleWord(true);
     	JScrollPane notePane = new JScrollPane(noteField);
@@ -126,9 +127,9 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("okNew");
     	okButton.addActionListener(this);
-    	okButton.setFont(font);
+    	okButton.setFont(Constants.DIALOG);
     	cancelButton.addActionListener(this);
-    	cancelButton.setFont(font);
+    	cancelButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	
@@ -155,7 +156,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		}
 		else if (e.getActionCommand().equals("okNew")) {
 			JLabel msg = new JLabel();
-			msg.setFont(font);
+			msg.setFont(Constants.PARAGRAPH);
 			String firstName = firstNameField.getText();
 			if (firstName.equals("")) {
 				msg.setText("Please enter a first name.");

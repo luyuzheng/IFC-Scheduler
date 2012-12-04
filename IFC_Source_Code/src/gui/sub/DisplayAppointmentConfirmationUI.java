@@ -1,5 +1,6 @@
 package gui.sub;
 
+import gui.Constants;
 import gui.main.AppointmentConfirmationPane;
 
 import java.awt.BorderLayout;
@@ -40,7 +41,6 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	private JButton cancelButton = new JButton("Cancel");
 	private JTextArea textArea;
 	private JTextArea noteArea;
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
 	 * Constructor - creates the actual UI to display the patient's appointment information
@@ -74,7 +74,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(font);
+		textArea.setFont(Constants.PARAGRAPH);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		textArea.setText(text);
@@ -82,22 +82,22 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 
 		notePanel = new JPanel(new BorderLayout());
 		JLabel noteLabel = new JLabel("Appointment Confirmation Note:");
-		noteLabel.setFont(font);
+		noteLabel.setFont(Constants.PARAGRAPH);
 		JScrollPane notePane = new JScrollPane();
 		notePane.setPreferredSize(new Dimension(200,200));
 		noteArea = new JTextArea();
 		noteArea.setLineWrap(true);
 		noteArea.setWrapStyleWord(true);
-		noteArea.setFont(font);
+		noteArea.setFont(Constants.PARAGRAPH);
 
 		noteArea.setText((appt.getNote()).replaceAll("\t\t", "\n"));
 		notePane.setViewportView(noteArea);
 		notePanel.add(noteLabel, BorderLayout.NORTH);
 		notePanel.add(notePane, BorderLayout.CENTER);
 		
-		confirmButton.setFont(font);
-		okButton.setFont(font);
-		cancelButton.setFont(font);
+		confirmButton.setFont(Constants.DIALOG);
+		okButton.setFont(Constants.DIALOG);
+		cancelButton.setFont(Constants.DIALOG);
 		
 		confirmButton.setActionCommand("confirm");
 		okButton.setActionCommand("OK");

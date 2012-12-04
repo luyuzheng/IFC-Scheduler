@@ -1,5 +1,7 @@
 package gui.sub;
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -33,7 +35,6 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	JCheckBox noShowsCheckBox = new JCheckBox();
 	private JTextArea textArea;
 	private JTextArea noteArea;
-	private Font font= new Font("Tahoma",Font.PLAIN,14);
 	
 	private static AppointmentDto appointment;
 	
@@ -59,14 +60,14 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(font);
+		textArea.setFont(Constants.PARAGRAPH);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		textArea.setText(text);
 		
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JLabel noShowsLabel = new JLabel("No Show");
-		noShowsLabel.setFont(font);
+		noShowsLabel.setFont(Constants.PARAGRAPH);
 		
 		//------TODO: MAKE THIS SHOW THE GODDAMN CHECKBOX PROPERLY---------
 		// (deleting this makes no shows increment properly, but then it doesn't
@@ -88,13 +89,13 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		
 		JPanel notePanel = new JPanel(new BorderLayout());
 		JLabel noteLabel = new JLabel("Appointment Note:");
-		noteLabel.setFont(font);
+		noteLabel.setFont(Constants.PARAGRAPH);
 		JScrollPane notePane = new JScrollPane();
 		notePane.setPreferredSize(new Dimension(200,200));
 		noteArea = new JTextArea();
 		noteArea.setLineWrap(true);
 		noteArea.setWrapStyleWord(true);
-		noteArea.setFont(font);
+		noteArea.setFont(Constants.PARAGRAPH);
 
 		noteArea.setText((a.getNote()).replaceAll("\t\t", "\n"));
 		notePane.setViewportView(noteArea);
@@ -104,16 +105,16 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		editButton.addActionListener(this);
 		editButton.setActionCommand("edit");
-		editButton.setFont(font);
+		editButton.setFont(Constants.DIALOG);
 		buttonPanel.add(editButton);
 
 		okButton.addActionListener(this);
 		okButton.setActionCommand("save");
-		okButton.setFont(font);
+		okButton.setFont(Constants.DIALOG);
 		buttonPanel.add(okButton);
 		cancelButton.addActionListener(this); 
 		cancelButton.setActionCommand("cancel");
-		cancelButton.setFont(font);
+		cancelButton.setFont(Constants.DIALOG);
 		buttonPanel.add(cancelButton);
 		
 		// Add borders to all panels

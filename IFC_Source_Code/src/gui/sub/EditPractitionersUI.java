@@ -1,6 +1,8 @@
 package gui.sub;
 
 import backend.DataService.DataServiceImpl;
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -38,7 +40,6 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 	private JButton removeButton = new JButton("Remove");
 	private JTable pracTable;
 	private JTextField searchField = new JTextField();
-	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	public EditPractitionersUI(String s) {
 		setModal(true);
@@ -89,8 +90,8 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
     	pracTable.setAutoCreateRowSorter(true);
     	pracTable.getTableHeader().setReorderingAllowed(false);
 
-    	pracTable.setFont(font);
-    	pracTable.getTableHeader().setFont(font);
+    	pracTable.setFont(Constants.PARAGRAPH);
+    	pracTable.getTableHeader().setFont(Constants.PARAGRAPH);
     	
     	pracTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	panel.add(pracTable.getTableHeader(), BorderLayout.PAGE_START);
@@ -99,29 +100,29 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("okOld");
     	okButton.addActionListener(this);
-    	okButton.setFont(font);
+    	okButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
     	
     	editButton.setActionCommand("edit");
     	editButton.addActionListener(this);
-    	editButton.setFont(font);
+    	editButton.setFont(Constants.DIALOG);
     	buttonPanel.add(editButton);
     	
     	removeButton.setActionCommand("remove");
     	removeButton.addActionListener(this);
-    	removeButton.setFont(font);
+    	removeButton.setFont(Constants.DIALOG);
     	buttonPanel.add(removeButton);
     	
     	newButton.setActionCommand("new");
     	newButton.addActionListener(this);
-    	newButton.setFont(font);
+    	newButton.setFont(Constants.DIALOG);
     	buttonPanel.add(newButton);
     	
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
         
         
-        searchField.setFont(font);
+        searchField.setFont(Constants.PARAGRAPH);
         
         
         p.add(searchField, BorderLayout.NORTH);
