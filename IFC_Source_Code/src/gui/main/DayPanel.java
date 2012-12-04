@@ -18,6 +18,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -30,6 +31,7 @@ import java.util.List;
 import backend.DataTransferObjects.PatientDto;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
+import gui.Constants;
 import gui.TimeSlot;
 
 public class DayPanel extends JPanel {
@@ -167,8 +169,10 @@ public class DayPanel extends JPanel {
 	
 	/** Removes a practitioner from the day's schedule and cancels their appointments. */
 	public void clearRoom(RoomPanel panel) {
+		JLabel msg= new JLabel("Are you sure you want to remove this practitioner from the schedule? \nThis will cancel any appointments that have been set for this day.");
+		msg.setFont(Constants.PARAGRAPH);
 		
-		if (JOptionPane.showConfirmDialog(mw, "Are you sure you want to remove this practitioner from the schedule? \nThis will cancel any appointments that have been set for this day.", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+		if (JOptionPane.showConfirmDialog(mw, msg, "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 			if (panel == null) return;
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitionerFromDay
 				(panel.getRoom().getPractSchedID(), day);

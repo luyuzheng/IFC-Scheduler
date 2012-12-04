@@ -118,7 +118,7 @@ public class AppointmentDto extends AbstractDto {
             return getNote();
         }
         else {
-            return getNote().substring(0, length);
+            return getNote().substring(0, length) + "...";
         }
     }
 

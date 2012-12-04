@@ -51,7 +51,6 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 	private JButton cancelButton2 = new JButton("Cancel");
 	JTable patTable;
 	private JTextField searchField = new JTextField();
-	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	private static PatientDto patient;
 	
@@ -72,7 +71,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 		
 		setLayout(new GridLayout(1,1));
 		tabbedPane.setPreferredSize(new Dimension(500,250));
-		tabbedPane.setFont(font);
+		tabbedPane.setFont(Constants.PARAGRAPH);
 		add(tabbedPane);
 		setResizable(false);
 		
@@ -136,21 +135,21 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	patTable.getTableHeader().setReorderingAllowed(false);
 
     	patTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    	patTable.setFont(font);
-    	patTable.getTableHeader().setFont(font);
+    	patTable.setFont(Constants.PARAGRAPH);
+    	patTable.getTableHeader().setFont(Constants.PARAGRAPH);
     	panel.add(patTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(patTable, BorderLayout.CENTER);
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	editButton.setActionCommand("edit");
     	editButton.addActionListener(this);
-    	editButton.setFont(font);
+    	editButton.setFont(Constants.DIALOG);
     	buttonPanel.add(editButton);
     	okButton1.setActionCommand("okOld");
     	okButton1.addActionListener(this);
-    	okButton1.setFont(font);
+    	okButton1.setFont(Constants.DIALOG);
     	cancelButton1.addActionListener(this);
-    	cancelButton1.setFont(font);
+    	cancelButton1.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton1);
     	buttonPanel.add(cancelButton1);
     	
@@ -158,7 +157,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
         
-        searchField.setFont(font);
+        searchField.setFont(Constants.PARAGRAPH);
         p.add(searchField, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
@@ -170,18 +169,18 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	JPanel input = new JPanel(new GridLayout(0,1));
     	JPanel fName = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("First Name: ");
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	fName.add(label, BorderLayout.NORTH);
     	firstNameField.setColumns(15);
-    	firstNameField.setFont(font);
+    	firstNameField.setFont(Constants.PARAGRAPH);
     	fName.add(firstNameField, BorderLayout.CENTER);
     	
     	JPanel lName = new JPanel(new BorderLayout());
     	label = new JLabel("Last Name: ");
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	lName.add(label, BorderLayout.NORTH);
     	lastNameField.setColumns(15);
-    	lastNameField.setFont(font);
+    	lastNameField.setFont(Constants.PARAGRAPH);
     	lName.add(lastNameField, BorderLayout.CENTER);
     	
     	JPanel names = new JPanel(new FlowLayout());
@@ -192,15 +191,15 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	
     	JPanel num = new JPanel(new BorderLayout());
     	label = new JLabel("Phone Number: ", JLabel.CENTER);
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	num.add(label, BorderLayout.NORTH);
     	JPanel phonePanel = new JPanel(new FlowLayout());
     	areaCodeField.setColumns(5);
-    	areaCodeField.setFont(font);
+    	areaCodeField.setFont(Constants.PARAGRAPH);
     	numberPart1Field.setColumns(5);
-    	numberPart1Field.setFont(font);
+    	numberPart1Field.setFont(Constants.PARAGRAPH);
     	numberPart2Field.setColumns(7);
-    	numberPart2Field.setFont(font);
+    	numberPart2Field.setFont(Constants.PARAGRAPH);
     	phonePanel.add(areaCodeField);
     	phonePanel.add(numberPart1Field);
     	phonePanel.add(numberPart2Field);
@@ -209,9 +208,9 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Patient Notes: ", JLabel.CENTER);
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	notePanel.add(label, BorderLayout.NORTH);
-    	note.setFont(font);
+    	note.setFont(Constants.PARAGRAPH);
     	//note.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
     	note.setLineWrap(true);
     	note.setWrapStyleWord(true);
@@ -221,9 +220,9 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton2.setActionCommand("okNew");
     	okButton2.addActionListener(this);
-    	okButton2.setFont(font);
+    	okButton2.setFont(Constants.DIALOG);
     	cancelButton2.addActionListener(this);
-    	cancelButton2.setFont(font);
+    	cancelButton2.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton2);
     	buttonPanel.add(cancelButton2);
     	

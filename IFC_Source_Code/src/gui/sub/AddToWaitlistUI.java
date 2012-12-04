@@ -1,5 +1,7 @@
 package gui.sub;
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -34,8 +36,6 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 	private JComboBox typeCombo;
 	private JTextArea commentArea;
 	
-	private Font font = new Font("Arial", Font.PLAIN, 16);
-	
 	private static int change = -1; // -1 if canceled, other is the typeID
 	
 	private AddToWaitlistUI(String name) {
@@ -57,10 +57,10 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 		JPanel typePanel = new JPanel(new BorderLayout());
 		typePanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		JLabel typeLabel = new JLabel("Select Specific Wait List: ");
-		typeLabel.setFont(font);
+		typeLabel.setFont(Constants.DIALOG);
 		List<TypeDto> types = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
 		typeCombo = new JComboBox(types.toArray());
-		typeCombo.setFont(font);
+		typeCombo.setFont(Constants.DIALOG);
 		typePanel.add(typeLabel, BorderLayout.NORTH);
 		typePanel.add(typeCombo, BorderLayout.CENTER);
 		
@@ -70,9 +70,9 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 		JPanel commentPanel = new JPanel(new BorderLayout());
 		commentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		JLabel commentLabel = new JLabel("Comments: ");
-		commentLabel.setFont(font);
+		commentLabel.setFont(Constants.DIALOG);
 		commentArea = new JTextArea();
-		commentArea.setFont(font);
+		commentArea.setFont(Constants.DIALOG);
     	commentArea.setLineWrap(true);
     	commentArea.setWrapStyleWord(true);
     	JScrollPane commentPane = new JScrollPane(commentArea);
@@ -85,15 +85,15 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
 		selectPatientButton.addActionListener(this);
 		selectPatientButton.setActionCommand("select");
-		selectPatientButton.setFont(font);
+		selectPatientButton.setFont(Constants.DIALOG);
 		buttonPanel.add(selectPatientButton, BorderLayout.CENTER);
 		okButton.addActionListener(this);
 		okButton.setActionCommand("ok");
-		okButton.setFont(font);
+		okButton.setFont(Constants.DIALOG);
 		buttonPanel.add(okButton);
 		cancelButton.addActionListener(this);
 		cancelButton.setActionCommand("cancel");
-		cancelButton.setFont(font);
+		cancelButton.setFont(Constants.DIALOG);
 		buttonPanel.add(cancelButton);
 		
 		
@@ -128,7 +128,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
                                 //TODO: I don't think this works as desired? Might have fixed, come back to
 				if (waitlist.get(i).getPatientID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
 					JLabel errorMsg = new JLabel("This patient has already been added to the waitlist for this type of service.");
-					errorMsg.setFont(font);
+					errorMsg.setFont(Constants.DIALOG);
 					JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
 				    return;
 				} 
