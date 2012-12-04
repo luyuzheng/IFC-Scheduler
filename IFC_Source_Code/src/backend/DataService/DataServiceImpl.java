@@ -1420,6 +1420,7 @@ public class DataServiceImpl implements DataService {
 					"UPDATE Appointment SET Confirmation=1 " +
 					"WHERE ApptID=?");
 			st.setInt(1, appointment.getApptID());
+                        appointment.setConfirmation(true);
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -1448,6 +1449,7 @@ public class DataServiceImpl implements DataService {
 					"UPDATE Appointment SET Confirmation=0 " +
 					"WHERE ApptID=?");
 			st.setInt(1, appointment.getApptID());
+                        appointment.setConfirmation(false);
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
