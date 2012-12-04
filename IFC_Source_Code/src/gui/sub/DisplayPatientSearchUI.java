@@ -18,7 +18,7 @@ import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
 /**
- * DisplayPatientSearchUI shows information about a patient when a patient in the table
+ * DisplayPatientSearchUI shows information about a patient when a patient in the search table
  * is clicked.
  */
 public class DisplayPatientSearchUI extends JDialog implements ActionListener {

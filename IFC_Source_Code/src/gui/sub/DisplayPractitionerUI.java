@@ -1,7 +1,10 @@
 package gui.sub;
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -20,10 +23,9 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private static DisplayPractitionerUI displayPractitionerUI;
 	
 	private JButton okButton = new JButton("OK");
-	private JButton changeButton = new JButton("Change Practitioner");
-	private JButton clearButton = new JButton("Clear Room");
+	//private JButton changeButton = new JButton("Change Practitioner");
+	private JButton clearButton = new JButton("Clear Practitioner");
 	private JTextArea textArea;
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	private static PractitionerDto practitioner;
 	
@@ -37,31 +39,40 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		String text = "Practitioner Name: " + p.getFirst() + " " + p.getLast();
 		text += "\nType: " + p.getTypeName().toString();
 		text += "\nAppointment Length: " + p.getApptLength() + " Minutes";
-		text += "\nPractitioner Note: " + p.getNotes();
+		text += "\nPractitioner Note: ";
+		
+		if (p.getNotes().isEmpty()) {
+			text+= "No Notes to Display";
+		} else {
+			text += p.getNotes();
+		}
 
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Tahoma",Font.PLAIN,11));
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		textArea.setText(text);
+		textArea.setFont(Constants.PARAGRAPH);
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		okButton.addActionListener(this);
 		okButton.setActionCommand("ok");
+		okButton.setFont(Constants.DIALOG);
 		buttonPanel.add(okButton);
-		changeButton.addActionListener(this);
-		changeButton.setActionCommand("change");
-		buttonPanel.add(changeButton);
+		//changeButton.addActionListener(this);
+		//changeButton.setActionCommand("change");
+		//buttonPanel.add(changeButton);
 		clearButton.addActionListener(this);
 		clearButton.setActionCommand("clear");
+		clearButton.setFont(Constants.DIALOG);
 		buttonPanel.add(clearButton);
 		
 		add(textArea, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
+		setPreferredSize(new Dimension(350, 150));
 		setResizable(false);
 		
 	}
@@ -78,7 +89,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("change")) {
 			PractitionerDto p = SelectPractitionerUI.ShowDialog(this);
 			JLabel msg = new JLabel("Changing practitioners will clear all the appointments for this practitioner. Continue anyways?");
-			msg.setFont(font);
+			msg.setFont(Constants.PARAGRAPH);
 			if (JOptionPane.showConfirmDialog(this, msg, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
 				return;
 			}
