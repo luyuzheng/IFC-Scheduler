@@ -243,5 +243,7 @@ public interface DataService {
     public boolean addNotesToAppointment(AppointmentDto appointment);
     
     public ArrayList<AppointmentDto> getAllPatientsForDay(Date day);
+    
+    public boolean unConfirmAppointment(AppointmentDto appointment);
 
 }

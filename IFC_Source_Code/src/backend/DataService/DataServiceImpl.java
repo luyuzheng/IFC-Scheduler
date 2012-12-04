@@ -1437,6 +1437,34 @@ public class DataServiceImpl implements DataService {
 		}
 		return false;
 	}
+        
+        @Override
+	public boolean unConfirmAppointment(AppointmentDto appointment) {
+		PreparedStatement st = null;
+
+		try {
+			appointment.setConfirmation(true);
+			st = connection.prepareStatement(
+					"UPDATE Appointment SET Confirmation=0 " +
+					"WHERE ApptID=?");
+			st.setInt(1, appointment.getApptID());
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
+	}
 
     @Override
     public PatientDto addPatient(String phone, String first, String last, String notes) {
