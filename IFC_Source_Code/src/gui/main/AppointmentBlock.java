@@ -88,8 +88,8 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 			if (patient.getPhone() == null) text += "No Phone # Specified";
 			else text += patient.getPhone();
 			if (!appointment.getNote().equals("")) text += "\n\nNote: " + appointment.getShortNote(50).replaceAll("\t\t", " ");
-			if (appointment.getConfirmation()) text += "\n\n*CONFIRMED";
-			if (appointment.getNoShowID() != null && appointment.getNoShowID() > 0) text += "\n\n*NO SHOW";
+			if (appointment.getConfirmation()) text += "\n\n--CONFIRMED--";
+			if (appointment.getNoShowID() != null && appointment.getNoShowID() > 0) text += "\n\n--NO SHOW--";
 		} 
 		textArea.setText(text);
 	}
@@ -100,7 +100,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 */
 	public void setPatient(int patId) {
 		appointment.setPatientID(patId);
-                DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patId, appointment);
+        DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patId, appointment);
 		setText();
 	}
 
@@ -134,8 +134,8 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	/** Clears the appointment block so that it shows up empty. */
 	public void clearAppt() {
 		appointment.setPatientID(null);
-                DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromAppointment(appointment);
-                setText();
+        DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromAppointment(appointment);
+        setText();
 	}
 	
 	/** Returns the appointment associated with an appointment block. */
@@ -147,8 +147,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	public void setNote(String note) {
 		appointment.setNote(note);
         DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
-        
-                setText();
+        setText();
 	}
 	
 }

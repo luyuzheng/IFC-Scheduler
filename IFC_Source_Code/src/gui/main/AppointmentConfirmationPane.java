@@ -134,7 +134,7 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		 */
 		public AppointmentConfirmationTableModel(ArrayList<AppointmentDto> confirm) {
 			this.confirm = confirm;
-			columnNames = new String[] {"Confirmed", "First Name", "Last Name", "Phone Number", "Notes"};
+			columnNames = new String[] {"Confirmed", "Start Time", "First Name", "Last Name", "Phone Number", "Notes"};
 		}
 		
 		/**
@@ -196,10 +196,12 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 					return "No";
 				}
 			} else if (col == 1) {
-				return pat.getFirst();
+				return appt.prettyPrintStart();
 			} else if (col == 2) {
+				return pat.getFirst();
+			} else if (col == 3) {
 				return pat.getLast();
-			} else if (col == 3){
+			} else if (col == 4){
 				return pat.getPhone();
 			} else {
 				return appt.getNote();

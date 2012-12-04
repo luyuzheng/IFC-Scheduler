@@ -65,6 +65,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		Date date = new Date(appt.getApptDate().getTime());
 		
 		String text = "Date: " + date.toString() + "\n" +
+					  "Time Slot: " + appt.prettyPrintStart() + " - " + appt.prettyPrintEnd() + "\n" +
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
 					  "Phone Number: " + patient.getPhone() + "\n" +
 					  "Confirmed: " + confirmed;

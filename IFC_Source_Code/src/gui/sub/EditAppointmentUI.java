@@ -52,6 +52,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
 		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n"); // TODO: NEED TO DELETE REPLACEALL?
+		text += "\nConfirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
 
 		JPanel textPanel = new JPanel(new BorderLayout());
 		textArea = new JTextArea();
