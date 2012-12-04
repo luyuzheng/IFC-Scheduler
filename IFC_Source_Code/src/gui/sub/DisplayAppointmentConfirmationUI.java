@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -103,7 +104,8 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		okButton.setActionCommand("OK");
 		cancelButton.setActionCommand("cancel");
 		
-		confirmButton.addActionListener(this);
+		confirmButton.setAction(changeConfirmationAction);
+		isConfirmedValidate();
 		okButton.addActionListener(this);
 		cancelButton.addActionListener(this);
 
@@ -127,6 +129,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		Date date = new Date(appt.getApptDate().getTime());
 		
 		String text = "Date: " + date.toString() + "\n" +
+					  "Time Slot: " + appt.prettyPrintStart() + " - " + appt.prettyPrintEnd() + "\n" +
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
 					  "Phone Number: " + patient.getPhone() + "\n" +
 					  "Confirmed: " + confirmed;
@@ -149,20 +152,45 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		return appointment;
 	}
 	
+	public void isConfirmedValidate() {
+		if (appointment.getConfirmation()) {
+			confirmButton.setText("<html>Unconfirm</html>");
+		} else {
+			confirmButton.setText("<html>Confirm</html>");
+		}
+	}
+	
+	private final AbstractAction changeConfirmationAction = new AbstractAction("<html>Confirm</html>") {
+		public void actionPerformed(ActionEvent e) {
+			if (!appointment.getConfirmation()) {
+				appointment.setConfirmation(true);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appointment);
+				confirmButton.setText("<html>Unconfirm</html>");
+			} else {
+				appointment.setConfirmation(false);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.unConfirmAppointment(appointment);
+				confirmButton.setText("<html>Confirm</html>");
+			}
+			refreshPatientInfo(appointment);
+		}
+	};
+	
 	/**
 	 * Closes the window once the user hits the "OK" button.
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() == "confirm") {
+		/*if (e.getActionCommand() == "confirm") {
 			if (!appointment.getConfirmation()) {
 				appointment.setConfirmation(true);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appointment);
-			// TODO: Want to unconfirm
+				
+			// Want to unconfirm
 			} else {
-
+				appointment.setConfirmation(false);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.unConfirmAppointment(appointment);
 			}
 			refreshPatientInfo(appointment);
-		} else if (e.getActionCommand() == "OK") {
+		} else */if (e.getActionCommand() == "OK") {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
 			displayAppointmentConfirmationUI.setVisible(false);
 		} else {
