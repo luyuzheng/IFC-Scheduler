@@ -1,5 +1,6 @@
 package gui.sub;
 
+import gui.Constants;
 import gui.main.SearchPane;
 import gui.main.SearchPane.PatientResultsTableModel;
 
@@ -39,7 +40,6 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 	private JTextField lastNameField = new JTextField();
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
 	 * Constructor - creates the actual UI for the pop up window.
@@ -63,11 +63,11 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		searchLabel = new JLabel("Enter a Patient's Name: ");
 		firstNameLabel = new JLabel("First Name: ");
 		lastNameLabel = new JLabel("Last Name: ");
-		searchLabel.setFont(font);
-		firstNameLabel.setFont(font);
-		lastNameLabel.setFont(font);
-		firstNameField.setFont(font);
-		lastNameField.setFont(font);
+		searchLabel.setFont(Constants.PARAGRAPH);
+		firstNameLabel.setFont(Constants.PARAGRAPH);
+		lastNameLabel.setFont(Constants.PARAGRAPH);
+		firstNameField.setFont(Constants.PARAGRAPH);
+		lastNameField.setFont(Constants.PARAGRAPH);
 		
 		// Add search info to search panel
 		namesPanel.add(firstNameLabel);
@@ -86,8 +86,8 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		cancelButton.addActionListener(this);
 		cancelButton.setActionCommand("Cancel");
 		
-		searchButton.setFont(font);
-		cancelButton.setFont(font);
+		searchButton.setFont(Constants.DIALOG);
+		cancelButton.setFont(Constants.DIALOG);
 		
 		// Add buttons to button panel
 		buttonPanel.setBorder(new EmptyBorder(20, 10, 20, 10));
@@ -120,7 +120,7 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 			if (firstNameField.getText() == null || firstNameField.getText().isEmpty() ||
 					lastNameField.getText() == null || lastNameField.getText().isEmpty()) {
 				JLabel errorMessage = new JLabel("Please enter a patient's name.");
-				errorMessage.setFont(font);
+				errorMessage.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, errorMessage, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}

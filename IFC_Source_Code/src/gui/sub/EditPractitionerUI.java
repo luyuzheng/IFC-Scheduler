@@ -1,6 +1,8 @@
 package gui.sub;
 
 import backend.DataService.DataServiceImpl;
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -36,7 +38,6 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 	private static PractitionerDto p;
 
 	private JPanel panel;
-	private Font font= new Font("Tahoma", Font.PLAIN, 14);
 	
 	private EditPractitionerUI(String name) {
 		setModal(true);
@@ -65,15 +66,15 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		JPanel lastNamePanel = new JPanel(new BorderLayout());
 		JLabel firstNameLabel = new JLabel("First Name: ");
 		JLabel lastNameLabel = new JLabel("Last Name: ");
-		firstNameLabel.setFont(font);
-		lastNameLabel.setFont(font);
+		firstNameLabel.setFont(Constants.PARAGRAPH);
+		lastNameLabel.setFont(Constants.PARAGRAPH);
 		firstNamePanel.add(firstNameLabel, BorderLayout.NORTH);
 		firstNameField.setColumns(8);
-		firstNameField.setFont(font);
+		firstNameField.setFont(Constants.PARAGRAPH);
 		firstNamePanel.add(firstNameField, BorderLayout.CENTER);
 		lastNamePanel.add(lastNameLabel, BorderLayout.NORTH);
 		lastNameField.setColumns(8);
-		lastNameField.setFont(font);
+		lastNameField.setFont(Constants.PARAGRAPH);
 		lastNamePanel.add(lastNameField, BorderLayout.CENTER);
 
 		namePanel.add(firstNamePanel);
@@ -82,27 +83,27 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 
 		JPanel apptLengthPanel = new JPanel(new BorderLayout());
 		JLabel label = new JLabel("Appt Length: ", JLabel.CENTER);
-		label.setFont(font);
+		label.setFont(Constants.PARAGRAPH);
 		apptLengthPanel.add(label, BorderLayout.NORTH);
-		apptLengthField.setFont(font);
+		apptLengthField.setFont(Constants.PARAGRAPH);
 		apptLengthPanel.add(apptLengthField, BorderLayout.CENTER);
 
 		input.add(apptLengthPanel);
 
 		JPanel typePanel = new JPanel(new BorderLayout());
 		label = new JLabel("Type: ", JLabel.CENTER);
-		label.setFont(font);
+		label.setFont(Constants.PARAGRAPH);
 		typePanel.add(label, BorderLayout.NORTH);
 		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
 		//typeCombo.setSelectedIndex(0);
 		//Added by Aakash on 14th feb to fix combolist practitioner-type bug
 		typeCombo.setSelectedItem(p.getType());
 
-		typeCombo.setFont(font);
+		typeCombo.setFont(Constants.DIALOG);
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());
 		typeInnerPanel.add(typeCombo, BorderLayout.CENTER);
 		JButton newTypeButton = new JButton("New Type");
-		newTypeButton.setFont(font);
+		newTypeButton.setFont(Constants.DIALOG);
 		newTypeButton.addActionListener(this);
 		newTypeButton.setActionCommand("New Type");
 		typeInnerPanel.add(newTypeButton, BorderLayout.EAST);
@@ -111,9 +112,9 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 
 		JPanel notePanel = new JPanel(new BorderLayout());
 		label = new JLabel("Practitioner Notes: ", JLabel.CENTER);
-		label.setFont(font);
+		label.setFont(Constants.PARAGRAPH);
 		notePanel.add(label, BorderLayout.NORTH);
-		note.setFont(font);
+		note.setFont(Constants.PARAGRAPH);
 		note.setLineWrap(true);
 		note.setWrapStyleWord(true);
 		JScrollPane notePane = new JScrollPane(note);
@@ -123,8 +124,8 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout());
 		okButton.setActionCommand("okNew");
 		okButton.addActionListener(this);
-		okButton.setFont(font);
-		cancelButton.setFont(font);
+		okButton.setFont(Constants.DIALOG);
+		cancelButton.setFont(Constants.DIALOG);
 		cancelButton.addActionListener(this);
 		buttonPanel.add(okButton);
 		buttonPanel.add(cancelButton);
@@ -160,7 +161,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 			return;
 		} else if (!e.getActionCommand().equals("Cancel")) {
 			JLabel msg = new JLabel();
-			msg.setFont(font);
+			msg.setFont(Constants.PARAGRAPH);
 			String firstName = firstNameField.getText();
 			if (firstName.equals("")) {
 				msg.setText("Please enter a first name.");

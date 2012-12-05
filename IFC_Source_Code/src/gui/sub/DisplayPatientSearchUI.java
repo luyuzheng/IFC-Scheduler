@@ -1,5 +1,7 @@
 package gui.sub;
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -18,7 +20,7 @@ import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
 /**
- * DisplayPatientSearchUI shows information about a patient when a patient in the table
+ * DisplayPatientSearchUI shows information about a patient when a patient in the search table
  * is clicked.
  */
 public class DisplayPatientSearchUI extends JDialog implements ActionListener {
@@ -26,7 +28,6 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 	
 	private JButton okButton = new JButton("OK");
 	private JTextArea textArea;
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
 	 * Constructor - creates the actual UI to display the patient information
@@ -55,13 +56,13 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(font);
+		textArea.setFont(Constants.PARAGRAPH);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		textArea.setText(text);
 		infoPanel.add(textArea);
 
-		okButton.setFont(font);
+		okButton.setFont(Constants.DIALOG);
 		okButton.addActionListener(this);
 		buttonPanel.add(okButton);
 		

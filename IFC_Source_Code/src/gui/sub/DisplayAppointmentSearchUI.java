@@ -1,5 +1,7 @@
 package gui.sub;
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -24,7 +26,6 @@ public class DisplayAppointmentSearchUI extends JDialog implements ActionListene
 	
 	private JButton okButton = new JButton("OK");
 	private JTextArea textArea;
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
 	 * Constructor - creates the actual UI to display appointment information
@@ -47,13 +48,13 @@ public class DisplayAppointmentSearchUI extends JDialog implements ActionListene
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(font);
+		textArea.setFont(Constants.PARAGRAPH);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		textArea.setText(text);
 		infoPanel.add(textArea);
 
-		okButton.setFont(font);
+		okButton.setFont(Constants.DIALOG);
 		okButton.addActionListener(this);
 		buttonPanel.add(okButton);
 		

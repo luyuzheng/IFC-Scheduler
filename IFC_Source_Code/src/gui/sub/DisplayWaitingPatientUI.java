@@ -1,5 +1,6 @@
 package gui.sub;
 
+import gui.Constants;
 import gui.main.listeners.ScheduleWaitlistPatientListener;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.SelectPatientUI.PatTableModel;
@@ -42,7 +43,6 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	private JTextArea textArea;
 	private JTextArea noteArea;
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	private static String comment;
 	
@@ -67,7 +67,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(font);
+		textArea.setFont(Constants.PARAGRAPH);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		textArea.setText(text);
@@ -127,8 +127,8 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	aptTable.getTableHeader().setReorderingAllowed(false);
 
     	aptTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    	aptTable.setFont(font);
-    	aptTable.getTableHeader().setFont(font);
+    	aptTable.setFont(Constants.PARAGRAPH);
+    	aptTable.getTableHeader().setFont(Constants.PARAGRAPH);
     	aptTable.addMouseListener(new ScheduleWaitlistPatientListener(aptTable, this));
     	panel.add(aptTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(aptTable, BorderLayout.CENTER);
@@ -137,9 +137,9 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("OK");
     	okButton.addActionListener(this);
-    	okButton.setFont(font);
+    	okButton.setFont(Constants.DIALOG);
     	cancelButton.addActionListener(this);
-    	cancelButton.setFont(font);
+    	cancelButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	

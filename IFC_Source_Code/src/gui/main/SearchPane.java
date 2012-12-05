@@ -1,5 +1,6 @@
 package gui.main;
 
+import gui.Constants;
 import gui.sub.SearchForAppointmentUI;
 import gui.sub.SearchForPatientUI;
 
@@ -43,7 +44,6 @@ public class SearchPane extends JPanel {
 	private JTable resultsTable;
 	private JButton searchForPatientButton = new JButton("Search for a Patient");
 	private JButton searchForApptButton = new JButton("Search for an Open Appointment Time Slot");
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
 	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
@@ -63,14 +63,14 @@ public class SearchPane extends JPanel {
 		// Provide choice for type of search
 		JLabel typeOfSearchLabel = new JLabel("Choose a Search Option: ");
 		typeOfSearchLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
-		typeOfSearchLabel.setFont(font);
+		typeOfSearchLabel.setFont(Constants.DIALOG);
 		
 		// Create buttons for each search option
 		searchForPatientButton.setAction(searchForPatientAction);
 		searchForApptButton.setAction(searchForApptAction);
 		
-		searchForPatientButton.setFont(font);
-		searchForApptButton.setFont(font);
+		searchForPatientButton.setFont(Constants.DIALOG);
+		searchForApptButton.setFont(Constants.DIALOG);
 		
 		// Add label and buttons to button panel
 		buttonPanel.add(typeOfSearchLabel);
@@ -92,12 +92,12 @@ public class SearchPane extends JPanel {
 		}
 		resultsTable = new JTable(model);
 		resultsTable.setDragEnabled(true);
-		resultsTable.setFont(font);
+		resultsTable.setFont(Constants.DIALOG);
 		//resultsTable.addMouseListener(new SearchListener(resultsTable, this));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.getTableHeader().setReorderingAllowed(false);
-		resultsTable.getTableHeader().setFont(font);
+		resultsTable.getTableHeader().setFont(Constants.DIALOG);
 		resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		resultsTablePanel.add(resultsTable.getTableHeader(), BorderLayout.PAGE_START);
 		resultsTablePanel.add(resultsTable, BorderLayout.CENTER);

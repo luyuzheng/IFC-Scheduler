@@ -1,6 +1,8 @@
 package gui.sub;
 
 import backend.DataService.DataServiceImpl;
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -35,7 +37,6 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	private JLabel numberOfNoShows = new JLabel();
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	private static PatientDto p;
 	
@@ -44,23 +45,23 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		firstNameField.setText(p.getFirst());
-		firstNameField.setFont(font);
+		firstNameField.setFont(Constants.PARAGRAPH);
 		
 		lastNameField.setText(p.getLast());
-		lastNameField.setFont(font);
+		lastNameField.setFont(Constants.PARAGRAPH);
 		
 		if(p.getPhone() != null){
 			String phone= p.getPhone();
 			phone = phone.replaceAll("-| |\\)|\\(", "");
 			
 			areaCodeField.setText(phone.substring(0,3));
-			areaCodeField.setFont(font);
+			areaCodeField.setFont(Constants.PARAGRAPH);
 			
 			numberPart1Field.setText(phone.substring(3,6));
-			numberPart1Field.setFont(font);
+			numberPart1Field.setFont(Constants.PARAGRAPH);
 			
 			numberPart2Field.setText(phone.substring(6,phone.length()));
-			numberPart2Field.setFont(font);
+			numberPart2Field.setFont(Constants.PARAGRAPH);
 		}
 		note.setText((p.getNotes()).replaceAll("\t\t", "\n")) ;
 		
@@ -68,14 +69,14 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	JPanel input = new JPanel(new GridLayout(0,1));
     	JPanel fName = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("First Name: ");
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	fName.add(label, BorderLayout.NORTH);
     	firstNameField.setColumns(15);
     	fName.add(firstNameField, BorderLayout.CENTER);
     	
     	JPanel lName = new JPanel(new BorderLayout());
     	label = new JLabel("Last Name: ");
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	lName.add(label, BorderLayout.NORTH);
     	lastNameField.setColumns(15);
     	lName.add(lastNameField, BorderLayout.CENTER);
@@ -88,7 +89,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	JPanel num = new JPanel(new BorderLayout());
     	label = new JLabel("Phone Number: ", JLabel.CENTER);
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	num.add(label, BorderLayout.NORTH);
     	JPanel phonePanel = new JPanel(new FlowLayout());
     	areaCodeField.setColumns(5);
@@ -102,7 +103,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	JPanel noShowsPanel = new JPanel(new BorderLayout());
     	numberOfNoShows.setText("Number of no shows: " + p.getNoShows());
-    	numberOfNoShows.setFont(font);
+    	numberOfNoShows.setFont(Constants.PARAGRAPH);
     	numberOfNoShows.setAlignmentX(JLabel.CENTER_ALIGNMENT);
     	numberOfNoShows.setHorizontalTextPosition(JLabel.CENTER);
     	noShowsPanel.add(numberOfNoShows);
@@ -110,10 +111,10 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Patient notes: ", JLabel.CENTER);
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	notePanel.add(label, BorderLayout.NORTH);
     	//note.setFont(phonePanel.getFont());
-    	note.setFont(font);
+    	note.setFont(Constants.PARAGRAPH);
     	//note.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
     	note.setLineWrap(true);
     	note.setWrapStyleWord(true);
@@ -124,9 +125,9 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("okNew");
     	okButton.addActionListener(this);
-    	okButton.setFont(font);
+    	okButton.setFont(Constants.DIALOG);
     	cancelButton.addActionListener(this);
-    	cancelButton.setFont(font);
+    	cancelButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	
@@ -185,7 +186,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 			}
 		} catch (Exception ex) {
 			JLabel msg = new JLabel("Please enter a valid phone number (###-###-####) or leave the field blank.");
-			msg.setFont(font);
+			msg.setFont(Constants.PARAGRAPH);
 			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}

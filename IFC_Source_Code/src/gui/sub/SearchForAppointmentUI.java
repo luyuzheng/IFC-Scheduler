@@ -1,5 +1,7 @@
 package gui.sub;
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -41,7 +43,6 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	private JComboBox typeSelector;
 	private ArrayList<TypeDto> types;
-	private Font font = new Font("Arial", Font.PLAIN, 16);
 	
 	/**
 	 * Constructor - creates the actual UI for the pop up window.
@@ -72,8 +73,8 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		JLabel typeLabel = new JLabel("Select Type of Service:");
 		
 		// Set font for fields
-		typeLabel.setFont(font);
-		typeSelector.setFont(font);
+		typeLabel.setFont(Constants.PARAGRAPH);
+		typeSelector.setFont(Constants.DIALOG);
 
 		
 		// Add drop down info to the panel
@@ -94,12 +95,12 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		friday.setSelected(true);
 		
 		// Set fonts for days of the week
-		daysOfTheWeekLabel.setFont(font);
-		monday.setFont(font);
-		tuesday.setFont(font);
-		wednesday.setFont(font);
-		thursday.setFont(font);
-		friday.setFont(font);
+		daysOfTheWeekLabel.setFont(Constants.PARAGRAPH);
+		monday.setFont(Constants.PARAGRAPH);
+		tuesday.setFont(Constants.PARAGRAPH);
+		wednesday.setFont(Constants.PARAGRAPH);
+		thursday.setFont(Constants.PARAGRAPH);
+		friday.setFont(Constants.PARAGRAPH);
 
 		checkboxPanel.add(monday);
 		checkboxPanel.add(tuesday);
@@ -118,8 +119,8 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		cancelButton.addActionListener(this);
 		cancelButton.setActionCommand("Cancel");
 		
-		searchButton.setFont(font);
-		cancelButton.setFont(font);
+		searchButton.setFont(Constants.DIALOG);
+		cancelButton.setFont(Constants.DIALOG);
 		
 		// Add buttons to button panel
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
@@ -151,7 +152,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 			if (!monday.isSelected() && !tuesday.isSelected() && !wednesday.isSelected()
 					&& !thursday.isSelected() && !friday.isSelected()) {
 				JLabel errorMessage = new JLabel("Please select a day.");
-				errorMessage.setFont(font);
+				errorMessage.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, errorMessage, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}

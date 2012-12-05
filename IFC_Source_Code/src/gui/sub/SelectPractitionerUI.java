@@ -1,17 +1,18 @@
 package gui.sub;
 
-import backend.DataService.DataServiceImpl;
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
@@ -26,15 +27,21 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import backend.DataTransferObjects.*;
+import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.PractitionerDto;
+import backend.DataTransferObjects.TypeDto;
 
-public class SelectPractitionerUI extends JDialog implements ActionListener {
+public class SelectPractitionerUI extends JDialog implements ActionListener,ListSelectionListener {
 
 	private static SelectPractitionerUI selectPractitionerUI;
 	private ArrayList<PractitionerDto> prac = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
+	private JTextField startTimeField = new JTextField("NOT WORKING YET");
+	private JTextField endTimeField = new JTextField();
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
 	private JComboBox typeCombo;
@@ -45,7 +52,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 	private JButton cancelButton1 = new JButton("Cancel");
 	private JButton okButton2 = new JButton("OK");
 	private JButton cancelButton2 = new JButton("Cancel");
-	private Font font= new Font("Tahoma", Font.PLAIN, 14);
+
 	JTable pracTable;
 	
 	private static PractitionerDto practitioner;
@@ -67,7 +74,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 		
 		setLayout(new GridLayout(1,1));
 		tabbedPane.setPreferredSize(new Dimension(500,250));
-		tabbedPane.setFont(font);
+		tabbedPane.setFont(Constants.PARAGRAPH);
 		add(tabbedPane);
 		setResizable(false);
 		
@@ -82,6 +89,18 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     private JComponent makeExisPracPanel() {
     	JPanel p = new JPanel(new BorderLayout());
     	JPanel panel = new JPanel(new BorderLayout());
+    	
+    	JPanel hoursPanel = new JPanel(new BorderLayout());
+    	JPanel hoursFieldPanel = new JPanel();
+    	hoursFieldPanel.setLayout(new BoxLayout(hoursFieldPanel, BoxLayout.X_AXIS));
+    	JLabel hoursLabel = new JLabel("Work hours (00:00 - 23:59)");
+    	hoursLabel.setFont(Constants.PARAGRAPH);
+    	hoursFieldPanel.add(startTimeField);
+    	hoursFieldPanel.add(new JLabel("  -  "));
+    	hoursFieldPanel.add(endTimeField);
+    	hoursPanel.add(hoursLabel, BorderLayout.PAGE_START);
+    	hoursPanel.add(hoursFieldPanel, BorderLayout.CENTER);
+    	
     	pracTable = new JTable(new PracTableModel());
     	pracTable.getTableHeader().setReorderingAllowed(false);
     	TableColumn column = null;
@@ -94,15 +113,15 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	    }
     	}
     	pracTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    	pracTable.setFont(font);
+    	pracTable.setFont(Constants.PARAGRAPH);
     	pracTable.setBorder(new EmptyBorder(5,5,5,5));
-    	pracTable.getTableHeader().setFont(font);
+    	pracTable.getTableHeader().setFont(Constants.PARAGRAPH);
     	panel.add(pracTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(pracTable, BorderLayout.CENTER);
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
-    	okButton1.setFont(font);
-    	cancelButton1.setFont(font);
+    	okButton1.setFont(Constants.DIALOG);
+    	cancelButton1.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton1);
     	buttonPanel.add(cancelButton1);
     	
@@ -110,6 +129,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
         JScrollPane scrollPane = new JScrollPane(panel);
         //scrollPane.setPreferredSize(new Dimension(410,200));
         
+        p.add(hoursPanel, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
         return p;
@@ -125,18 +145,18 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	JPanel lastNamePanel = new JPanel(new BorderLayout());
     	JLabel firstNameLabel = new JLabel("First Name: ");
     	JLabel lastNameLabel = new JLabel("Last Name: ");
-    	firstNameLabel.setFont(font);
-    	lastNameLabel.setFont(font);
-    	firstNameField.setFont(font);
-    	lastNameField.setFont(font);
+    	firstNameLabel.setFont(Constants.PARAGRAPH);
+    	lastNameLabel.setFont(Constants.PARAGRAPH);
+    	firstNameField.setFont(Constants.PARAGRAPH);
+    	lastNameField.setFont(Constants.PARAGRAPH);
     	firstNamePanel.add(firstNameLabel, BorderLayout.NORTH);
     	firstNamePanel.add(firstNameField, BorderLayout.CENTER);
     	lastNamePanel.add(lastNameLabel, BorderLayout.NORTH);
     	lastNamePanel.add(lastNameField, BorderLayout.CENTER);
     	JPanel lengthPanel = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("Appt Length (Min): ");
-    	label.setFont(font);
-    	apptLengthField.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
+    	apptLengthField.setFont(Constants.PARAGRAPH);
     	lengthPanel.add(label, BorderLayout.NORTH);
     	lengthPanel.add(apptLengthField, BorderLayout.CENTER);
     	nameLengthPanel.add(firstNamePanel);
@@ -146,7 +166,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel typePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner Type: ");
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	typePanel.add(label, BorderLayout.NORTH);
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
         
@@ -154,10 +174,10 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	typeCombo = new JComboBox(typeList.toArray());
     	if (typeList.size() > 0)
     		typeCombo.setSelectedIndex(0);
-    	typeCombo.setFont(font);
+    	typeCombo.setFont(Constants.PARAGRAPH);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	JButton newTypeButton = new JButton("New Type");
-    	newTypeButton.setFont(font);
+    	newTypeButton.setFont(Constants.DIALOG);
     	newTypeButton.addActionListener(this);
     	newTypeButton.setActionCommand("New Type");
     	typeComboPanel.add(newTypeButton, BorderLayout.EAST);
@@ -170,9 +190,9 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner notes: ", JLabel.CENTER);
-    	label.setFont(font);
+    	label.setFont(Constants.PARAGRAPH);
     	notePanel.add(label, BorderLayout.NORTH);
-    	noteField.setFont(font);
+    	noteField.setFont(Constants.PARAGRAPH);
     	noteField.setLineWrap(true);
     	noteField.setWrapStyleWord(true);
     	JScrollPane notePane = new JScrollPane(noteField);
@@ -181,8 +201,8 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	
-    	okButton2.setFont(font);
-    	cancelButton2.setFont(font);
+    	okButton2.setFont(Constants.DIALOG);
+    	cancelButton2.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton2);
     	buttonPanel.add(cancelButton2);
     	
@@ -216,7 +236,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 		}
 		else if (e.getActionCommand().equals("okNew")) {
 			JLabel msg = new JLabel();
-			msg.setFont(font);
+			msg.setFont(Constants.PARAGRAPH);
 			String firstName = firstNameField.getText();
 			if (firstName.equals("")) {
 				msg.setText( "Please enter a first name.");
@@ -268,6 +288,20 @@ public class SelectPractitionerUI extends JDialog implements ActionListener {
 		}
 		selectPractitionerUI.setVisible(false);
     }
+	
+	@Override
+	public void valueChanged(ListSelectionEvent le) {
+		if (pracTable.getSelectedRow() > -1) {
+			PractitionerDto pract = prac.get(pracTable.getSelectedColumn());
+			
+			
+			
+			startTimeField.setText("NOT WORKING YET");
+		} else {
+			startTimeField.setText("NOT WORKING YET");
+			endTimeField.setText("");
+		}
+	}
 	
 	class PracTableModel extends AbstractTableModel {
 

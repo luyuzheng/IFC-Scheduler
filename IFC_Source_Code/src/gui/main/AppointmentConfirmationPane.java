@@ -1,6 +1,7 @@
 package gui.main;
 
 import backend.DataService.DataServiceImpl;
+import gui.Constants;
 import gui.main.listeners.AppointmentConfirmationListener;
 import gui.sub.DisplayWaitingPatientUI.ApptTableModel;
 
@@ -47,8 +48,6 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 	
 	public JButton confirmButton = new JButton("Confirm Selected Appointment");
 	
-	private Font font = new Font("Arial", Font.PLAIN, 16);
-	
 	/**
 	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
 	 * labels and the table of results.
@@ -73,9 +72,9 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		String date= shortDate(dp.getDay().getDate());
 		
 		JLabel apptConfirmationLabel = new JLabel("Appointments to Confirm for " + date + ":");
-		apptConfirmationLabel.setFont(font);
-		
-		confirmButton.setFont(font);
+		apptConfirmationLabel.setFont(Constants.DIALOG);
+
+		confirmButton.setFont(Constants.DIALOG);
 		confirmButton.setEnabled(false);
 		confirmButton.setActionCommand("confirm");
 		confirmButton.addActionListener(this);
@@ -94,12 +93,12 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 				(ArrayList<AppointmentDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatientsForDay(dp.getDay().getDate()));
 		table = new JTable(model);
 		table.setDragEnabled(true);
-		table.setFont(font);
+		table.setFont(Constants.DIALOG);
 		table.addMouseListener(new AppointmentConfirmationListener(table, this));
 		table.getSelectionModel().addListSelectionListener(new AppointmentConfirmationListener(table, this));
 		table.setAutoCreateRowSorter(true);
     	table.getTableHeader().setReorderingAllowed(false);
-    	table.getTableHeader().setFont(font);
+    	table.getTableHeader().setFont(Constants.DIALOG);
     	table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     	tablePanel.add(table.getTableHeader(), BorderLayout.PAGE_START);
     	tablePanel.add(table, BorderLayout.CENTER);
