@@ -179,18 +179,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 * Closes the window once the user hits the "OK" button.
 	 */
 	public void actionPerformed(ActionEvent e) {
-		/*if (e.getActionCommand() == "confirm") {
-			if (!appointment.getConfirmation()) {
-				appointment.setConfirmation(true);
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appointment);
-				
-			// Want to unconfirm
-			} else {
-				appointment.setConfirmation(false);
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.unConfirmAppointment(appointment);
-			}
-			refreshPatientInfo(appointment);
-		} else */if (e.getActionCommand() == "OK") {
+		if (e.getActionCommand() == "OK") {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
 			displayAppointmentConfirmationUI.setVisible(false);
 		} else {
