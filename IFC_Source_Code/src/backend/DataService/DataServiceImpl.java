@@ -25,7 +25,7 @@ public class DataServiceImpl implements DataService {
 
 		//DataService serv = DataServiceImpl.create("test", "192.168.0.13:3306", user, password);
 
-		System.out.println(new Integer(1024) == null);
+		System.out.println(GLOBAL_DATA_INSTANCE.getFutureAppointmentsByPatId(1));
 		//		PatientDto newPatient = new PatientDto();
 		//		newPatient.setFirst("Dead").setLast("Bowie").setPhone(3215552314L).setNotes("ELE member");
 		//		serv.addPatient(newPatient);
@@ -1389,6 +1389,69 @@ public class DataServiceImpl implements DataService {
 				newAppointment.setField(AppointmentDto.CONFIRMATION,
 						rs.getInt(AppointmentDto.CONFIRMATION)!=0);
 				newAppointment.setField(AppointmentDto.PRACTITIONER_NAME, name);
+				retList.add(newAppointment);
+			}
+			return retList;
+
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public List<AppointmentDto> getFutureAppointmentsByPatId(int patID) {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		String name = null;
+
+		try {
+			st = connection.prepareStatement(
+					"SELECT * FROM Appointment,PractitionerScheduled,Practitioner WHERE " +
+					"Appointment.PatID=? AND " +
+					"Appointment.PractSchedID = PractitionerScheduled.PractSchID AND " +
+					"PractitionerScheduled.PractID = Practitioner.PractID AND " +
+					"Appointment.ApptDate>=?");
+			st.setInt(1, patID);
+			st.setDate(2, new Date(Calendar.getInstance().getTime().getTime()));
+			rs = st.executeQuery();
+
+			List<AppointmentDto> retList = new ArrayList<AppointmentDto>();
+			AppointmentDto newAppointment;
+
+			while(rs.next()){
+				newAppointment = new AppointmentDto();
+				newAppointment.setField(AppointmentDto.APPT_DATE, 
+						rs.getDate(AppointmentDto.APPT_DATE));
+				newAppointment.setField(AppointmentDto.APPT_ID, 
+						rs.getInt(AppointmentDto.APPT_ID));
+				newAppointment.setField(AppointmentDto.END, 
+						rs.getInt(AppointmentDto.END));
+				newAppointment.setField(AppointmentDto.NOTE, 
+						rs.getString(AppointmentDto.NOTE));
+				newAppointment.setField(AppointmentDto.NO_SHOW_ID,
+						rs.getInt(AppointmentDto.NO_SHOW_ID));
+				newAppointment.setField(AppointmentDto.PAT_ID,
+						rs.getInt(AppointmentDto.PAT_ID));
+				newAppointment.setField(AppointmentDto.PRACT_SCHED_ID, 
+						rs.getInt(AppointmentDto.PRACT_SCHED_ID));
+				newAppointment.setField(AppointmentDto.START, 
+						rs.getInt(AppointmentDto.START));
+				newAppointment.setField(AppointmentDto.CONFIRMATION,
+						rs.getInt(AppointmentDto.CONFIRMATION)!=0);
+				newAppointment.setField(AppointmentDto.PRACTITIONER_NAME,
+						rs.getString(PractitionerDto.FIRST) + " " +
+						rs.getString(PractitionerDto.LAST));
 				retList.add(newAppointment);
 			}
 			return retList;
