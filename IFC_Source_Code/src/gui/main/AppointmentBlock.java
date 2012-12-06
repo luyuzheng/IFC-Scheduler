@@ -91,7 +91,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 
 			if (!appointment.getNote().equals("")) text += "\nNote: " + appointment.getShortNote(50).replaceAll("\t\t", " ");
 			if (appointment.getConfirmation()) {
-				text += "\n\n--CONFIRMED--";
+				text += "\n--CONFIRMED--";
 			}
 			if (appointment.getNoShowID() != null && appointment.getNoShowID() > 0) {
 				text += "\n--NO SHOW--";
