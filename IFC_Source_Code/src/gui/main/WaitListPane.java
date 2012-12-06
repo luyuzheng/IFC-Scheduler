@@ -2,8 +2,10 @@ package gui.main;
 
 import backend.DataService.DataServiceImpl;
 import gui.Constants;
+import gui.main.listeners.AppointmentConfirmationListener;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.AddToWaitlistUI;
+import gui.sub.DisplayWaitingPatientUI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -44,7 +46,8 @@ public class WaitListPane extends JPanel {
 	private JTable specTable;
 	private JComboBox typeSelector;
 	private JButton addPatientButton = new JButton("Add Patient to List");
-	private JButton removePatientButton = new JButton("Remove Patient from List");
+	public JButton schedulePatientButton = new JButton("Schedule Patient from List");
+	public JButton removePatientButton = new JButton("Remove Patient from List");
 	private ArrayList<TypeDto> types;
 	
 	/**
@@ -86,15 +89,20 @@ public class WaitListPane extends JPanel {
 		typeSelectionPanel.add(typeSelector);
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(0,1));
-    	removePatientButton.setAction(removePatientAction);
     	addPatientButton.setAction(addPatientAction);
+    	schedulePatientButton.setAction(schedulePatientAction);
+    	removePatientButton.setAction(removePatientAction);
+    	schedulePatientButton.setEnabled(false);
+    	removePatientButton.setEnabled(false);
     	JLabel actionLabel = new JLabel(" ");
     	actionLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
     	actionLabel.setFont(Constants.DIALOG);
     	addPatientButton.setFont(Constants.DIALOG);
+    	schedulePatientButton.setFont(Constants.DIALOG);
     	removePatientButton.setFont(Constants.DIALOG);
     	buttonPanel.add(actionLabel);
     	buttonPanel.add(addPatientButton);
+    	buttonPanel.add(schedulePatientButton);
     	buttonPanel.add(removePatientButton);
 		
     	JPanel topPanel = new JPanel(new BorderLayout());
@@ -109,6 +117,7 @@ public class WaitListPane extends JPanel {
 		specTable.setDragEnabled(true);
 		specTable.setFont(Constants.DIALOG);
 		specTable.addMouseListener(new WaitlistPatientListener(specTable, this));
+		specTable.getSelectionModel().addListSelectionListener(new WaitlistPatientListener(specTable, this));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		specTable.setAutoCreateRowSorter(true);
     	specTable.getTableHeader().setReorderingAllowed(false);
@@ -140,6 +149,19 @@ public class WaitListPane extends JPanel {
             //if (typeSelector.getSelectedIndex() == 0) specTable.setModel(
                         //        new WaitlistTableModel(wm.getWaitList(), false));
 			//else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true));
+		}
+	};
+	
+	private final AbstractAction schedulePatientAction = new AbstractAction("Schedule Patient from Waitlist") {
+		public void actionPerformed(ActionEvent e) {
+			if (specTable.getSelectedRow() < 0) {
+				return;
+			}
+			WaitlistDto wp = ((WaitlistTableModel)specTable.getModel()).getPatient(specTable.getSelectedRow());
+			String newComment = DisplayWaitingPatientUI.ShowDialog(getParent(), wp);
+			wp.setComments(newComment);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
+			resetModel();
 		}
 	};
 	
