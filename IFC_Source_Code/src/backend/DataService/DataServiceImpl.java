@@ -1211,29 +1211,28 @@ public class DataServiceImpl implements DataService {
 			returnDto.setField(SchedulePractitionerDto.START, start);
 			returnDto.setField(SchedulePractitionerDto.PRACT_SCHED_ID, pract_id);
 
-			st = connection.prepareStatement(
-					"INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
 			
 			PreparedStatement new_st = connection.prepareStatement("Select MAX(ApptID) as ID From Appointment");
-			
+			rs = new_st.executeQuery();
+			rs.next();
+			int lastID = rs.getInt("ID");
+		
+			st = connection.prepareStatement("INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
+			int j = 0;
 			for (int i = start; i < end; i+=pract.getApptLength()){
 				newApt = new AppointmentDto();
+				newApt.setField(AppointmentDto.APPT_ID, lastID+j);
 				newApt.setEnd(i + pract.getApptLength());
 				st.setInt(3, i + pract.getApptLength());
 				newApt.setStart(i);
 				st.setInt(2, i);
 				newApt.setField(AppointmentDto.APPT_DATE, day.getDate());
-				st.setDate(4, day.getDate());
+				st.setDate(+4, day.getDate());
 				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract_id);
 				st.setInt(1, pract_id);
 				appointments.add(newApt);
-				//newApt.setField(AppointmentDto.PRACTITIONER_NAME, pract.getFirst() + ' ' + pract.getLast());
 				st.executeUpdate();
-				
-				rs = new_st.executeQuery();
-                                rs.next();
-				newApt.setField(AppointmentDto.APPT_ID, rs.getInt("ID"));
-				
+				j++;
 			}
 			
 			
