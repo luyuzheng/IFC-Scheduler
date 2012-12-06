@@ -98,7 +98,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 			}
 		} 
 
-		textArea.setToolTipText(text);
+		textArea.setToolTipText("<html>" + text.replaceAll("\n", "<br>") + "</html>");
 		textArea.setText(text);
 	}
 	
