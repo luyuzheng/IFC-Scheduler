@@ -12,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.sql.Date;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -29,8 +31,9 @@ import backend.DataTransferObjects.PatientDto;
 public class EditAppointmentUI extends JDialog implements ActionListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
-	private JButton okButton = new JButton("Save");
 	private JButton editButton = new JButton("Edit Patient");
+	private JButton confirmButton = new JButton("Confirm");
+	private JButton okButton = new JButton("Save");
 	private JButton cancelButton = new JButton("Cancel");
 	JCheckBox noShowsCheckBox = new JCheckBox();
 	private JTextArea textArea;
@@ -44,7 +47,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(350, 350));
+		setPreferredSize(new Dimension(430, 350));
 		setResizable(false);
 	
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
@@ -53,7 +56,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
 		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n"); // TODO: NEED TO DELETE REPLACEALL?
-		text += "\nConfirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
+		text += "\nAppointment Confirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
 
 		JPanel textPanel = new JPanel(new BorderLayout());
 		textArea = new JTextArea();
@@ -107,11 +110,18 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		editButton.setActionCommand("edit");
 		editButton.setFont(Constants.DIALOG);
 		buttonPanel.add(editButton);
+		
+		confirmButton.setAction(changeConfirmationAction);
+		isConfirmedValidate();
+		confirmButton.setActionCommand("confirm");
+		confirmButton.setFont(Constants.DIALOG);
+		buttonPanel.add(confirmButton);
 
 		okButton.addActionListener(this);
 		okButton.setActionCommand("save");
 		okButton.setFont(Constants.DIALOG);
 		buttonPanel.add(okButton);
+		
 		cancelButton.addActionListener(this); 
 		cancelButton.setActionCommand("cancel");
 		cancelButton.setFont(Constants.DIALOG);
@@ -139,6 +149,43 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		editAppointmentUI.setVisible(true);
 		return appointment;
 	}
+	
+	private void refreshPatientInfo(AppointmentDto appt) {
+		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
+		
+		String text = "Time Slot: " + appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd();
+		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
+		text += "\nPhone Number: " + patient.getPhone();
+		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n"); // TODO: NEED TO DELETE REPLACEALL?
+		text += "\nAppointment Confirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
+		
+		textArea.setText(text);
+		textArea.updateUI();
+	}
+	
+	public void isConfirmedValidate() {
+		if (appointment.getConfirmation()) {
+			confirmButton.setText("<html>Unconfirm</html>");
+		} else {
+			confirmButton.setText("<html>Confirm</html>");
+		}
+	}
+	
+	private final AbstractAction changeConfirmationAction = new AbstractAction("<html>Confirm</html>") {
+		public void actionPerformed(ActionEvent e) {
+			if (!appointment.getConfirmation()) {
+				appointment.setConfirmation(true);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appointment);
+				confirmButton.setText("<html>Unconfirm</html>");
+			} else {
+				appointment.setConfirmation(false);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.unConfirmAppointment(appointment);
+				confirmButton.setText("<html>Confirm</html>");
+			}
+			refreshPatientInfo(appointment);
+		}
+	};
+	
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("save")) {

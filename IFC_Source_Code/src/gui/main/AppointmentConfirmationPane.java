@@ -13,10 +13,13 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -43,8 +46,7 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 
 	private DayPanel dp;
 	
-	private JButton confirmButton = new JButton("Confirm Selected Appointment");
-
+	public JButton confirmButton = new JButton("Confirm Selected Appointment");
 	
 	/**
 	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
@@ -62,7 +64,7 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		
 		// Create heading for the appointment confirmation panel
 		JPanel topPanel = new JPanel(new GridLayout(0, 1));
-		JPanel apptConfirmationPanel = new JPanel(new BorderLayout()); //new JPanel(new GridLayout(0, 1));
+		JPanel apptConfirmationPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel(new BorderLayout());
 		
 		apptConfirmationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -71,8 +73,9 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		
 		JLabel apptConfirmationLabel = new JLabel("Appointments to Confirm for " + date + ":");
 		apptConfirmationLabel.setFont(Constants.DIALOG);
-		
+
 		confirmButton.setFont(Constants.DIALOG);
+		confirmButton.setEnabled(false);
 		confirmButton.setActionCommand("confirm");
 		confirmButton.addActionListener(this);
 		
@@ -82,8 +85,6 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		topPanel.add(apptConfirmationPanel);
 		topPanel.add(buttonPanel);
 		add(topPanel, BorderLayout.NORTH);
-		//apptConfirmationPanel.add(confirmButton);
-		//add(apptConfirmationPanel, BorderLayout.NORTH);
 		
 		// Create panel to display patients for a particular day
 		JPanel tablePanel = new JPanel(new BorderLayout());
@@ -94,6 +95,7 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		table.setDragEnabled(true);
 		table.setFont(Constants.DIALOG);
 		table.addMouseListener(new AppointmentConfirmationListener(table, this));
+		table.getSelectionModel().addListSelectionListener(new AppointmentConfirmationListener(table, this));
 		table.setAutoCreateRowSorter(true);
     	table.getTableHeader().setReorderingAllowed(false);
     	table.getTableHeader().setFont(Constants.DIALOG);
@@ -209,12 +211,20 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		}
 	}
 
+	/**
+	 * Confirms or unconfirms an appointment and resets the results table to reflect the change.
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "confirm") {
 			if (table.getSelectedRow() >= 0) {
 				AppointmentDto appt = ((AppointmentConfirmationTableModel)table.getModel()).getAppointment(table.getSelectedRow());
-				appt.setConfirmation(true);
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appt);
+				if (!appt.getConfirmation()) {
+					appt.setConfirmation(true);
+					DataServiceImpl.GLOBAL_DATA_INSTANCE.confirmAppointment(appt);
+				} else {
+					appt.setConfirmation(false);
+					DataServiceImpl.GLOBAL_DATA_INSTANCE.unConfirmAppointment(appt);
+				}
 				resetModel();
 			}
 		}
