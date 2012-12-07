@@ -392,7 +392,7 @@ public class MainWindow extends JFrame {
 	public void setDate(Date date) {
 
 		day = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(date);
-
+		
 		dp = new DayPanel(day, this);
 		
 		if (inMonthView) {
@@ -415,7 +415,6 @@ public class MainWindow extends JFrame {
 				//sidePanel.add(dp, BorderLayout.CENTER);
 				//sidePanel.repaint();
 				//sidePanel.validate();
-				
 				dp.showingWaitList();
 				ap = new AppointmentPanel(dp);
 				pane.setLeftComponent(ap);
