@@ -1075,7 +1075,7 @@ public class DataServiceImpl implements DataService {
 		PreparedStatement st = null;
 
 		try {
-			st = connection.prepareStatement("UPDATE Waitlist SET Comment=? " +
+			st = connection.prepareStatement("UPDATE Waitlist SET Comments=? " +
 			"WHERE WaitlistID=?");
 			st.setString(1, comment);
 			st.setInt(2, entry.getWaitlistID());
