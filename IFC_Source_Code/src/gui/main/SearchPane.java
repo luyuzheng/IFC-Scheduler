@@ -111,11 +111,13 @@ public class SearchPane extends JPanel {
 	private final AbstractAction searchForPatientAction = new AbstractAction("Search for a Patient") {
 		public void actionPerformed(ActionEvent e) {
 			List<PatientDto> results = SearchForPatientUI.ShowDialog(owner);
-			if (!(resultsTable.getModel() instanceof PatientResultsTableModel)) {
-				resultsTable.setModel(new PatientResultsTableModel(results));
-			} else {
-				((PatientResultsTableModel) resultsTable.getModel()).setPatients(results);
-				((PatientResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+			if (results != null) {
+				if (!(resultsTable.getModel() instanceof PatientResultsTableModel)) {
+					resultsTable.setModel(new PatientResultsTableModel(results));
+				} else {
+					((PatientResultsTableModel) resultsTable.getModel()).setPatients(results);
+					((PatientResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+				}
 			}
 		}
 	};
@@ -127,11 +129,13 @@ public class SearchPane extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			ArrayList<AppointmentDto> results =
 				(ArrayList<AppointmentDto>) SearchForAppointmentUI.ShowDialog(owner);
-			if (!(resultsTable.getModel() instanceof AppointmentResultsTableModel)) {
-				resultsTable.setModel(new AppointmentResultsTableModel(results));
-			} else {
-				((AppointmentResultsTableModel) resultsTable.getModel()).setAppointments(results);
-				((AppointmentResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+			if (results != null) {
+				if (!(resultsTable.getModel() instanceof AppointmentResultsTableModel)) {
+					resultsTable.setModel(new AppointmentResultsTableModel(results));
+				} else {
+					((AppointmentResultsTableModel) resultsTable.getModel()).setAppointments(results);
+					((AppointmentResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+				}
 			}
 		}
 	};
