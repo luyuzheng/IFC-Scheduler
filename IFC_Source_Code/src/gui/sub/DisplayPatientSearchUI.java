@@ -4,6 +4,7 @@ import gui.Constants;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -39,14 +40,16 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
+		setPreferredSize(new Dimension(300, 200));
 		
 		JPanel infoPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		
 		String text = "Patient Name: " + pat.getFirst() + " " + pat.getLast() +
-				  	  "Phone Number: " + pat.getPhone() +
-				  	  "Comments: " + pat.getNotes();
+				  	  "\nPhone Number: " + pat.getPhone() +
+				  	  "\nComments: " + pat.getNotes() +
+				  	  "\nNumber of No Shows: " + pat.getNoShows() +
+				  	  "\n";
 					  // Add info about the patient's appointment
 					  // Date
 					  // Appt Time

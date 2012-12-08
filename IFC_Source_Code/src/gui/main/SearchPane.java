@@ -1,6 +1,7 @@
 package gui.main;
 
 import gui.Constants;
+import gui.main.listeners.SearchListener;
 import gui.sub.SearchForAppointmentUI;
 import gui.sub.SearchForPatientUI;
 
@@ -93,7 +94,7 @@ public class SearchPane extends JPanel {
 		resultsTable = new JTable(model);
 		resultsTable.setDragEnabled(true);
 		resultsTable.setFont(Constants.DIALOG);
-		//resultsTable.addMouseListener(new SearchListener(resultsTable, this));
+		resultsTable.addMouseListener(new SearchListener(resultsTable, this));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.getTableHeader().setReorderingAllowed(false);
