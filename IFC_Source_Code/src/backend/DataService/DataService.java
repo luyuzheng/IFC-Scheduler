@@ -227,6 +227,11 @@ public interface DataService {
     public List<AppointmentDto> getAllAppointments(int schedPractId);
     
     /**
+     * Gets all future patients by the patient ID
+     */
+    public List<AppointmentDto> getFutureAppointmentsByPatId(int patID);
+    
+    /**
      * Marks confirmation to true on both the DTO object and on the database.
      */
     public boolean confirmAppointment(AppointmentDto appointment);
