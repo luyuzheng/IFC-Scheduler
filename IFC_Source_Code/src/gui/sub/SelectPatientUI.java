@@ -288,7 +288,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 					//int p1 = Integer.parseInt(numberPart1);
 					//int p2 = Integer.parseInt(numberPart2);
 					//num = new PhoneNumber(a, p1, p2);
-					num = areaCode + numberPart1 + numberPart2;
+					num = areaCode + "-" + numberPart1 + "-" + numberPart2;
 				}
 			} catch (Exception ex) {
 				msg.setText("Please enter a valid phone number (###-###-####) or leave the field blank.");

@@ -1,5 +1,6 @@
 package backend.DataService;
 
+import gui.TimeSlot;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -1075,7 +1076,7 @@ public class DataServiceImpl implements DataService {
 		PreparedStatement st = null;
 
 		try {
-			st = connection.prepareStatement("UPDATE Waitlist SET Comment=? " +
+			st = connection.prepareStatement("UPDATE Waitlist SET Comments=? " +
 			"WHERE WaitlistID=?");
 			st.setString(1, comment);
 			st.setInt(2, entry.getWaitlistID());
@@ -1690,6 +1691,7 @@ public class DataServiceImpl implements DataService {
 	}
 		return false;
     }
+    
     @Override
     public boolean removePatientFromWaitlist(WaitlistDto patient) {
         PreparedStatement st = null;
@@ -1832,6 +1834,111 @@ public class DataServiceImpl implements DataService {
     		}
     	}
     	return null;
+    }
+
+    @Override
+    public TimeSlot getDayTimeslot(Day day) {
+        String dayname = "";
+        if (day == Day.SUNDAY){
+            dayname = "Sunday";
+        }
+        else if (day == Day.MONDAY){
+            dayname = "Monday";
+        }
+        else if (day == Day.TUESDAY){
+            dayname = "Tuesday";
+        }
+        else if (day == Day.WEDNESDAY){
+            dayname = "Wednesday";
+        }
+        else if (day == Day.THURSDAY){
+            dayname = "Thursday";
+        }
+        else if (day == Day.FRIDAY){
+            dayname = "Friday";
+        }
+        else if (day == Day.SATURDAY){
+            dayname = "Saturday";
+        }
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("SELECT * FROM DefaultHours WHERE Day=?");
+		st.setString(1, dayname); 
+		
+		rs = st.executeQuery();
+                if (rs.next()){
+                    return new TimeSlot(rs.getInt("StartTime"), rs.getInt("EndTime"));
+                }
+		return null;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+	return null;
+    }
+
+    @Override
+    public boolean setTimeSlot(Day day, TimeSlot newtimes) {
+        String dayname = "";
+        if (day == Day.SUNDAY){
+            dayname = "Sunday";
+        }
+        else if (day == Day.MONDAY){
+            dayname = "Monday";
+        }
+        else if (day == Day.TUESDAY){
+            dayname = "Tuesday";
+        }
+        else if (day == Day.WEDNESDAY){
+            dayname = "Wednesday";
+        }
+        else if (day == Day.THURSDAY){
+            dayname = "Thursday";
+        }
+        else if (day == Day.FRIDAY){
+            dayname = "Friday";
+        }
+        else if (day == Day.SATURDAY){
+            dayname = "Saturday";
+        }
+        PreparedStatement st = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE DefaultHours SET " +
+                        "DefaultHours.StartTime=?, DefaultHours.EndTime=?" +
+				" WHERE Day=?");
+		st.setString(3, dayname);
+                st.setInt(1, newtimes.getStartTime());
+                st.setInt(2, newtimes.getEndTime());
+                
+                st.executeUpdate();
+		return true;
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+	return false;
     }
 
 

@@ -1,5 +1,7 @@
 package gui.sub;
 
+import backend.DataService.DataService.Day;
+import backend.DataService.DataServiceImpl;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -50,65 +52,62 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 		startTimeField1 = new JTextField();
 		
 		//startTimeField1.set
-		/* TODO: THIS FUNCTION
-		startTimeField1.setFont(font);
+		startTimeField1.setFont(Constants.PARAGRAPH);
 		endTimeField1 = new JTextField();
-		endTimeField1.setFont(font);
-		TimeSlot t1 = dm.getTimeSlot(DefaultManager.SUNDAY);
-		startTimeField1.setText(t1.getStartTime().to24HrString());
-		endTimeField1.setText(t1.getEndTime().to24HrString());
+		endTimeField1.setFont(Constants.PARAGRAPH);
+		TimeSlot t1 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.SUNDAY);
+		startTimeField1.setText(t1.to24HrStringStart());
+		endTimeField1.setText(t1.to24HrStringEnd());
 		startTimeField2 = new JTextField();
-		startTimeField2.setFont(font);
+		startTimeField2.setFont(Constants.PARAGRAPH);
 		endTimeField2 = new JTextField();
-		endTimeField2.setFont(font);
-		TimeSlot t2 = dm.getTimeSlot(DefaultManager.MONDAY);
-		startTimeField2.setText(t2.getStartTime().to24HrString());
-		endTimeField2.setText(t2.getEndTime().to24HrString());
+		endTimeField2.setFont(Constants.PARAGRAPH);
+		TimeSlot t2 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.MONDAY);
+		startTimeField2.setText(t2.to24HrStringStart());
+		endTimeField2.setText(t2.to24HrStringEnd());
 		startTimeField3 = new JTextField();
-		startTimeField3.setFont(font);
+		startTimeField3.setFont(Constants.PARAGRAPH);
 		endTimeField3 = new JTextField();
-		endTimeField3.setFont(font);
-		TimeSlot t3 = dm.getTimeSlot(DefaultManager.TUESDAY);
-		startTimeField3.setText(t3.getStartTime().to24HrString());
-		endTimeField3.setText(t3.getEndTime().to24HrString());
+		endTimeField3.setFont(Constants.PARAGRAPH);
+		TimeSlot t3 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.TUESDAY);
+		startTimeField3.setText(t3.to24HrStringStart());
+		endTimeField3.setText(t3.to24HrStringEnd());
 		startTimeField4 = new JTextField();
-		startTimeField4.setFont(font);
+		startTimeField4.setFont(Constants.PARAGRAPH);
 		endTimeField4 = new JTextField();
-		endTimeField4.setFont(font);
-		TimeSlot t4 = dm.getTimeSlot(DefaultManager.WEDNESDAY);
-		startTimeField4.setText(t4.getStartTime().to24HrString());
-		endTimeField4.setText(t4.getEndTime().to24HrString());
+		endTimeField4.setFont(Constants.PARAGRAPH);
+		TimeSlot t4 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.WEDNESDAY);
+		startTimeField4.setText(t4.to24HrStringStart());
+		endTimeField4.setText(t4.to24HrStringEnd());
 		startTimeField5 = new JTextField();
-		startTimeField5.setFont(font);
+		startTimeField5.setFont(Constants.PARAGRAPH);
 		endTimeField5 = new JTextField();
-		endTimeField5.setFont(font);
-		TimeSlot t5 = dm.getTimeSlot(DefaultManager.THURSDAY);
-		startTimeField5.setText(t5.getStartTime().to24HrString());
-		endTimeField5.setText(t5.getEndTime().to24HrString());
+		endTimeField5.setFont(Constants.PARAGRAPH);
+		TimeSlot t5 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.THURSDAY);
+		startTimeField5.setText(t5.to24HrStringStart());
+		endTimeField5.setText(t5.to24HrStringEnd());
 		startTimeField6 = new JTextField();
-		startTimeField6.setFont(font);
+		startTimeField6.setFont(Constants.PARAGRAPH);
 		endTimeField6 = new JTextField();
-		endTimeField6.setFont(font);
-		TimeSlot t6 = dm.getTimeSlot(DefaultManager.FRIDAY);
-		startTimeField6.setText(t6.getStartTime().to24HrString());
-		endTimeField6.setText(t6.getEndTime().to24HrString());
+		endTimeField6.setFont(Constants.PARAGRAPH);
+		TimeSlot t6 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.FRIDAY);
+		startTimeField6.setText(t6.to24HrStringStart());
+		endTimeField6.setText(t6.to24HrStringEnd());
 		startTimeField7 = new JTextField();
-		startTimeField7.setFont(font);
+		startTimeField7.setFont(Constants.PARAGRAPH);
 		endTimeField7 = new JTextField();
-		endTimeField7.setFont(font);
-		TimeSlot t7 = dm.getTimeSlot(DefaultManager.SATURDAY);
-		startTimeField7.setText(t7.getStartTime().to24HrString());
-		endTimeField7.setText(t7.getEndTime().to24HrString());
+		endTimeField7.setFont(Constants.PARAGRAPH);
+		TimeSlot t7 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.SATURDAY);
+		startTimeField7.setText(t7.to24HrStringStart());
+		endTimeField7.setText(t7.to24HrStringEnd());
 		okButton = new JButton("OK");
-		okButton.setFont(font);
+		okButton.setFont(Constants.DIALOG);
 		cancelButton = new JButton("Cancel");
-		cancelButton.setFont(font);
+		cancelButton.setFont(Constants.DIALOG);
 		setLayout(new BorderLayout());
 		add(makeTimeSlotPanel(), BorderLayout.CENTER);
 		setResizable(false);
 		pack();
-                 *
-                 */
 	}
 	
 	public static void ShowDialog(Component owner) {
@@ -396,7 +395,14 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 				slots.add(new TimeSlot(t1,t2));
 			}
 			//TODO: STORE TIMES IN DATABASE	
-			//dm.storeTimeSlots(slots);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.SUNDAY, slots.get(0));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.MONDAY, slots.get(1));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.TUESDAY, slots.get(2));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.WEDNESDAY, slots.get(3));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.THURSDAY, slots.get(4));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.FRIDAY, slots.get(5));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.SATURDAY, slots.get(6));
+                        
 		}
 		defaultTimeslotsUI.setVisible(false);
     }

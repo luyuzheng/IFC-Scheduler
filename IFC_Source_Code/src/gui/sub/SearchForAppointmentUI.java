@@ -25,6 +25,7 @@ import javax.swing.border.EmptyBorder;
 
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.TypeDto;
 
 /**
@@ -42,7 +43,10 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
 	private JComboBox typeSelector;
+	private JComboBox pracSelector;
 	private ArrayList<TypeDto> types;
+	private ArrayList<PractitionerDto> pracs;
+	private ArrayList<String> pracNames;
 	
 	/**
 	 * Constructor - creates the actual UI for the pop up window.
@@ -54,7 +58,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(350, 250));
+		setPreferredSize(new Dimension(350, 300));
 		setResizable(false);
 		
 		// Create panels for the search area and the buttons
@@ -69,18 +73,39 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		//types.add(0, general);
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
+		typeSelector.setActionCommand("typeSelector");
+		typeSelector.addActionListener(this);
 		//typeSelector.addActionListener(new BoxListener()); // PROBABLY NEED TO ADD THIS BACK IN LATER!!!
-		JLabel typeLabel = new JLabel("Select Type of Service:");
+		JLabel typeLabel = new JLabel("Select Type of Service: ");
+
+		// Create drop down box of practitioners
+		pracs = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
+		pracNames = new ArrayList<String>();
+		pracSelector = new JComboBox();
+		pracSelector.addItem("All Practitioners");
+		for (PractitionerDto p : pracs) {
+			if (p.getTypeID() == types.get(0).getTypeID()) {
+				pracSelector.addItem(p.getFirst() + " " + p.getLast());
+			}
+		}
+		if (pracSelector.getItemCount() > 0) {
+			pracSelector.setSelectedIndex(0);
+		}
+		pracSelector.setActionCommand("pracSelector");
+		JLabel pracLabel = new JLabel("Select Practitioner: ");
 		
 		// Set font for fields
 		typeLabel.setFont(Constants.PARAGRAPH);
 		typeSelector.setFont(Constants.DIALOG);
-
+		pracLabel.setFont(Constants.PARAGRAPH);
+		pracSelector.setFont(Constants.DIALOG);
 		
 		// Add drop down info to the panel
 		typeSelectionPanel.setBorder(new EmptyBorder(20, 10, 10, 10));
 		typeSelectionPanel.add(typeLabel);
 		typeSelectionPanel.add(typeSelector);
+		typeSelectionPanel.add(pracLabel);
+		typeSelectionPanel.add(pracSelector);
 		add(typeSelectionPanel, BorderLayout.NORTH);
 		
 		
@@ -148,7 +173,19 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	 * the search manager for processing. The window is then closed.
 	 */
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand() == "Search") {
+		if (e.getActionCommand() == "typeSelector") {
+			TypeDto type = (TypeDto) typeSelector.getSelectedItem();
+			pracSelector.removeAllItems();
+			pracSelector.addItem("All Practitioners");
+			for (PractitionerDto p : pracs) {
+				if (p.getTypeID() == type.getTypeID()) {
+					pracSelector.addItem(p.getFirst() + " " + p.getLast());
+				}
+			}
+			pracSelector.updateUI();
+			return;
+		}
+		else if (e.getActionCommand() == "Search") {
 			if (!monday.isSelected() && !tuesday.isSelected() && !wednesday.isSelected()
 					&& !thursday.isSelected() && !friday.isSelected()) {
 				JLabel errorMessage = new JLabel("Please select a day.");
@@ -157,22 +194,34 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 				return;
 			}
 			// Get search manager to search for appointments and return results!!!
-			// do manual filtering for day of the week
+			// do manual filtering for practitioner and day of the week
+			
+			// Filter all appointments by the selected service type
 			TypeDto type = (TypeDto) typeSelector.getSelectedItem();
-			System.out.println(type.getTypeID());
 			List<AppointmentDto> results =
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(type.getTypeID());
-			System.out.println(results);
 			if (results == null) {
 				results = new ArrayList<AppointmentDto>();
 			}
+		
+			// Filter the results by the selected practitioner
+			String selectedPrac = (String) pracSelector.getSelectedItem();
+			List<AppointmentDto> filteredByPrac = new ArrayList<AppointmentDto>();
+			for (AppointmentDto appt : results) {
+				if (!selectedPrac.equals("All Practitioners") && !(appt.getPractName().equals(selectedPrac))) {
+					continue;
+				}
+				filteredByPrac.add(appt);
+			}
+			
+			// Finally filter the results by the selected days of the week
 			if (monday.isSelected() && tuesday.isSelected() && wednesday.isSelected()
 					&& thursday.isSelected() && friday.isSelected()) {
-				a = results;
+				a = filteredByPrac;
 			} else {
 				ArrayList<AppointmentDto> filtered = new ArrayList<AppointmentDto>();
 				Calendar cal = Calendar.getInstance();
-				for (AppointmentDto appt : results) {
+				for (AppointmentDto appt : filteredByPrac) {
 					cal.setTime(appt.getApptDate());
 					int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
 					if (dayOfWeek == Calendar.MONDAY && !monday.isSelected()) {
