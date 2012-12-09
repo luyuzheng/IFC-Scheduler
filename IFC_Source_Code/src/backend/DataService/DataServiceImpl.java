@@ -1276,10 +1276,60 @@ public class DataServiceImpl implements DataService {
 				st = connection.prepareStatement("INSERT INTO Day (DayDate, StartTime, EndTime) VALUES (?, ?, ?)");
 				retDay.setField(DayDto.DATE, date);
 				st.setDate(1, date);
-				retDay.setStart(gui.Constants.DEFAULT_START_TIME);
-				st.setInt(2, gui.Constants.DEFAULT_START_TIME);
-				retDay.setEnd(gui.Constants.DEFAULT_END_TIME);
-				st.setInt(3, gui.Constants.DEFAULT_END_TIME);
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(date);
+                                TimeSlot times;
+                                switch (cal.get(Calendar.DAY_OF_WEEK)) {
+                                    case (Calendar.MONDAY):
+                                        times = this.getDayTimeslot(Day.MONDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.TUESDAY):
+                                        times = this.getDayTimeslot(Day.TUESDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.WEDNESDAY):
+                                        times = this.getDayTimeslot(Day.WEDNESDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.THURSDAY):
+                                        times = this.getDayTimeslot(Day.THURSDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.FRIDAY):
+                                        times = this.getDayTimeslot(Day.FRIDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.SATURDAY):
+                                        times = this.getDayTimeslot(Day.SATURDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.SUNDAY):
+                                        times = this.getDayTimeslot(Day.SUNDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                }   
 				st.executeUpdate();
 				return retDay;
 			}
