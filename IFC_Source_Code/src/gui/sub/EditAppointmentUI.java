@@ -47,7 +47,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(430, 350));
+		setPreferredSize(new Dimension(480, 350));
 		setResizable(false);
 	
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());

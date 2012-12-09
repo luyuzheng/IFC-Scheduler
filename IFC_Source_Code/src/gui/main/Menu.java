@@ -35,40 +35,9 @@ public class Menu extends JMenuBar {
 		
 		setBorder(new EmptyBorder(5,5,5,5));
 
-		//Administrator menu
-		JMenu fileMenu = new JMenu("Administrator");
+		//File menu
+		JMenu fileMenu= new JMenu("File");
 		fileMenu.setFont(Constants.PARAGRAPH);
-		
-		//Edit all patients
-		JMenuItem editPatientsItem = new JMenuItem("Edit Patients");
-		editPatientsItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EditPatientsUI.ShowDialog(frame);
-				frame.refresh();
-			}
-		});
-		editPatientsItem.setFont(Constants.PARAGRAPH);
-		fileMenu.add(editPatientsItem);
-		
-		//Edit all practitioners
-		JMenuItem editPractitionersItem = new JMenuItem("Edit Practitioners");
-		editPractitionersItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				EditPractitionersUI.ShowDialog(frame);
-			}
-		});
-		editPractitionersItem.setFont(Constants.PARAGRAPH);
-		fileMenu.add(editPractitionersItem);
-		
-		//Change defaults hours of operation by day of week
-		JMenuItem editDefaultHoursItem = new JMenuItem("Edit Default Hours");
-		editDefaultHoursItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				DefaultTimeslotsUI.ShowDialog(frame);
-			}
-		});
-		editDefaultHoursItem.setFont(Constants.PARAGRAPH);
-		fileMenu.add(editDefaultHoursItem);
 		
 		//Print the schedule for today
 		JMenuItem printItem = new JMenuItem("Print");
@@ -79,8 +48,7 @@ public class Menu extends JMenuBar {
 			}
 		});
 		printItem.setFont(Constants.PARAGRAPH);
-		fileMenu.add(printItem);
-		
+		fileMenu.add(printItem);	
 		fileMenu.addSeparator();
 		
 		//Quit the scheduler
@@ -94,6 +62,43 @@ public class Menu extends JMenuBar {
 		fileMenu.add(byeMenuItem);
 		
 		add(fileMenu);
+		
+		//Administrator menu
+		JMenu adminMenu = new JMenu("Administrator");
+		adminMenu.setFont(Constants.PARAGRAPH);
+		
+		//Edit all patients
+		JMenuItem editPatientsItem = new JMenuItem("Edit Patients");
+		editPatientsItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditPatientsUI.ShowDialog(frame);
+				frame.refresh();
+			}
+		});
+		editPatientsItem.setFont(Constants.PARAGRAPH);
+		adminMenu.add(editPatientsItem);
+		
+		//Edit all practitioners
+		JMenuItem editPractitionersItem = new JMenuItem("Edit Practitioners");
+		editPractitionersItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditPractitionersUI.ShowDialog(frame);
+			}
+		});
+		editPractitionersItem.setFont(Constants.PARAGRAPH);
+		adminMenu.add(editPractitionersItem);
+		
+		//Change defaults hours of operation by day of week
+		JMenuItem editDefaultHoursItem = new JMenuItem("Edit Default Hours");
+		editDefaultHoursItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTimeslotsUI.ShowDialog(frame);
+			}
+		});
+		editDefaultHoursItem.setFont(Constants.PARAGRAPH);
+		adminMenu.add(editDefaultHoursItem);
+		
+		add(adminMenu);
 
 		//Help menu
 		JMenu helpMenu = new JMenu("Help");

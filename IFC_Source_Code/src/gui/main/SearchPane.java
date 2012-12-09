@@ -1,6 +1,7 @@
 package gui.main;
 
 import gui.Constants;
+import gui.main.listeners.SearchListener;
 import gui.sub.SearchForAppointmentUI;
 import gui.sub.SearchForPatientUI;
 
@@ -93,7 +94,7 @@ public class SearchPane extends JPanel {
 		resultsTable = new JTable(model);
 		resultsTable.setDragEnabled(true);
 		resultsTable.setFont(Constants.DIALOG);
-		//resultsTable.addMouseListener(new SearchListener(resultsTable, this));
+		resultsTable.addMouseListener(new SearchListener(resultsTable, this));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.getTableHeader().setReorderingAllowed(false);
@@ -111,11 +112,13 @@ public class SearchPane extends JPanel {
 	private final AbstractAction searchForPatientAction = new AbstractAction("Search for a Patient") {
 		public void actionPerformed(ActionEvent e) {
 			List<PatientDto> results = SearchForPatientUI.ShowDialog(owner);
-			if (!(resultsTable.getModel() instanceof PatientResultsTableModel)) {
-				resultsTable.setModel(new PatientResultsTableModel(results));
-			} else {
-				((PatientResultsTableModel) resultsTable.getModel()).setPatients(results);
-				((PatientResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+			if (results != null) {
+				if (!(resultsTable.getModel() instanceof PatientResultsTableModel)) {
+					resultsTable.setModel(new PatientResultsTableModel(results));
+				} else {
+					((PatientResultsTableModel) resultsTable.getModel()).setPatients(results);
+					((PatientResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+				}
 			}
 		}
 	};
@@ -127,11 +130,13 @@ public class SearchPane extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			ArrayList<AppointmentDto> results =
 				(ArrayList<AppointmentDto>) SearchForAppointmentUI.ShowDialog(owner);
-			if (!(resultsTable.getModel() instanceof AppointmentResultsTableModel)) {
-				resultsTable.setModel(new AppointmentResultsTableModel(results));
-			} else {
-				((AppointmentResultsTableModel) resultsTable.getModel()).setAppointments(results);
-				((AppointmentResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+			if (results != null) {
+				if (!(resultsTable.getModel() instanceof AppointmentResultsTableModel)) {
+					resultsTable.setModel(new AppointmentResultsTableModel(results));
+				} else {
+					((AppointmentResultsTableModel) resultsTable.getModel()).setAppointments(results);
+					((AppointmentResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
+				}
 			}
 		}
 	};
@@ -210,7 +215,7 @@ public class SearchPane extends JPanel {
 		 */ 
 		public PatientResultsTableModel(List<PatientDto> pat) {
 			patients = pat;
-			columnNames = new String[] { "Name", "Phone Number", "Comments" /*, "Waitlisted", "No Show" */};
+			columnNames = new String[] { "Name", "Phone Number", "Comments", /*"Waitlisted",*/ "No Shows"};
 		}
 		
 		/**
@@ -266,12 +271,12 @@ public class SearchPane extends JPanel {
 				return p.getFirst() + " " + p.getLast();
 			} else if (col == 1) {
 				return p.getPhone();
-			} else {
+			} else if (col == 2) {
 				return p.getNotes();
-			/*} else if (col == 4) {
-				return p.isWaitlisted();
+			//} else if (col == 3) {
+			//	return p.isWaitlisted();
 			} else {
-				return p.noShow();*/
+				return p.getNoShows();
 			}
 		}
 	}
@@ -289,7 +294,7 @@ public class SearchPane extends JPanel {
 		 */ 
 		public AppointmentResultsTableModel(ArrayList<AppointmentDto> appt) {
 			appointments = appt;
-			columnNames = new String[] { "Date", "Start Time", "Appointment Length" /*, "Practitioner" */};
+			columnNames = new String[] { "Date", "Start Time", "Practitioner", "Appointment Length"};
 		}
 		
 		/**
@@ -344,10 +349,9 @@ public class SearchPane extends JPanel {
 			if (col == 0) {
 				return a.getApptDate();
 			} else if (col == 1){
-				int hours = a.getStart() / 60;
-				int minutes = a.getStart() % 60;
-				String minute = minutes < 10 ? "0" + minutes : "" + minutes;
-				return hours + ":" + minute;
+				return a.prettyPrintStart();
+			} else if (col == 2) {
+				return a.getPractName();
 			} else {
 				return a.getEnd() - a.getStart();
 			}
