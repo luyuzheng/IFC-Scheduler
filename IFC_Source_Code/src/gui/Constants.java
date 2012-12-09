@@ -5,9 +5,6 @@
 package gui;
 
 import java.awt.Font;
-//import java.io.File;
-
-
 
 public class Constants {
 	/** The number of pixels that each minute corresponds to in the calendar area */
@@ -32,13 +29,6 @@ public class Constants {
 	public static final int MONTH_BLOCK_HEIGHT = 100;
 	
 	
-	//public static final String PRAC_FILE_LOCATION = "data" + File.separator + "prac.txt";
-	//public static final String PAT_FILE_LOCATION = "data" + File.separator + "pat.txt";
-	//public static final String DATA_FILE_LOCATION = "data" + File.separator + "data_";
-	//public static final String TYPE_FILE_LOCATION = "data" + File.separator + "type.txt";
-	//public static final String WAITLIST_FILE_LOCATION = "data" + File.separator + "waitlist.txt";
-	//public static final String DEFAULT_FILE_LOCATION = "data" + File.separator + "defaults.txt";
-	
 	/** Default font for header styles */
 	public static final Font HEADER = new Font("Arial", Font.BOLD, 16);
 	/** Default font for paragraph styles */
@@ -49,6 +39,8 @@ public class Constants {
 	public static final Font DIALOG = new Font("Arial", Font.PLAIN, 16);
 	/** Default font for printable text **/
 	public static final Font PRINTABLE = new Font("Arial", Font.PLAIN, 12);
+	/** **/
+	public static final Font PRINTABLE_SMALL = new Font("Monospaced", Font.PLAIN, 9);
 	
 	/** The horizontal print margin, in pixels */
 	public static final int PRINT_MARGINX = 25;
