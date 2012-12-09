@@ -1778,13 +1778,23 @@ public class DataServiceImpl implements DataService {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-        	st = connection.prepareStatement("SELECT * FROM Appointment,Practitioner," +
-        			"PractitionerScheduled WHERE Appointment.PractSchedID = " +
-        			"PractitionerScheduled.PractSchID AND PractitionerScheduled.PractID = " +
-        			"Practitioner.PractID AND Practitioner.TypeID=? AND Appointment.ApptDate>=? " +
-        			"AND Appointment.PatID IS NULL ORDER BY Appointment.ApptDate, Appointment.StartTime");
-        	st.setInt(1,typeId);
-        	st.setDate(2, new Date(new java.util.Date().getTime()));
+        	if (typeId != -1) {
+        		st = connection.prepareStatement("SELECT * FROM Appointment,Practitioner," +
+        				"PractitionerScheduled WHERE Appointment.PractSchedID = " +
+        				"PractitionerScheduled.PractSchID AND PractitionerScheduled.PractID = " +
+        				"Practitioner.PractID AND Practitioner.TypeID=? AND Appointment.ApptDate>=? " +
+        		"AND Appointment.PatID IS NULL ORDER BY Appointment.ApptDate, Appointment.StartTime");
+        		st.setInt(1,typeId);
+        		st.setDate(2, new Date(new java.util.Date().getTime()));
+        	} else {
+        		st = connection.prepareStatement("SELECT * FROM Appointment,Practitioner," +
+        				"PractitionerScheduled WHERE Appointment.PractSchedID = " +
+        				"PractitionerScheduled.PractSchID AND PractitionerScheduled.PractID = " +
+        				"Practitioner.PractID AND Appointment.ApptDate>=? " +
+        		"AND Appointment.PatID IS NULL ORDER BY Appointment.ApptDate, Appointment.StartTime");
+        		st.setDate(1, new Date(new java.util.Date().getTime()));
+        	}
+        	
         	rs = st.executeQuery();
         	ArrayList<AppointmentDto> aptList = new ArrayList<AppointmentDto>();
 			AppointmentDto newAppt;

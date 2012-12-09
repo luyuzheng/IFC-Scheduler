@@ -69,8 +69,10 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		
 		// Create drop down box of types of services
 		types = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
-		//TypeDto general = new data.Type(-1, "View All"); TODO: VIEW ALL
-		//types.add(0, general);
+		TypeDto general = new TypeDto();
+		general.setField(TypeDto.TYPE_ID, -1);
+		general.setField(TypeDto.TYPE_NAME, "View All");
+		types.add(0, general);
 		typeSelector = new JComboBox(types.toArray());
 		typeSelector.setSelectedIndex(0);
 		typeSelector.setActionCommand("typeSelector");
@@ -84,7 +86,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		pracSelector = new JComboBox();
 		pracSelector.addItem("All Practitioners");
 		for (PractitionerDto p : pracs) {
-			if (p.getTypeID() == types.get(0).getTypeID()) {
+			if (p.getTypeID() == types.get(0).getTypeID() || types.get(0).getTypeID() == -1) {
 				pracSelector.addItem(p.getFirst() + " " + p.getLast());
 			}
 		}
@@ -178,7 +180,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 			pracSelector.removeAllItems();
 			pracSelector.addItem("All Practitioners");
 			for (PractitionerDto p : pracs) {
-				if (p.getTypeID() == type.getTypeID()) {
+				if (p.getTypeID() == type.getTypeID() || type.getTypeID() == -1) {
 					pracSelector.addItem(p.getFirst() + " " + p.getLast());
 				}
 			}
