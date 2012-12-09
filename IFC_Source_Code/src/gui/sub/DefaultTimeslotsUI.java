@@ -64,7 +64,7 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 		endTimeField2.setFont(Constants.PARAGRAPH);
 		TimeSlot t2 = DataServiceImpl.GLOBAL_DATA_INSTANCE.getDayTimeslot(Day.MONDAY);
 		startTimeField2.setText(t2.to24HrStringStart());
-		endTimeField2.setText(t2.to24HrStringStart());
+		endTimeField2.setText(t2.to24HrStringEnd());
 		startTimeField3 = new JTextField();
 		startTimeField3.setFont(Constants.PARAGRAPH);
 		endTimeField3 = new JTextField();

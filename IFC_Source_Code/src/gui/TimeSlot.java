@@ -49,14 +49,26 @@ public class TimeSlot {
         
         /** Displays the time slot as a string. */
 	public String to24HrStringStart() {
-		String string= "" + getHours(startTime) + ":" + getMinutes(startTime);
-		return string;
+            String string;
+            if (getMinutes(startTime) < 10){
+		string= "" + getHours(startTime) + ":" + "0" + getMinutes(startTime);
+            }
+            else {
+                string= "" + getHours(startTime) + ":" + getMinutes(startTime);
+            }
+            return string;
 	}
         
          /** Displays the time slot as a string. */
 	public String to24HrStringEnd() {
-		String string= "" + getHours(endTime) + ":" + getMinutes(endTime);
-		return string;
+            String string;
+            if (getMinutes(endTime) < 10){
+		string= "" + getHours(endTime) + ":" + "0" + getMinutes(endTime);
+            }
+            else {
+                string= "" + getHours(endTime) + ":" + getMinutes(endTime);
+            }
+            return string;
 	}        
 	
 }
