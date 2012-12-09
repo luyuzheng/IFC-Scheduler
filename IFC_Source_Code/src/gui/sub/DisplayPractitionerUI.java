@@ -71,7 +71,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		add(textArea, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
-		setPreferredSize(new Dimension(350, 150));
+		setPreferredSize(new Dimension(350, 250));
 		setResizable(false);
 		
 	}

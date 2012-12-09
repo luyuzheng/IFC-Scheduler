@@ -22,6 +22,7 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.DayDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
+@SuppressWarnings("serial")
 public class DayBlock extends JPanel {
 
 	/** The text to be displayed in the day block, i.e. which practitioners are scheduled. */
@@ -62,7 +63,7 @@ public class DayBlock extends JPanel {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Tahoma",Font.PLAIN,11));
+		textArea.setFont(Constants.PARAGRAPH_TINY);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		setPreferredSize(new Dimension(Constants.MONTH_BLOCK_WIDTH, Constants.MONTH_BLOCK_HEIGHT));
