@@ -395,7 +395,14 @@ public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 				slots.add(new TimeSlot(t1,t2));
 			}
 			//TODO: STORE TIMES IN DATABASE	
-			//dm.storeTimeSlots(slots);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.SUNDAY, slots.get(0));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.MONDAY, slots.get(1));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.TUESDAY, slots.get(2));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.WEDNESDAY, slots.get(3));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.THURSDAY, slots.get(4));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.FRIDAY, slots.get(5));
+                        DataServiceImpl.GLOBAL_DATA_INSTANCE.setTimeSlot(Day.SATURDAY, slots.get(6));
+                        
 		}
 		defaultTimeslotsUI.setVisible(false);
     }
