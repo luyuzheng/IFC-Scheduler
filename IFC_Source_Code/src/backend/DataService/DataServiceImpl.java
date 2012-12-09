@@ -1691,6 +1691,7 @@ public class DataServiceImpl implements DataService {
 	}
 		return false;
     }
+    
     @Override
     public boolean removePatientFromWaitlist(WaitlistDto patient) {
         PreparedStatement st = null;
@@ -1837,7 +1838,55 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public TimeSlot getDayTimeslot(Day day) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String dayname;
+        if (day == Day.SUNDAY){
+            dayname = "Sunday";
+        }
+        else if (day == Day.MONDAY){
+            dayname = "Monday";
+        }
+        else if (day == Day.TUESDAY){
+            dayname = "Tuesday";
+        }
+        else if (day == Day.WEDNESDAY){
+            dayname = "Wednesday";
+        }
+        else if (day == Day.THURSDAY){
+            dayname = "Thursday";
+        }
+        else if (day == Day.FRIDAY){
+            dayname = "Friday";
+        }
+        else if (day == Day.SATURDAY){
+            dayname = "Saturday";
+        }
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("SELECT * FROM DefaultHours WHERE Day=?");
+		st.setString(1, dayname); 
+		
+		rs = st.executeQuery();
+                if (rs.next()){
+                    
+                }
+		return null;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+		return null;
     }
 
     @Override
