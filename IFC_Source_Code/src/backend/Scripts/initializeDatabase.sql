@@ -73,8 +73,9 @@ WaitlistID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 PatID int,
 TypeID int,
 DatetimeEntered datetime,
-Comments text
-);
+Comments text,
+Active int
+)
 
 CREATE TABLE IF NOT EXISTS DefaultHours(
 Day varchar(255),

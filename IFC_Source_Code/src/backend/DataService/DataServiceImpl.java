@@ -1,5 +1,6 @@
 package backend.DataService;
 
+import gui.TimeSlot;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -1832,6 +1833,16 @@ public class DataServiceImpl implements DataService {
     		}
     	}
     	return null;
+    }
+
+    @Override
+    public TimeSlot getDayTimeslot(Day day) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean setTimeSlot(Day day, TimeSlot newtimes) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
 

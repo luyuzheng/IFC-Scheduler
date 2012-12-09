@@ -43,7 +43,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
 	private JComboBox typeSelector;
-	private JComboBox<String> pracSelector;
+	private JComboBox pracSelector;
 	private ArrayList<TypeDto> types;
 	private ArrayList<PractitionerDto> pracs;
 	private ArrayList<String> pracNames;
@@ -81,7 +81,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		// Create drop down box of practitioners
 		pracs = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 		pracNames = new ArrayList<String>();
-		pracSelector = new JComboBox<String>();
+		pracSelector = new JComboBox();
 		pracSelector.addItem("All Practitioners");
 		for (PractitionerDto p : pracs) {
 			if (p.getTypeID() == types.get(0).getTypeID()) {

@@ -251,4 +251,15 @@ public interface DataService {
     
     public boolean unConfirmAppointment(AppointmentDto appointment);
 
+    public enum Day {
+        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+        THURSDAY, FRIDAY, SATURDAY 
+    }
+    
+    public gui.TimeSlot getDayTimeslot(Day day);
+    
+    public boolean setTimeSlot(Day day, gui.TimeSlot newtimes);
+            
 }
+
+
