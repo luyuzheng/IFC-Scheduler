@@ -243,12 +243,29 @@ public interface DataService {
     /** Removes a patient from the waitlist. */
     public boolean removePatientFromWaitlist(WaitlistDto patient);
     
+    /** Finds all appointments of type with typeid */
     public ArrayList<AppointmentDto> searchForAppointments(int typeid);
     
+    /** Updates the note field in the database as modified in appointment*/
     public boolean addNotesToAppointment(AppointmentDto appointment);
     
+    /** Return all the appointments with scheduled patients on the day*/
     public ArrayList<AppointmentDto> getAllPatientsForDay(Date day);
     
+    /** Changes the status of an appointment to unconfirmed*/
     public boolean unConfirmAppointment(AppointmentDto appointment);
 
+    /** The days of the week */
+    public enum Day {
+        SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+        THURSDAY, FRIDAY, SATURDAY 
+    }
+    
+    /** Returns the default timeslot for that day of the week*/
+    public gui.TimeSlot getDayTimeslot(Day day);
+    
+    /** Sets the default timeslot for the day of the week */
+    public boolean setTimeSlot(Day day, gui.TimeSlot newtimes);        
 }
+
+

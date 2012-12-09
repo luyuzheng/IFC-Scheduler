@@ -51,7 +51,7 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(350, 220));
+		setPreferredSize(new Dimension(400, 220));
 		setResizable(false);
 		
 		// Create panels for the search area and the buttons
@@ -60,7 +60,7 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Create search labels and set the font for all fields
-		searchLabel = new JLabel("Enter a Patient's Name: ");
+		searchLabel = new JLabel("Enter a Patient's Name (First Name, Last Name, or Both): ");
 		firstNameLabel = new JLabel("First Name: ");
 		lastNameLabel = new JLabel("Last Name: ");
 		searchLabel.setFont(Constants.PARAGRAPH);
@@ -117,9 +117,9 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Search") {
-			if (firstNameField.getText() == null || firstNameField.getText().isEmpty() ||
-					lastNameField.getText() == null || lastNameField.getText().isEmpty()) {
-				JLabel errorMessage = new JLabel("Please enter a patient's name.");
+			if ((firstNameField.getText() == null || firstNameField.getText().isEmpty()) &&
+				(lastNameField.getText() == null || lastNameField.getText().isEmpty())) {
+				JLabel errorMessage = new JLabel("Please enter a patient's name (first name, last name, or both).");
 				errorMessage.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, errorMessage, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;

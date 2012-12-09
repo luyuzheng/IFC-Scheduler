@@ -240,6 +240,9 @@ public class DayPanel extends JPanel {
 				SelectPractitionerUI.ShowDialog(mw, day.getStart(), day.getEnd());
 			PractitionerDto p = selectPractitionerUI.getPractitioner();
 			if (p==null) return;
+			
+			day= mw.getDayPanel().getDay();
+			
 			SchedulePractitionerDto room = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitionerToDay(
 					p, day, selectPractitionerUI.startTime, selectPractitionerUI.endTime);
 			if (room != null){

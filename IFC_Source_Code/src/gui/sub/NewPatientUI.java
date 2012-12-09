@@ -143,6 +143,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+                System.out.println("Here");
 		if (e.getActionCommand().equals("okNew")) {
 			String firstName = firstNameField.getText();
 			if (firstName.equals("")) {
@@ -182,7 +183,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 			
 			//String noteText = note.getText();
 			String noteText = note.getText().replaceAll("[\r\n]+", "\t\t"); //added by aakash on feb 12 to fix multiline note bug
-			
+                        
 			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(firstName, lastName, num, noteText);			
 			
 		} else if (e.getActionCommand().equals("okOld")) {

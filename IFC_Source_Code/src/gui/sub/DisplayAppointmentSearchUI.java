@@ -4,6 +4,7 @@ import gui.Constants;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -37,12 +38,16 @@ public class DisplayAppointmentSearchUI extends JDialog implements ActionListene
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
+		setPreferredSize(new Dimension(300, 200));
 
 		JPanel infoPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		String text = "Date: " + appt.getApptDate().toString() + "\n" +
-				      "Time: " + appt.getStart() + " - " + appt.getEnd();
+		String text = "Date: " + appt.getApptDate().toString() +
+				      "\nTime: " + appt.prettyPrintStart() + " - " + appt.prettyPrintEnd() +
+				      "\nPractitioner: " + appt.getPractName() + 
+				      "\nAppointment Length: " + (appt.getEnd() - appt.getStart()) +
+				      "\n";
 
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);

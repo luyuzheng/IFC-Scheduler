@@ -1,5 +1,6 @@
 package backend.DataService;
 
+import gui.TimeSlot;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -1075,7 +1076,7 @@ public class DataServiceImpl implements DataService {
 		PreparedStatement st = null;
 
 		try {
-			st = connection.prepareStatement("UPDATE Waitlist SET Comment=? " +
+			st = connection.prepareStatement("UPDATE Waitlist SET Comments=? " +
 			"WHERE WaitlistID=?");
 			st.setString(1, comment);
 			st.setInt(2, entry.getWaitlistID());
@@ -1275,10 +1276,60 @@ public class DataServiceImpl implements DataService {
 				st = connection.prepareStatement("INSERT INTO Day (DayDate, StartTime, EndTime) VALUES (?, ?, ?)");
 				retDay.setField(DayDto.DATE, date);
 				st.setDate(1, date);
-				retDay.setStart(gui.Constants.DEFAULT_START_TIME);
-				st.setInt(2, gui.Constants.DEFAULT_START_TIME);
-				retDay.setEnd(gui.Constants.DEFAULT_END_TIME);
-				st.setInt(3, gui.Constants.DEFAULT_END_TIME);
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(date);
+                                TimeSlot times;
+                                switch (cal.get(Calendar.DAY_OF_WEEK)) {
+                                    case (Calendar.MONDAY):
+                                        times = this.getDayTimeslot(Day.MONDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.TUESDAY):
+                                        times = this.getDayTimeslot(Day.TUESDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.WEDNESDAY):
+                                        times = this.getDayTimeslot(Day.WEDNESDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.THURSDAY):
+                                        times = this.getDayTimeslot(Day.THURSDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.FRIDAY):
+                                        times = this.getDayTimeslot(Day.FRIDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.SATURDAY):
+                                        times = this.getDayTimeslot(Day.SATURDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.SUNDAY):
+                                        times = this.getDayTimeslot(Day.SUNDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                }   
 				st.executeUpdate();
 				return retDay;
 			}
@@ -1690,6 +1741,7 @@ public class DataServiceImpl implements DataService {
 	}
 		return false;
     }
+    
     @Override
     public boolean removePatientFromWaitlist(WaitlistDto patient) {
         PreparedStatement st = null;
@@ -1834,8 +1886,110 @@ public class DataServiceImpl implements DataService {
     	return null;
     }
 
+    @Override
+    public TimeSlot getDayTimeslot(Day day) {
+        String dayname = "";
+        if (day == Day.SUNDAY){
+            dayname = "Sunday";
+        }
+        else if (day == Day.MONDAY){
+            dayname = "Monday";
+        }
+        else if (day == Day.TUESDAY){
+            dayname = "Tuesday";
+        }
+        else if (day == Day.WEDNESDAY){
+            dayname = "Wednesday";
+        }
+        else if (day == Day.THURSDAY){
+            dayname = "Thursday";
+        }
+        else if (day == Day.FRIDAY){
+            dayname = "Friday";
+        }
+        else if (day == Day.SATURDAY){
+            dayname = "Saturday";
+        }
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+		st = connection.prepareStatement("SELECT * FROM DefaultHours WHERE Day=?");
+		st.setString(1, dayname); 
+		
+		rs = st.executeQuery();
+                if (rs.next()){
+                    return new TimeSlot(rs.getInt("StartTime"), rs.getInt("EndTime"));
+                }
+		return null;
+		
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+	return null;
+    }
+
+    @Override
+    public boolean setTimeSlot(Day day, TimeSlot newtimes) {
+        String dayname = "";
+        if (day == Day.SUNDAY){
+            dayname = "Sunday";
+        }
+        else if (day == Day.MONDAY){
+            dayname = "Monday";
+        }
+        else if (day == Day.TUESDAY){
+            dayname = "Tuesday";
+        }
+        else if (day == Day.WEDNESDAY){
+            dayname = "Wednesday";
+        }
+        else if (day == Day.THURSDAY){
+            dayname = "Thursday";
+        }
+        else if (day == Day.FRIDAY){
+            dayname = "Friday";
+        }
+        else if (day == Day.SATURDAY){
+            dayname = "Saturday";
+        }
+        PreparedStatement st = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE DefaultHours SET " +
+                        "DefaultHours.StartTime=?, DefaultHours.EndTime=?" +
+				" WHERE Day=?");
+		st.setString(3, dayname);
+                st.setInt(1, newtimes.getStartTime());
+                st.setInt(2, newtimes.getEndTime());
+                
+                st.executeUpdate();
+		return true;
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+	return false;
+    }
+
 
 }
-    
-    
-
