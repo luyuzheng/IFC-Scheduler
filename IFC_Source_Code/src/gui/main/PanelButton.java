@@ -4,6 +4,8 @@
 
 package gui.main;
 
+import gui.Constants;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -19,7 +21,7 @@ public class PanelButton extends JButton {
 		this.setMinimumSize(new Dimension(200,50));
 		this.setMaximumSize(new Dimension(200,50));
 		this.setPreferredSize(new Dimension(200,50));
-		this.setFont(new Font("Arial", Font.BOLD, 14));
+		this.setFont(Constants.PARAGRAPH_BOLD);
 	}
 	
 	/** Sets the button as clickable. */

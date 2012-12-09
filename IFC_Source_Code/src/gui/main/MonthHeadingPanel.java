@@ -30,7 +30,7 @@ public class MonthHeadingPanel extends JPanel {
 		
 		JPanel monthHeading = new JPanel(new GridLayout(1,0));
 		JLabel label = new JLabel(month, JLabel.CENTER);
-		label.setFont(new Font("Tahoma",Font.PLAIN,20));
+		label.setFont(Constants.HEADER);
 		monthHeading.add(label, BorderLayout.CENTER);
 		monthHeading.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Color.BLACK));
 		monthHeading.setBackground(new Color(255,215,215));
@@ -51,7 +51,7 @@ public class MonthHeadingPanel extends JPanel {
 			text.setLineWrap(true);
 			text.setWrapStyleWord(true);
 			text.setEditable(false);
-			text.setFont(new Font("Tahoma",Font.PLAIN,14));
+			text.setFont(Constants.PARAGRAPH);
 			text.setOpaque(false);
 			text.setHighlighter(null);
 			text.setText(day);
