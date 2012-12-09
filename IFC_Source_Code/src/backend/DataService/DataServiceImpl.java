@@ -306,18 +306,44 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, Patient.LastName, " +
+                        if (first != null && !first.equals("")){
+                            if (last != null && !last.equals("")){
+                                st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
 					"Patient.PhoneNumber, Patient.Notes, " +
 					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
 					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
 					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
 					"WHERE Patient.FirstName = ? AND Patient.LastName = ?");
-			st.setString(1, first);
-			st.setString(2, last);
+                                st.setString(1, first);
+                                st.setString(2, last);
+                            }
+                            else {
+                                st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
+					"Patient.PhoneNumber, Patient.Notes, " +
+					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+					"WHERE Patient.FirstName = ?");
+                                st.setString(1, first);
+                            }
+                        }
+                        else if (last != null && !last.equals("")){
+                            st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
+					"Patient.PhoneNumber, Patient.Notes, " +
+					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+					"WHERE Patient.LastName = ?");
+                            st.setString(1, last);
+                        }
+                        else {
+                            return new ArrayList<PatientDto>();
+                        }
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
 			while (rs.next()) {
+                            if (rs.getInt("Patient.Active") != 0){
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
@@ -327,6 +353,7 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
+                            }
 			}
 			return results;
 		} catch (SQLException e) {
