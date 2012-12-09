@@ -29,12 +29,15 @@ public class NewPractitionerListener extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) { 
-			PractitionerDto p; 
+			PractitionerDto p;
 			PractitionerDto old = owner.getRoom().getPractitioner();
 			if (old != null) 
 				p = DisplayPractitionerUI.ShowDialog(parent, old);
-			else
-				p = SelectPractitionerUI.ShowDialog(parent);
+			else {
+				SelectPractitionerUI selectPractitionerUI = SelectPractitionerUI.ShowDialog(
+						parent, owner.getRoom().getStart(), owner.getRoom().getEnd());
+				p = selectPractitionerUI.getPractitioner();
+			}
 			if (p == null) {
 				owner.getDayPanel().clearRoom(owner);
 			}

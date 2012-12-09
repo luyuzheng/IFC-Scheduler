@@ -8,6 +8,7 @@ PatID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 FirstName varchar(255),
 LastName varchar(255),
 PhoneNumber varchar(255), 
+Active int,
 Notes text
 );
 

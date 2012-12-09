@@ -190,7 +190,7 @@ public class DataServiceImpl implements DataService {
 				return false;
 			} else {
 				st = connection.prepareStatement(
-				"DELETE FROM Patient WHERE PatID=?");
+				"UPDATE Patient SET Patient.Active=0 WHERE PatID=?");
 				st.setInt(1, patient.getPatID());
 			}
 			st.executeUpdate();
@@ -262,7 +262,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 
-			st = connection.prepareStatement("Select Patient.PatID, Patient.FirstName, " +
+			st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, " +
 					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
 					"From Patient LEFT JOIN (Select PatID, Count(NoShowID) as " +
 					"NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID"); 
@@ -271,6 +271,7 @@ public class DataServiceImpl implements DataService {
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
 			while (rs.next()) {
+                            if(rs.getInt("Active") != 0){
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
 				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
@@ -280,6 +281,7 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
 				results.add(patient);
 				patient = new PatientDto();
+                            }
 			}
 			return results;
 		} catch (SQLException e) {
@@ -1276,10 +1278,60 @@ public class DataServiceImpl implements DataService {
 				st = connection.prepareStatement("INSERT INTO Day (DayDate, StartTime, EndTime) VALUES (?, ?, ?)");
 				retDay.setField(DayDto.DATE, date);
 				st.setDate(1, date);
-				retDay.setStart(gui.Constants.DEFAULT_START_TIME);
-				st.setInt(2, gui.Constants.DEFAULT_START_TIME);
-				retDay.setEnd(gui.Constants.DEFAULT_END_TIME);
-				st.setInt(3, gui.Constants.DEFAULT_END_TIME);
+                                Calendar cal = Calendar.getInstance();
+                                cal.setTime(date);
+                                TimeSlot times;
+                                switch (cal.get(Calendar.DAY_OF_WEEK)) {
+                                    case (Calendar.MONDAY):
+                                        times = this.getDayTimeslot(Day.MONDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.TUESDAY):
+                                        times = this.getDayTimeslot(Day.TUESDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.WEDNESDAY):
+                                        times = this.getDayTimeslot(Day.WEDNESDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.THURSDAY):
+                                        times = this.getDayTimeslot(Day.THURSDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.FRIDAY):
+                                        times = this.getDayTimeslot(Day.FRIDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.SATURDAY):
+                                        times = this.getDayTimeslot(Day.SATURDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                    case (Calendar.SUNDAY):
+                                        times = this.getDayTimeslot(Day.SUNDAY); 
+                                        retDay.setStart(times.getStartTime());
+                                        st.setInt(2, times.getStartTime());
+                                        retDay.setEnd(times.getEndTime());
+                                        st.setInt(3, times.getEndTime());
+                                        break;
+                                }   
 				st.executeUpdate();
 				return retDay;
 			}
@@ -1538,7 +1590,7 @@ public class DataServiceImpl implements DataService {
 	try {
 		
 		st = connection.prepareStatement(
-			"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes) VALUES (?, ?, ?, ?)");
+			"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes, Active) VALUES (?, ?, ?, ?, 1)");
 		
 		st.setString(1, first);
 		st.setString(2, last);
@@ -1943,6 +1995,3 @@ public class DataServiceImpl implements DataService {
 
 
 }
-    
-    
-
