@@ -1838,7 +1838,7 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public TimeSlot getDayTimeslot(Day day) {
-        String dayname;
+        String dayname = "";
         if (day == Day.SUNDAY){
             dayname = "Sunday";
         }
@@ -1869,7 +1869,7 @@ public class DataServiceImpl implements DataService {
 		
 		rs = st.executeQuery();
                 if (rs.next()){
-                    
+                    return new TimeSlot(rs.getInt("StartTime"), rs.getInt("EndTime"));
                 }
 		return null;
 		
@@ -1886,12 +1886,59 @@ public class DataServiceImpl implements DataService {
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
-		return null;
+	return null;
     }
 
     @Override
     public boolean setTimeSlot(Day day, TimeSlot newtimes) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String dayname = "";
+        if (day == Day.SUNDAY){
+            dayname = "Sunday";
+        }
+        else if (day == Day.MONDAY){
+            dayname = "Monday";
+        }
+        else if (day == Day.TUESDAY){
+            dayname = "Tuesday";
+        }
+        else if (day == Day.WEDNESDAY){
+            dayname = "Wednesday";
+        }
+        else if (day == Day.THURSDAY){
+            dayname = "Thursday";
+        }
+        else if (day == Day.FRIDAY){
+            dayname = "Friday";
+        }
+        else if (day == Day.SATURDAY){
+            dayname = "Saturday";
+        }
+        PreparedStatement st = null;
+        try {
+		
+		st = connection.prepareStatement("UPDATE DefaultHours SET " +
+                        "DefaultHours.StartTime=?, DefaultHours.EndTime=?" +
+				" WHERE Day=?");
+		st.setString(3, dayname);
+                st.setInt(1, newtimes.getStartTime());
+                st.setInt(2, newtimes.getEndTime());
+                
+                st.executeUpdate();
+		return true;
+	} catch (SQLException e) {
+		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		lgr.log(Level.SEVERE, e.getMessage(), e);
+	} finally {
+		try {
+			if (st != null) {
+				st.close();
+			}
+		} catch (SQLException ex) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.WARNING, ex.getMessage(), ex);
+		}
+	}
+	return false;
     }
 
 

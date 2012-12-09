@@ -46,5 +46,17 @@ public class TimeSlot {
 		String string= "" + getHours(startTime) + ":" + getMinutes(startTime) + " - " + getHours(endTime) + ":" + getMinutes(endTime);
 		return string;
 	}
+        
+        /** Displays the time slot as a string. */
+	public String to24HrStringStart() {
+		String string= "" + getHours(startTime) + ":" + getMinutes(startTime);
+		return string;
+	}
+        
+         /** Displays the time slot as a string. */
+	public String to24HrStringEnd() {
+		String string= "" + getHours(endTime) + ":" + getMinutes(endTime);
+		return string;
+	}        
 	
 }
