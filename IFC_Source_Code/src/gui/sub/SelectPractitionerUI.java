@@ -39,8 +39,9 @@ import backend.DataTransferObjects.TypeDto;
 public class SelectPractitionerUI extends JDialog implements ActionListener,ListSelectionListener {
 
 	private static SelectPractitionerUI selectPractitionerUI;
-	private ArrayList<PractitionerDto> prac = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
-	private JTextField startTimeField = new JTextField("NOT WORKING YET");
+	private ArrayList<PractitionerDto> prac =
+		(ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
+	private JTextField startTimeField = new JTextField();
 	private JTextField endTimeField = new JTextField();
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
@@ -53,6 +54,12 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 	private JButton okButton2 = new JButton("OK");
 	private JButton cancelButton2 = new JButton("Cancel");
 
+	private int dayStart;
+	private int dayEnd;
+
+	public int startTime;
+	public int endTime;
+	
 	JTable pracTable;
 	
 	private static PractitionerDto practitioner;
@@ -61,6 +68,22 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		practitioner = null;
 		setModal(true);
 		setTitle(name);
+		setLayout(new BorderLayout());
+		
+    	JPanel hoursPanel = new JPanel(new BorderLayout());
+    	JPanel hoursFieldPanel = new JPanel();
+    	hoursFieldPanel.setLayout(new BoxLayout(hoursFieldPanel, BoxLayout.X_AXIS));
+    	JLabel hoursLabel = new JLabel("Work hours (00:00 - 23:59)");
+    	hoursLabel.setFont(Constants.PARAGRAPH);
+    	startTimeField.setFont(Constants.PARAGRAPH);
+    	endTimeField.setFont(Constants.PARAGRAPH);
+    	hoursFieldPanel.add(startTimeField);
+    	hoursFieldPanel.add(new JLabel("  -  "));
+    	hoursFieldPanel.add(endTimeField);
+    	hoursPanel.add(hoursLabel, BorderLayout.PAGE_START);
+    	hoursPanel.add(hoursFieldPanel, BorderLayout.CENTER);
+    	add(hoursPanel, BorderLayout.PAGE_START);
+		
 		tabbedPane = new JTabbedPane();
 		JComponent panel1 = makeExisPracPanel();
 		tabbedPane.addTab("Existing Practitioner", null, panel1,
@@ -72,10 +95,9 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		                  "Select a New Practitioner");
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
-		setLayout(new GridLayout(1,1));
 		tabbedPane.setPreferredSize(new Dimension(500,250));
 		tabbedPane.setFont(Constants.PARAGRAPH);
-		add(tabbedPane);
+		add(tabbedPane, BorderLayout.CENTER);
 		setResizable(false);
 		
 		okButton1.setActionCommand("okOld");
@@ -89,17 +111,6 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
     private JComponent makeExisPracPanel() {
     	JPanel p = new JPanel(new BorderLayout());
     	JPanel panel = new JPanel(new BorderLayout());
-    	
-    	JPanel hoursPanel = new JPanel(new BorderLayout());
-    	JPanel hoursFieldPanel = new JPanel();
-    	hoursFieldPanel.setLayout(new BoxLayout(hoursFieldPanel, BoxLayout.X_AXIS));
-    	JLabel hoursLabel = new JLabel("Work hours (00:00 - 23:59)");
-    	hoursLabel.setFont(Constants.PARAGRAPH);
-    	hoursFieldPanel.add(startTimeField);
-    	hoursFieldPanel.add(new JLabel("  -  "));
-    	hoursFieldPanel.add(endTimeField);
-    	hoursPanel.add(hoursLabel, BorderLayout.PAGE_START);
-    	hoursPanel.add(hoursFieldPanel, BorderLayout.CENTER);
     	
     	pracTable = new JTable(new PracTableModel());
     	pracTable.getTableHeader().setReorderingAllowed(false);
@@ -129,7 +140,6 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
         JScrollPane scrollPane = new JScrollPane(panel);
         //scrollPane.setPreferredSize(new Dimension(410,200));
         
-        p.add(hoursPanel, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
         return p;
@@ -211,12 +221,53 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
     	return panel;
     }
 	
-	public static PractitionerDto ShowDialog(Component owner) {
+	public static SelectPractitionerUI ShowDialog(Component owner, int startTime, int endTime) {
 		selectPractitionerUI = new SelectPractitionerUI("Select Practitioner");
+		selectPractitionerUI.setStartTime(startTime);
+		selectPractitionerUI.setEndTime(endTime);
 		selectPractitionerUI.pack();
 		selectPractitionerUI.setLocationRelativeTo(owner);
 		selectPractitionerUI.setVisible(true);
+		return selectPractitionerUI;
+	}
+	
+	public PractitionerDto getPractitioner() {
 		return practitioner;
+	}
+	
+	private void setStartTime(int startTime) {
+		this.dayStart = startTime;
+		this.startTime = startTime;
+		String startTimeString = "";
+		int hours = startTime/60;
+		int minutes = startTime%60;
+		startTimeString += hours < 10 ? "0" + hours : hours;
+		startTimeString += ":" + (minutes < 10 ? "0" + minutes : minutes);
+		startTimeField.setText(startTimeString);
+	}
+	
+	private void setEndTime(int endTime) {
+		this.dayEnd = endTime;
+		this.endTime = endTime;
+		String endTimeString = "";
+		int hours = endTime/60;
+		int minutes = endTime%60;
+		endTimeString += hours < 10 ? "0" + hours : hours;
+		endTimeString += ":" + (minutes < 10 ? "0" + minutes : minutes);
+		endTimeField.setText(endTimeString);
+	}
+	
+	private boolean checkTimes() {
+		String start = startTimeField.getText();
+		String end = endTimeField.getText();
+		if (start.matches("[0-2][0-9]:[0-5][0-9]") && end.matches("[0-2][0-9]:[0-5][0-9]")) {
+			this.startTime =
+				(60 * Integer.parseInt(start.substring(0,2))) + Integer.parseInt(start.substring(3));
+			this.endTime =
+				(60 * Integer.parseInt(end.substring(0,2))) + Integer.parseInt(end.substring(3));
+			return startTime < endTime;
+		}
+		return false;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -228,7 +279,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 			tabbedPane.addTab("New Practitioner", null, panel2,
 			                  "Select a New Practitioner");
 			remove(tabbedPane);
-			add(tabbedPane);
+			add(tabbedPane, BorderLayout.CENTER);
 			repaint();
 			validate();
 			tabbedPane.setSelectedIndex(1);
@@ -238,6 +289,11 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 			JLabel msg = new JLabel();
 			msg.setFont(Constants.PARAGRAPH);
 			String firstName = firstNameField.getText();
+			if (!checkTimes()) {
+				msg.setText("Please enter valid times: (00:00 - 23:59) with start time less that end time.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			if (firstName.equals("")) {
 				msg.setText( "Please enter a first name.");
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
@@ -278,10 +334,33 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 			practitioner = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(
                                 t.getTypeID(), firstName, lastName, apptLength, "" , note);
 		} else if (e.getActionCommand().equals("okOld")) {
+			if (!checkTimes()) {
+				JLabel msg = new JLabel("Please enter valid times: (00:00 - 23:59) with start time less that end time.");
+				msg.setFont(Constants.PARAGRAPH);
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			if (startTime > dayEnd || endTime < dayStart) {
+				JLabel msg = new JLabel("Please enter a time range within the hours of operation.");
+				msg.setFont(Constants.PARAGRAPH);
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
+				setStartTime(dayStart);
+				setEndTime(dayEnd);
+				return;
+			}
+			if (startTime < dayStart || endTime > dayEnd) {
+				if (JOptionPane.showConfirmDialog(
+						this, "The specified time range exceeds the range of the day. " +
+								"Continue with the specified range truncated?",
+						"Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
+				if (startTime < dayStart) startTime = dayStart;
+				if (endTime > dayEnd) endTime = dayEnd;
+			}
 			if (pracTable.getSelectedRow() > -1)
 				practitioner = prac.get(pracTable.getSelectedRow());
 			else {
 				JLabel msg = new JLabel("Please select one of the practitioners in the table, or add a new one.");
+				msg.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}

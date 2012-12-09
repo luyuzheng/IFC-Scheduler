@@ -236,13 +236,15 @@ public class DayPanel extends JPanel {
 	/** Shows the dialog for scheduling a practitioner on a day. */
 	private final AbstractAction addPracAction = new AbstractAction("<html>Schedule Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
-			PractitionerDto p = SelectPractitionerUI.ShowDialog(mw);
+			SelectPractitionerUI selectPractitionerUI =
+				SelectPractitionerUI.ShowDialog(mw, day.getStart(), day.getEnd());
+			PractitionerDto p = selectPractitionerUI.getPractitioner();
 			if (p==null) return;
 			SchedulePractitionerDto room = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitionerToDay(
-					p, day, day.getStart(), day.getEnd());
-                        if (room != null){
-                            as.addRoom(room);
-                        }
+					p, day, selectPractitionerUI.startTime, selectPractitionerUI.endTime);
+			if (room != null){
+				as.addRoom(room);
+			}
 		}
 	};
 	
