@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS Day
 DayDate date NOT NULL PRIMARY KEY,
 StartTime int,
 EndTime int,
-Status varchar(255)
+Status tinyint
 );
 
 CREATE TABLE IF NOT EXISTS Waitlist
@@ -73,5 +73,21 @@ WaitlistID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 PatID int,
 TypeID int,
 DatetimeEntered datetime,
-Comments text
+Comments text,
+Active int
+)
+
+CREATE TABLE IF NOT EXISTS DefaultHours(
+Day varchar(255),
+StartTime int,
+EndTime int,
+Status tinyint
 );
+
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Monday", 960, 1200, 1);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Tuesday", 960, 1200, 0);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Wednesday", 960, 1200, 0);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Thursday", 960, 1200, 1);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Friday", 960, 1200, 0);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Saturday", 960, 1200, 0);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Sunday", 960, 1200, 0);
