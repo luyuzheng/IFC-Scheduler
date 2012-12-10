@@ -35,6 +35,7 @@ import backend.DataTransferObjects.*;
 import gui.main.MainWindow;
 
 /**
+ * 
  * AppointmentConfirmationPane displays the appointment confirmation pane on the right-hand side of the application
  * when the "Appointment Confirmation" button is clicked. A list of patients scheduled for a particular day will appear,
  * allowing the user to easily find and check off which patients need to be contacted to confirm their appointments. The
@@ -233,8 +234,4 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 			}
 		}
 	}
-        
-        public void refreshAppointments(){
-            //((MainWindow) owner).refreshAppointments();
-        }
 }

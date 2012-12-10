@@ -399,15 +399,10 @@ public class MainWindow extends JFrame {
 		if (inMonthView) {
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
 				mp = new MonthPanel(dp);
-				pane.setLeftComponent(mp);
-				pane.repaint();
-				pane.validate();
 			} else {			
 				remove(mp);
 				remove(sidePane);
 				initMVComponents(dp);
-				repaint();
-				validate();
 			}
 		} else {			
 			
@@ -418,19 +413,17 @@ public class MainWindow extends JFrame {
 				dp.validateButtons();
 				ap = new AppointmentPanel(dp);
 				pane.setLeftComponent(ap);
-				pane.repaint();
-				pane.validate();
 			} else {
 				remove(ap);
 				remove(sidePane);
 				initComponents(dp);
-				repaint();
-				validate();
 			}
 		}
-		
-		dp.isMonthViewValidate();		
-		
+				
+		this.refreshConfirmationPane();
+                repaint();
+		validate();
+                dp.isMonthViewValidate();
 	}
 	
 	/**
@@ -441,6 +434,7 @@ public class MainWindow extends JFrame {
 	 */
 	public void setDay(DayDto day) {
 		this.day = day;
+                this.refreshConfirmationPane();
 	}
 	
 	/**
@@ -471,6 +465,15 @@ public class MainWindow extends JFrame {
 	public void refreshAppointments(Date date){
             if (day.getDate().toString().equals(date.toString())){
                 ap.refresh(dp);
+            }
+        }
+        
+        public void refreshConfirmationPane(){
+            System.out.println("called");
+            if (showingApptConfirmation){
+                System.out.println("here");
+                this.hideApptConfirmation();
+                this.showApptConfirmation();
             }
         }
 }
