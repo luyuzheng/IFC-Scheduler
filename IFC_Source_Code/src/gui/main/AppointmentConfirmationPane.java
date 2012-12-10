@@ -2,6 +2,7 @@ package gui.main;
 
 import backend.DataService.DataServiceImpl;
 import gui.Constants;
+import gui.DateTimeUtils;
 import gui.main.listeners.AppointmentConfirmationListener;
 import gui.sub.DisplayWaitingPatientUI.ApptTableModel;
 
@@ -67,7 +68,7 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		
 		apptConfirmationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
-		String date= shortDate(((MainWindow)owner).getDayPanel().getDay().getDate());
+		String date= DateTimeUtils.prettyPrintMonthDay((((MainWindow)owner).getDayPanel().getDay().getDate()));
 		
 		JLabel apptConfirmationLabel = new JLabel("Appointments to Confirm for " + date + ":");
 		apptConfirmationLabel.setFont(Constants.DIALOG);

@@ -1,6 +1,7 @@
 package gui.sub;
 
 import gui.Constants;
+import gui.DateTimeUtils;
 import gui.main.listeners.ScheduleWaitlistPatientListener;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.SelectPatientUI.PatTableModel;
@@ -245,7 +246,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		public Object getValueAt(int row, int col) {
 			AppointmentDto a = appointments.get(row);
 			if (col == 0) 
-				return a.getApptDate();
+				return DateTimeUtils.prettyPrintMonthDay(a.getApptDate());
 			else  if (col == 1)
 				return a.prettyPrintStart();
 			else if (col == 2)

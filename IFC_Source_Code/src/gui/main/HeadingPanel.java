@@ -78,7 +78,7 @@ public class HeadingPanel extends JPanel implements FocusListener {
 	public void focusGained(FocusEvent arg0) {
 		rs.getDayPanel().setRemovePracButtonEnabled(true, rp);
 		setBackground(new Color(175, 255, 175));
-		npl = new NewPractitionerListener(rp, this.getParent());
+		npl = new NewPractitionerListener(rp, this.getParent().getParent().getParent().getParent()); // the final parent is the MainWindow
 		text.addMouseListener(npl);
 	}
 
