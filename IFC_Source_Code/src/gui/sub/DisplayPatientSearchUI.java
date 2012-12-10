@@ -86,7 +86,7 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		table = new JTable(model);
 		table.setDragEnabled(true);
 		table.setFont(Constants.DIALOG);
-		table.addMouseListener(new DisplayPatientSearchListener(table, this));
+		table.addMouseListener(new DisplayPatientSearchListener(table, this, mw));
 		table.setAutoCreateRowSorter(true);
     	table.getTableHeader().setReorderingAllowed(false);
     	table.getTableHeader().setFont(Constants.DIALOG);

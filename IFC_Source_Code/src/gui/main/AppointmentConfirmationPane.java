@@ -32,6 +32,8 @@ import javax.swing.table.AbstractTableModel;
 
 import backend.DataTransferObjects.*;
 
+import gui.main.MainWindow;
+
 /**
  * AppointmentConfirmationPane displays the appointment confirmation pane on the right-hand side of the application
  * when the "Appointment Confirmation" button is clicked. A list of patients scheduled for a particular day will appear,
@@ -94,8 +96,8 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		table = new JTable(model);
 		table.setDragEnabled(true);
 		table.setFont(Constants.DIALOG);
-		table.addMouseListener(new AppointmentConfirmationListener(table, this));
-		table.getSelectionModel().addListSelectionListener(new AppointmentConfirmationListener(table, this));
+		table.addMouseListener(new AppointmentConfirmationListener(table, this, (MainWindow) owner));
+		table.getSelectionModel().addListSelectionListener(new AppointmentConfirmationListener(table, this, (MainWindow) owner));
 		table.setAutoCreateRowSorter(true);
     	table.getTableHeader().setReorderingAllowed(false);
     	table.getTableHeader().setFont(Constants.DIALOG);
@@ -226,6 +228,7 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 					appt.setConfirmation(false);
 					DataServiceImpl.GLOBAL_DATA_INSTANCE.unConfirmAppointment(appt);
 				}
+                                ((MainWindow)owner).refreshAppointments(appt.getApptDate());
 				resetModel();
 			}
 		}

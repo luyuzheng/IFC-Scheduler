@@ -53,6 +53,7 @@ public class WaitListPane extends JPanel {
 	public JButton removePatientButton = new JButton("Remove Patient from List");
 	public JButton changePriorityButton = new JButton("Change Priority");
 	private ArrayList<TypeDto> types;
+        private WaitListPane pane;
 	
 	/**
 	 * This method is called by MainWindow (the owner). It creates the UI for the pane, including all
@@ -62,6 +63,7 @@ public class WaitListPane extends JPanel {
 	 */
 	public WaitListPane(Component owner) {
 		this.owner = owner;
+                this.pane = this;
 		setMinimumSize(new Dimension(0,0));
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout());
@@ -168,10 +170,9 @@ public class WaitListPane extends JPanel {
 				return;
 			}
 			WaitlistDto wp = ((WaitlistTableModel)specTable.getModel()).getPatient(specTable.getSelectedRow());
-			//String newComment = DisplayWaitingPatientUI.ShowDialog(getParent(), wp);
+			String newComment = DisplayWaitingPatientUI.ShowDialog(getParent(), wp, pane);
 			//wp.setComments(newComment);
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
-                        ((MainWindow) owner).refresh();
 			resetModel();
 		}
 	};

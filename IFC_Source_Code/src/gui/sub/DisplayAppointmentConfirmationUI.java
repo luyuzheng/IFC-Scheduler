@@ -1,3 +1,4 @@
+
 package gui.sub;
 
 import gui.Constants;
@@ -25,6 +26,7 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
+import gui.main.MainWindow;
 /**
  * DisplayAppointmentConfirmationUI shows information about a patient's appointment when a patient in the table
  * is clicked.
@@ -43,14 +45,18 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	private JTextArea textArea;
 	private JTextArea noteArea;
 	
+        private MainWindow main;
+        
 	/**
 	 * Constructor - creates the actual UI to display the patient's appointment information
 	 * @param name - the title to be displayed in the top bar of the pop up window
 	 * @param appt - the appointment information to be displayed
 	 */
-	private DisplayAppointmentConfirmationUI(String name, AppointmentDto appt) {
+	private DisplayAppointmentConfirmationUI(String name, AppointmentDto appt, MainWindow main) {
 		appointment = appt;
 		
+                this.main = main;
+                
 		setModal(true);
 		setTitle(name);
 		
@@ -144,8 +150,8 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 * @param owner - the component that owns this pane (the AppointmentConfirmationListener)
 	 * @param appt  - the appointment information
 	 */
-	public static AppointmentDto ShowDialog(Component owner, AppointmentDto appt) {
-		displayAppointmentConfirmationUI = new DisplayAppointmentConfirmationUI("View Appointment", appt);
+	public static AppointmentDto ShowDialog(Component owner, AppointmentDto appt, MainWindow main) {
+		displayAppointmentConfirmationUI = new DisplayAppointmentConfirmationUI("View Appointment", appt, main);
 		displayAppointmentConfirmationUI.pack();
 		displayAppointmentConfirmationUI.setLocationRelativeTo(owner);
 		displayAppointmentConfirmationUI.setVisible(true);
@@ -172,6 +178,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 				confirmButton.setText("<html>Confirm</html>");
 			}
 			refreshPatientInfo(appointment);
+                        main.refreshAppointments(appointment.getApptDate());
 		}
 	};
 	

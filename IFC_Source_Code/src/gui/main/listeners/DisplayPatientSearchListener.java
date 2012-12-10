@@ -4,6 +4,8 @@ import gui.sub.DisplayAppointmentConfirmationUI;
 import gui.sub.DisplayPatientSearchUI;
 import gui.sub.DisplayPatientSearchUI.FutureAppointmentsTableModel;
 
+import gui.main.MainWindow;
+
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -17,18 +19,20 @@ import backend.DataTransferObjects.*;
  * a pop up window displays more information about that patient and his/her appointment.
  */
 public class DisplayPatientSearchListener extends MouseAdapter {
-	JTable owner;
-	Component parent;
-	
+	private JTable owner;
+	private Component parent;
+	private MainWindow main;
+        
 	/**
 	 * Constructor.
 	 * 
 	 * @param owner - component that owns this listener (the table of the AppointmentConfirmationPane)
 	 * @param parent - the parent of this listener (AppointmentConfirmationPane)
 	 */
-	public DisplayPatientSearchListener(JTable owner, Component parent) {
+	public DisplayPatientSearchListener(JTable owner, Component parent, MainWindow main) {
 		this.owner = owner;
 		this.parent = parent;
+                this.main = main;
 	}
 	
 	/**
@@ -40,7 +44,7 @@ public class DisplayPatientSearchListener extends MouseAdapter {
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
 				AppointmentDto appt = ((FutureAppointmentsTableModel)owner.getModel()).getAppointment(owner.getSelectedRow());
-				DisplayAppointmentConfirmationUI.ShowDialog(parent.getParent(), appt);
+				DisplayAppointmentConfirmationUI.ShowDialog(parent.getParent(), appt, main);
 				DisplayPatientSearchUI dps = (DisplayPatientSearchUI) parent;
 				dps.resetModel();
 			}
