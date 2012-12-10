@@ -36,6 +36,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import backend.DataTransferObjects.*;
+import java.sql.Date;
 
 /**
  * WaitListPane displays the wait list pane on the right-hand side of the application when the "Wait List" button is clicked.
@@ -365,7 +366,7 @@ public class WaitListPane extends JPanel {
         }
 	}
         
-        public void refreshAppointments(){
-            ((MainWindow) owner).refreshAppointments();
+        public void refreshAppointments(Date day){
+            ((MainWindow) owner).refreshAppointments(day);
         }
 }
