@@ -163,6 +163,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
         JScrollPane scrollPane = new JScrollPane(panel);
         
         searchField.setFont(Constants.PARAGRAPH);
+        searchField.addKeyListener(this);
         p.add(searchField, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
@@ -247,11 +248,21 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 	}
 	
 	public void updateTable() {
-		String filter = searchField.getText();
-        patTable.setModel(new PatTableModel(pat));
-                //implement filters
-		//if (filter.equals("")) patTable.setModel(new PatTableModel(pat));
-                //else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
+	    // Filters patients
+		String filter = searchField.getText().toLowerCase();
+		String[] filters = filter.split(" ");
+        ArrayList<PatientDto> filteredPat = new ArrayList<PatientDto>();
+        for (PatientDto p : pat) {
+        	String fullName = p.getFullName().toLowerCase();
+        	
+        	for (String f : filters) {
+	        	if (fullName.indexOf(f) >= 0) {
+	        		filteredPat.add(p);
+	        		break;
+	        	}
+        	}
+        }
+        patTable.setModel(new PatTableModel(filteredPat));
 	}
 	
 	public void actionPerformed(ActionEvent e) {
@@ -390,16 +401,13 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 
 	public void keyTyped(KeyEvent arg0) {
 		
-		
 	}
 
 	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	public void keyReleased(KeyEvent arg0) {
 		updateTable();
-		
 	}
 }
