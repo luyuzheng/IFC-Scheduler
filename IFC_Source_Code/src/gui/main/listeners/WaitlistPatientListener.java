@@ -59,9 +59,11 @@ public class WaitlistPatientListener extends MouseAdapter implements ListSelecti
 		if (owner.getSelectedRow() >= 0) {
 			wp.schedulePatientButton.setEnabled(true);
 			wp.removePatientButton.setEnabled(true);
+			wp.changePriorityButton.setEnabled(true);
 		} else if (owner.getSelectedRow() < 0) {
 			wp.schedulePatientButton.setEnabled(false);
 			wp.removePatientButton.setEnabled(false);
+			wp.changePriorityButton.setEnabled(false);
 		}
 	}
 }
