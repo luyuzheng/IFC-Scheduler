@@ -1,0 +1,29 @@
+Ithaca Free Clinic Scheduler
+GUI Testing
+
+Complete the following tasks to determine whether the application is working successfully.
+1. Start with a new instance of the database as created by initializeDatabase.sql. No patients, practitioners, etc. should be scheduled at this point.
+
+2. Check the tiny calendar.
+	- Check that the dates in the month calendar are outputted correctly
+		* Check that calendar displays the current month and year
+		* Check that the days appear in numerical order
+		* Check that the dates occur on the correct days of the week
+	- Click on left and right arrows - make sure days, months, and years increment and decrement properly
+	- Click on days within the calendar - make sure the date in the day view (upper left corner of the time and heading panel) updates properly
+	- Click on the "Today" button - make sure it returns to the current date
+
+3. Click on "Switch to Month View."
+	- Make sure the GUI switches properly.
+	- Check that the dates in the month calendar are outputted correctly
+		* Check that calendar displays the current month and year
+		* Check that the days appear in numerical order
+		* Check that the dates occur on the correct days of the week
+	- Make sure the dark gray color only appears on days displaying the previous and next months, the light gray color should be used for days of the current month.
+	
+4. Click on "Switch to Day View."
+	- Make sure the GUI switches properly.
+	- Check that the date in upper left corner of day view display's the current date.
+
+5. 
+		

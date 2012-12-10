@@ -296,7 +296,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 			msg.setFont(Constants.PARAGRAPH);
 			String firstName = firstNameField.getText();
 			if (!checkTimes()) {
-				msg.setText("Please enter valid times: (00:00 - 23:59) with start time less that end time.");
+				msg.setText("Please enter valid times: (00:00 - 23:59) with the start time less than the end time.");
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
@@ -311,11 +311,18 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			String type = ((TypeDto)typeCombo.getSelectedItem()).getTypeName();
-			if (type.equals("")) {
-				msg.setText("Please enter a type.");
+			String type = "";
+			if (typeCombo.getSelectedIndex() == -1) {
+				msg.setText("Please select a type.");
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
+			} else {
+				type = ((TypeDto)typeCombo.getSelectedItem()).getTypeName();
+				if (type.equals("")) {
+					msg.setText("Please select a type.");
+					JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
 			}
 			int apptLength;
 			try {
@@ -341,7 +348,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
                                 t.getTypeID(), firstName, lastName, apptLength, "" , note);
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (!checkTimes()) {
-				JLabel msg = new JLabel("Please enter valid times: (00:00 - 23:59) with start time less that end time.");
+				JLabel msg = new JLabel("Please enter valid times: (00:00 - 23:59) with the start time less than the end time.");
 				msg.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;

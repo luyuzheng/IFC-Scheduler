@@ -1,0 +1,62 @@
+Ithaca Free Clinic Scheduler
+GUI Testing
+
+Complete the following tasks to determine whether the application is working successfully.
+1. Start with a new instance of the database as created by initializeDatabase.sql. No patients, practitioners, etc. should be scheduled at this point.
+
+2. Check the tiny calendar.
+	- Check that the dates in the month calendar are outputted correctly
+		* Check that calendar displays the current month and year
+		* Check that the days appear in numerical order
+		* Check that the dates occur on the correct days of the week
+	- Click on left and right arrows - make sure days, months, and years increment and decrement properly
+	- Click on days within the calendar - make sure the date in the day view (upper left corner of the time and heading panel) updates properly
+	- Click on the "Today" button - make sure it returns to the current date
+
+3. Click on "Switch to Month View."
+	- Make sure the GUI switches properly.
+	- Check that the dates in the month calendar are outputted correctly
+		* Check that calendar displays the current month and year
+		* Check that the days appear in numerical order
+		* Check that the dates occur on the correct days of the week
+	- Make sure the dark gray color only appears on days displaying the previous and next months, the light gray color should be used for days of the current month.
+	
+4. Click on "Switch to Day View."
+	- Make sure the GUI switches properly.
+	- Check that the date in upper left corner of day view display's the correct date.
+
+5. Click on the "Schedule Practitioner."
+	- Click on tab to create another new practitioner. Do not enter anything in the fields and press OK. Should display an error message stating "Please enter a first name."
+	- Delete the default working hours for both the start and end time. 
+		* Should display a message stating "Please enter valid times (00:00 - 23:59) with the start time less than the end time.
+		* Enter in a non-military time value into start field. Should receive the same error message.
+		* Enter in a non-military time value into end field. Should receive the same error message.
+		* Enter in a proper time in the start field only. Should receive the same error message.
+		* Enter in a proper time in the end field only. Should receive the same error message.
+		* Enter in a larger start time than end time. Should receive the same error message.
+		* Enter in a proper start and end time.
+	- Enter in a first name and hit OK. Should display an error message stating "Please enter a last name."
+	- Enter in a last name and hit OK. Should display an error message stating "Appointment Length must be an integer value."
+	- Enter a non-integer value into the appointment length field. Should display an error message stating "Appointment Length must be an integer value."
+	- Enter an integer value into the appointment length field. Should display an error message stating "Please select a type."
+	- Create a new type, select it in the list, and hit OK. Should create a new practitioner in day view.
+	- Make sure the practitioner appears in day view immediately after hitting ok (i.e. check for GUI refreshing problems). Top of screen should display:
+		* Practitioner's name
+		* Practitioner's type
+	- Create a new practitioner. Enter a value in each and every field. Hit OK. Should create another practitioner in day view.
+	- Make sure the practitioner appears in day view immediately after hitting ok (i.e. check for GUI refreshing problems). Top of screen should display:
+		* Practitioner's name
+		* Practitioner's type
+		* Practitioner's note
+		
+6. Click on a practitioner and click "Remove Practitioner From Current Day." (If you cannot hit this button after selecting a practitioner, there is a bug.)
+	- Message should appear, stating "Are you sure you want to remove this practitioner from the schedule? This will cancel any appointments that have been set for this day."
+	- Hit no, and nothing should happen (i.e. no practitioner should disappear from GUI or database).
+	- Click on remove practitioner button again.
+	- This time, hit yes, and the correct practitioner should be removed.
+	
+7. Reschedule the removed practitioner - click on "Schedule Practitioner," and in Existing Practitioner tab, click on the desired practitioner and hit OK. Should reschedule properly.
+	
+8. Click on an appointment block in the schedule, then click on "Schedule Patient."
+
+		
