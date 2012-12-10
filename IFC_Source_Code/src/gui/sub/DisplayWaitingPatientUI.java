@@ -32,6 +32,8 @@ import javax.swing.table.TableModel;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.*;
 
+import gui.main.WaitListPane;
+
 @SuppressWarnings("serial")
 public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private static DisplayWaitingPatientUI displayWaitingPatientUI;
@@ -45,13 +47,15 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private JButton cancelButton = new JButton("Cancel");
 	private JTextArea textArea;
 	private JTextArea noteArea;
+        
+        private WaitListPane pane;
 	
 	private static String comment = "";
 	
-	private DisplayWaitingPatientUI(String name, WaitlistDto wp) {
+	private DisplayWaitingPatientUI(String name, WaitlistDto wp, WaitListPane pane) {
 		setModal(true);
 		setTitle(name);
-			
+		this.pane = pane;
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(500, 550));
 		
@@ -183,10 +187,10 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static String ShowDialog(Component owner, WaitlistDto waitp) {
+	public static String ShowDialog(Component owner, WaitlistDto waitp, WaitListPane pane) {
 		
 		String name= "Schedule Appointment for " + waitp.getPatient().getFullName();
-		displayWaitingPatientUI = new DisplayWaitingPatientUI(name, waitp);
+		displayWaitingPatientUI = new DisplayWaitingPatientUI(name, waitp, pane);
 		displayWaitingPatientUI.pack();
 		displayWaitingPatientUI.setLocationRelativeTo(owner);
 		displayWaitingPatientUI.setVisible(true);
@@ -203,6 +207,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 				
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patient.getPatID(), appt);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(patient, type);
+                                pane.refreshAppointments();
 			}
 			
 			

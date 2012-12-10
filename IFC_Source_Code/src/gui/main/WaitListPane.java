@@ -116,8 +116,8 @@ public class WaitListPane extends JPanel {
 		specTable = new JTable(model);
 		specTable.setDragEnabled(true);
 		specTable.setFont(Constants.DIALOG);
-		specTable.addMouseListener(new WaitlistPatientListener(specTable, this));
-		specTable.getSelectionModel().addListSelectionListener(new WaitlistPatientListener(specTable, this));
+		specTable.addMouseListener(new WaitlistPatientListener(specTable, this, this));
+		specTable.getSelectionModel().addListSelectionListener(new WaitlistPatientListener(specTable, this, this));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		specTable.setAutoCreateRowSorter(true);
     	specTable.getTableHeader().setReorderingAllowed(false);
@@ -158,9 +158,10 @@ public class WaitListPane extends JPanel {
 				return;
 			}
 			WaitlistDto wp = ((WaitlistTableModel)specTable.getModel()).getPatient(specTable.getSelectedRow());
-			String newComment = DisplayWaitingPatientUI.ShowDialog(getParent(), wp);
-			wp.setComments(newComment);
+			//String newComment = DisplayWaitingPatientUI.ShowDialog(getParent(), wp);
+			//wp.setComments(newComment);
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
+                        ((MainWindow) owner).refresh();
 			resetModel();
 		}
 	};
@@ -336,4 +337,8 @@ public class WaitListPane extends JPanel {
         	specTable.setModel(new WaitlistTableModel(filtered, false));
         }
 	}
+        
+        public void refreshAppointments(){
+            ((MainWindow) owner).refreshAppointments();
+        }
 }
