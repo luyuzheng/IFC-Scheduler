@@ -1,7 +1,6 @@
-CREATE DATABASE IF NOT EXISTS ifc_db;
-CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'test623';
-USE ifc_db;
-GRANT ALL ON ifc_db.* TO 'testuser'@'localhost';
+CREATE DATABASE IF NOT EXISTS ifc_unit_test_db;
+USE ifc_unit_test_db;
+GRANT ALL PRIVILEGES ON ifc_unit_test_db.* TO 'unit_test_user '@'localhost' IDENTIFIED BY 'test634' WITH GRANT OPTION;
 CREATE TABLE IF NOT EXISTS Patient
 (
 PatID int NOT NULL PRIMARY KEY AUTO_INCREMENT, 
