@@ -1,5 +1,5 @@
 CREATE DATABASE IF NOT EXISTS ifc_db;
-CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'test623';
+#CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'test623';
 USE ifc_db;
 GRANT ALL ON ifc_db.* TO 'testuser'@'localhost';
 CREATE TABLE IF NOT EXISTS Patient
