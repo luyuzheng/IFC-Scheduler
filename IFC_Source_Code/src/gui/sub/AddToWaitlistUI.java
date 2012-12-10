@@ -49,7 +49,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 		JPanel patientPanel = new JPanel(new BorderLayout());
 		patientPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		patientLabel = new JLabel("No Patient Selected", JLabel.CENTER);
-		patientLabel.setFont(new Font("Arial", Font.BOLD, 16));
+		patientLabel.setFont(Constants.HEADER);
 		patientPanel.add(patientLabel, BorderLayout.CENTER);
 		
 		topPanel.add(patientPanel, BorderLayout.NORTH);

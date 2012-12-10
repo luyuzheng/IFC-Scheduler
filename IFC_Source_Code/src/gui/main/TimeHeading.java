@@ -39,18 +39,12 @@ public class TimeHeading extends JPanel {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Tahoma",Font.BOLD,16));
+		textArea.setFont(Constants.HEADER);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		add(textArea, BorderLayout.CENTER);
 
-		//GregorianCalendar cal = new GregorianCalendar();		
-		//currentDate = new Date(cal.get(Calendar.MONTH) + 1, cal.get(Calendar.DATE), cal.get(Calendar.YEAR));
 		currentDate = d;
-		
-		//textArea.setText(currentDate.toFormalString());
-		//textArea.setText("Today:\n"+(cal.get(Calendar.MONTH) + 1)+"-"+cal.get(Calendar.DATE)+",\n"+cal.get(Calendar.YEAR));
-		//textArea.setText(d.getMonth()+"/"+d.getDay());
 		textArea.setText(shortDate(currentDate));
 		
 	}

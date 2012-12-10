@@ -26,7 +26,7 @@ public class Constants {
 	/** The width of a day block in Month Panel. */
 	public static final int MONTH_BLOCK_WIDTH = 150;
 	/** The height of a day block in Month Panel. */
-	public static final int MONTH_BLOCK_HEIGHT = 100;
+	public static final int MONTH_BLOCK_HEIGHT = 150;
 	
 	
 	/** Default font for header styles */
@@ -35,12 +35,16 @@ public class Constants {
 	public static final Font PARAGRAPH = new Font("Arial", Font.PLAIN, 14);
 	/** Default font for bold paragraph styles */
 	public static final Font PARAGRAPH_BOLD = new Font("Arial", Font.BOLD, 14);
+	/** Default font for italic paragraph styles */
+	public static final Font PARAGRAPH_ITALICS = new Font("Arial", Font.ITALIC, 14);
 	/** Default font for dialog buttons */
 	public static final Font DIALOG = new Font("Arial", Font.PLAIN, 16);
 	/** Default font for printable text **/
 	public static final Font PRINTABLE = new Font("Arial", Font.PLAIN, 12);
-	/** **/
+	/** Default font for printable text on month view **/
 	public static final Font PRINTABLE_SMALL = new Font("Monospaced", Font.PLAIN, 9);
+	/** Default font for text in Day Block on month view **/
+	public static final Font PARAGRAPH_TINY = new Font("Tahoma",Font.PLAIN,11);
 	
 	/** The horizontal print margin, in pixels */
 	public static final int PRINT_MARGINX = 25;

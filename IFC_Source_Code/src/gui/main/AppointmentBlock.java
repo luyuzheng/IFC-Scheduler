@@ -49,7 +49,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Arial",Font.PLAIN,14));
+		textArea.setFont(Constants.PARAGRAPH);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		int time = appointment.getEnd() - appointment.getStart();
@@ -76,7 +76,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	 */
 	public void setText() {
 		JLabel timeslot= new JLabel(appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd());
-		timeslot.setFont(new Font("Arial",Font.BOLD, 14));
+		timeslot.setFont(Constants.PARAGRAPH_BOLD);
 		add(timeslot, BorderLayout.NORTH);
 		String text = "";
                // System.out.println(appointment.getPatientID());

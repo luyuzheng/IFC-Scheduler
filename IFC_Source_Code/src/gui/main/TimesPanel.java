@@ -56,7 +56,7 @@ public class TimesPanel extends JPanel {
 			String timeSt = hours.toString() + ":" + String.format("%02d", start % 60);
 			String amPm = (((start / 60) / 12) == 0) ? "am" : "pm";
 			JLabel label = new JLabel(timeSt + amPm);
-			label.setFont(new Font("Arial", Font.PLAIN, 14));
+			label.setFont(Constants.PARAGRAPH);
 			panel.add(label);
 			panel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
 			add(panel);
@@ -75,7 +75,7 @@ public class TimesPanel extends JPanel {
 			String timeSt = hours.toString() + ":" + String.format("%02d", start % 60);
 			String amPm = (((start / 60) / 12) == 0) ? "am" : "pm"; 
 			JLabel startLabel= new JLabel(timeSt + amPm);
-			startLabel.setFont(new Font("Arial", Font.BOLD, 14));
+			startLabel.setFont(Constants.PARAGRAPH_BOLD);
 			panel.add(startLabel);
 			panel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
 			add(panel);
@@ -95,7 +95,7 @@ public class TimesPanel extends JPanel {
 			String timeSt = hours.toString() + ":" + String.format("%02d", start % 60);
 			String amPm = (((start / 60) / 12) == 0) ? "am" : "pm"; 
 			JLabel startLabel= new JLabel(timeSt + amPm);
-			startLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+			startLabel.setFont(Constants.PARAGRAPH);
 			panel.add(startLabel);
 			panel.setBorder(BorderFactory.createMatteBorder(0,0,1,0,Color.BLACK));
 			add(panel);
