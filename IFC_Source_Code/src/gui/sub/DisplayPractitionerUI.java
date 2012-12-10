@@ -20,6 +20,10 @@ import javax.swing.border.EmptyBorder;
 
 import backend.DataTransferObjects.PractitionerDto;
 
+/**
+ * Displays the info on a practitioner when a scheduled one is double clicked.
+ * It also allows you the clear the practitioner scheduled for that time.
+ */
 public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private static DisplayPractitionerUI displayPractitionerUI;
 	
@@ -77,7 +81,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	}
 	
 	public static PractitionerDto ShowDialog(Component owner, PractitionerDto p) {
-		displayPractitionerUI = new DisplayPractitionerUI("Edit Practitioner", p);
+		displayPractitionerUI = new DisplayPractitionerUI("Practitioner Details", p);
 		displayPractitionerUI.pack();
 		displayPractitionerUI.setLocationRelativeTo(owner);
 		displayPractitionerUI.setVisible(true);

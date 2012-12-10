@@ -31,6 +31,9 @@ import javax.swing.table.AbstractTableModel;
 import backend.DataTransferObjects.*;
 import java.util.List;
 
+/**
+ * Popup that allows new practitioners to be created.
+ */
 public class NewPractitionerUI extends JDialog implements ActionListener {
 
 	private static NewPractitionerUI newPractitionerUI;

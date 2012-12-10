@@ -23,8 +23,11 @@ import javax.swing.JTextField;
 import gui.Constants;
 import gui.TimeSlot;
 
+/**
+ * This is the Dialog pop that can be accessed from the the administrator menu.
+ * It allows the default times for each day to be changed.
+ */
 public class DefaultTimeslotsUI extends JDialog implements ActionListener {
-	
 	
 	private static DefaultTimeslotsUI defaultTimeslotsUI;
 	private JTextField startTimeField1;

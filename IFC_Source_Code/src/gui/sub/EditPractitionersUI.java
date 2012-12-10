@@ -30,6 +30,10 @@ import javax.swing.table.TableModel;
 
 import backend.DataTransferObjects.*;
 
+/**
+ * Displays a list practitioners and allows one to be selected for editing or deletion.
+ * Also allows new practitioners to be added.
+ */
 public class EditPractitionersUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPractitionersUI editPractitionersUI;
 	private ArrayList<PractitionerDto> prac = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();

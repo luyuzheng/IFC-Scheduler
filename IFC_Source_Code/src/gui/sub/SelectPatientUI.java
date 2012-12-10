@@ -34,6 +34,11 @@ import javax.swing.table.TableModel;
 import backend.DataTransferObjects.*;
 import java.util.List;
 
+/**
+ * Popup that appears when an empty appointment block is double clicked or when the button is clicked.
+ * It allows for a patient to be selected and appointed to that spot.
+ * It also allows for new patients to be created and scheduled.
+ */
 public class SelectPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static SelectPatientUI selectPatientUI;
 	private ArrayList<PatientDto> pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();

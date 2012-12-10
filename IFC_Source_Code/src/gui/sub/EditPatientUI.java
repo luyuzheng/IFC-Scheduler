@@ -25,6 +25,9 @@ import javax.swing.JTextField;
 
 import backend.DataTransferObjects.PatientDto;
 
+/**
+ * Popup for the editing of a single patient.
+ */
 public class EditPatientUI extends JDialog implements ActionListener {
 	private static EditPatientUI editPatientUI;
 	

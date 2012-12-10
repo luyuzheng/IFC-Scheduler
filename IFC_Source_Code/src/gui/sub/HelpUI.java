@@ -31,6 +31,9 @@ import javax.swing.table.TableModel;
 
 import gui.Constants;
 
+/**
+ * Popup that displays the full manual for the application.
+ */
 public class HelpUI extends JDialog implements KeyListener, ActionListener {
 
 	private String helpText =

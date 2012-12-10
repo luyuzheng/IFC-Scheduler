@@ -25,6 +25,10 @@ import javax.swing.border.EmptyBorder;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.WaitlistDto;
 
+/**
+ * Dialog popup that allows the date entered set for a waitlist entry to be changed in order
+ * to alter the priorities.
+ */
 public class ChangePriorityUI extends JDialog implements ActionListener {
 	private static ChangePriorityUI changePriorityUI;
 	
@@ -37,7 +41,7 @@ public class ChangePriorityUI extends JDialog implements ActionListener {
 	
 	private WaitlistDto entry;
 	
-	private static int change = -1; // -1 if canceled, other is the typeID
+	private static int change = -1;
 	
 	private ChangePriorityUI(String name) {
 		setModal(true);
@@ -103,6 +107,10 @@ public class ChangePriorityUI extends JDialog implements ActionListener {
 		
 	}
 	
+	/**
+	 * This causes this dialog box to pop up in the middle of the specified owner.
+	 * This method will return 0 if everything went smoothly or -1 if otherwise or canceled
+	 */
 	public static int ShowDialog(Component owner, WaitlistDto entry) {
 		changePriorityUI = new ChangePriorityUI("Change Priority");
 		changePriorityUI.entry = entry;
@@ -134,6 +142,7 @@ public class ChangePriorityUI extends JDialog implements ActionListener {
 			Timestamp time = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOldestWaitlistTime();
 			time = new Timestamp(time.getTime() - 1);
 			boolean success = DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlistTime(entry, time);
+			change = success ? 0 : -1;
 		}
 		changePriorityUI.setVisible(false);
     }

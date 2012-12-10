@@ -29,6 +29,9 @@ import javax.swing.table.AbstractTableModel;
 import backend.DataTransferObjects.*;
 import java.util.List;
 
+/**
+ * Popup that allows new patients to be created
+ */
 public class NewPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static NewPatientUI newPatientUI;
 	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();

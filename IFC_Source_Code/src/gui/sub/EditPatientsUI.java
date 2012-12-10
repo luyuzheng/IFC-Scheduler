@@ -30,6 +30,10 @@ import javax.swing.table.TableModel;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.PatientDto;
 
+/**
+ * Displays a list of all of the patients and allows a patient to be selected for editing or removal
+ * Also allows creation of new patients.
+ */
 public class EditPatientsUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPatientsUI editPatientsUI;
 	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();

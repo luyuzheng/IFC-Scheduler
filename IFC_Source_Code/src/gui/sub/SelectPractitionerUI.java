@@ -36,6 +36,12 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.TypeDto;
 
+/**
+ * Popup that appears when the schedule practitioner button is clicked.
+ * It allows for practitioners to be scheduled for a day.
+ * It also allows his hours to be specified.
+ * New practitioners can also be created from here.
+ */
 public class SelectPractitionerUI extends JDialog implements ActionListener,ListSelectionListener {
 
 	private static SelectPractitionerUI selectPractitionerUI;

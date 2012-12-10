@@ -35,6 +35,10 @@ import backend.DataTransferObjects.*;
 
 import gui.main.WaitListPane;
 
+/**
+ * Displays information on an entry in the waitlist.
+ * Also allows you to edit comments on that waitlist and schedule a patient directly from that waitlist.
+ */
 @SuppressWarnings("serial")
 public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private static DisplayWaitingPatientUI displayWaitingPatientUI;
