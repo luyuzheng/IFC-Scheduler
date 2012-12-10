@@ -38,17 +38,19 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	ArrayList<Graphics2D> pages;
 	/** The side panel containing the time information for the appointment panel. */
 	SidePanel sidePanel;
+        MainWindow main;
         
         
 
 	/** Constructs the Appointment Panel given the Day Panel object. */
-	public AppointmentPanel(DayPanel dp) {
+	public AppointmentPanel(DayPanel dp, MainWindow main) {
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		JPanel panel = new JPanel(new BorderLayout());
+                this.main = main;
 		sidePanel = new SidePanel(dp);
 		dp.setSidePanel(sidePanel);
 		panel.add(sidePanel, BorderLayout.WEST);
-		AppointmentSubpanel as = new AppointmentSubpanel(dp);
+		AppointmentSubpanel as = new AppointmentSubpanel(dp, main);
 
 		day = dp.getDay();
 		for (SchedulePractitionerDto r : DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day)){
@@ -63,7 +65,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		sidePanel = new SidePanel(dp);
 		dp.setSidePanel(sidePanel);
 		panel.add(sidePanel, BorderLayout.WEST);
-		AppointmentSubpanel as = new AppointmentSubpanel(dp);
+		AppointmentSubpanel as = new AppointmentSubpanel(dp, main);
 
 		day = dp.getDay();
 		for (SchedulePractitionerDto r : DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day)){

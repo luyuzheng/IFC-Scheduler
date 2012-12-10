@@ -24,10 +24,12 @@ public class AppointmentSubpanel extends JPanel {
 	EmptyDayPanel empty = new EmptyDayPanel();
 	DayPanel dp;
 	ArrayList<RoomPanel> rooms = new ArrayList<RoomPanel>();
-	
+	MainWindow main;
+        
 	/** Constructs an appointment subpanel given a day panel object. */
-	public AppointmentSubpanel(DayPanel dp) {
+	public AppointmentSubpanel(DayPanel dp, MainWindow main) {
 		this.dp = dp;
+                this.main = main;
 		GridLayout gl = new GridLayout(1,0);
 		gl.setHgap(0);
 		gl.setVgap(0);
@@ -42,7 +44,7 @@ public class AppointmentSubpanel extends JPanel {
 	/** Adds a practitioner to the day's schedule. */
 	public void addRoom(SchedulePractitionerDto room) {
 		if (rooms.size() == 0) remove(empty);
-		RoomPanel r = new RoomPanel(room, dp);
+		RoomPanel r = new RoomPanel(room, dp, main);
 		rooms.add(r);
 		add(r);
 		revalidate();
