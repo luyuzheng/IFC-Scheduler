@@ -77,14 +77,13 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		typeSelector.setSelectedIndex(0);
 		typeSelector.setActionCommand("typeSelector");
 		typeSelector.addActionListener(this);
-		//typeSelector.addActionListener(new BoxListener()); // PROBABLY NEED TO ADD THIS BACK IN LATER!!!
 		JLabel typeLabel = new JLabel("Select Type of Service: ");
 
 		// Create drop down box of practitioners
 		pracs = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 		pracNames = new ArrayList<String>();
 		pracSelector = new JComboBox();
-		pracSelector.addItem("All Practitioners");
+		pracSelector.addItem("Any Practitioner");
 		for (PractitionerDto p : pracs) {
 			if (p.getTypeID() == types.get(0).getTypeID() || types.get(0).getTypeID() == -1) {
 				pracSelector.addItem(p.getFirst() + " " + p.getLast());
@@ -178,7 +177,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		if (e.getActionCommand() == "typeSelector") {
 			TypeDto type = (TypeDto) typeSelector.getSelectedItem();
 			pracSelector.removeAllItems();
-			pracSelector.addItem("All Practitioners");
+			pracSelector.addItem("Any Practitioner");
 			for (PractitionerDto p : pracs) {
 				if (p.getTypeID() == type.getTypeID() || type.getTypeID() == -1) {
 					pracSelector.addItem(p.getFirst() + " " + p.getLast());
@@ -210,7 +209,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 			String selectedPrac = (String) pracSelector.getSelectedItem();
 			List<AppointmentDto> filteredByPrac = new ArrayList<AppointmentDto>();
 			for (AppointmentDto appt : results) {
-				if (!selectedPrac.equals("All Practitioners") && !(appt.getPractName().equals(selectedPrac))) {
+				if (!selectedPrac.equals("Any Practitioner") && !(appt.getPractName().equals(selectedPrac))) {
 					continue;
 				}
 				filteredByPrac.add(appt);
