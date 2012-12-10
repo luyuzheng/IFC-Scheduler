@@ -87,7 +87,7 @@ public class MainWindow extends JFrame {
 		add(sidePane,BorderLayout.WEST);
 		
 		//Adds the appointment panel to main window
-		ap = new AppointmentPanel(dp);
+                ap = new AppointmentPanel(dp);
 		add(ap, BorderLayout.CENTER);
 	}
 	
@@ -175,7 +175,7 @@ public class MainWindow extends JFrame {
 	 *  Splits the screen and displays the appointment confirmation pane when the "Appointment Confirmation" button is pressed.
 	 */
 	private void showApptConfirmation() {
-		acp = new AppointmentConfirmationPane(this, dp);
+		acp = new AppointmentConfirmationPane(this);
 		if (inMonthView) {
 			remove(mp);
 			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, mp, acp);
@@ -468,5 +468,7 @@ public class MainWindow extends JFrame {
 		return dp;
 	}
 	
-	
+	public void refreshAppointments(){
+            ap.refresh(dp);
+        }
 }

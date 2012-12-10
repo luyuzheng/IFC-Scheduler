@@ -1,5 +1,6 @@
 package gui.main.listeners;
 
+import gui.main.MainWindow;
 import gui.main.SearchPane;
 import gui.main.SearchPane.AppointmentResultsTableModel;
 import gui.main.SearchPane.PatientResultsTableModel;
@@ -25,6 +26,7 @@ import backend.DataTransferObjects.PatientDto;
 public class SearchListener extends MouseAdapter {
 	JTable owner;
 	Component parent;
+	MainWindow mw;
 	
 	/**
 	 * Constructor.
@@ -32,9 +34,10 @@ public class SearchListener extends MouseAdapter {
 	 * @param owner - component that owns this listener (the patient or appointment results table of the SearchPane)
 	 * @param parent - the parent of this listener (SearchPane)
 	 */
-	public SearchListener(JTable owner, Component parent) {
+	public SearchListener(JTable owner, Component parent, MainWindow mw) {
 		this.owner = owner;
 		this.parent = parent;
+		this.mw = mw;
 	}
 	
 	/**
@@ -47,7 +50,7 @@ public class SearchListener extends MouseAdapter {
 				// The patient search results table was clicked
 				if (owner.getModel() instanceof PatientResultsTableModel) {
 					PatientDto pat = ((PatientResultsTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
-					DisplayPatientSearchUI.ShowDialog(parent.getParent(), pat);
+					DisplayPatientSearchUI.ShowDialog(parent.getParent(), pat, mw);
 					SearchPane sp = (SearchPane) parent;
 					sp.resetModel();
 					

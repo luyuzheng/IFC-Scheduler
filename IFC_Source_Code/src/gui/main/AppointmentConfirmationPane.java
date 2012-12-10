@@ -2,6 +2,7 @@ package gui.main;
 
 import backend.DataService.DataServiceImpl;
 import gui.Constants;
+import gui.DateTimeUtils;
 import gui.main.listeners.AppointmentConfirmationListener;
 import gui.sub.DisplayWaitingPatientUI.ApptTableModel;
 
@@ -43,8 +44,6 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 	private Component owner;
 	/** The table containing the patients for the day. */
 	private JTable table;
-
-	private DayPanel dp;
 	
 	public JButton confirmButton = new JButton("Confirm Selected Appointment");
 	
@@ -55,9 +54,9 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 	 * @param owner - the component that owns this pane
 	 * @param dp - an instance of a DayPanel
 	 */
-	public AppointmentConfirmationPane(Component owner, DayPanel dayPanel) {
+	public AppointmentConfirmationPane(Component owner) {
 		this.owner = owner;
-		this.dp = dayPanel;
+
 		setMinimumSize(new Dimension(0,0));
 		setBackground(Color.WHITE);
 		setLayout(new BorderLayout());
@@ -69,7 +68,7 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		
 		apptConfirmationPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		
-		String date= shortDate(dp.getDay().getDate());
+		String date= DateTimeUtils.prettyPrintMonthDay((((MainWindow)owner).getDayPanel().getDay().getDate()));
 		
 		JLabel apptConfirmationLabel = new JLabel("Appointments to Confirm for " + date + ":");
 		apptConfirmationLabel.setFont(Constants.DIALOG);
@@ -90,7 +89,8 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 		JPanel tablePanel = new JPanel(new BorderLayout());
 		// list of people to confirm
 		AppointmentConfirmationTableModel model = new AppointmentConfirmationTableModel(
-				(ArrayList<AppointmentDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatientsForDay(dp.getDay().getDate()));
+				(ArrayList<AppointmentDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatientsForDay(
+						((MainWindow)owner).getDayPanel().getDay().getDate()));
 		table = new JTable(model);
 		table.setDragEnabled(true);
 		table.setFont(Constants.DIALOG);
@@ -119,7 +119,8 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 	 */
 	public void resetModel() {
 		table.setModel(new AppointmentConfirmationTableModel(
-				(ArrayList<AppointmentDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatientsForDay(dp.getDay().getDate())));
+				(ArrayList<AppointmentDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatientsForDay(
+						((MainWindow)owner).getDayPanel().getDay().getDate())));
 	}
 	
 	/**

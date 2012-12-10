@@ -1,6 +1,7 @@
 package gui.main;
 
 import gui.Constants;
+import gui.DateTimeUtils;
 import gui.main.listeners.SearchListener;
 import gui.sub.SearchForAppointmentUI;
 import gui.sub.SearchForPatientUI;
@@ -85,7 +86,7 @@ public class SearchPane extends JPanel {
 		JPanel resultsTablePanel = new JPanel(new BorderLayout());
 		AbstractTableModel model;
 		if (clicked == SearchType.SEARCHBYPATIENT) {
-			model = new PatientResultsTableModel(new ArrayList<PatientDto>()); // ACTUALLY NEED TO PASS IN A LIST OF PEOPLE HERE!!!
+			model = new PatientResultsTableModel(new ArrayList<PatientDto>());
 		} else if (clicked == SearchType.SEARCHBYAPPT) {
 			model = new AppointmentResultsTableModel(new ArrayList<AppointmentDto>());
 		} else { // Nothing clicked yet
@@ -94,12 +95,13 @@ public class SearchPane extends JPanel {
 		resultsTable = new JTable(model);
 		resultsTable.setDragEnabled(true);
 		resultsTable.setFont(Constants.DIALOG);
-		resultsTable.addMouseListener(new SearchListener(resultsTable, this));
+		resultsTable.addMouseListener(new SearchListener(resultsTable, this, (MainWindow)owner));
 		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		resultsTable.setAutoCreateRowSorter(true);
 		resultsTable.getTableHeader().setReorderingAllowed(false);
 		resultsTable.getTableHeader().setFont(Constants.DIALOG);
 		resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		resultsTable.getColumnModel().getColumn(0).setMinWidth(100);
 		resultsTablePanel.add(resultsTable.getTableHeader(), BorderLayout.PAGE_START);
 		resultsTablePanel.add(resultsTable, BorderLayout.CENTER);
     	JScrollPane scrollPane = new JScrollPane(resultsTablePanel);
@@ -119,6 +121,7 @@ public class SearchPane extends JPanel {
 					((PatientResultsTableModel) resultsTable.getModel()).setPatients(results);
 					((PatientResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
 				}
+				resultsTable.getColumnModel().getColumn(0).setMinWidth(100);
 			}
 		}
 	};
@@ -137,6 +140,7 @@ public class SearchPane extends JPanel {
 					((AppointmentResultsTableModel) resultsTable.getModel()).setAppointments(results);
 					((AppointmentResultsTableModel) resultsTable.getModel()).fireTableDataChanged();
 				}
+				resultsTable.getColumnModel().getColumn(0).setMinWidth(100);
 			}
 		}
 	};
@@ -347,7 +351,7 @@ public class SearchPane extends JPanel {
 		public Object getValueAt(int row, int col) {
 			AppointmentDto a = appointments.get(row);
 			if (col == 0) {
-				return a.getApptDate();
+				return DateTimeUtils.prettyPrintMonthDay(a.getApptDate());
 			} else if (col == 1){
 				return a.prettyPrintStart();
 			} else if (col == 2) {

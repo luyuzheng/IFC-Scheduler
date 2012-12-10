@@ -4,6 +4,8 @@
 
 package gui.main;
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -49,7 +51,7 @@ public class TinyDayBlock extends JPanel implements FocusListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Tahoma",Font.PLAIN,11));
+		textArea.setFont(Constants.PARAGRAPH_TINY);
 		textArea.setOpaque(false);
 		textArea.setHighlighter(null);
 		

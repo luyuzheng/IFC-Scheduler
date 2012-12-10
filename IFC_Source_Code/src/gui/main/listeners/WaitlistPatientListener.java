@@ -22,16 +22,20 @@ import javax.swing.event.ListSelectionListener;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.WaitlistDto;
 
+import gui.main.WaitListPane;
+
 //import data.managers.WaitlistManager;
 
 public class WaitlistPatientListener extends MouseAdapter implements ListSelectionListener {
 	
 	JTable owner;
 	Component parent;
+        WaitListPane waitlist;
 	
-	public WaitlistPatientListener(JTable owner, Component parent) {
+	public WaitlistPatientListener(JTable owner, Component parent, WaitListPane waitlist) {
 		this.owner = owner;
 		this.parent = parent;
+                this.waitlist = waitlist;
 	}
 	
 	/** Displays a pop-up to add or remove a patient to the waitlist. */
@@ -41,7 +45,7 @@ public class WaitlistPatientListener extends MouseAdapter implements ListSelecti
 			if (owner.getSelectedRow() >= 0) {
 
 				WaitlistDto wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
-				String newComment = DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp);
+				String newComment = DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp, waitlist);
 				wp.setComments(newComment);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
 				WaitListPane wlp = (WaitListPane) parent;

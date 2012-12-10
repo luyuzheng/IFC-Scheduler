@@ -217,7 +217,7 @@ public class HelpUI extends JDialog implements KeyListener, ActionListener {
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
 		textArea.setEditable(false);
-		textArea.setFont(new Font("Tahoma",Font.PLAIN,11));
+		textArea.setFont(Constants.PARAGRAPH_TINY);
 		textArea.setOpaque(true);
 		textArea.setHighlighter(null);
 		add(textArea, BorderLayout.CENTER);

@@ -5,6 +5,8 @@
 package gui.main;
 
 
+import gui.Constants;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +35,7 @@ public class TinyMonthHeadingPanel extends JPanel {
 		setLayout(new BorderLayout());
 		JPanel monthHeading = new JPanel(new BorderLayout());
 		JLabel label = new JLabel(month + " " + year, JLabel.CENTER);
-		label.setFont(new Font("Tahoma",Font.BOLD,16));
+		label.setFont(Constants.HEADER);
 		monthHeading.add(label, BorderLayout.CENTER);
 /*		
 		if (current) {
