@@ -28,6 +28,8 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
+import gui.main.MainWindow;
+
 public class EditAppointmentUI extends JDialog implements ActionListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
@@ -40,9 +42,11 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	private JTextArea noteArea;
 	
 	private static AppointmentDto appointment;
+        private MainWindow window;
 	
-	private EditAppointmentUI(String name, AppointmentDto a) {
+	private EditAppointmentUI(String name, AppointmentDto a, MainWindow window) {
 		appointment = a;
+                this.window = window;
 		setModal(true);
 		setTitle(name);
 		
@@ -142,8 +146,8 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static AppointmentDto ShowDialog(Component owner, AppointmentDto a) {
-		editAppointmentUI = new EditAppointmentUI("Appointment Details", a);
+	public static AppointmentDto ShowDialog(Component owner, AppointmentDto a, MainWindow w) {
+		editAppointmentUI = new EditAppointmentUI("Appointment Details", a, w);
 		editAppointmentUI.pack();
 		editAppointmentUI.setLocationRelativeTo(owner);
 		editAppointmentUI.setVisible(true);
@@ -203,6 +207,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 			PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
 			PatientDto editedPatient = EditPatientUI.ShowDialog(this, patient);
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(editedPatient.getPatID(), appointment);
+                        window.refreshConfirmationPane();
 			return;
 		} else if (e.getActionCommand().equals("cancel")) {
 			editAppointmentUI.setVisible(false);

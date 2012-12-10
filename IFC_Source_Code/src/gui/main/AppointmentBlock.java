@@ -27,6 +27,7 @@ import backend.DataTransferObjects.PatientDto;
 
 import gui.Constants;
 
+import gui.main.MainWindow;
 
 @SuppressWarnings("serial")
 public class AppointmentBlock extends JPanel implements FocusListener {
@@ -35,14 +36,16 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	AppointmentDto appointment;
 	/** The text of the appointment block. */
 	JTextArea textArea;
+        MainWindow main;
 	/** Patient Listener to schedule and cancel appointments. */
-	NewPatientListener npl = new NewPatientListener(this, this.getParent());
+	NewPatientListener npl;
 	/** The Day Panel that contains the appointment block. */
 	DayPanel dp;
 
 	/** Constructs an appointment block object given an appointment and pointer to the Day Panel. */
-	public AppointmentBlock(AppointmentDto appointment, DayPanel dp) {
-
+	public AppointmentBlock(AppointmentDto appointment, DayPanel dp, MainWindow main) {
+                this.main = main;
+                npl = new NewPatientListener(this, this.getParent(), main);
 		this.dp = dp;
 		this.appointment = appointment;
 		textArea = new JTextArea();
@@ -110,6 +113,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		appointment.setPatientID(patId);
         DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patId, appointment);
 		setText();
+                main.refreshConfirmationPane();
 	}
 
 	/**

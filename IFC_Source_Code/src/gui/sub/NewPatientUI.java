@@ -189,6 +189,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
                         
 			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(firstName, lastName, num, noteText);			
 			
+                        
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (patTable.getSelectedRow() > -1) {
 				PatTableModel model = (PatTableModel)patTable.getModel();

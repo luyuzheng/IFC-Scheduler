@@ -21,17 +21,21 @@ import javax.swing.border.EmptyBorder;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 
+import gui.main.MainWindow;
+
 //import gui.Constants;
 
 @SuppressWarnings("serial")
 public class RoomSubpanel extends JPanel{
 	private SchedulePractitionerDto room;
 	private DayPanel dp;
+        private MainWindow main;
 	
 	/** Constructs a room subpanel given the practitioner to be schedule for a given day. */
-	public RoomSubpanel(SchedulePractitionerDto room, DayPanel dp) {
+	public RoomSubpanel(SchedulePractitionerDto room, DayPanel dp, MainWindow main) {
 		this.dp = dp;
 		this.room = room;
+                this.main = main;
 		
                 setAppointments();
 		setBorder(BorderFactory.createMatteBorder(0, 1, 1, 0, Color.BLACK));
@@ -50,7 +54,7 @@ public class RoomSubpanel extends JPanel{
 			add(new EmptyBlock(room.getStart() - dayStart));
 		}
 		for (AppointmentDto a : room.getAppointments()) {
-			AppointmentBlock app = new AppointmentBlock(a,dp);
+			AppointmentBlock app = new AppointmentBlock(a,dp, main);
 			add(app);
 		}
 		/*if (room.getLeftover() > 0) {

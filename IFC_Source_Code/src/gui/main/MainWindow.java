@@ -87,7 +87,7 @@ public class MainWindow extends JFrame {
 		add(sidePane,BorderLayout.WEST);
 		
 		//Adds the appointment panel to main window
-                ap = new AppointmentPanel(dp);
+                ap = new AppointmentPanel(dp, this);
 		add(ap, BorderLayout.CENTER);
 	}
 	
@@ -285,7 +285,7 @@ public class MainWindow extends JFrame {
 	 */
 	public void resetAppointmentPanel() {
 		remove(ap);
-		ap = new AppointmentPanel(dp);
+		ap = new AppointmentPanel(dp, this);
 		add(ap, BorderLayout.CENTER);
 		repaint();
 		validate();
@@ -351,7 +351,7 @@ public class MainWindow extends JFrame {
 	public void switchView() {	
 		if (inMonthView) {
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
-				ap = new AppointmentPanel(dp);
+				ap = new AppointmentPanel(dp, this);
 				pane.setLeftComponent(ap);
 				pane.repaint();
 				pane.validate();
@@ -411,7 +411,7 @@ public class MainWindow extends JFrame {
 				sidePanel.repaint();
 				sidePanel.validate();
 				dp.validateButtons();
-				ap = new AppointmentPanel(dp);
+				ap = new AppointmentPanel(dp, this);
 				pane.setLeftComponent(ap);
 			} else {
 				remove(ap);
@@ -421,8 +421,6 @@ public class MainWindow extends JFrame {
 		}
 				
 		this.refreshConfirmationPane();
-                repaint();
-		validate();
                 dp.isMonthViewValidate();
 	}
 	
@@ -469,11 +467,11 @@ public class MainWindow extends JFrame {
         }
         
         public void refreshConfirmationPane(){
-            System.out.println("called");
             if (showingApptConfirmation){
-                System.out.println("here");
                 this.hideApptConfirmation();
                 this.showApptConfirmation();
             }
+            repaint();
+            validate();
         }
 }
