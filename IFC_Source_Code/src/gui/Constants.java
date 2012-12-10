@@ -5,9 +5,6 @@
 package gui;
 
 import java.awt.Font;
-//import java.io.File;
-
-
 
 public class Constants {
 	/** The number of pixels that each minute corresponds to in the calendar area */
@@ -29,15 +26,8 @@ public class Constants {
 	/** The width of a day block in Month Panel. */
 	public static final int MONTH_BLOCK_WIDTH = 150;
 	/** The height of a day block in Month Panel. */
-	public static final int MONTH_BLOCK_HEIGHT = 100;
+	public static final int MONTH_BLOCK_HEIGHT = 150;
 	
-	
-	//public static final String PRAC_FILE_LOCATION = "data" + File.separator + "prac.txt";
-	//public static final String PAT_FILE_LOCATION = "data" + File.separator + "pat.txt";
-	//public static final String DATA_FILE_LOCATION = "data" + File.separator + "data_";
-	//public static final String TYPE_FILE_LOCATION = "data" + File.separator + "type.txt";
-	//public static final String WAITLIST_FILE_LOCATION = "data" + File.separator + "waitlist.txt";
-	//public static final String DEFAULT_FILE_LOCATION = "data" + File.separator + "defaults.txt";
 	
 	/** Default font for header styles */
 	public static final Font HEADER = new Font("Arial", Font.BOLD, 16);
@@ -45,10 +35,16 @@ public class Constants {
 	public static final Font PARAGRAPH = new Font("Arial", Font.PLAIN, 14);
 	/** Default font for bold paragraph styles */
 	public static final Font PARAGRAPH_BOLD = new Font("Arial", Font.BOLD, 14);
+	/** Default font for italic paragraph styles */
+	public static final Font PARAGRAPH_ITALICS = new Font("Arial", Font.ITALIC, 14);
 	/** Default font for dialog buttons */
 	public static final Font DIALOG = new Font("Arial", Font.PLAIN, 16);
 	/** Default font for printable text **/
 	public static final Font PRINTABLE = new Font("Arial", Font.PLAIN, 12);
+	/** Default font for printable text on month view **/
+	public static final Font PRINTABLE_SMALL = new Font("Monospaced", Font.PLAIN, 9);
+	/** Default font for text in Day Block on month view **/
+	public static final Font PARAGRAPH_TINY = new Font("Tahoma",Font.PLAIN,11);
 	
 	/** The horizontal print margin, in pixels */
 	public static final int PRINT_MARGINX = 25;

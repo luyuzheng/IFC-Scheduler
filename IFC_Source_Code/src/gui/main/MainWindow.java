@@ -392,7 +392,8 @@ public class MainWindow extends JFrame {
 	public void setDate(Date date) {
 
 		day = DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(date);
-		
+
+		sidePanel.remove(dp);
 		dp = new DayPanel(day, this);
 		
 		if (inMonthView) {
@@ -411,11 +412,10 @@ public class MainWindow extends JFrame {
 		} else {			
 			
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
-				//sidePanel.remove(dp);
-				//sidePanel.add(dp, BorderLayout.CENTER);
-				//sidePanel.repaint();
-				//sidePanel.validate();
-				dp.showingWaitList();
+				sidePanel.add(dp, BorderLayout.CENTER);
+				sidePanel.repaint();
+				sidePanel.validate();
+				dp.validateButtons();
 				ap = new AppointmentPanel(dp);
 				pane.setLeftComponent(ap);
 				pane.repaint();

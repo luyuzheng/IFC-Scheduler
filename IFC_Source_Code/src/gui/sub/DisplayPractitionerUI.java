@@ -23,7 +23,6 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private static DisplayPractitionerUI displayPractitionerUI;
 	
 	private JButton okButton = new JButton("OK");
-	//private JButton changeButton = new JButton("Change Practitioner");
 	private JButton clearButton = new JButton("Clear Practitioner");
 	private JTextArea textArea;
 	
@@ -72,7 +71,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		add(textArea, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
-		setPreferredSize(new Dimension(350, 150));
+		setPreferredSize(new Dimension(350, 250));
 		setResizable(false);
 		
 	}
@@ -86,15 +85,7 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if (e.getActionCommand().equals("change")) {
-			PractitionerDto p = SelectPractitionerUI.ShowDialog(this);
-			JLabel msg = new JLabel("Changing practitioners will clear all the appointments for this practitioner. Continue anyways?");
-			msg.setFont(Constants.PARAGRAPH);
-			if (JOptionPane.showConfirmDialog(this, msg, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) {
-				return;
-			}
-			practitioner = p;
-		} else if (e.getActionCommand().equals("clear")) {
+		if (e.getActionCommand().equals("clear")) {
 			practitioner = null;
 		}
 		displayPractitionerUI.setVisible(false);

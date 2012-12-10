@@ -243,7 +243,10 @@ public interface DataService {
     /** Removes a patient from the waitlist. */
     public boolean removePatientFromWaitlist(WaitlistDto patient);
     
-    /** Finds all appointments of type with typeid */
+    /**
+     * Finds all appointments of type with typeid.
+     * If typeid = -1, then it will search all types.
+     */
     public ArrayList<AppointmentDto> searchForAppointments(int typeid);
     
     /** Updates the note field in the database as modified in appointment*/

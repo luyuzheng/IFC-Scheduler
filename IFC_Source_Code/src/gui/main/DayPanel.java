@@ -15,6 +15,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
+import javax.security.auth.callback.ConfirmationCallback;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -180,17 +181,6 @@ public class DayPanel extends JPanel {
 		}
 	}
 	
-	
-	/** 
-	 * Checks whether currently in month view, and determines the correct text to display for switching views.  
-	 * @author Aakash
-	 * */
-	public void isMonthViewValidate(){
-		if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Day View</html>");
-		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
-	}
-
-	
 	/** Removes a scheduled practitioner from the day upon clicking the "remove practitioner" button. */
 	private final AbstractAction removePracAction = new AbstractAction("<html>Remove Practitioner<br>From Current Day</html>") {
 		public void actionPerformed(ActionEvent e) {
@@ -236,17 +226,18 @@ public class DayPanel extends JPanel {
 	/** Shows the dialog for scheduling a practitioner on a day. */
 	private final AbstractAction addPracAction = new AbstractAction("<html>Schedule Practitioner</html>") {
 		public void actionPerformed(ActionEvent e) {
-			PractitionerDto p = SelectPractitionerUI.ShowDialog(mw);
+			SelectPractitionerUI selectPractitionerUI =
+				SelectPractitionerUI.ShowDialog(mw, day.getStart(), day.getEnd());
+			PractitionerDto p = selectPractitionerUI.getPractitioner();
 			if (p==null) return;
 			
-			day= mw.getDayPanel().getDay();
+			//day= mw.getDayPanel().getDay();
 			
 			SchedulePractitionerDto room = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitionerToDay(
-					
-					p, day, day.getStart(), day.getEnd());
-                        if (room != null){
-                            as.addRoom(room);
-                        }
+					p, day, selectPractitionerUI.startTime, selectPractitionerUI.endTime);
+			if (room != null){
+				as.addRoom(room);
+			}
 		}
 	};
 	
@@ -257,7 +248,6 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
-	// TODO: Add search button functionality
 	/** Determines the correct text to display when the search split pane is active. */
 	private final AbstractAction searchAction = new AbstractAction("<html>Search</html>") {
 		public void actionPerformed(ActionEvent e) {
@@ -272,7 +262,6 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
-	// TODO: Add no shows functionality
 	/** Determines the correct text to display when the appointment confirmation split pane is active. */
 	private final AbstractAction apptConfirmationAction = new AbstractAction("<html>Appointment <br> Confirmation</html>") {
 		public void actionPerformed(ActionEvent e) {
@@ -302,9 +291,38 @@ public class DayPanel extends JPanel {
 		}
 	};
 	
-	/** Changes the text to display if the waitlist pane is currently active. */
-	public void showingWaitList() {
-		if (mw.showingWaitList()) waitListButton.setText("<html>Hide Wait List</html>");
+	/** Checks and sets the text for the confirmation button. */
+	public void showingConfirmationValidate() {
+		if (mw.showingApptConfirmation()) {
+			apptConfirmationButton.setText("<html>Hide Appointment <br> Confirmation</html>");
+		}
+		else waitListButton.setText("<html>Appointment <br> Confirmation</html>");
 	}
 	
+	/** Checks and sets the text for the wait list button. */
+	public void showingWaitListValidate() {
+		if (mw.showingWaitList()) waitListButton.setText("<html>Hide Wait List</html>");
+		else waitListButton.setText("<html>Wait List</html>");
+	}
+	
+	/** Checks and sets the text for the search button. */
+	public void showingSearchValidate() {
+		if (mw.showingSearch()) searchButton.setText("<html>Hide Search</html>");
+		else searchButton.setText("<html>Search</html>");
+	}
+	
+	/** Checks and sets the text for the three side pane buttons (see above). */
+	public void validateButtons() {
+		showingConfirmationValidate();
+		showingWaitListValidate();
+		showingSearchValidate();
+	}
+	
+	/** 
+	 * Checks whether currently in month view, and determines the correct text to display for switching views.  
+	 */
+	public void isMonthViewValidate(){
+		if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Day View</html>");
+		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
+	}
 }

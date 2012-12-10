@@ -12,6 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -46,7 +47,7 @@ public class HeadingPanel extends JPanel implements FocusListener {
 		text.setLineWrap(true);
 		text.setWrapStyleWord(true);
 		text.setEditable(false);
-		text.setFont(new Font("Tahoma",Font.PLAIN,16));
+		text.setFont(Constants.DIALOG);
 		text.setOpaque(false);
 		text.setHighlighter(null);
 		
@@ -62,11 +63,13 @@ public class HeadingPanel extends JPanel implements FocusListener {
 	
 	/** Sets the text for the heading panel. */
 	public void setText() {
-		if (room.getPractitioner() == null) 
+		if (room.getPractitioner() == null) { 
 			text.setText("No Practitioner Selected. \nDouble-click below to add Practitioner.");
-		else 
-			text.setText(room.getPractitioner().getFirst() + " "+ room.getPractitioner().getLast() + "\n" + room.getPractitioner().getTypeName() + "\n" + room.getPractitioner().getNotes());
-			
+		} else { 
+			text.setText(room.getPractitioner().getFirst() + " "+ room.getPractitioner().getLast() + 
+					"\n" + room.getPractitioner().getTypeName() + "\n" + room.getPractitioner().getShortNote(30));			
+			text.setToolTipText("Double-click to see more information");
+		}
 	}
 
 	/**

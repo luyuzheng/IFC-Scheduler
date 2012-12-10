@@ -95,4 +95,17 @@ public class PractitionerDto extends AbstractDto {
     public boolean equals(Object other) {
    		return ((PractitionerDto) other).getPractID() == (this.getPractID());
     }
+    
+    public String getShortNote(int length){
+        if (length <= 0){
+            return "";
+        }
+        else if (getNotes().length() <= length){
+            return getNotes();
+        }
+        else {
+            return getNotes().substring(0, length) + "...";
+        }
+    }
+    
 }

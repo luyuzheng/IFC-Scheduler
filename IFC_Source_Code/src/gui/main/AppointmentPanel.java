@@ -55,38 +55,6 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		panel.add(as, BorderLayout.CENTER);
 		setViewportView(panel);
 	}
-
-	/** 
-	 * Prints a multi-line string to the page, and returns the next line number 
-	 * @param s -- multi-line string to be printed
-	 * @param g -- graphics object to which the string must be printed
-	 * @param x -- horizontal margin
-	 * @param y -- vertical margin
-	 * @param j -- line number
-	 * @param h -- line height
-	 *  **/
-	private int printMultiLine(String s, Graphics g, int x, int y, int j, int h) {
-		String line="";
-		String leftover= s;
-		
-		while (leftover.contains("\n")) {
-			line= leftover.substring(0, leftover.indexOf("\n"));		
-			g.drawString(line, x, y + j*h);
-		
-			j++;
-			
-			if (leftover.indexOf("\n") != -1) {
-				leftover= leftover.substring(leftover.indexOf("\n"));
-			}
-		}
-		
-		if (!leftover.isEmpty()) {
-			g.drawString(leftover, x, y + j*h);
-			j++;
-		}
-		
-		return j;
-	}
 	
 	/** Truncates a string if longer than a specified length, to support readability. */
 	private String[] formatString(String s, int lineLength, int numLines) {
@@ -188,7 +156,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		int leftover = 60 - (currTime % 60);
 		if (leftover > 0) {
 			Rectangle2D.Double topTime = new Rectangle2D.Double ();
-			topTime.setRect (startx, starty, timesWidth, leftover * Constants.PIXELS_PER_MINUTE);
+			topTime.setRect(startx, starty, timesWidth, leftover * Constants.PIXELS_PER_MINUTE);
 			g2d.draw(topTime);
 			String timeSt = ((Integer) ((currTime / 60) % 12)).toString();
 			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
@@ -201,7 +169,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		// Print hours down the side (e.g. "4pm", "5pm", etc.) 
 		while (currTime + 60 < endTime) {
 			Rectangle2D.Double timeBlock = new Rectangle2D.Double ();
-			timeBlock.setRect (startx, starty, timesWidth, 60 * Constants.PIXELS_PER_MINUTE);
+			timeBlock.setRect(startx, starty, timesWidth, 60 * Constants.PIXELS_PER_MINUTE);
 			g2d.draw(timeBlock);
 			String timeSt = ((Integer) ((currTime / 60) % 12)).toString();
 			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
