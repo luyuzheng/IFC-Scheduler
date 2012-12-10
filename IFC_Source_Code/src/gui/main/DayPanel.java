@@ -216,7 +216,7 @@ public class DayPanel extends JPanel {
 			AppointmentBlock onThisAppt = ab; 
 			
 			// Schedule the patient
-			PatientDto patient = SelectPatientUI.ShowDialog(ab.getParent());
+			PatientDto patient = SelectPatientUI.ShowDialog(mw);
 			if (patient != null) {
 				onThisAppt.setPatient(patient.getPatID());
 			}
