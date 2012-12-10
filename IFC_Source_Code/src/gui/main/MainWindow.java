@@ -175,7 +175,7 @@ public class MainWindow extends JFrame {
 	 *  Splits the screen and displays the appointment confirmation pane when the "Appointment Confirmation" button is pressed.
 	 */
 	private void showApptConfirmation() {
-		acp = new AppointmentConfirmationPane(this, dp);
+		acp = new AppointmentConfirmationPane(this);
 		if (inMonthView) {
 			remove(mp);
 			pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, mp, acp);
