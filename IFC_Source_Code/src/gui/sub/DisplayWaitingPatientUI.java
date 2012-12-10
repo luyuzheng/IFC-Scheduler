@@ -212,7 +212,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 				
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patient.getPatID(), appt);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(patient, type);
-                                pane.refreshAppointments();
+                                pane.refreshAppointments(appt.getApptDate());
 			}
 			
 			

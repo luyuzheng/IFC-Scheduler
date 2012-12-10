@@ -468,7 +468,9 @@ public class MainWindow extends JFrame {
 		return dp;
 	}
 	
-	public void refreshAppointments(){
-            ap.refresh(dp);
+	public void refreshAppointments(Date date){
+            if (day.getDate().toString().equals(date.toString())){
+                ap.refresh(dp);
+            }
         }
 }

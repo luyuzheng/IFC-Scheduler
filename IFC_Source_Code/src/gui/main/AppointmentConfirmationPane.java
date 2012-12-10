@@ -230,4 +230,8 @@ public class AppointmentConfirmationPane extends JPanel implements ActionListene
 			}
 		}
 	}
+        
+        public void refreshAppointments(){
+            //((MainWindow) owner).refreshAppointments();
+        }
 }
