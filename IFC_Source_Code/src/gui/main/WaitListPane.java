@@ -5,6 +5,7 @@ import gui.Constants;
 import gui.main.listeners.AppointmentConfirmationListener;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.AddToWaitlistUI;
+import gui.sub.ChangePriorityUI;
 import gui.sub.DisplayWaitingPatientUI;
 
 import java.awt.BorderLayout;
@@ -48,6 +49,7 @@ public class WaitListPane extends JPanel {
 	private JButton addPatientButton = new JButton("Add Patient to List");
 	public JButton schedulePatientButton = new JButton("Schedule Patient from List");
 	public JButton removePatientButton = new JButton("Remove Patient from List");
+	public JButton changePriorityButton = new JButton("Change Priority");
 	private ArrayList<TypeDto> types;
 	
 	/**
@@ -92,18 +94,22 @@ public class WaitListPane extends JPanel {
     	addPatientButton.setAction(addPatientAction);
     	schedulePatientButton.setAction(schedulePatientAction);
     	removePatientButton.setAction(removePatientAction);
+    	changePriorityButton.setAction(changePriorityAction);
     	schedulePatientButton.setEnabled(false);
     	removePatientButton.setEnabled(false);
+    	changePriorityButton.setEnabled(false);
     	JLabel actionLabel = new JLabel(" ");
     	actionLabel.setBorder(new EmptyBorder(10, 10, 10, 10));
     	actionLabel.setFont(Constants.DIALOG);
     	addPatientButton.setFont(Constants.DIALOG);
     	schedulePatientButton.setFont(Constants.DIALOG);
     	removePatientButton.setFont(Constants.DIALOG);
+    	changePriorityButton.setFont(Constants.DIALOG);
     	buttonPanel.add(actionLabel);
     	buttonPanel.add(addPatientButton);
     	buttonPanel.add(schedulePatientButton);
     	buttonPanel.add(removePatientButton);
+    	buttonPanel.add(changePriorityButton);
 		
     	JPanel topPanel = new JPanel(new BorderLayout());
     	topPanel.add(typeSelectionPanel, BorderLayout.NORTH);
@@ -179,6 +185,19 @@ public class WaitListPane extends JPanel {
 			//specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
                         /*if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false)); TODO: filter
 			else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true)); */
+		}
+	};
+	
+	/**
+	 * This allows the user to change the priority of a waitlist entry by changing the entry's timestamp.
+	 */
+	private final AbstractAction changePriorityAction = new AbstractAction("Change Priority") {
+		public void actionPerformed(ActionEvent e) {
+			if (specTable.getSelectedRow() < 0) return;
+			WaitlistTableModel model = (WaitlistTableModel)specTable.getModel();
+			WaitlistDto w = model.getPatient(specTable.getSelectedRow());
+			ChangePriorityUI.ShowDialog(owner, w);
+			filter(typeSelector);
 		}
 	};
 	
@@ -324,7 +343,8 @@ public class WaitListPane extends JPanel {
 
 	void filter(JComboBox cb) {
 		ArrayList<WaitlistDto> waitlist = (ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
-        if (((TypeDto)cb.getSelectedItem()).getTypeID() == -1) {
+        System.out.println("fdasfds");
+		if (((TypeDto)cb.getSelectedItem()).getTypeID() == -1) {
         	specTable.setModel(new WaitlistTableModel(waitlist, false));
         } else {
         	ArrayList<WaitlistDto> filtered = new ArrayList<WaitlistDto>();

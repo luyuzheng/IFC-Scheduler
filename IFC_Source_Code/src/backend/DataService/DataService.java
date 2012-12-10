@@ -1,6 +1,7 @@
 package backend.DataService;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -190,6 +191,17 @@ public interface DataService {
      * Adds comments to waitlist entry
      */
     public boolean commentWaitlist(WaitlistDto entry, String comment);
+    
+    /**
+     * Returns the timestamp of the oldest.
+     */
+    public Timestamp getOldestWaitlistTime();
+    
+    /**
+     * Updates the time set in time entered. Used to change priorities.
+     */
+    public boolean updateWaitlistTime(WaitlistDto entry, Timestamp time);
+    
     /**
      * get waitlist info
      */
