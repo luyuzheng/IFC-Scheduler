@@ -43,19 +43,27 @@ Complete the following tasks to determine whether the application is working suc
 	- Make sure the practitioner appears in day view immediately after hitting ok (i.e. check for GUI refreshing problems). Top of screen should display:
 		* Practitioner's name
 		* Practitioner's type
-	- Create a new practitioner. Enter a value in each and every field. Hit OK. Should create another practitioner in day view.
+	- Create a new practitioner. 
+		* Enter a value in each and every field. 
+		* Change working hours to something outside of the hours of operation for the day. Hit OK. Should display the message "The specified time range exceeds the range of the day. Continue with the specified range truncated?" Try both the No and Yes buttons.
+		* Should create another practitioner in day view with the correct working hours.
 	- Make sure the practitioner appears in day view immediately after hitting ok (i.e. check for GUI refreshing problems). Top of screen should display:
 		* Practitioner's name
 		* Practitioner's type
 		* Practitioner's note
+	- Create a new practitioner. 
+		* Enter a value in each and every field. 
+		* Change working hours to valid values such that the practitioner works less than the total hours of operation for the day. Hit OK.
+		* Should create another practitioner in day view with the correct working hours - hours when he does not work should be grayed out.
 		
 6. Click on a practitioner and click "Remove Practitioner From Current Day." (If you cannot hit this button after selecting a practitioner, there is a bug.)
 	- Message should appear, stating "Are you sure you want to remove this practitioner from the schedule? This will cancel any appointments that have been set for this day."
 	- Hit no, and nothing should happen (i.e. no practitioner should disappear from GUI or database).
 	- Click on remove practitioner button again.
 	- This time, hit yes, and the correct practitioner should be removed.
+	- Double click on another practitioner, and click "Clear Practitioner." Same error message about removing practitioners should appear. Try No and Yes, and make sure the practitioner is removed properly.
 	
-7. Reschedule the removed practitioner - click on "Schedule Practitioner," and in Existing Practitioner tab, click on the desired practitioner and hit OK. Should reschedule properly.
+7. Reschedule a removed practitioner - click on "Schedule Practitioner," and in Existing Practitioner tab, click on the desired practitioner and hit OK. Should reschedule properly.
 	
 8. Click on an appointment block in the schedule, then click on "Schedule Patient." 
 	- Click on tab to create a new patient. Do not enter anything in the fields and press OK. Should display an error message stating "Please enter a first name."
@@ -64,29 +72,36 @@ Complete the following tasks to determine whether the application is working suc
 	- Enter in a non-valid phone number. Should display an error message stating "Please enter a valid phone number (###-###-####) or leave the field blank."
 	- Create other combinations of invalid phone numbers, including leaving some of the fields blank. Should all display the error message "Please enter a valid phone number (###-###-####) or leave the field blank."
 	- Enter in a valid phone number and hit OK. Should create a new patient in the correct appointment block displaying the name and phone number of the patient.
+	- Double click on a different appointment block. Should once again display the pop up window to schedule a patient. Enter a valid values for all fields, including the patient note, and hit OK. Should schedule another patient in the correct appointment block.
 
-9. Double click on a different appointment block. Should once again display the pop up window to schedule a patient. Enter a valid values for all fields, including the patient note, and hit OK. Should schedule another patient in the correct appointment block.
+10. Check confirmation and no shows for appointments:
+	- Double click on a scheduled patient. Should bring up a pop up window displaying appointment details. Add an appointment note and hit Save. This note should appear in the appointment block.
+	- Double click on a scheduled patient. Click the Confirm button. The appointment confirmed field should now say "Yes." Hit save, and --CONFIRMED-- should appear in the appointment block.
+	- Double click on the confirmed patient. The button below should now say Unconfirm. Click to undo the confirmation and save. The --CONFIRMED-- message should disappear.
+	- Double click on a patient. Check the No Show box. Hit Save. The text --NO SHOW-- should appear in the appointment block.
+	- Double click on the patient with the no show. Should be able to uncheck the No Show box. Uncheck it, and hit Save. The --NO SHOW-- text in the appointment block should disappear.
+	- Double click on a patient and check the No Show box again for later testing.
+	- Schedule another patient in an appointment block, but use an existing patient. The patient with the no show should have its no show field incremented properly. Schedule the patient with the no show. If this patient has a patient note, should see the message "This patient has the following note attached: 'blah blah.' Are you sure you want to continue?" If so, hit No to make sure that the patient is not scheduled. Then hit OK again and hit Yes.
+	- Double click on the new appointment and make it a no show.
+	- Click on a fourth appointment block and schedule the patient with the two no shows. Should see the error message "This patient has 2 no shows. Are you sure you want to continue?" Hit No to check that the patient is not scheduled. Then hit OK to schedule again and hit Yes this time - the patient should be scheduled properly.
 
-10. Double click on a scheduled patient. Should bring up a pop up window displaying appointment details. Add an appointment note and hit Save. This note should appear in the appointment block.
+11. Check that patient edits persist:
+	- Double click on an empty appointment block again and try to edit a patient. Make sure that the fields show the correct information. Try to change the fields, save, and make sure that the information persists.
+	- Double click on a scheduled patient and try to edit a patient this way. Make sure that the fields show the correct information. Try to change the fields, save, and make sure that the information persists.
 
-11. Double click on a scheduled patient. Click the Confirm button. The appointment confirmed field should now say "Yes." Hit save, and --CONFIRMED-- should appear in the appointment block.
+12. Click on the "Appointment Confirmation" button.
+	- Make sure that the date at the top displays the correct date.
+	- Make sure that the rows that appear in the table are correct (no missing appointments, no extra unknown appointments, etc.)
+	- Make sure that clicking on a row enables the "Confirm Selected Appointment" button.
+	- Click on the "Confirm Selected Appointment" button.
+		* Make sure the confirmation changes to "Yes" in the table and in the day view.
+		* Click on the row that was confirmed, and make sure the button now says "Undo Appointment Confirmation" for that row only. The rest should show "Confirm Selected Appointment."
+		
+		
 
-12. Double click on the confirmed patient. The button below should now say Unconfirm. Click to undo the confirmation and save. The --CONFIRMED-- message should disappear.
+	
+Check that buttons and tiny month calendar still work properly if a side pane is open.
 
-13. Double click on a patient. Check the No Show box. Hit Save. The text --NO SHOW-- should appear in the appointment block.
-
-14. Double click on the patient with the no show. Should be able to uncheck the No Show box. Uncheck it, and hit Save. The --NO SHOW-- text in the appointment block should disappear.
-
-15. Double click on a patient and check the No Show box again for later testing.
-
-16. Schedule another patient in an appointment block, but use an existing patient. The patient with the no show should have its no show field incremented properly. Schedule the patient with the no show. If this patient has a patient note, should see the message "This patient has the following note attached: 'blah blah.' Are you sure you want to continue?" If so, hit No to make sure that the patient is not scheduled. Then hit OK again and hit Yes.
-
-17. Double click on the new appointment and make it a no show.
-
-18. Click on a fourth appointment block and schedule the patient with the two no shows. Should see the error message "This patient has 2 no shows. Are you sure you want to continue?" Hit No to check that the patient is not scheduled. Then hit OK to schedule again and hit Yes this time - the patient should be scheduled properly.
-
-19. Double click on an empty appointment block again and try to edit a patient. Make sure that the fields show the correct information. Try to change the fields, save, and make sure that the information persists.
-
-20. Double click on a scheduled patient and try to edit a patient this way. Make sure that the fields show the correct information. Try to change the fields, save, and make sure that the information persists.
-18. Attempt to schedule this patient again.
+12. Check letter-by-letter search fields:
+	- Go to the schedule patient pop up window. Type in names and parts of names to make sure that the search returns at least the desired name, if not a few more choices.
 		
