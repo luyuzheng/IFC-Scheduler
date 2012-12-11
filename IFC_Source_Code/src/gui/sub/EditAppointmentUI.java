@@ -192,6 +192,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		} else if (e.getActionCommand().equals("edit")) {
 			PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
 			PatientDto editedPatient = EditPatientUI.ShowDialog(this, patient);
+                        window.refreshAppointments(appointment.getApptDate());
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(editedPatient.getPatID(), appointment);
                         window.refreshConfirmationPane();
             refreshPatientInfo(appointment);
