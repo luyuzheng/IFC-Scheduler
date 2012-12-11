@@ -17,14 +17,18 @@ import java.awt.event.MouseEvent;
 import backend.DataTransferObjects.*;
 import backend.DataTransferObjects.AppointmentDto;
 
+import gui.main.MainWindow;
+
 public class NewPatientListener extends MouseAdapter {
 	
 	AppointmentBlock owner;
 	Component parent;
+        MainWindow main;
 	
-	public NewPatientListener(AppointmentBlock owner, Component parent) {
+	public NewPatientListener(AppointmentBlock owner, Component parent, MainWindow main) {
 		this.owner = owner;
 		this.parent = parent;
+                this.main = main;
 	}
 	
 	/** Looks for double clicks to open the Select Patient dialog. */
@@ -34,7 +38,7 @@ public class NewPatientListener extends MouseAdapter {
 			AppointmentDto a = owner.getAppointment();
                         
 			if (owner.getAppointment().getPatientID() != null) {
-				a = EditAppointmentUI.ShowDialog(parent,a);
+				a = EditAppointmentUI.ShowDialog(parent,a, main);
 			}
             else {
                 PatientDto patient = SelectPatientUI.ShowDialog(parent);

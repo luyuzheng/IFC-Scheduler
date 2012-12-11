@@ -16,9 +16,14 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 import backend.DataTransferObjects.PractitionerDto;
 
+/**
+ * Displays the info on a practitioner when a scheduled one is double clicked.
+ * It also allows you the clear the practitioner scheduled for that time.
+ */
 public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private static DisplayPractitionerUI displayPractitionerUI;
 	
@@ -54,30 +59,29 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		textArea.setHighlighter(null);
 		textArea.setText(text);
 		textArea.setFont(Constants.PARAGRAPH);
+		textArea.setBorder(new EmptyBorder(10, 10, 0, 10));
 		
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		okButton.addActionListener(this);
 		okButton.setActionCommand("ok");
 		okButton.setFont(Constants.DIALOG);
 		buttonPanel.add(okButton);
-		//changeButton.addActionListener(this);
-		//changeButton.setActionCommand("change");
-		//buttonPanel.add(changeButton);
 		clearButton.addActionListener(this);
 		clearButton.setActionCommand("clear");
 		clearButton.setFont(Constants.DIALOG);
 		buttonPanel.add(clearButton);
+		buttonPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		
 		add(textArea, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
-		setPreferredSize(new Dimension(350, 250));
+		setPreferredSize(new Dimension(350, 220));
 		setResizable(false);
 		
 	}
 	
 	public static PractitionerDto ShowDialog(Component owner, PractitionerDto p) {
-		displayPractitionerUI = new DisplayPractitionerUI("Edit Practitioner", p);
+		displayPractitionerUI = new DisplayPractitionerUI("Practitioner Details", p);
 		displayPractitionerUI.pack();
 		displayPractitionerUI.setLocationRelativeTo(owner);
 		displayPractitionerUI.setVisible(true);

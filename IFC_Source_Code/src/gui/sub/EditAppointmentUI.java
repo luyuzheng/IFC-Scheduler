@@ -6,13 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.sql.Date;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
@@ -28,6 +23,8 @@ import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
+import gui.main.MainWindow;
+
 public class EditAppointmentUI extends JDialog implements ActionListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
@@ -40,10 +37,13 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	private JTextArea noteArea;
 	
 	private static AppointmentDto appointment;
+        private MainWindow window;
 	
-	private EditAppointmentUI(String name, AppointmentDto a) {
+	private EditAppointmentUI(String name, AppointmentDto a, MainWindow window) {
 		appointment = a;
-		setModal(true);
+        this.window = window;
+		
+        setModal(true);
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
@@ -55,7 +55,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		String text = "Time Slot: " + appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd();
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
-		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n"); // TODO: NEED TO DELETE REPLACEALL?
+		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n");
 		text += "\nAppointment Confirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
 
 		JPanel textPanel = new JPanel(new BorderLayout());
@@ -71,18 +71,11 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		JPanel checkBoxPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		JLabel noShowsLabel = new JLabel("No Show");
 		noShowsLabel.setFont(Constants.PARAGRAPH);
-		
-		//------TODO: MAKE THIS SHOW THE GODDAMN CHECKBOX PROPERLY---------
-		// (deleting this makes no shows increment properly, but then it doesn't
-		// display the check once the pop up is reopened)
 		if (appointment.isNoShow()) {
 			noShowsCheckBox.setSelected(true);
 		} else {
 			noShowsCheckBox.setSelected(false);
 		}
-		//-----------------------------------------------------------------
-
-        //noShowsCheckBox.addItemListener(this);
 
 		checkBoxPanel.add(noShowsCheckBox);
 		checkBoxPanel.add(noShowsLabel);
@@ -142,8 +135,8 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static AppointmentDto ShowDialog(Component owner, AppointmentDto a) {
-		editAppointmentUI = new EditAppointmentUI("Appointment Details", a);
+	public static AppointmentDto ShowDialog(Component owner, AppointmentDto a, MainWindow w) {
+		editAppointmentUI = new EditAppointmentUI("Appointment Details", a, w);
 		editAppointmentUI.pack();
 		editAppointmentUI.setLocationRelativeTo(owner);
 		editAppointmentUI.setVisible(true);
@@ -156,7 +149,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		String text = "Time Slot: " + appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd();
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
-		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n"); // TODO: NEED TO DELETE REPLACEALL?
+		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n");
 		text += "\nAppointment Confirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
 		
 		textArea.setText(text);
@@ -186,12 +179,9 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		}
 	};
 	
-	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("save")) {
-			// Doesn't actually do anything important - edit patient saves any edits to patient info
-			// and notes are saved below
-			// Luyu: I'm making this save the noShow status
+			// Saves the noShow status
 			if (noShowsCheckBox.isSelected() && !appointment.isNoShow()) {
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
 			} else if (!noShowsCheckBox.isSelected() && appointment.isNoShow()) {
@@ -202,7 +192,10 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		} else if (e.getActionCommand().equals("edit")) {
 			PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
 			PatientDto editedPatient = EditPatientUI.ShowDialog(this, patient);
+                        window.refreshAppointments(appointment.getApptDate());
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(editedPatient.getPatID(), appointment);
+                        window.refreshConfirmationPane();
+            refreshPatientInfo(appointment);
 			return;
 		} else if (e.getActionCommand().equals("cancel")) {
 			editAppointmentUI.setVisible(false);
@@ -211,17 +204,4 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		appointment.setNote((noteArea.getText()).replaceAll("[\r\n]+", "\t\t"));
 		editAppointmentUI.setVisible(false);
     }
-
-
-	// I don't think this is how we wanna do this
-	// using itemStateChanged has to handle each state change
-	// I think it's better to read the state when save is clicked
-//	public void itemStateChanged(ItemEvent e) {
-//		if (e.getStateChange() == ItemEvent.SELECTED) {
-//			DataServiceImpl.GLOBAL_DATA_INSTANCE.checkAsNoShow(appointment);
-//		} else {
-//			DataServiceImpl.GLOBAL_DATA_INSTANCE.uncheckAsNoShow(appointment);
-//		}
-//	}
-
 }

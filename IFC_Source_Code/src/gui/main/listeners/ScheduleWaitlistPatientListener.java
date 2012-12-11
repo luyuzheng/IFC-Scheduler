@@ -37,6 +37,7 @@ public class ScheduleWaitlistPatientListener extends MouseAdapter {
 				
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patient.getPatID(), appt);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(patient, type);
+                                
 				parent.setVisible(false);
 			}
 		}

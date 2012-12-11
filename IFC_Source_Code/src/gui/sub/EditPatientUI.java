@@ -25,6 +25,9 @@ import javax.swing.JTextField;
 
 import backend.DataTransferObjects.PatientDto;
 
+/**
+ * Popup for the editing of a single patient.
+ */
 public class EditPatientUI extends JDialog implements ActionListener {
 	private static EditPatientUI editPatientUI;
 	
@@ -123,9 +126,10 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	notePanel.add(notePane, BorderLayout.CENTER);
     		
     	JPanel buttonPanel = new JPanel(new FlowLayout());
-    	okButton.setActionCommand("okNew");
+    	okButton.setActionCommand("ok");
     	okButton.addActionListener(this);
     	okButton.setFont(Constants.DIALOG);
+    	cancelButton.setActionCommand("cancel");
     	cancelButton.addActionListener(this);
     	cancelButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
@@ -152,14 +156,22 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("cancel")) {
+			editPatientUI.setVisible(false);
+			return;
+		}
+		JLabel msg = new JLabel();
+		msg.setFont(Constants.PARAGRAPH);
 		String firstName = firstNameField.getText();
 		if (firstName.equals("")) {
-			JOptionPane.showMessageDialog(this, "Please enter a first name.", "Error!", JOptionPane.ERROR_MESSAGE);
+			msg.setText("Please enter a first name.");
+			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		String lastName = lastNameField.getText();
 		if (lastName.equals("")) {
-			JOptionPane.showMessageDialog(this, "Please enter a last name.", "Error!", JOptionPane.ERROR_MESSAGE);
+			msg.setText( "Please enter a last name.");
+			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		String areaCode = areaCodeField.getText();
@@ -168,14 +180,16 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		boolean blank = false;
 		if (areaCode.equals("") && numberPart1.equals("") && numberPart2.equals("")) {
 			blank = true;
-			if (JOptionPane.showConfirmDialog(this, "The Phone Number field is blank. Would you like to continue?", "Missing Phone Number", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
+			msg.setText("The Phone Number field is blank. Would you like to continue?");
+			if (JOptionPane.showConfirmDialog(this, msg, "Missing Phone Number", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
 				return;
 		}
 		String num;
 		try {
 			if (blank) num = null;
 			else if (areaCode.length() != 3 || numberPart1.length() != 3 || numberPart2.length() != 4) {
-				JOptionPane.showMessageDialog(this, "Please enter a valid phone number (###-###-####) or leave the field blank.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter a valid phone number (###-###-####) or leave the field blank.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else {
 //				int a = Integer.parseInt(areaCode);
@@ -185,8 +199,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 				num = areaCode + "-" + numberPart1 + "-"+ numberPart2;
 			}
 		} catch (Exception ex) {
-			JLabel msg = new JLabel("Please enter a valid phone number (###-###-####) or leave the field blank.");
-			msg.setFont(Constants.PARAGRAPH);
+			msg.setText("Please enter a valid phone number (###-###-####) or leave the field blank.");
 			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}

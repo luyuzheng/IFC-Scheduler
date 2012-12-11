@@ -1,6 +1,7 @@
 package gui.sub;
 
 import gui.Constants;
+import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -30,6 +31,10 @@ import javax.swing.table.TableModel;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.PatientDto;
 
+/**
+ * Displays a list of all of the patients and allows a patient to be selected for editing or removal
+ * Also allows creation of new patients.
+ */
 public class EditPatientsUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPatientsUI editPatientsUI;
 	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
@@ -154,10 +159,21 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	}
 	
 	public void updateTable() {
-		String filter = searchField.getText();
-                patTable.setModel(new PatTableModel(pat));
-		//if (filter.equals("")) patTable.setModel(new PatTableModel(pat)); TODO FILtered lists
-		//else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
+		 // Filters patients
+		String filter = searchField.getText().toLowerCase();
+		String[] filters = filter.split(" ");
+        ArrayList<PatientDto> filteredPat = new ArrayList<PatientDto>();
+        for (PatientDto p : pat) {
+        	String fullName = p.getFullName().toLowerCase();
+        	
+        	for (String f : filters) {
+	        	if (fullName.indexOf(f) >= 0) {
+	        		filteredPat.add(p);
+	        		break;
+	        	}
+        	}
+        }
+        patTable.setModel(new PatTableModel(filteredPat));
 	}
 	
 	class PatTableModel extends AbstractTableModel {

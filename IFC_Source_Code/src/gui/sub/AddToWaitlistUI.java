@@ -24,6 +24,10 @@ import javax.swing.border.EmptyBorder;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.*;
 
+/**
+ * This class is pop up dialog box that is used to add patients to the waitlist.
+ * It allows you to select a patient and service type, as well as add comments.
+ */
 public class AddToWaitlistUI extends JDialog implements ActionListener {
 	private static AddToWaitlistUI addToWaitlistUI;
 	
@@ -104,7 +108,10 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 		
 	}
     
-	
+	/**
+	 * This causes this dialog box to pop up in the middle of the specified owner.
+	 * This method will return the ID of the added the type ID when OK is clicked or -1 if cancel
+	 */
 	public static int ShowDialog(Component owner) {
 		addToWaitlistUI = new AddToWaitlistUI("Add to Waitlist");
 		addToWaitlistUI.pack();

@@ -24,6 +24,9 @@ import javax.swing.JTextField;
 
 import backend.DataTransferObjects.*;
 
+/**
+ * Popup that allows a single practitioner's details to be edited
+ */
 public class EditPractitionerUI extends JDialog implements ActionListener {
 	private static EditPractitionerUI editPractitionerUI;
 

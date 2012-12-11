@@ -87,7 +87,7 @@ public class MainWindow extends JFrame {
 		add(sidePane,BorderLayout.WEST);
 		
 		//Adds the appointment panel to main window
-		ap = new AppointmentPanel(dp);
+                ap = new AppointmentPanel(dp, this);
 		add(ap, BorderLayout.CENTER);
 	}
 	
@@ -285,7 +285,7 @@ public class MainWindow extends JFrame {
 	 */
 	public void resetAppointmentPanel() {
 		remove(ap);
-		ap = new AppointmentPanel(dp);
+		ap = new AppointmentPanel(dp, this);
 		add(ap, BorderLayout.CENTER);
 		repaint();
 		validate();
@@ -351,7 +351,7 @@ public class MainWindow extends JFrame {
 	public void switchView() {	
 		if (inMonthView) {
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
-				ap = new AppointmentPanel(dp);
+				ap = new AppointmentPanel(dp, this);
 				pane.setLeftComponent(ap);
 				pane.repaint();
 				pane.validate();
@@ -399,15 +399,10 @@ public class MainWindow extends JFrame {
 		if (inMonthView) {
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
 				mp = new MonthPanel(dp);
-				pane.setLeftComponent(mp);
-				pane.repaint();
-				pane.validate();
 			} else {			
 				remove(mp);
 				remove(sidePane);
 				initMVComponents(dp);
-				repaint();
-				validate();
 			}
 		} else {			
 			
@@ -416,21 +411,17 @@ public class MainWindow extends JFrame {
 				sidePanel.repaint();
 				sidePanel.validate();
 				dp.validateButtons();
-				ap = new AppointmentPanel(dp);
+				ap = new AppointmentPanel(dp, this);
 				pane.setLeftComponent(ap);
-				pane.repaint();
-				pane.validate();
 			} else {
 				remove(ap);
 				remove(sidePane);
 				initComponents(dp);
-				repaint();
-				validate();
 			}
 		}
-		
-		dp.isMonthViewValidate();		
-		
+				
+		this.refreshConfirmationPane();
+                dp.isMonthViewValidate();
 	}
 	
 	/**
@@ -441,6 +432,7 @@ public class MainWindow extends JFrame {
 	 */
 	public void setDay(DayDto day) {
 		this.day = day;
+                this.refreshConfirmationPane();
 	}
 	
 	/**
@@ -468,5 +460,18 @@ public class MainWindow extends JFrame {
 		return dp;
 	}
 	
-	
+	public void refreshAppointments(Date date){
+            if (day.getDate().toString().equals(date.toString())){
+                ap.refresh(dp);
+            }
+        }
+        
+        public void refreshConfirmationPane(){
+            if (showingApptConfirmation){
+                this.hideApptConfirmation();
+                this.showApptConfirmation();
+            }
+            repaint();
+            validate();
+        }
 }

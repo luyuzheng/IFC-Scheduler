@@ -23,12 +23,14 @@ public class RoomPanel extends JPanel {
 	SchedulePractitionerDto room;
 	NewPractitionerListener npl = new NewPractitionerListener(this, this.getParent());
 	DayPanel dp;
+        MainWindow main;
 	
 	/** Constructs a room panel given a practitioner to be scheduled on a particular day. */
-	public RoomPanel(SchedulePractitionerDto room, DayPanel dp) {
+	public RoomPanel(SchedulePractitionerDto room, DayPanel dp, MainWindow main) {
 		this.dp = dp;
 		this.room = room;
-		roomSubpanel = new RoomSubpanel(room, dp);
+                this.main = main;
+		roomSubpanel = new RoomSubpanel(room, dp, main);
 		headingPanel = new HeadingPanel(room, this, roomSubpanel);
 		setLayout(new BorderLayout());
 		add(headingPanel, BorderLayout.NORTH);
@@ -65,7 +67,7 @@ public class RoomPanel extends JPanel {
 		this.room = room;
 		remove(headingPanel);
 		remove(roomSubpanel);
-		roomSubpanel = new RoomSubpanel(room, dp);
+		roomSubpanel = new RoomSubpanel(room, dp, main);
 		headingPanel = new HeadingPanel(room, this, roomSubpanel);
 		setLayout(new BorderLayout());
 		add(headingPanel, BorderLayout.NORTH);

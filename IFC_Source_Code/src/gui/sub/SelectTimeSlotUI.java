@@ -20,6 +20,9 @@ import javax.swing.JTextField;
 import gui.Constants;
 import gui.TimeSlot;
 
+/**
+ * Popup that allows the hours of operation in a day to be changed.
+ */
 public class SelectTimeSlotUI extends JDialog implements ActionListener {
 
 	private static SelectTimeSlotUI selectTimeSlotUI;
@@ -69,7 +72,9 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("ok");
     	okButton.addActionListener(this);
+    	okButton.setFont(Constants.DIALOG);
     	cancelButton.addActionListener(this);
+    	cancelButton.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	

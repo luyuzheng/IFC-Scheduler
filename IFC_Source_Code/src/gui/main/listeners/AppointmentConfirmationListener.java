@@ -17,6 +17,8 @@ import javax.swing.event.ListSelectionListener;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.*;
 
+import gui.main.MainWindow;
+
 /**
  * Waits for mouse clicks on patients in appointment confirmation table. If a patient is double clicked,
  * a pop up window displays more information about that patient and his/her appointment.
@@ -24,6 +26,7 @@ import backend.DataTransferObjects.*;
 public class AppointmentConfirmationListener extends MouseAdapter implements ListSelectionListener {
 	JTable owner;
 	Component parent;
+        MainWindow main;
 	
 	/**
 	 * Constructor.
@@ -31,9 +34,10 @@ public class AppointmentConfirmationListener extends MouseAdapter implements Lis
 	 * @param owner - component that owns this listener (the table of the AppointmentConfirmationPane)
 	 * @param parent - the parent of this listener (AppointmentConfirmationPane)
 	 */
-	public AppointmentConfirmationListener(JTable owner, Component parent) {
+	public AppointmentConfirmationListener(JTable owner, Component parent, MainWindow main) {
 		this.owner = owner;
 		this.parent = parent;
+                this.main = main;
 	}
 	
 	/**
@@ -45,7 +49,7 @@ public class AppointmentConfirmationListener extends MouseAdapter implements Lis
 		if (e.getClickCount() >= 2) {
 			if (owner.getSelectedRow() >= 0) {
 				AppointmentDto appt = ((AppointmentConfirmationTableModel)owner.getModel()).getAppointment(owner.getSelectedRow());
-				DisplayAppointmentConfirmationUI.ShowDialog(parent.getParent(), appt);
+				DisplayAppointmentConfirmationUI.ShowDialog(parent.getParent(), appt, main);
 				AppointmentConfirmationPane acp = (AppointmentConfirmationPane) parent;
 				acp.resetModel();
 			}

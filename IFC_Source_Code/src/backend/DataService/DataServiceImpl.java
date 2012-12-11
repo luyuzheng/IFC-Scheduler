@@ -58,7 +58,8 @@ public class DataServiceImpl implements DataService {
 		//serv.close();
 	}
 
-	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create("ifc_db", "localhost:3306", "testuser", "test623");
+	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create(
+			"ifc_db", "localhost:3306", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -1126,6 +1127,61 @@ public class DataServiceImpl implements DataService {
 		}
 		return false;
 	}
+	
+	@Override
+	public Timestamp getOldestWaitlistTime() {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.prepareStatement("SELECT MIN(DatetimeEntered) FROM Waitlist");
+			rs = st.executeQuery();
+			if (rs.next()) {
+				return rs.getTimestamp(1);
+			}
+			return null;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public boolean updateWaitlistTime(WaitlistDto entry, Timestamp time) {
+		PreparedStatement st = null;
+
+		try {
+			st = connection.prepareStatement("UPDATE Waitlist SET DatetimeEntered=? " +
+			"WHERE WaitlistID=?");
+			st.setTimestamp(1, time);
+			st.setInt(2, entry.getWaitlistID());
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
+	}
 
 	@Override
 	public List<WaitlistDto> getWaitlist() {
@@ -1134,8 +1190,8 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement("SELECT * FROM Waitlist INNER JOIN Patient " +
-					"ON Waitlist.PatID=Patient.PatID INNER JOIN ServiceType ON" +
-					" Waitlist.TypeID = ServiceType.TypeID");
+					"ON Waitlist.PatID=Patient.PatID INNER JOIN ServiceType ON " +
+					"Waitlist.TypeID = ServiceType.TypeID ORDER BY Waitlist.DatetimeEntered");
 			rs = st.executeQuery();
 			List<WaitlistDto> results = new ArrayList<WaitlistDto>();
 			while (rs.next()) {

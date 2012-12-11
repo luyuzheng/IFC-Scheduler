@@ -2,6 +2,7 @@ package gui.sub;
 
 import backend.DataService.DataServiceImpl;
 import gui.Constants;
+import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -30,6 +31,10 @@ import javax.swing.table.TableModel;
 
 import backend.DataTransferObjects.*;
 
+/**
+ * Displays a list practitioners and allows one to be selected for editing or deletion.
+ * Also allows new practitioners to be added.
+ */
 public class EditPractitionersUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPractitionersUI editPractitionersUI;
 	private ArrayList<PractitionerDto> prac = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
@@ -157,10 +162,22 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 	}
 	
 	public void updateTable() {
-		String filter = searchField.getText();
-                pracTable.setModel(new PracTableModel(prac));
-		//if (filter.equals("")) pracTable.setModel(new PracTableModel(prac)); TODO: FILTERS
-		//else pracTable.setModel(new PracTableModel(pm.getFilteredPractitionerList(filter)));
+		// Filters practitioners
+		String filter = searchField.getText().toLowerCase();
+		String[] filters = filter.split(" ");
+        ArrayList<PractitionerDto> filteredPrac = new ArrayList<PractitionerDto>();
+        for (PractitionerDto p : prac) {
+        	String fullName = p.getFirst() + " " + p.getLast();
+        	fullName = fullName.toLowerCase();
+        	
+        	for (String f : filters) {
+	        	if (fullName.indexOf(f) >= 0) {
+	        		filteredPrac.add(p);
+	        		break;
+	        	}
+        	}
+        }
+        pracTable.setModel(new PracTableModel(filteredPrac));
 	}
 	
 	class PracTableModel extends AbstractTableModel {

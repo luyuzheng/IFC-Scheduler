@@ -17,6 +17,9 @@ import javax.swing.JTextField;
 
 import backend.DataTransferObjects.*;
 
+/**
+ * Tiny popup that allows new types to be created.
+ */
 public class NewTypeUI extends JDialog implements ActionListener {
 	private static NewTypeUI newTypeUI;
 	private static TypeDto t;
