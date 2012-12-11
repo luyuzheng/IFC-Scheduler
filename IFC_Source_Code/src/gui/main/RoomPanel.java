@@ -29,7 +29,7 @@ public class RoomPanel extends JPanel {
 	public RoomPanel(SchedulePractitionerDto room, DayPanel dp, MainWindow main) {
 		this.dp = dp;
 		this.room = room;
-                this.main = main;
+		this.main = main;
 		roomSubpanel = new RoomSubpanel(room, dp, main);
 		headingPanel = new HeadingPanel(room, this, roomSubpanel);
 		setLayout(new BorderLayout());

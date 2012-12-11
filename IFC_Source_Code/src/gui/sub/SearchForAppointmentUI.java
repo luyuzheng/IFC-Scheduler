@@ -174,6 +174,10 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	 * the search manager for processing. The window is then closed.
 	 */
 	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand() == "Cancel") {
+			searchForAppointmentUI.setVisible(false);
+			return;
+		}
 		if (e.getActionCommand() == "typeSelector") {
 			TypeDto type = (TypeDto) typeSelector.getSelectedItem();
 			pracSelector.removeAllItems();

@@ -28,11 +28,12 @@ public class DisplayPatientSearchListener extends MouseAdapter {
 	 * 
 	 * @param owner - component that owns this listener (the table of the AppointmentConfirmationPane)
 	 * @param parent - the parent of this listener (AppointmentConfirmationPane)
+	 * @param main - the main window for the entire application (MainWindow)
 	 */
 	public DisplayPatientSearchListener(JTable owner, Component parent, MainWindow main) {
 		this.owner = owner;
 		this.parent = parent;
-                this.main = main;
+        this.main = main;
 	}
 	
 	/**

@@ -60,7 +60,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		setViewportView(panel);
 	}
         
-        public void refresh(DayPanel dp) {
+    public void refresh(DayPanel dp) {
 		JPanel panel = new JPanel(new BorderLayout());
 		sidePanel = new SidePanel(dp);
 		dp.setSidePanel(sidePanel);

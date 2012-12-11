@@ -3,7 +3,6 @@ package gui.main;
 import backend.DataService.DataServiceImpl;
 import gui.Constants;
 import gui.DateTimeUtils;
-import gui.main.listeners.AppointmentConfirmationListener;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.AddToWaitlistUI;
 import gui.sub.ChangePriorityUI;
@@ -13,10 +12,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -25,13 +21,11 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
-import javax.swing.TransferHandler;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
@@ -70,11 +64,6 @@ public class WaitListPane extends JPanel {
 		
 		JPanel typeSelectionPanel = new JPanel(new GridLayout(0,1));
 		types = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
-		//Type general = new Type(-1, "View All");
-		//types.add(0, general); TODO: VIEW ALL
-		
-		
-		//typeSelector = new JComboBox(types.toArray());
 		TypeDto noFilter = new TypeDto();
 		noFilter.setField(TypeDto.TYPE_NAME, "All");
 		noFilter.setField(TypeDto.TYPE_ID, -1);
@@ -128,7 +117,6 @@ public class WaitListPane extends JPanel {
 		specTable.setFont(Constants.DIALOG);
 		specTable.addMouseListener(new WaitlistPatientListener(specTable, this, this));
 		specTable.getSelectionModel().addListSelectionListener(new WaitlistPatientListener(specTable, this, this));
-		//specTable.setTransferHandler(new WaitlistTransferHandler());
 		specTable.setAutoCreateRowSorter(true);
     	specTable.getTableHeader().setReorderingAllowed(false);
     	specTable.getTableHeader().setFont(Constants.DIALOG);
@@ -158,9 +146,6 @@ public class WaitListPane extends JPanel {
 				specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
 			}
 			specTable.getColumnModel().getColumn(0).setMinWidth(100);
-            //if (typeSelector.getSelectedIndex() == 0) specTable.setModel(
-                        //        new WaitlistTableModel(wm.getWaitList(), false));
-			//else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true));
 		}
 	};
 	
@@ -171,7 +156,7 @@ public class WaitListPane extends JPanel {
 			}
 			WaitlistDto wp = ((WaitlistTableModel)specTable.getModel()).getPatient(specTable.getSelectedRow());
 			String newComment = DisplayWaitingPatientUI.ShowDialog(getParent(), wp, pane);
-			//wp.setComments(newComment);
+			wp.setComments(newComment);
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
 			resetModel();
 		}
@@ -191,9 +176,6 @@ public class WaitListPane extends JPanel {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(w.getPatient(), type);
 			filter(typeSelector);
 			specTable.getColumnModel().getColumn(0).setMinWidth(100);
-			//specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
-                        /*if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false)); TODO: filter
-			else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true)); */
 		}
 	};
 	
@@ -209,22 +191,13 @@ public class WaitListPane extends JPanel {
 			filter(typeSelector);
 		}
 	};
-	
-	class WaitlistTransferHandler extends TransferHandler {
-		public Transferable createTransferable(JComponent c) {
-			JTable table = (JTable) c;
-		    return new StringSelection(table.toString());
-		}
-	}
-	
+
 	/**
 	 * This resets the model.
 	 */
 	public void resetModel() {
             specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
         	specTable.getColumnModel().getColumn(0).setMinWidth(100);
-		/*if (typeSelector.getSelectedIndex() == 0) specTable.setModel(new WaitlistTableModel(wm.getWaitList(), false)); TODO: FILTER
-		else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(typeSelector.getSelectedIndex())), true)); */
 	}
 	
 	/**
@@ -344,16 +317,11 @@ public class WaitListPane extends JPanel {
 	    public void actionPerformed(ActionEvent e) {
 	        JComboBox cb = (JComboBox)e.getSource();
 	        filter(cb);
-	        /*if (cb.getSelectedIndex() == 0) specTable.setModel( TODO:FILTER
-                        new WaitlistTableModel(wm.getWaitList(), false));
-	        else specTable.setModel(new WaitlistTableModel(wm.getWaitList(types.get(cb.getSelectedIndex())), true));
-                 * */
 	    }
 	}
 
 	void filter(JComboBox cb) {
 		ArrayList<WaitlistDto> waitlist = (ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
-        System.out.println("fdasfds");
 		if (((TypeDto)cb.getSelectedItem()).getTypeID() == -1) {
         	specTable.setModel(new WaitlistTableModel(waitlist, false));
         } else {
@@ -367,7 +335,7 @@ public class WaitListPane extends JPanel {
         }
 	}
         
-        public void refreshAppointments(Date day){
-            ((MainWindow) owner).refreshAppointments(day);
-        }
+    public void refreshAppointments(Date day){
+        ((MainWindow) owner).refreshAppointments(day);
+    }
 }

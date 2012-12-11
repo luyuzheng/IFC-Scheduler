@@ -122,9 +122,12 @@ public class ChangePriorityUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		change = -1;
+		JLabel msg = new JLabel();
+		msg.setFont(Constants.PARAGRAPH);
 		if (e.getActionCommand().equals("ok")) {
 			if (!checkDate()) {
-				JOptionPane.showMessageDialog(this, "The date and/or time is invalid", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("The date and/or time is invalid.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -133,7 +136,8 @@ public class ChangePriorityUI extends JDialog implements ActionListener {
 				time = new Timestamp(
 						dateFormat.parse(dateField.getText() + " " + timeField.getText()).getTime());
 			} catch (ParseException excptn) {
-				JOptionPane.showMessageDialog(this, "The date and/or time is invalid", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("The date and/or time is invalid.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			boolean success = DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlistTime(entry, time);
