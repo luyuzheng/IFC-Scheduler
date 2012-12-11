@@ -193,6 +193,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 			appointment.setNote(noteArea.getText());
 
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
+                        main.refreshAppointments(appointment.getApptDate());
 			displayAppointmentConfirmationUI.setVisible(false);
 		} else {
 			displayAppointmentConfirmationUI.setVisible(false);
