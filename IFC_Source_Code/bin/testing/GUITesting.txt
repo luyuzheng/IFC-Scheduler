@@ -89,17 +89,35 @@ Complete the following tasks to determine whether the application is working suc
 	- Double click on an empty appointment block again and try to edit a patient. Make sure that the fields show the correct information. Try to change the fields, save, and make sure that the information persists.
 	- Double click on a scheduled patient and try to edit a patient this way. Make sure that the fields show the correct information. Try to change the fields, save, and make sure that the information persists.
 
-12. Click on the "Appointment Confirmation" button.
+12. Check the side panes to make sure they open and close correctly:
+	- Click on the "Appointment Confirmation" button. 
+		* Make sure this button changes to "Hide Appointment Confirmation."
+		* The correct side pane should appear without problem.
+		* Click on "Switch to Month View" and then switch back and check for any GUI problems or crashes.
+		* Click on "Hide Appointment Confirmation" button.
+	- Click on the "Wait List" button.
+		* Follow the same steps as the "Appointment Confirmation" button.
+	- Click on the "Search" button.
+		* Follow the same steps as the "Appointment Confirmation" button.
+	- Reopen the appointment confirmation pane.
+		* Switch between the panes while they are open. The button names should change accordingly.
+	- Switch to month view and switch between the panes while they are open.
+	- Make sure the panes can close properly in month view.
+
+13. Click on the "Appointment Confirmation" button.
 	- Make sure that the date at the top displays the correct date.
 	- Make sure that the rows that appear in the table are correct (no missing appointments, no extra unknown appointments, etc.)
 	- Make sure that clicking on a row enables the "Confirm Selected Appointment" button.
 	- Click on the "Confirm Selected Appointment" button.
 		* Make sure the confirmation changes to "Yes" in the table and in the day view.
 		* Click on the row that was confirmed, and make sure the button now says "Undo Appointment Confirmation" for that row only. The rest should show "Confirm Selected Appointment."
-		
-		
-
+		* Click on "Undo Appointment Confirmation" and make sure that the confirmation chages to "No" in the table and in the day view.
+	- Double click a row and confirm and unconfirm an appointment this way. The change should appear in the table and in the day view.
+	- Double click a row and add an appointment note. This note should appear in the table and in the day view.
 	
+14. Click on the "Wait List" button.
+	- 
+
 Check that buttons and tiny month calendar still work properly if a side pane is open.
 
 12. Check letter-by-letter search fields:
