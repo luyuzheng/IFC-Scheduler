@@ -319,11 +319,6 @@ public class DataServiceTests extends TestCase {
 		return null;
 	}
 
-	public boolean test_confirmAppointment(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	public boolean test_updateWaitlist(WaitlistDto wp) {
 		// TODO Auto-generated method stub
 		return false;
@@ -338,28 +333,58 @@ public class DataServiceTests extends TestCase {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public boolean test_addNotesToAppointment(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
+	
 	public ArrayList<AppointmentDto> test_getAllPatientsForDay(Date day) {
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public boolean test_unConfirmAppointment(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
-		return false;
+	public void test_addNotesToAppointment() {
+		AppointmentDto appointment = new AppointmentDto();
+		appointment.setField(AppointmentDto.APPT_ID, 1);
+		appointment.setField(AppointmentDto.PRACT_SCHED_ID,1);
+		appointment.setField(AppointmentDto.PAT_ID,1);
+		appointment.setField(AppointmentDto.NO_SHOW_ID,null);
+		appointment.setField(AppointmentDto.START, 0);
+		appointment.setField(AppointmentDto.END,30);
+		appointment.setField(AppointmentDto.APPT_DATE, new Date(10000000));
+		appointment.setField(AppointmentDto.NOTE, null);
+		appointment.setField(AppointmentDto.CONFIRMATION, 0);
+		appointment.setField(AppointmentDto.PRACTITIONER_NAME, "Test One");
+		
+		assertNull(appointment.getNote());
+		appointment.setField(AppointmentDto.NOTE, "Here is a note.");
+		
+		dataService.addNotesToAppointment(appointment);
+		assertEquals(appointment.getNote(), "Here is a note");
+	}
+	
+	public void test_confirmAppointment() {
+		AppointmentDto appointment = new AppointmentDto();
+		appointment.setField(AppointmentDto.APPT_ID, 1);
+		appointment.setField(AppointmentDto.PRACT_SCHED_ID,1);
+		appointment.setField(AppointmentDto.PAT_ID,1);
+		appointment.setField(AppointmentDto.NO_SHOW_ID,null);
+		appointment.setField(AppointmentDto.START, 0);
+		appointment.setField(AppointmentDto.END,30);
+		appointment.setField(AppointmentDto.APPT_DATE, new Date(10000000));
+		appointment.setField(AppointmentDto.NOTE, null);
+		appointment.setField(AppointmentDto.CONFIRMATION, 0);
+		appointment.setField(AppointmentDto.PRACTITIONER_NAME, "Test One");
+		
+		dataService.confirmAppointment(appointment);
+		assertTrue(appointment.getConfirmation());
+		dataService.unConfirmAppointment(appointment);
+		assertFalse(appointment.getConfirmation());
 	}
 
-	public TimeSlot test_getDayTimeslot(Day day) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public boolean test_setTimeSlot(Day day, TimeSlot newtimes) {
+	public boolean test_setTimeSlot() {
+		TimeSlot ts = new TimeSlot(0,30);
+		dataService.setTimeSlot(Day.SUNDAY,ts);
+		TimeSlot newTS = dataService.getDayTimeslot(Day.SUNDAY);
+		assertEquals(ts,newTS);
+		
 		// TODO Auto-generated method stub
 		return false;
 	}
