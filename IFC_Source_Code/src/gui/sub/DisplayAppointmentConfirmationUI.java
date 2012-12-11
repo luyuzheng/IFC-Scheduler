@@ -187,6 +187,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "OK") {
+                    //TODO: write text box to appointment note
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
 			displayAppointmentConfirmationUI.setVisible(false);
 		} else {
