@@ -122,11 +122,19 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 	
 	public void actionPerformed(ActionEvent e) {
 		change = -1;
+		JLabel errorMsg = new JLabel();
+		errorMsg.setFont(Constants.PARAGRAPH);
 		if (e.getActionCommand().equals("ok")) {
 			if (patient == null) {
-				JOptionPane.showMessageDialog(this, "Please select a patient.", "Error!", JOptionPane.ERROR_MESSAGE);
+				errorMsg.setText("Please select a patient.");
+				JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} 
+			if (typeCombo.getSelectedIndex() < 0 || ((TypeDto)typeCombo.getSelectedItem()).getTypeName().equals("")) {
+				errorMsg.setText("Please select a type.");
+				JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			TypeDto type = (TypeDto)typeCombo.getSelectedItem();
 			String comment = commentArea.getText().replaceAll("[\r\n]+","\t\t"); 
 			List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
@@ -134,8 +142,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 				// If patient is already on the waitlist, give a warning
                                 //TODO: I don't think this works as desired? Might have fixed, come back to
 				if (waitlist.get(i).getPatientID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
-					JLabel errorMsg = new JLabel("This patient has already been added to the waitlist for this type of service.");
-					errorMsg.setFont(Constants.DIALOG);
+					errorMsg.setText("This patient has already been added to the waitlist for this type of service.");
 					JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
 				    return;
 				} 
@@ -143,7 +150,10 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type, comment);
             change = type.getTypeID();
 		} else if (e.getActionCommand().equals("select")) {
-			patient = SelectPatientUI.ShowDialog(this);
+			PatientDto newPatient = SelectPatientUI.ShowDialog(this);
+			if (newPatient != null) {
+				patient = newPatient;
+			}
 			if (patient != null) patientLabel.setText(patient.getFirst() + " " + patient.getLast());
 			return;
 		}

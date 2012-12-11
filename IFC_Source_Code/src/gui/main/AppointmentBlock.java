@@ -44,8 +44,8 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 
 	/** Constructs an appointment block object given an appointment and pointer to the Day Panel. */
 	public AppointmentBlock(AppointmentDto appointment, DayPanel dp, MainWindow main) {
-                this.main = main;
-                npl = new NewPatientListener(this, this.getParent(), main);
+        this.main = main;
+        npl = new NewPatientListener(this, this.getParent(), main);
 		this.dp = dp;
 		this.appointment = appointment;
 		textArea = new JTextArea();

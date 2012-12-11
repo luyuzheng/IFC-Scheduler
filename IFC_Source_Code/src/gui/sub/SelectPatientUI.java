@@ -153,6 +153,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	okButton1.setActionCommand("okOld");
     	okButton1.addActionListener(this);
     	okButton1.setFont(Constants.DIALOG);
+    	cancelButton1.setActionCommand("cancel");
     	cancelButton1.addActionListener(this);
     	cancelButton1.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton1);
@@ -227,6 +228,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	okButton2.setActionCommand("okNew");
     	okButton2.addActionListener(this);
     	okButton2.setFont(Constants.DIALOG);
+    	cancelButton2.setActionCommand("cancel");
     	cancelButton2.addActionListener(this);
     	cancelButton2.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton2);
@@ -269,6 +271,10 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 		JLabel msg = new JLabel();
 		msg.setFont(Constants.PARAGRAPH);
 		
+		if (e.getActionCommand().equals("cancel")) {
+			selectPatientUI.setVisible(false);
+			return;
+		}
 		if (e.getActionCommand().equals("okNew")) {
 			String firstName = firstNameField.getText();
 			if (firstName.equals("")) {

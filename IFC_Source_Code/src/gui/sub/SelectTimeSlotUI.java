@@ -22,6 +22,12 @@ import gui.TimeSlot;
 
 /**
  * Popup that allows the hours of operation in a day to be changed.
+ * It contains two simple fields where a start time and end time can be set.
+ * The fields must be set in format HH:mm between the range 00:00 and 23:59.
+ * The end time must also be greater than the start time.
+ * This popup is used by the DayPanel, which will change the hours set in the
+ * day view when OK is clicked. Practitioner what already have appointments
+ * in the day will lose appointments that are outside the range of the day.
  */
 public class SelectTimeSlotUI extends JDialog implements ActionListener {
 

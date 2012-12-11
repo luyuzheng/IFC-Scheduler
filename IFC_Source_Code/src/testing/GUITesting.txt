@@ -116,7 +116,50 @@ Complete the following tasks to determine whether the application is working suc
 	- Double click a row and add an appointment note. This note should appear in the table and in the day view.
 	
 14. Click on the "Wait List" button.
-	- 
+	- Click on "Add Patient to Waitlist" button
+		* Hit OK without setting any fields. Should display the error message "Please select a patient."
+		* Select a patient and hit OK. Should display the error message "Please select a type."
+		* Select a type.
+		* Click on "Select Patient" again, but this time hit cancel. Hit OK to add patient to the waitlist. Should not receive an error message, and patient should be added to the waitlist.
+		* Attempt to add another patient, but this time hit "Cancel." No patients or changes should be made to the waitlist table.
+		* Add another patient, but add the same one with the same type as before. Should display the error message "This patient has already been added to the waitlist for this type of service."
+		* Add a few more valid patients for testing purposes.
+	- Click on a patient on the waitlist and click "Change Priority."
+		* Hit cancel and make sure the order of the patients does not change.
+		* Try again, but this time click on "Move to Top" and make sure the patient is moved to the top of the list.
+		* Click on the same patient (who is now at the top) and change the priority by scheduling to an arbitrary date and time. Should be organized appropriate in the waitlist table after hitting OK.
+		* Try one more time, but enter invalid values into the date and time fields. Should display the error message "The date and/or time is invalid."
+	- Click on a patient on the waitlist and click "Schedule Patient from Waitlist."
+		* Change the comment box and press OK. The comments should appear in the table.
+		* Click on the same patient. The comments from before should appear in the comments box, and the patient should not be scheduled.
+		* Schedule the patient by clicking on an appointment and pressing OK. (If the appointment box is empty, make sure you scheduled a practitioner with the correct type at a future date. Then try again.)
+		* The patient should be removed from the waitlist and immediately appear on the day view (check for refreshing problems).
+		* Double click on a patient in the waitlist and do the above steps for scheduling again. There should be no difference in functionality.
+	- Click on a patient on the waitlist and click "Remove Patient from Waitlist."
+		* The patient should be removed from the waitlist and not scheduled anywhere.
+		
+15. Click on the "Search" button.
+	- Add in two patients, one where the first name matches the first name of an existing patient, and one where the last name matches the last name of an existing patient.
+	- Click on the "Search for a Patient" button.
+		* Type in the first name which will give multiple results and check that both names appear.
+		* Try again, but type in the last name which will give multiple results and check that both names appear.
+		* Try again, but type in the first and last name of a patient and make sure this person appears.
+		* Try again, but type in a wrong name - there should be no results.
+	- Double click on a patient
+		* The patient information should be correct, and it should display all of the patient's future appointments.
+		* Double click on a future appointment, and make sure the information displayed there is correct.
+		* Confirm the appointment and make sure the confirmation appears in the table with the patient's future appointments.
+		* Unconfirm the appointment and make sure this change is updated in the patient's future appointments.
+		* Click on an appointment and add an appointment note. Make sure this change appears in the day view.
+	- Click on the "Search for Next Available Appointment" button.
+		* Click on the cancel button to ensure that nothing strange happens.
+		* Try again, but click on the search button with the default search attributes are used. This should return all future appointments with all practitioners on any day.
+		* Try again, but filter by service type. This should automatically filter out only the practitioners associated with that type. Check the results when all practitioners for that type are chosen, and check when only a specific practitioner is chosen.
+		* Try again, but check and uncheck the days of the week to make sure each one filters out the results properly.
+		* Double click on the search results and make sure the appointment information is correct.
+		
+	
+Check cancel buttons!!!!
 
 Check that buttons and tiny month calendar still work properly if a side pane is open.
 

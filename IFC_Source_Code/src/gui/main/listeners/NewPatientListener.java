@@ -19,19 +19,33 @@ import backend.DataTransferObjects.AppointmentDto;
 
 import gui.main.MainWindow;
 
+/**
+ * Waits for mouse clicks for an appointment block. If no patient has been scheduled yet, it opens
+ * the SelectPatientUI to schedule the patient. If a patient has already been scheduled in that block,
+ * the EditAppointmentUI so that the user can view appointment details.
+ */
 public class NewPatientListener extends MouseAdapter {
 	
 	AppointmentBlock owner;
 	Component parent;
-        MainWindow main;
+    MainWindow main;
 	
+    /**
+     * Constructor.
+     * 
+     * @param owner - component that owns this listener (AppointmentBlock)
+	 * @param parent - the parent of this listener (None)
+	 * @param main - the main window for the entire application (MainWindow)
+     */
 	public NewPatientListener(AppointmentBlock owner, Component parent, MainWindow main) {
 		this.owner = owner;
 		this.parent = parent;
-                this.main = main;
+		this.main = main;
 	}
 	
-	/** Looks for double clicks to open the Select Patient dialog. */
+	/** 
+	 * Looks for double clicks to open the Select Patient of Edit Appointment dialogs. 
+	 */
 	public void mouseClicked(MouseEvent e) {
 		//looking for double click events
 		if (e.getClickCount() >= 2) {
