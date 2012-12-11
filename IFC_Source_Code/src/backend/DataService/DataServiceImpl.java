@@ -123,11 +123,11 @@ public class DataServiceImpl implements DataService {
 		try {
 			if (patient.getPatID() == null) {
 				st = connection.prepareStatement(
-				"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes) VALUES (?, ?, ?, ?)");
+				"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes, Active) VALUES (?, ?, ?, ?, 1)");
 			} else {
 				st = connection.prepareStatement(
-						"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes, PatID) " +
-				"VALUES (?, ?, ?, ?, ?)");
+						"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes, PatID, Active) " +
+				"VALUES (?, ?, ?, ?, ?, 1)");
 				st.setInt(5, patient.getPatID());
 			}
 			st.setString(1, patient.getFirst());
