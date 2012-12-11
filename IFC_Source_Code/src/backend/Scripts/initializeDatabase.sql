@@ -1,7 +1,7 @@
 CREATE DATABASE IF NOT EXISTS ifc_db;
 #CREATE USER 'testuser'@'localhost' IDENTIFIED BY 'test623';
 USE ifc_db;
-GRANT ALL ON testdb.* TO 'testuser'@'localhost';
+GRANT ALL ON ifc_db.* TO 'testuser'@'localhost';
 CREATE TABLE IF NOT EXISTS Patient
 (
 PatID int NOT NULL PRIMARY KEY AUTO_INCREMENT, 
