@@ -68,12 +68,32 @@ public class DataServiceTests extends TestCase {
 	}
 
 	public void test_close() {
-		// TODO Auto-generated method stub
+		dataService.close();
+		try {
+			List<PatientDto> patients = dataService.getAllPatients();
+			if (patients == null) {
+				return;
+			}
+		} catch (RuntimeException e) {
+			return;
+		}
+		fail();
 	}
 
-	public boolean test_addPatient(PatientDto patient) {
-		// TODO Auto-generated method stub
-		return false;
+	public void test_addPatient() {
+		PatientDto patient = new PatientDto();
+		String first = "test";
+		String last = "43w9";
+		String notes = "notes notes notesnotesu3204reu9we";
+		String phone = "(453)125-3782";
+		patient.setField(PatientDto.PATIENT_ID, 123);
+		patient.setFirst(first);
+		patient.setLast(last);
+		patient.setNotes(notes);
+		patient.setPhone(phone);
+		dataService.addPatient(patient);
+		PatientDto pat = dataService.getPatient(123);
+		assertEquals(pat, patient);
 	}
 
 	public PatientDto test_addPatient(String phone, String first, String last,
