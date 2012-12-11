@@ -25,6 +25,11 @@ import backend.DataTransferObjects.PatientDto;
 
 import gui.main.MainWindow;
 
+@SuppressWarnings("serial")
+/** 
+ * Dialog window to display appointment details. 
+ * Allows editing of appointment notes, confirming appointments, marking patients as no-shows.
+ * **/
 public class EditAppointmentUI extends JDialog implements ActionListener {
 	private static EditAppointmentUI editAppointmentUI;
 	
@@ -37,8 +42,9 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	private JTextArea noteArea;
 	
 	private static AppointmentDto appointment;
-        private MainWindow window;
+    private MainWindow window;
 	
+    /** Creates the dialog box for editing an appointment **/    
 	private EditAppointmentUI(String name, AppointmentDto a, MainWindow window) {
 		appointment = a;
         this.window = window;
@@ -156,6 +162,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		textArea.updateUI();
 	}
 	
+	/** Changes the text of the confirm button depending on whether the appointment has been confirmed **/
 	public void isConfirmedValidate() {
 		if (appointment.getConfirmation()) {
 			confirmButton.setText("<html>Unconfirm</html>");
@@ -164,6 +171,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		}
 	}
 	
+	/** Changes the status of the appointment confirmation **/
 	private final AbstractAction changeConfirmationAction = new AbstractAction("<html>Confirm</html>") {
 		public void actionPerformed(ActionEvent e) {
 			if (!appointment.getConfirmation()) {
@@ -179,6 +187,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		}
 	};
 	
+	/** Saves the information to the databased that was updated in the window **/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("save")) {
 			// Saves the noShow status

@@ -1,13 +1,10 @@
 package gui.sub;
 
 import gui.Constants;
-import gui.sub.SelectPatientUI.PatTableModel;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -35,6 +32,7 @@ import backend.DataTransferObjects.PatientDto;
  * Displays a list of all of the patients and allows a patient to be selected for editing or removal
  * Also allows creation of new patients.
  */
+@SuppressWarnings("serial")
 public class EditPatientsUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPatientsUI editPatientsUI;
 	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
@@ -46,6 +44,8 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	private JTable patTable;
 	private JTextField searchField = new JTextField();
 	
+	
+	/** Creates the dialog for viewing the list of patients **/
 	public EditPatientsUI(String s) {
 		setModal(true);
 		setTitle(s);
@@ -55,6 +55,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		setResizable(false);
 	}
 	
+	/** Creates a table for the existing patients **/
 	private JComponent makeExisPatPanel() {
     	JPanel p = new JPanel(new BorderLayout());
     	JPanel panel = new JPanel(new BorderLayout());
@@ -62,6 +63,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     	searchField.addKeyListener(this);
     	
     	patTable = new JTable(new PatTableModel(pat)) {  
+    		
     		//Implement table cell tool tips.
     		public String getToolTipText(MouseEvent e) {
     		    String tip = null;
@@ -91,6 +93,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     		 
     		}
     	};
+    	
     	patTable.setAutoCreateRowSorter(true);
     	patTable.getTableHeader().setReorderingAllowed(false);
     	patTable.getTableHeader().setFont(Constants.PARAGRAPH);
@@ -101,6 +104,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     	panel.add(patTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(patTable, BorderLayout.CENTER);
     	
+    	// create all the dialog buttons
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("ok");
     	okButton.addActionListener(this);
@@ -134,6 +138,10 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
         return p;
     }
 	
+	/** 
+	 * Method to split up a string if it is too long to display.
+	 * Returns an ArrayList of the lines to be printed.
+	 * **/
 	private ArrayList<String> breakupString(String s, int line) {
 		ArrayList<String> strings = new ArrayList<String>();
 		int startIndex = 0;
@@ -151,6 +159,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		return strings;
 	}
 	
+	/** Sets the edit patients dialog as visible **/
 	public static void ShowDialog(Component owner) {
 		editPatientsUI = new EditPatientsUI("Edit Patients");
 		editPatientsUI.pack();
@@ -158,6 +167,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		editPatientsUI.setVisible(true);
 	}
 	
+	/** Updates the table when new patients are added **/
 	public void updateTable() {
 		 // Filters patients
 		String filter = searchField.getText().toLowerCase();
@@ -176,6 +186,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
         patTable.setModel(new PatTableModel(filteredPat));
 	}
 	
+	/** Class to create a table that will list all the existing patients **/
 	class PatTableModel extends AbstractTableModel {
 
 		List<PatientDto> patients = new ArrayList<PatientDto>();
@@ -229,11 +240,13 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		
 	}
 
+	/** Updates the table when a button is pressed **/
 	public void keyReleased(KeyEvent arg0) {
 		updateTable();
 		
 	}
 
+	/** Determines the correct behavior for adding, editing, and removing patients from the table **/
 	public void actionPerformed(ActionEvent e) {
 		PatTableModel model = (PatTableModel)patTable.getModel();
 		if (e.getActionCommand().equals("edit")) {
