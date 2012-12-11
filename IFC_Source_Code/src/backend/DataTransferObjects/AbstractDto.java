@@ -31,15 +31,15 @@ public abstract class AbstractDto {
     @Override
     public boolean equals(Object other) {
     	for (Entry<String, Object> entry : fieldsMap.entrySet()) {
-    		if (this.getField(entry.getKey()) == null) {
+    		if (((AbstractDto) other).getField(entry.getKey()) == null) {
     			if (entry.getValue() != null) {
     				return false;
     			}
     		}  else if (entry.getValue() == null) {
-    			if (this.getField(entry.getKey()) != null) {
+    			if (((AbstractDto) other).getField(entry.getKey()) != null) {
     				return false;
     			}
-    		} else if (!this.getField(entry.getKey()).equals(entry.getValue())) {
+    		} else if (!((AbstractDto) other).getField(entry.getKey()).equals(entry.getValue())) {
             	return false;
             }
         }

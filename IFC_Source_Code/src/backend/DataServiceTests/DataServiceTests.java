@@ -93,15 +93,13 @@ public class DataServiceTests extends TestCase {
 		patient.setLast(last);
 		patient.setNotes(notes);
 		patient.setPhone(phone);
+		patient.setField(PatientDto.PATIENT_ID, 1);
+		patient.setField(PatientDto.NO_SHOW, 0);
 		dataService.addPatient(phone, first, last, notes);
 		PatientDto pat = dataService.getPatient(1);
 		assertEquals(pat, patient);
 		
 		patient.setField(PatientDto.PATIENT_ID, 123);
-		patient.setFirst(first);
-		patient.setLast(last);
-		patient.setNotes(notes);
-		patient.setPhone(phone);
 		dataService.addPatient(patient);
 		pat = dataService.getPatient(123);
 		assertEquals(pat, patient);
@@ -119,7 +117,9 @@ public class DataServiceTests extends TestCase {
 		patient.setLast(last);
 		patient.setNotes(notes);
 		patient.setPhone(phone);
-		dataService.addPatient(patient);
+		patient.setField(PatientDto.PATIENT_ID, 1);
+		patient.setField(PatientDto.NO_SHOW, 0);
+		dataService.addPatient(phone, first, last, notes);
 		PatientDto pat = dataService.getPatient(1);
 		assertEquals(pat, patient);
 		
@@ -134,13 +134,14 @@ public class DataServiceTests extends TestCase {
 		String last = "43w9";
 		String notes = "notes notes notesnotesu3204reu9we";
 		String phone = "(453)125-3782";
-		String newNotes = "This is my new note, see how it gleams.";
 		
 		patient.setFirst(first);
 		patient.setLast(last);
 		patient.setNotes(notes);
 		patient.setPhone(phone);
-		dataService.addPatient(patient);
+		patient.setField(PatientDto.PATIENT_ID, 1);
+		patient.setField(PatientDto.NO_SHOW, 0);
+		dataService.addPatient(phone, first, last, notes);
 		PatientDto pat = dataService.getPatient(1);
 		assertEquals(pat, patient);
 		
@@ -149,9 +150,36 @@ public class DataServiceTests extends TestCase {
 		assertFalse(patients.contains(pat));
 	}
 
-	public List<PatientDto> test_getAllPatients() {
-		// TODO Auto-generated method stub
-		return null;
+	public void test_getAllPatients() {
+		PatientDto patient = new PatientDto();
+		PatientDto patient2 = new PatientDto();
+		String first = "test";
+		String last = "43w9";
+		String notes = "notes notes notesnotesu3204reu9we";
+		String phone = "(453)125-3782";
+
+		patient.setField(PatientDto.PATIENT_ID, 1);
+		patient.setField(PatientDto.NO_SHOW, 0);
+		patient.setFirst(first);
+		patient.setLast(last);
+		patient.setNotes(notes);
+		patient.setPhone(phone);
+		patient2.setField(PatientDto.PATIENT_ID, 2);
+		patient2.setField(PatientDto.NO_SHOW, 0);
+		patient2.setFirst(first + "2");
+		patient2.setLast(last + "2");
+		patient2.setNotes(notes + "2");
+		patient2.setPhone(phone + "2");
+		dataService.addPatient(patient);
+		dataService.addPatient(patient2);
+		PatientDto pat = dataService.getPatient(1);
+		assertEquals(pat, patient);
+		pat = dataService.getPatient(2);
+		assertEquals(pat, patient2);
+		List<PatientDto> pats = dataService.getAllPatients();
+		System.out.println(pats);
+		assertTrue(pats.contains(patient));
+		assertTrue(pats.contains(patient2));
 	}
 
 	public List<PatientDto> test_queryPatientByName(String first, String last) {
