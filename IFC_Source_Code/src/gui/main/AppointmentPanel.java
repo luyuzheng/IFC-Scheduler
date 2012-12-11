@@ -38,6 +38,9 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	ArrayList<Graphics2D> pages;
 	/** The side panel containing the time information for the appointment panel. */
 	SidePanel sidePanel;
+	
+	int[] pageBreaks;  // array of page break line positions
+	
 
 	/** Constructs the Appointment Panel given the Day Panel object. */
 	public AppointmentPanel(DayPanel dp) {
