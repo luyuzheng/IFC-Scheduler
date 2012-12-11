@@ -178,7 +178,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 				confirmButton.setText("<html>Confirm</html>");
 			}
 			refreshPatientInfo(appointment);
-                        main.refreshAppointments(appointment.getApptDate());
+            main.refreshAppointments(appointment.getApptDate());
 		}
 	};
 	
@@ -187,6 +187,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "OK") {
+			appointment.setNote(noteArea.getText());
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
 			displayAppointmentConfirmationUI.setVisible(false);
 		} else {
