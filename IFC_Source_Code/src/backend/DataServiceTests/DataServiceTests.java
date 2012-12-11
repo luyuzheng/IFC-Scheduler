@@ -319,9 +319,8 @@ public class DataServiceTests extends TestCase {
 		return null;
 	}
 
-	public boolean test_updateWaitlist(WaitlistDto wp) {
+	public void test_updateWaitlist(WaitlistDto wp) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public boolean test_removePatientFromWaitlist(WaitlistDto patient) {
@@ -335,7 +334,6 @@ public class DataServiceTests extends TestCase {
 	}
 	
 	public ArrayList<AppointmentDto> test_getAllPatientsForDay(Date day) {
-		
 		// TODO Auto-generated method stub
 		return null;
 	}
