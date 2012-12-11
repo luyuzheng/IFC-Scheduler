@@ -6,14 +6,12 @@ import gui.Constants;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Dimension;
 
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -26,8 +24,9 @@ import javax.swing.JTextField;
 import backend.DataTransferObjects.PatientDto;
 
 /**
- * Popup for the editing of a single patient.
+ * Pop-up dialog for the editing of a single patient.
  */
+@SuppressWarnings("serial")
 public class EditPatientUI extends JDialog implements ActionListener {
 	private static EditPatientUI editPatientUI;
 	
@@ -43,6 +42,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 	
 	private static PatientDto p;
 	
+	/** Constructs a dialog box to edit a patient, given their name as a string **/
 	private EditPatientUI(String name) {
 		setModal(true);
 		setTitle(name);
@@ -53,6 +53,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		lastNameField.setText(p.getLast());
 		lastNameField.setFont(Constants.PARAGRAPH);
 		
+		// sets the phone fields
 		if(p.getPhone() != null){
 			String phone= p.getPhone();
 			phone = phone.replaceAll("-| |\\)|\\(", "");
@@ -70,6 +71,8 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		
     	JPanel panel = new JPanel(new BorderLayout());
     	JPanel input = new JPanel(new GridLayout(0,1));
+    	
+    	// builds the first name field
     	JPanel fName = new JPanel(new BorderLayout());
     	JLabel label = new JLabel("First Name: ");
     	label.setFont(Constants.PARAGRAPH);
@@ -77,6 +80,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	firstNameField.setColumns(15);
     	fName.add(firstNameField, BorderLayout.CENTER);
     	
+    	// builds the last name field
     	JPanel lName = new JPanel(new BorderLayout());
     	label = new JLabel("Last Name: ");
     	label.setFont(Constants.PARAGRAPH);
@@ -90,6 +94,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	input.add(names);
     	
+    	// builds the phone number fields
     	JPanel num = new JPanel(new BorderLayout());
     	label = new JLabel("Phone Number: ", JLabel.CENTER);
     	label.setFont(Constants.PARAGRAPH);
@@ -104,6 +109,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	num.add(phonePanel, BorderLayout.CENTER);
     	input.add(num);
     	
+    	// builds the no shows panel
     	JPanel noShowsPanel = new JPanel(new BorderLayout());
     	numberOfNoShows.setText("Number of no shows: " + p.getNoShows());
     	numberOfNoShows.setFont(Constants.PARAGRAPH);
@@ -112,19 +118,19 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	noShowsPanel.add(numberOfNoShows);
     	input.add(noShowsPanel);
     	
+    	// builds the notes panel
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Patient notes: ", JLabel.CENTER);
     	label.setFont(Constants.PARAGRAPH);
     	notePanel.add(label, BorderLayout.NORTH);
-    	//note.setFont(phonePanel.getFont());
     	note.setFont(Constants.PARAGRAPH);
-    	//note.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.BLACK));
     	note.setLineWrap(true);
     	note.setWrapStyleWord(true);
     	JScrollPane notePane = new JScrollPane(note);
-    	notePane.setPreferredSize(new Dimension(175,100)); //Added by Aakash    	
+    	notePane.setPreferredSize(new Dimension(175,100));    	
     	notePanel.add(notePane, BorderLayout.CENTER);
     		
+    	// builds the button panel
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("ok");
     	okButton.addActionListener(this);
@@ -145,7 +151,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		
 	}
     
-	
+	/** Sets the dialog as visible **/
 	public static PatientDto ShowDialog(Component owner, PatientDto pat) {
 		p = pat;
 		editPatientUI = new EditPatientUI("Edit Patient");
@@ -155,25 +161,33 @@ public class EditPatientUI extends JDialog implements ActionListener {
 		return p;
 	}
 	
+	/** Allows for editing of patient fields **/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("cancel")) {
 			editPatientUI.setVisible(false);
 			return;
 		}
+		
 		JLabel msg = new JLabel();
 		msg.setFont(Constants.PARAGRAPH);
+		
+		// edit first name
 		String firstName = firstNameField.getText();
 		if (firstName.equals("")) {
 			msg.setText("Please enter a first name.");
 			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		
+		// edit last name
 		String lastName = lastNameField.getText();
 		if (lastName.equals("")) {
 			msg.setText( "Please enter a last name.");
 			JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
+		
+		// edit phone number
 		String areaCode = areaCodeField.getText();
 		String numberPart1 = numberPart1Field.getText();
 		String numberPart2 = numberPart2Field.getText();
@@ -192,10 +206,6 @@ public class EditPatientUI extends JDialog implements ActionListener {
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else {
-//				int a = Integer.parseInt(areaCode);
-//				int p1 = Integer.parseInt(numberPart1);
-//				int p2 = Integer.parseInt(numberPart2);
-//				num = new PhoneNumber(a, p1, p2);
 				num = areaCode + "-" + numberPart1 + "-"+ numberPart2;
 			}
 		} catch (Exception ex) {
@@ -204,6 +214,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
 			return;
 		}
 		
+		// edit the patient notes
 		String noteText = note.getText().replaceAll("[\r\n]+", "\t\t");
 		
 		p.setFirst(firstName);

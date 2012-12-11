@@ -3,18 +3,12 @@ package gui.sub;
 import gui.Constants;
 import gui.DateTimeUtils;
 import gui.main.listeners.ScheduleWaitlistPatientListener;
-import gui.main.listeners.WaitlistPatientListener;
-import gui.sub.SelectPatientUI.PatTableModel;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -28,8 +22,6 @@ import javax.swing.JTextArea;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
-
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.*;
 
@@ -57,6 +49,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	
 	private static String comment = "";
 	
+	/** Creates the dialog for a patient on the waitlist **/
 	private DisplayWaitingPatientUI(String name, WaitlistDto wp, WaitListPane pane) {
 		setModal(true);
 		setTitle(name);
@@ -114,6 +107,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		
 	}
 	
+	/** Displays the available appointments for someone on the waitlist **/
 	private JComponent displayAvailAppts() {
 		
 		JPanel p = new JPanel(new BorderLayout());
@@ -179,16 +173,11 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
         
-        //searchField.setFont(font);
-        //p.add(searchField, BorderLayout.NORTH);
     	topPanel.add(scheduleApptLabel, BorderLayout.NORTH);
     	topPanel.add(scrollPane, BorderLayout.CENTER);
     	p.add(topPanel, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
         return p;
-		
-		
-		//return null;
 	}
     
 	
@@ -202,6 +191,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		return comment;
 	}
 	
+	/** Updates the database when someone is added to the waitlist or scheduled for an appointment **/
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("OK")) {
 			if (aptTable.getSelectedRow() >= 0) {
@@ -222,10 +212,12 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		displayWaitingPatientUI.setVisible(false);
     }
 	
+	/** Retrieves a patient on the waitlist **/
 	public WaitlistDto getWaitlistPatient() {
 		return waitingPatient;
 	}
 	
+	/** Creates a table for displaying all the appointments available for waitlisted people **/
 	public class ApptTableModel extends AbstractTableModel {	
 
 		ArrayList<AppointmentDto> appointments = new ArrayList<AppointmentDto>();

@@ -4,7 +4,11 @@ import java.sql.Date;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+/** Contains methods to handle how dates and times are presented in the interface **/
+
 public class DateTimeUtils {
+	
+	/** Prints a date using the short form of the month, the day, and the year **/
 	public static String prettyPrintMonthDay(Date date) {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);
