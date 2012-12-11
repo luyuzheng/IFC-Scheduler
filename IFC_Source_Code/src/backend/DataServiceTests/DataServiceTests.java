@@ -61,12 +61,14 @@ public class DataServiceTests extends TestCase {
 		Statement s = Conn.createStatement();
 		s.executeUpdate("DROP USER 'unit_test_user'@'localhost'");
 		s.executeUpdate("DROP DATABASE ifc_unit_test_db");
+		dataService.close();
 	}
 	
 	public void testSetup() {
 		assertTrue(true);
 	}
 
+	/** TEST IS FLAKY (sometimes fails when it should pass) */
 	public void test_close() {
 		dataService.close();
 		try {
@@ -80,42 +82,71 @@ public class DataServiceTests extends TestCase {
 		fail();
 	}
 
-	public void test_addPatient() {
+	public void test_addPatient_getPatient() {
 		PatientDto patient = new PatientDto();
 		String first = "test";
 		String last = "43w9";
 		String notes = "notes notes notesnotesu3204reu9we";
 		String phone = "(453)125-3782";
+		
+		patient.setFirst(first);
+		patient.setLast(last);
+		patient.setNotes(notes);
+		patient.setPhone(phone);
+		dataService.addPatient(phone, first, last, notes);
+		PatientDto pat = dataService.getPatient(1);
+		assertEquals(pat, patient);
+		
 		patient.setField(PatientDto.PATIENT_ID, 123);
 		patient.setFirst(first);
 		patient.setLast(last);
 		patient.setNotes(notes);
 		patient.setPhone(phone);
 		dataService.addPatient(patient);
-		PatientDto pat = dataService.getPatient(123);
+		pat = dataService.getPatient(123);
 		assertEquals(pat, patient);
 	}
 
-	public PatientDto test_addPatient(String phone, String first, String last,
-			String notes) {
-		// TODO Auto-generated method stub
-		return null;
+	public void test_updatePatient() {
+		PatientDto patient = new PatientDto();
+		String first = "test";
+		String last = "43w9";
+		String notes = "notes notes notesnotesu3204reu9we";
+		String phone = "(453)125-3782";
+		String newNotes = "This is my new note, see how it gleams.";
+		
+		patient.setFirst(first);
+		patient.setLast(last);
+		patient.setNotes(notes);
+		patient.setPhone(phone);
+		dataService.addPatient(patient);
+		PatientDto pat = dataService.getPatient(1);
+		assertEquals(pat, patient);
+		
+		dataService.updatePatient(PatientDto.NOTES, newNotes, pat);
+		patient.setNotes(newNotes);
+		assertEquals(patient, dataService.getPatient(1));
 	}
 
-	public boolean test_updatePatient(String fieldName, Object value,
-			PatientDto patient) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean test_removePatient(PatientDto patient) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public PatientDto test_getPatient(int PatID) {
-		// TODO Auto-generated method stub
-		return null;
+	public void test_removePatient() {
+		PatientDto patient = new PatientDto();
+		String first = "test";
+		String last = "43w9";
+		String notes = "notes notes notesnotesu3204reu9we";
+		String phone = "(453)125-3782";
+		String newNotes = "This is my new note, see how it gleams.";
+		
+		patient.setFirst(first);
+		patient.setLast(last);
+		patient.setNotes(notes);
+		patient.setPhone(phone);
+		dataService.addPatient(patient);
+		PatientDto pat = dataService.getPatient(1);
+		assertEquals(pat, patient);
+		
+		dataService.removePatient(pat);
+		List<PatientDto> patients = dataService.getAllPatients();
+		assertFalse(patients.contains(pat));
 	}
 
 	public List<PatientDto> test_getAllPatients() {
