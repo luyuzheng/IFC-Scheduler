@@ -151,6 +151,12 @@ Complete the following tasks to determine whether the application is working suc
 		* Confirm the appointment and make sure the confirmation appears in the table with the patient's future appointments.
 		* Unconfirm the appointment and make sure this change is updated in the patient's future appointments.
 		* Click on an appointment and add an appointment note. Make sure this change appears in the day view.
+	- Click on the "Search for Next Available Appointment" button.
+		* Click on the cancel button to ensure that nothing strange happens.
+		* Try again, but click on the search button with the default search attributes are used. This should return all future appointments with all practitioners on any day.
+		* Try again, but filter by service type. This should automatically filter out only the practitioners associated with that type. Check the results when all practitioners for that type are chosen, and check when only a specific practitioner is chosen.
+		* Try again, but check and uncheck the days of the week to make sure each one filters out the results properly.
+		* Double click on the search results and make sure the appointment information is correct.
 		
 	
 Check cancel buttons!!!!
