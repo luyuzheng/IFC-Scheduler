@@ -59,7 +59,7 @@ Complete the following tasks to determine whether the application is working suc
 6. Click on a practitioner and click "Remove Practitioner From Current Day." (If you cannot hit this button after selecting a practitioner, there is a bug.)
 	- Message should appear, stating "Are you sure you want to remove this practitioner from the schedule? This will cancel any appointments that have been set for this day."
 	- Hit no, and nothing should happen (i.e. no practitioner should disappear from GUI or database).
-	- Click on remove practitioner button again.
+	- Click on the remove practitioner button again.
 	- This time, hit yes, and the correct practitioner should be removed.
 	- Double click on another practitioner, and click "Clear Practitioner." Same error message about removing practitioners should appear. Try No and Yes, and make sure the practitioner is removed properly.
 	
@@ -157,12 +157,18 @@ Complete the following tasks to determine whether the application is working suc
 		* Try again, but filter by service type. This should automatically filter out only the practitioners associated with that type. Check the results when all practitioners for that type are chosen, and check when only a specific practitioner is chosen.
 		* Try again, but check and uncheck the days of the week to make sure each one filters out the results properly.
 		* Double click on the search results and make sure the appointment information is correct.
-		
+
+16. Click on the "Hours of Operation" button.
+	- Type an invalid value into the start time field. Should display the error message "Invalid start time."
+	- Type an invalid value into the end time field. Should display the error message "Invalid end time."
+	- Type a start time that is greater than the end time. Should display the error message "End time must be after start time."
+	- Enter valid hours of operation. Should get the message "Changing the day's hours will clear any appointments that have been set. Continue?" Click No and Yes to check both.
+	- After resetting the hours, the appointments for that day should be cleared.
 	
-Check cancel buttons!!!!
+17. Check all cancel buttons on every window to ensure that either nothing happens or changes revert back to its original state.
 
-Check that buttons and tiny month calendar still work properly if a side pane is open.
+18. Check that buttons and tiny month calendar still work properly if a side pane is open.
 
-12. Check letter-by-letter search fields:
+19. Check letter-by-letter search fields:
 	- Go to the schedule patient pop up window. Type in names and parts of names to make sure that the search returns at least the desired name, if not a few more choices.
 		

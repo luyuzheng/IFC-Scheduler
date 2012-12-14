@@ -93,8 +93,11 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("ok")) {
 			int t1, t2;
 			String time1 = startTimeField.getText();
+			JLabel msg = new JLabel();
+			msg.setFont(Constants.PARAGRAPH);
 			if (time1.equals("")) {
-				JOptionPane.showMessageDialog(this, "Please enter a start time.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter a start time.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else if (time1.matches("[0-2][0-9]:[0-5][0-9]")) {
 				String hour = time1.replaceAll(":[0-5][0-9]", "");
@@ -102,16 +105,19 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 				try { 
 					t1 = Integer.parseInt(hour) * 60 + Integer.parseInt(minute);
 				} catch(Exception ex) {
-					JOptionPane.showMessageDialog(this, "Invalid start time.", "Error!", JOptionPane.ERROR_MESSAGE);
+					msg.setText("Invalid start time.");
+					JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			} else {
-				JOptionPane.showMessageDialog(this, "Invalid start time.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText( "Invalid start time.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			String time2 = endTimeField.getText();
 			if (time2.equals("")) {
-				JOptionPane.showMessageDialog(this, "Please enter an end time.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter an end time.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			} else if (time2.matches("[0-2][0-9]:[0-5][0-9]")) {
 				String hour = time2.replaceAll(":[0-5][0-9]", "");
@@ -119,19 +125,23 @@ public class SelectTimeSlotUI extends JDialog implements ActionListener {
 				try { 
 					t2 = 60 * Integer.parseInt(hour) + Integer.parseInt(minute);
 				} catch(Exception ex) {
-					JOptionPane.showMessageDialog(this, "Invalid end time.", "Error!", JOptionPane.ERROR_MESSAGE);
+					msg.setText("Invalid end time.");
+					JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 			} else {
-				JOptionPane.showMessageDialog(this, "Invalid end time.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Invalid end time.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			if (t1 >= t2) {
-				JOptionPane.showMessageDialog(this, "End time must be after start time.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("End time must be after start time.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
-			if (JOptionPane.showConfirmDialog(this, "Changing the day's hours will clear any appointments that have been set. Continue?", "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
+			msg.setText("Changing the day's hours will clear any appointments that have been set. Continue?");
+			if (JOptionPane.showConfirmDialog(this, msg, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
 			timeSlot = new TimeSlot(t1,t2);
 			
 		}
