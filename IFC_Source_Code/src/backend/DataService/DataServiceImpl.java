@@ -1,6 +1,8 @@
 package backend.DataService;
 
 import gui.TimeSlot;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -11,10 +13,19 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
-import backend.DataTransferObjects.*;
+import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.DayDto;
+import backend.DataTransferObjects.NoShowDto;
+import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.PractitionerDto;
+import backend.DataTransferObjects.SchedulePractitionerDto;
+import backend.DataTransferObjects.TypeDto;
+import backend.DataTransferObjects.WaitlistDto;
 
 public class DataServiceImpl implements DataService {
 
@@ -58,6 +69,7 @@ public class DataServiceImpl implements DataService {
 		//serv.close();
 	}
 
+	public static Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create(
 			"ifc_db", "localhost:3306", "testuser", "test623");
 	
@@ -92,10 +104,20 @@ public class DataServiceImpl implements DataService {
 				"jdbc:mysql://" + serverAddr + "/" + dbName, username, password);
 
 		try {
+			FileHandler fileHandler = new FileHandler("error.log");
+			fileHandler.setFormatter(new SimpleFormatter());
+			lgr.addHandler(fileHandler);
+
 			service.connection =
 				DriverManager.getConnection(service.url, service.user, service.password);
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+			return null;
+		} catch (SecurityException e) {
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+			return null;
+		} catch (IOException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 			return null;
 		}
@@ -111,7 +133,7 @@ public class DataServiceImpl implements DataService {
 				connection.close();
 			}
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, "DataService.close() failed.\n" + e.getMessage(), e);
 		}
 	}
@@ -137,7 +159,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -145,7 +167,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -165,7 +187,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -173,7 +195,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -186,7 +208,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			if (patient.getPatID() == null) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, "Tried to delete patient without ID");
 				return false;
 			} else {
@@ -197,7 +219,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -205,7 +227,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -241,7 +263,7 @@ public class DataServiceImpl implements DataService {
 
 			return null;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -249,7 +271,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -286,7 +308,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return results;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			////Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -294,7 +316,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -358,7 +380,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return results;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -366,7 +388,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -393,7 +415,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return results;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -401,7 +423,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -422,7 +444,7 @@ public class DataServiceImpl implements DataService {
 			return this.getType(serviceType);
                         
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -430,7 +452,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -447,7 +469,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -455,7 +477,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -479,7 +501,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return results;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -487,7 +509,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -530,7 +552,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return results;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -538,7 +560,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -602,7 +624,7 @@ public class DataServiceImpl implements DataService {
                         }
 			
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -610,7 +632,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -624,7 +646,7 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			if (practitioner.getPractID() == null) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, "Tried to delete practitioner without ID\n");
 				return false;
 			} else {
@@ -635,7 +657,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -643,7 +665,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -671,7 +693,7 @@ public class DataServiceImpl implements DataService {
 		return updated != 0;
 		
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -679,7 +701,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -714,7 +736,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return retList;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -722,7 +744,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -742,7 +764,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		}
 		catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
 			" checked as no show");
 		} finally {
@@ -751,7 +773,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 
@@ -791,7 +813,7 @@ public class DataServiceImpl implements DataService {
 			pract.setEnd(newEnd);
 
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -799,7 +821,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -848,7 +870,7 @@ public class DataServiceImpl implements DataService {
 			}
 
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -856,7 +878,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -879,7 +901,7 @@ public class DataServiceImpl implements DataService {
 		return true;
 		
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -887,7 +909,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -909,7 +931,7 @@ public class DataServiceImpl implements DataService {
 		return true;
 		
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -917,7 +939,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -940,7 +962,7 @@ public class DataServiceImpl implements DataService {
 		return true;
 		
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -948,7 +970,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -990,10 +1012,10 @@ public class DataServiceImpl implements DataService {
 			
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} catch (NullPointerException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
 			" checked as no show");
 		} finally {
@@ -1002,7 +1024,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1026,10 +1048,10 @@ public class DataServiceImpl implements DataService {
 			appointment.setNoShowID(null);
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} catch (NullPointerException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
 			" checked as no show");
 		} finally {
@@ -1038,7 +1060,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1059,7 +1081,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return null; //Todo: changge return type
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1067,7 +1089,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1086,7 +1108,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1094,7 +1116,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1113,7 +1135,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1121,7 +1143,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1141,7 +1163,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return null;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1149,7 +1171,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1168,7 +1190,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1176,7 +1198,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1214,7 +1236,7 @@ public class DataServiceImpl implements DataService {
 			}
 			return results;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1222,7 +1244,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1244,7 +1266,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1252,7 +1274,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1324,7 +1346,7 @@ public class DataServiceImpl implements DataService {
 			
                         return returnDto;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1332,7 +1354,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1420,7 +1442,7 @@ public class DataServiceImpl implements DataService {
 			}
 
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1428,7 +1450,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1465,7 +1487,7 @@ public class DataServiceImpl implements DataService {
 			return null;
 
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1473,7 +1495,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1530,7 +1552,7 @@ public class DataServiceImpl implements DataService {
 			return retList;
 
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1538,7 +1560,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1593,7 +1615,7 @@ public class DataServiceImpl implements DataService {
 			return retList;
 
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1601,7 +1623,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1622,7 +1644,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1630,7 +1652,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1651,7 +1673,7 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 		} finally {
 			try {
@@ -1659,7 +1681,7 @@ public class DataServiceImpl implements DataService {
 					st.close();
 				}
 			} catch (SQLException ex) {
-				Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+				//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
 		}
@@ -1706,7 +1728,7 @@ public class DataServiceImpl implements DataService {
                     return returnPatient;
                 }
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -1714,7 +1736,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -1742,7 +1764,7 @@ public class DataServiceImpl implements DataService {
                     return null;
                 }
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -1750,7 +1772,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -1777,7 +1799,7 @@ public class DataServiceImpl implements DataService {
 		return true;
 		
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -1785,7 +1807,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -1812,7 +1834,7 @@ public class DataServiceImpl implements DataService {
 		return true;
 		
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -1820,7 +1842,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -1840,7 +1862,7 @@ public class DataServiceImpl implements DataService {
                 return true;
                 
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -1848,7 +1870,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -1910,7 +1932,7 @@ public class DataServiceImpl implements DataService {
 			return aptList;
 
         } catch (SQLException e) {
-        	Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+        	//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
         	lgr.log(Level.SEVERE, e.getMessage(), e);
         } finally {
         	try {
@@ -1918,7 +1940,7 @@ public class DataServiceImpl implements DataService {
         			st.close();
         		}
         	} catch (SQLException ex) {
-        		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+        		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
         		lgr.log(Level.WARNING, ex.getMessage(), ex);
         	}
         }
@@ -1966,7 +1988,7 @@ public class DataServiceImpl implements DataService {
     		return returnList;
 
     	} catch (SQLException e) {
-    		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+    		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
     		lgr.log(Level.SEVERE, e.getMessage(), e);
     	} finally {
     		try {
@@ -1974,7 +1996,7 @@ public class DataServiceImpl implements DataService {
     				st.close();
     			}
     		} catch (SQLException ex) {
-    			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+    			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
     			lgr.log(Level.WARNING, ex.getMessage(), ex);
     		}
     	}
@@ -2019,7 +2041,7 @@ public class DataServiceImpl implements DataService {
 		return null;
 		
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -2027,7 +2049,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
@@ -2071,7 +2093,7 @@ public class DataServiceImpl implements DataService {
                 st.executeUpdate();
 		return true;
 	} catch (SQLException e) {
-		Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+		//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 		lgr.log(Level.SEVERE, e.getMessage(), e);
 	} finally {
 		try {
@@ -2079,7 +2101,7 @@ public class DataServiceImpl implements DataService {
 				st.close();
 			}
 		} catch (SQLException ex) {
-			Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
+			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
