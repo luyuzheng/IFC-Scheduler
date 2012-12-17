@@ -12,6 +12,9 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -35,10 +38,8 @@ public class CrashReportUI extends JDialog {
 	
 	private String crashDescriptionString = "<b>The application appears to have crashed!</b> " +
 			"We are really sorry! To help fix these bugs and improve our product, " +
-			"please save a crash report and email it and the error logs to either Daisy Fan, " +
-			"or the development team. " +
-			"The crash report will be saved to a file called \"report.log\" with the errors logged " +
-			"in \"error.log\" in the directory where the application is installed.";
+			"please save a crash report below and then email Daisy Fan " +
+			"(dfan@cs.cornell.edu) for assistance. ";
 
 	private CrashReportUI(Exception e) {
 		exceptionThrown = e;
@@ -57,7 +58,7 @@ public class CrashReportUI extends JDialog {
 		JLabel description = new JLabel("<html>" + crashDescriptionString + "</html>");
 		description.setFont(Constants.PARAGRAPH);
 		descriptionPanel.add(description, BorderLayout.CENTER);
-		JLabel reportLabel = new JLabel("<html><br>Describe what you were doing:</html>");
+		JLabel reportLabel = new JLabel("<html><br>Please describe what you were doing before the crash:</html>");
 		reportLabel.setFont(Constants.PARAGRAPH);
 		descriptionPanel.add(reportLabel, BorderLayout.PAGE_END);
 		reportPanel.add(descriptionPanel);
@@ -101,14 +102,18 @@ public class CrashReportUI extends JDialog {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			try {
-				FileWriter fileWriter = new FileWriter("report.log");
+				DateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss aa");
+				Calendar cal = Calendar.getInstance();
+				
+				FileWriter fileWriter = new FileWriter("report.log", true);
 				BufferedWriter out = new BufferedWriter(fileWriter);
+				out.write(dateFormat.format(cal.getTime()) + "\r\n");
 				out.write("REPORT:\r\n" + report.getText() + "\r\n");
-				out.write("EXCEPTION MESSSAGE:\r\n" + exceptionThrown.getMessage() + "\r\n");
+				out.write("EXCEPTION MESSAGE:\r\n" + exceptionThrown.getMessage() + "\r\n");
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				exceptionThrown.printStackTrace(pw);
-				out.write("STACK TRACE:\r\n" + sw.toString() + "\r\n");
+				out.write("STACK TRACE:\r\n" + sw.toString() + "\r\n \r\n");
 				out.close();
 			} catch (Exception e) {
 				// TODO: failed to save report
