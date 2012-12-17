@@ -37,7 +37,7 @@ public class DataServiceImpl implements DataService {
 
 		//DataService serv = DataServiceImpl.create("test", "192.168.0.13:3306", user, password);
 
-		System.out.println(GLOBAL_DATA_INSTANCE.getFutureAppointmentsByPatId(1));
+		//System.out.println(GLOBAL_DATA_INSTANCE.getFutureAppointmentsByPatId(1));
 		//		PatientDto newPatient = new PatientDto();
 		//		newPatient.setFirst("Dead").setLast("Bowie").setPhone(3215552314L).setNotes("ELE member");
 		//		serv.addPatient(newPatient);
