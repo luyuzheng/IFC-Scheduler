@@ -45,10 +45,14 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 	private JButton removeButton = new JButton("Remove");
 	private JTable pracTable;
 	private JTextField searchField = new JTextField();
+        
+        private Component owner;
 	
-	public EditPractitionersUI(String s) {
+	public EditPractitionersUI(String s, Component owner) {
 		setModal(true);
 		setTitle(s);
+                
+                this.owner = owner;
 		
 		add(makeExisPracPanel(), BorderLayout.CENTER);
 		setResizable(false);
@@ -155,7 +159,8 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 	}
 	
 	public static void ShowDialog(Component owner) {
-		editPractitionersUI = new EditPractitionersUI("Edit Practitioners");
+  
+		editPractitionersUI = new EditPractitionersUI("Edit Practitioners", owner);
 		editPractitionersUI.pack();
 		editPractitionersUI.setLocationRelativeTo(owner);
 		editPractitionersUI.setVisible(true);
@@ -247,6 +252,8 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 				EditPractitionerUI.ShowDialog(this, model.getPractitioner(pracTable.getSelectedRow()));
 				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
+                                System.out.println("test");
+                                ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
 				return;
 			}
 		} else if (e.getActionCommand().equals("remove")) {

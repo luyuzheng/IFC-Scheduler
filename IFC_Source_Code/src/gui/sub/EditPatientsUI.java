@@ -43,13 +43,17 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	private JButton removeButton = new JButton("Remove");
 	private JTable patTable;
 	private JTextField searchField = new JTextField();
+        
+        private Component owner;
 	
 	
 	/** Creates the dialog for viewing the list of patients **/
-	public EditPatientsUI(String s) {
+	public EditPatientsUI(String s, Component owner) {
 		setModal(true);
 		setTitle(s);
 		
+                this.owner = owner;
+                
 		add(makeExisPatPanel(), BorderLayout.CENTER);
 		pack();
 		setResizable(false);
@@ -161,7 +165,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 	
 	/** Sets the edit patients dialog as visible **/
 	public static void ShowDialog(Component owner) {
-		editPatientsUI = new EditPatientsUI("Edit Patients");
+		editPatientsUI = new EditPatientsUI("Edit Patients", owner);
 		editPatientsUI.pack();
 		editPatientsUI.setLocationRelativeTo(owner);
 		editPatientsUI.setVisible(true);
@@ -255,6 +259,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getSelectedRow()));
 				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
+                                ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
 				return;
 			}
 		} else if (e.getActionCommand().equals("new")) {
