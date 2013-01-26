@@ -1259,7 +1259,7 @@ public class DataServiceImpl implements DataService {
 		
 			st = connection.prepareStatement("INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
 			int j = 0;
-			for (int i = start; i < end; i+=pract.getApptLength()){
+			for (int i = start; i <= end + pract.getApptLength(); i+=pract.getApptLength()){
 				newApt = new AppointmentDto();
 				newApt.setField(AppointmentDto.APPT_ID, lastID+j);
 				newApt.setEnd(i + pract.getApptLength());
