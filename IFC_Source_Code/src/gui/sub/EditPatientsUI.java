@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,11 +25,13 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.JTabbedPane;
 
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.PatientDto;
 
 /**
+ * ADMINISTRATOR PANE
  * Displays a list of all of the patients and allows a patient to be selected for editing or removal
  * Also allows creation of new patients.
  */
@@ -52,11 +55,25 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		setModal(true);
 		setTitle(s);
 		
-                this.owner = owner;
+        this.owner = owner;
+        
+        JTabbedPane tabbedPane = new JTabbedPane();
+        JComponent panel1 = makeExisPatPanel();
+		tabbedPane.addTab("Search Existing Patients", null, panel1,
+		                  "Select an Existing Patient");
+		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
                 
+		setLayout(new GridLayout(1,1));
+		tabbedPane.setPreferredSize(new Dimension(500,250));
+		tabbedPane.setFont(Constants.PARAGRAPH);
+		add(tabbedPane);
+		setResizable(false);
+		
+		/**
 		add(makeExisPatPanel(), BorderLayout.CENTER);
 		pack();
 		setResizable(false);
+		**/
 	}
 	
 	/** Creates a table for the existing patients **/
