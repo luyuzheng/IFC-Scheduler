@@ -5,3 +5,4 @@ data/*
 IFC_Source_Code/bin/*
 IFC_Soure_Code/doc/*
 *.class
+.metadata/*
