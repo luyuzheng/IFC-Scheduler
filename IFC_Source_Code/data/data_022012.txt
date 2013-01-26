@@ -1,4 +1,0 @@
-<format>1.0</format>
-<02282012>
-<timeslot>16:00 - 20:00</timeslot>
-</02282012>
