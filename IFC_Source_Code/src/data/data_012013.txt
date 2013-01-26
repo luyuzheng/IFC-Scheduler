@@ -1,0 +1,7 @@
+<format>1.0</format>
+<01272013>
+<timeslot>16:00 - 20:00</timeslot>
+</01272013>
+<01112013>
+<timeslot>16:00 - 20:00</timeslot>
+</01112013>
