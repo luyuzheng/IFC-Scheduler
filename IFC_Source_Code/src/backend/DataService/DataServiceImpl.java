@@ -51,7 +51,7 @@ public class DataServiceImpl implements DataService {
 		//        newPractitioner.setNotes("Not President");
 		//        newPractitioner.setPhone("123456789");
 		//        newPractitioner.setTypeID(1);
-		//        serv.addPractitioner(newPractitioner);
+		//        serv.r(newPractitioner);
 
 		//for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
 
@@ -1259,7 +1259,7 @@ public class DataServiceImpl implements DataService {
 		
 			st = connection.prepareStatement("INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
 			int j = 0;
-			for (int i = start; i <= end + pract.getApptLength(); i+=pract.getApptLength()){
+			for (int i = start; i <= end - pract.getApptLength(); i+=pract.getApptLength()){
 				newApt = new AppointmentDto();
 				newApt.setField(AppointmentDto.APPT_ID, lastID+j);
 				newApt.setEnd(i + pract.getApptLength());
