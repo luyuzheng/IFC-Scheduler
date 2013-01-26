@@ -1,0 +1,27 @@
+<format>1.0</format>
+<10262012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>0</practitioner>
+<16:00>0:<16:30>
+</10262012>
+<10242012>
+<timeslot>16:00 - 20:00</timeslot>
+</10242012>
+<10272012>
+<timeslot>16:00 - 20:00</timeslot>
+<practitioner>0</practitioner>
+<10042012>
+<timeslot>16:00 - 20:00</timeslot>
+</10042012>
+<10252012>
+<timeslot>16:00 - 20:00</timeslot>
+</10252012>
+<10072012>
+<timeslot>16:00 - 20:00</timeslot>
+</10072012>
+<10082012>
+<timeslot>16:00 - 20:00</timeslot>
+</10082012>
+<10112012>
+<timeslot>16:00 - 20:00</timeslot>
+</10112012>

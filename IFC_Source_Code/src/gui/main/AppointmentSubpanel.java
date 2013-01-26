@@ -29,7 +29,7 @@ public class AppointmentSubpanel extends JPanel {
 	/** Constructs an appointment subpanel given a day panel object. */
 	public AppointmentSubpanel(DayPanel dp, MainWindow main) {
 		this.dp = dp;
-                this.main = main;
+        this.main = main;
 		GridLayout gl = new GridLayout(1,0);
 		gl.setHgap(0);
 		gl.setVgap(0);
@@ -62,7 +62,9 @@ public class AppointmentSubpanel extends JPanel {
 			remove(r);
 		}
 		if (rooms.size() == 0) add(empty); 
+		
 		revalidate();
+		repaint();
 	}
 	
 	public void resetHours(TimeSlot timeSlot) {

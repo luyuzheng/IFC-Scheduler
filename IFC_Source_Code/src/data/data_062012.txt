@@ -1,0 +1,10 @@
+<format>1.0</format>
+<<<<<<< HEAD
+<06022012>
+<timeslot>16:00 - 20:00</timeslot>
+</06022012>
+=======
+<06282012>
+<timeslot>16:00 - 20:00</timeslot>
+</06282012>
+>>>>>>> ca42741371abaecaaa37b69c4f881f10cf357d76
