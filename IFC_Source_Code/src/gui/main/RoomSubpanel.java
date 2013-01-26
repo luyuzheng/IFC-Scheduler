@@ -50,12 +50,15 @@ public class RoomSubpanel extends JPanel{
 		removeAll();
 		repaint();
 		int dayStart = dp.getDay().getStart();
+		int dayEnd= dp.getDay().getEnd();
 		if (room.getStart() > dayStart) {
 			add(new EmptyBlock(room.getStart() - dayStart));
 		}
 		for (AppointmentDto a : room.getAppointments()) {
-			AppointmentBlock app = new AppointmentBlock(a,dp, main);
-			add(app);
+			if (a.getEnd() <= dayEnd) {
+				AppointmentBlock app = new AppointmentBlock(a,dp, main);
+				add(app);
+			}
 		}
 		/*if (room.getLeftover() > 0) {
 			JPanel leftover = new JPanel();

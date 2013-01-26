@@ -45,12 +45,10 @@ public class RoomPanel extends JPanel {
 	 * @param p the practitioner to set
 	 */
 	public void setPractitioner(PractitionerDto p) {
-		//room.setPractitioner(p);
 		headingPanel.setText();
 		roomSubpanel.setAppointments();
 		if (p == null) addMouseListener(npl);
 		else removeMouseListener(npl);
-		//new DaySaver().storeDay(dp.getDay());
 	}
 
 	/** Returns the scheduled practitioner associated with the room panel (i.e., a set of appointments). */
