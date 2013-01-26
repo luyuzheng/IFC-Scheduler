@@ -201,16 +201,19 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		} else if (e.getActionCommand().equals("edit")) {
 			PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
 			PatientDto editedPatient = EditPatientUI.ShowDialog(this, patient);
-                        window.refreshAppointments(appointment.getApptDate());
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(editedPatient.getPatID(), appointment);
-                        window.refreshConfirmationPane();
+                        
             refreshPatientInfo(appointment);
 			return;
 		} else if (e.getActionCommand().equals("cancel")) {
 			editAppointmentUI.setVisible(false);
 			return;
 		}
+                
 		appointment.setNote((noteArea.getText()).replaceAll("[\r\n]+", "\t\t"));
-		editAppointmentUI.setVisible(false);
+                DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
+                editAppointmentUI.setVisible(false);
+                window.refreshConfirmationPane();
+                window.refreshAppointments(window.getCurrentDay().getDate());
     }
 }
