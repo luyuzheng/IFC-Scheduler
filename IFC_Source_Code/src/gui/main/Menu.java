@@ -82,7 +82,9 @@ public class Menu extends JMenuBar {
 		JMenuItem editPractitionersItem = new JMenuItem("Edit Practitioners");
 		editPractitionersItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+                            
 				EditPractitionersUI.ShowDialog(frame);
+                                
 			}
 		});
 		editPractitionersItem.setFont(Constants.PARAGRAPH);
