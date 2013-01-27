@@ -46,7 +46,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		setModal(true);
 		setTitle(name);
 
-		panel = makeMainPanel();
+		panel = makeMainPanel(null);
 
 		add(panel, BorderLayout.CENTER);		
 
@@ -54,14 +54,14 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 
 	}
 	
-	private JPanel makeMainPanel() {
+	private JPanel makeMainPanel(TypeDto newlyAddedType) {
 
 		firstNameField.setText(p.getFirst());
 		lastNameField.setText(p.getLast());
 		note.setText((p.getNotes()).replaceAll("\t\t", "\n"));
 		apptLengthField.setText("" + p.getApptLength());
 
-		JPanel panel = new JPanel(new BorderLayout());
+		JPanel fullPanel = new JPanel(new BorderLayout());
 		JPanel input = new JPanel(new GridLayout(0,1));
 
 		JPanel namePanel = new JPanel(new GridLayout(0, 2));
@@ -100,7 +100,17 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
 		//typeCombo.setSelectedIndex(0);
 		//Added by Aakash on 14th feb to fix combolist practitioner-type bug
-		typeCombo.setSelectedItem(p.getType());
+		
+		if (newlyAddedType == null) {
+			typeCombo.setSelectedItem(p.getType());
+		} else {
+			for (int i = 0; i < typeCombo.getItemCount(); i++) {
+ 	    		if (((TypeDto)(typeCombo.getItemAt(i))).getTypeID() == newlyAddedType.getTypeID()) {
+ 	    			typeCombo.setSelectedIndex(i);
+ 	    			break;
+ 	    		}
+ 		    }
+		}
 
 		typeCombo.setFont(Constants.DIALOG);
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());
@@ -133,10 +143,10 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		buttonPanel.add(okButton);
 		buttonPanel.add(cancelButton);
 
-		panel.add(input, BorderLayout.NORTH);
-		panel.add(notePanel, BorderLayout.CENTER);
-		panel.add(buttonPanel, BorderLayout.SOUTH);
-		return panel;
+		fullPanel.add(input, BorderLayout.NORTH);
+		fullPanel.add(notePanel, BorderLayout.CENTER);
+		fullPanel.add(buttonPanel, BorderLayout.SOUTH);
+		return fullPanel;
 	}
 
 
@@ -154,10 +164,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
 			remove(panel);
-			panel = makeMainPanel();
-			//Added by Aakash on 14th feb to fix combolist practitioner-type bug
-			typeCombo.setSelectedIndex(typeCombo.getItemCount()); //TODO: figure out what maxId does, just dit his to make it compile -Kenny
-                        //typeCombo.setSelectedIndex(tm.getMaxId());
+			panel = makeMainPanel(t);
 			add(panel);
 			repaint();
 			validate();

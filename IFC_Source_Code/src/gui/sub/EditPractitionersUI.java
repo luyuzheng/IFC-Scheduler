@@ -252,8 +252,7 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 				EditPractitionerUI.ShowDialog(this, model.getPractitioner(pracTable.getSelectedRow()));
 				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
-                                System.out.println("test");
-                                ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
+                ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
 				return;
 			}
 		} else if (e.getActionCommand().equals("remove")) {

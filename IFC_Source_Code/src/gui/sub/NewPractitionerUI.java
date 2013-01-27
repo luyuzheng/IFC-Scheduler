@@ -29,6 +29,7 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import backend.DataTransferObjects.*;
+
 import java.util.List;
 
 /**
@@ -46,6 +47,8 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 	private JTextArea noteField = new JTextArea();
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
+	
+	private JComponent panel;
 	JTable pracTable;
 
 	
@@ -57,12 +60,15 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		setTitle(name);
 		setLayout(new GridLayout(1,1));
 		setPreferredSize(new Dimension(400,250));
-		add(makeNewPracPanel());
+		
+		panel = makeNewPracPanel(null);
+		add(panel, BorderLayout.CENTER);
+		//add(makeNewPracPanel(null));
 		setResizable(false);
 	}
     
-    private JComponent makeNewPracPanel() {
-    	JPanel panel = new JPanel(new BorderLayout());
+    private JComponent makeNewPracPanel(TypeDto newlyAddedType) {
+    	JPanel fullPanel = new JPanel(new BorderLayout());
     	
     	JPanel topSubpanel = new JPanel(new GridLayout(0, 1));
     	
@@ -99,8 +105,16 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
     	typeCombo = new JComboBox(typeList.toArray());
-    	if (typeList.size() > 0)
+    	if (typeList.size() > 0 && newlyAddedType == null) {
     		typeCombo.setSelectedIndex(0);
+    	} else {
+    		for (int i = 0; i < typeCombo.getItemCount(); i++) {
+ 	    		if (((TypeDto)(typeCombo.getItemAt(i))).getTypeID() == newlyAddedType.getTypeID()) {
+ 	    			typeCombo.setSelectedIndex(i);
+ 	    			break;
+ 	    		}
+ 		    }
+    	}
     	typeCombo.setFont(Constants.DIALOG);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	
@@ -112,9 +126,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	typePanel.add(typeComboPanel, BorderLayout.CENTER);
     	topSubpanel.add(typePanel);
     	
-    	
-    	
-    	panel.add(topSubpanel, BorderLayout.NORTH);
+    	fullPanel.add(topSubpanel, BorderLayout.NORTH);
     	
     	JPanel notePanel = new JPanel(new BorderLayout());
     	label = new JLabel("Practitioner notes: ", JLabel.CENTER);
@@ -125,7 +137,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	noteField.setWrapStyleWord(true);
     	JScrollPane notePane = new JScrollPane(noteField);
     	notePanel.add(notePane, BorderLayout.CENTER);
-    	panel.add(notePanel, BorderLayout.CENTER);
+    	fullPanel.add(notePanel, BorderLayout.CENTER);
     	
     	JPanel buttonPanel = new JPanel(new FlowLayout());
     	okButton.setActionCommand("okNew");
@@ -136,9 +148,9 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	
-    	panel.add(buttonPanel, BorderLayout.SOUTH);
+    	fullPanel.add(buttonPanel, BorderLayout.SOUTH);
     	
-    	return panel;
+    	return fullPanel;
     }
 	
 	public static PractitionerDto ShowDialog(Component owner) {
@@ -153,8 +165,13 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("New Type")) {
 			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
-			removeAll();
-			add(makeNewPracPanel());
+			//removeAll();
+			remove(panel);
+			panel = makeNewPracPanel(t);
+			add(panel);
+			//add(makeNewPracPanel(t));
+			repaint();
+			validate();
 			return;
 		}
 		else if (e.getActionCommand().equals("okNew")) {
