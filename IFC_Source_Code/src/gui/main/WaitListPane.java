@@ -113,6 +113,7 @@ public class WaitListPane extends JPanel {
 		JPanel specTablePanel = new JPanel(new BorderLayout());
 		WaitlistTableModel model = new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false);
 		specTable = new JTable(model);
+		specTable.setRowHeight(specTable.getRowHeight() + 30);
 		specTable.setDragEnabled(true);
 		specTable.setFont(Constants.DIALOG);
 		specTable.addMouseListener(new WaitlistPatientListener(specTable, this, this));
@@ -214,8 +215,8 @@ public class WaitListPane extends JPanel {
 		 */ 
 		public WaitlistTableModel(ArrayList<WaitlistDto> waits, boolean specific) {
 			this.waits = waits;
-			if (specific) columnNames = new String[] { "Date Added", "First Name", "Last Name", "Phone Number", "Comment" };
-			else columnNames = new String[] { "Date Added", "First Name", "Last Name", "Phone Number", "Type", "Comment" };
+			if (specific) columnNames = new String[] { "Date Added", "Name", "Phone Number", "Comment" };
+			else columnNames = new String[] { "Date Added", "Name", "Phone Number", "Type", "Comment" };
 			this.specific = specific;
 		}
 		
@@ -264,15 +265,13 @@ public class WaitListPane extends JPanel {
 		 */
 		public Object getValueAt(int row, int col) {
 			WaitlistDto p = waits.get(row);
-			if (col == 0) 
-				return DateTimeUtils.prettyPrintMonthDay(p.getDate());
+			if (col == 0)
+				return "<html>" + p.getDate() + "<br>" + p.getTimeAdded() + "</html>";
 			else if (col == 1) 
-				return p.getPatient().getFirst();
-			else  if (col == 2)
-				return p.getPatient().getLast();
-			else if (col == 3)
+				return "<html>" + p.getPatient().getFirst() + "<br>" + p.getPatient().getLast() + "</html>";
+			else if (col == 2)
 				return p.getPatient().getPhone();
-			else if (col == 4) {
+			else if (col == 3) {
 				if (specific) return p.getComments();
 				else return p.getTypeName();
 			}

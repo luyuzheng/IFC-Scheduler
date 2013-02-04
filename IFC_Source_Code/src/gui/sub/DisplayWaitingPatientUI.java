@@ -67,6 +67,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(wp.getPatientID());
 		
 		String text = "Date Added: " + wp.getDate() + "\n" + 
+					  "Time Added: " + wp.getTimeAdded() + "\n" +
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
 					  "Phone Number: " + patient.getPhone() + "\n" +
 					  "Type: " + wp.getTypeName() + "\n\n";

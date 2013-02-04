@@ -51,7 +51,7 @@ public class DataServiceImpl implements DataService {
 		//        newPractitioner.setNotes("Not President");
 		//        newPractitioner.setPhone("123456789");
 		//        newPractitioner.setTypeID(1);
-		//        serv.addPractitioner(newPractitioner);
+		//        serv.r(newPractitioner);
 
 		//for (PatientDto patient : serv.queryPatientByName("Dead", "Bowie")) {
 
@@ -1160,7 +1160,9 @@ public class DataServiceImpl implements DataService {
 				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
 				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
 				entry.setField(WaitlistDto.TYPE, type);
-				entry.setField(WaitlistDto.DATE, rs.getDate(WaitlistDto.DATE));
+				entry.setField(WaitlistDto.TIMESTAMP, rs.getTimestamp(WaitlistDto.TIMESTAMP));
+				//entry.setField(WaitlistDto.DATE, rs.getDate(WaitlistDto.DATE));
+				//entry.setField(WaitlistDto.TIME, rs.getTime(WaitlistDto.TIME));
 				entry.setField(WaitlistDto.COMMENTS, rs.getString(WaitlistDto.COMMENTS));
 				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
 				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
@@ -1259,7 +1261,7 @@ public class DataServiceImpl implements DataService {
 		
 			st = connection.prepareStatement("INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
 			int j = 0;
-			for (int i = start; i <= end + pract.getApptLength(); i+=pract.getApptLength()){
+			for (int i = start; i <= end - pract.getApptLength(); i+=pract.getApptLength()){
 				newApt = new AppointmentDto();
 				newApt.setField(AppointmentDto.APPT_ID, lastID+j);
 				newApt.setEnd(i + pract.getApptLength());
@@ -1738,7 +1740,8 @@ public class DataServiceImpl implements DataService {
 		st.setInt(1, wl.getPatientID());
 		st.setInt(2,wl.getTypeID());
 		// This seems worrisome? will date work this way?
-		st.setDate(3,wl.getDate());
+		//st.setDate(3,wl.getDate());
+		st.setTimestamp(3, wl.getTimestamp());
 		st.setString(4,wl.getComments());
 		st.setInt(5,wl.getWaitlistID());
 		

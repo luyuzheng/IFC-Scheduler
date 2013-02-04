@@ -5,6 +5,10 @@
 package backend.DataTransferObjects;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 /**
@@ -15,7 +19,7 @@ public class WaitlistDto extends AbstractDto {
     
     public static final String WAITLIST_ID = "WaitlistID";
     public static final String TYPE = "Type";
-    public static final String DATE = "DatetimeEntered";
+    public static final String TIMESTAMP = "DatetimeEntered";
     public static final String COMMENTS = "Comments";
     
     private PatientDto patient;
@@ -24,7 +28,7 @@ public class WaitlistDto extends AbstractDto {
         fieldsMap = new HashMap<String, Object>();
         fieldsMap.put(WAITLIST_ID, null);
         fieldsMap.put(TYPE, null);
-        fieldsMap.put(DATE, null);
+        fieldsMap.put(TIMESTAMP, null);
         fieldsMap.put(COMMENTS, null);
     }
     
@@ -56,9 +60,20 @@ public class WaitlistDto extends AbstractDto {
         return ((TypeDto) fieldsMap.get(TYPE)).getTypeName();
     }
     
-    public Date getDate(){
-        return (Date) fieldsMap.get(DATE);
+    
+    public Timestamp getTimestamp() {
+    	return (Timestamp) fieldsMap.get(TIMESTAMP);
     }
+    
+   public String getDate(){
+	   DateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
+	   return dateFormat.format(getTimestamp().getTime());
+    }
+
+   public String getTimeAdded(){
+	   DateFormat timeFormat = new SimpleDateFormat("h:mm a");
+    	return timeFormat.format(getTimestamp().getTime());
+   }
     
     public String getComments() {
     	return (String) fieldsMap.get(COMMENTS);

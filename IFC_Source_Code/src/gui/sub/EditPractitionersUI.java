@@ -9,6 +9,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -28,10 +29,12 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
+import javax.swing.JTabbedPane;
 
 import backend.DataTransferObjects.*;
 
 /**
+ * ADMINISTRATOR PANE
  * Displays a list practitioners and allows one to be selected for editing or deletion.
  * Also allows new practitioners to be added.
  */
@@ -52,10 +55,25 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 		setModal(true);
 		setTitle(s);
                 
-                this.owner = owner;
+        this.owner = owner;
 		
+        JTabbedPane tabbedPane = new JTabbedPane();   
+        JComponent panel1 = makeExisPracPanel();
+		tabbedPane.addTab("Search Existing Practitioners", null, panel1,
+		                  "Select an Existing Practitioner");
+		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
+        
+        
+        setLayout(new GridLayout(1,1));
+        tabbedPane.setPreferredSize(new Dimension(500,250));
+       	tabbedPane.setFont(Constants.PARAGRAPH);
+        add(tabbedPane);
+        setResizable(false);
+                
+       /**         
 		add(makeExisPracPanel(), BorderLayout.CENTER);
 		setResizable(false);
+		**/
 	}
 	
 	private JComponent makeExisPracPanel() {

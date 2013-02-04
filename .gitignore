@@ -2,3 +2,8 @@
 IFC_Source_Code/.classpath
 data/*
 *.log
+IFC_Source_Code/bin/*
+IFC_Soure_Code/doc/*
+*.class
+.metadata/*
+
