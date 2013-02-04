@@ -4,6 +4,7 @@ data/*
 *.log
 IFC_Source_Code/bin/*
 IFC_Soure_Code/doc/*
+IFC_Soure_Code/src/doc/*
 *.class
 .metadata/*
 
