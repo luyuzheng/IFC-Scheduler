@@ -71,7 +71,7 @@ public class DataServiceImpl implements DataService {
 
 	public static Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create(
-			"ifc_db", "localhost:8888", "testuser", "test623");
+			"ifc_db", "localhost:3306", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -545,8 +545,7 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public PractitionerDto addPractitioner(int typeID, String first, String last, int appLength, String phone, String notes) {
 		PreparedStatement st = null;
-                ResultSet rs = null;
-
+        ResultSet rs = null;
 		try {
 			
 			st = connection.prepareStatement("INSERT INTO Practitioner " +

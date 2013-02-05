@@ -61,13 +61,13 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		setLayout(new GridLayout(1,1));
 		setPreferredSize(new Dimension(400,250));
 		
-		panel = makeNewPracPanel(null);
+		panel = makeNewPracPanel();
 		add(panel, BorderLayout.CENTER);
-		//add(makeNewPracPanel(null));
+
 		setResizable(false);
 	}
     
-    private JComponent makeNewPracPanel(TypeDto newlyAddedType) {
+    private JComponent makeNewPracPanel() {
     	JPanel fullPanel = new JPanel(new BorderLayout());
     	
     	JPanel topSubpanel = new JPanel(new GridLayout(0, 1));
@@ -105,16 +105,6 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
     	typeCombo = new JComboBox(typeList.toArray());
-    	if (typeList.size() > 0 && newlyAddedType == null) {
-    		typeCombo.setSelectedIndex(0);
-    	} else {
-    		for (int i = 0; i < typeCombo.getItemCount(); i++) {
- 	    		if (((TypeDto)(typeCombo.getItemAt(i))).getTypeID() == newlyAddedType.getTypeID()) {
- 	    			typeCombo.setSelectedIndex(i);
- 	    			break;
- 	    		}
- 		    }
-    	}
     	typeCombo.setFont(Constants.DIALOG);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	
@@ -165,11 +155,8 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("New Type")) {
 			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
-			//removeAll();
-			remove(panel);
-			panel = makeNewPracPanel(t);
-			add(panel);
-			//add(makeNewPracPanel(t));
+			typeCombo.addItem(t);
+			typeCombo.setSelectedItem(t);
 			repaint();
 			validate();
 			return;
@@ -214,7 +201,6 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 			if (t == null) {
 				t = DataServiceImpl.GLOBAL_DATA_INSTANCE.addNewPractitionerType(type);
 			}
-			
 			practitioner = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(t.getTypeID(), firstName, lastName, apptLength, "", note);
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (pracTable.getSelectedRow() > -1)

@@ -96,7 +96,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		                  "Select an Existing Practitioner");
 		tabbedPane.setMnemonicAt(0, KeyEvent.VK_1);
 
-		JComponent panel2 = makeNewPracPanel(null);
+		JComponent panel2 = makeNewPracPanel();
 		tabbedPane.addTab("New Practitioner", null, panel2,
 		                  "Select a New Practitioner");
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
@@ -151,7 +151,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
         return p;
     }
     
-    private JComponent makeNewPracPanel(TypeDto newlyAddedType) {
+    private JComponent makeNewPracPanel() {
     	JPanel panel = new JPanel(new BorderLayout());
     	
     	JPanel topSubpanel = new JPanel(new GridLayout(0, 1));
@@ -188,17 +188,6 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
         
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
     	typeCombo = new JComboBox(typeList.toArray());
-    	if (typeList.size() > 0 && newlyAddedType == null) {
-    		typeCombo.setSelectedIndex(0);
-    	}
-    	else {
-    		 for (int i = 0; i < typeCombo.getItemCount(); i++) {
- 	    		if (((TypeDto)(typeCombo.getItemAt(i))).getTypeID() == newlyAddedType.getTypeID()) {
- 	    			typeCombo.setSelectedIndex(i);
- 	    			break;
- 	    		}
- 		    }
-    	}
     	typeCombo.setFont(Constants.PARAGRAPH);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	JButton newTypeButton = new JButton("New Type");
@@ -290,11 +279,15 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
 			tabbedPane.remove(1);
-			JComponent panel2 = makeNewPracPanel(t);
+			JComponent panel2 = makeNewPracPanel();
 			tabbedPane.addTab("New Practitioner", null, panel2,
 			                  "Select a New Practitioner");
 			remove(tabbedPane);
 			add(tabbedPane, BorderLayout.CENTER);
+			
+			typeCombo.addItem(t);
+			typeCombo.setSelectedItem(t);
+			
 			repaint();
 			validate();
 			tabbedPane.setSelectedIndex(1);

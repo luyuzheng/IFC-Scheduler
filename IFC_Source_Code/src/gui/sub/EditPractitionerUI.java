@@ -46,7 +46,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		setModal(true);
 		setTitle(name);
 
-		panel = makeMainPanel(null);
+		panel = makeMainPanel();
 
 		add(panel, BorderLayout.CENTER);		
 
@@ -54,7 +54,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 
 	}
 	
-	private JPanel makeMainPanel(TypeDto newlyAddedType) {
+	private JPanel makeMainPanel() {
 
 		firstNameField.setText(p.getFirst());
 		lastNameField.setText(p.getLast());
@@ -98,20 +98,6 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		label.setFont(Constants.PARAGRAPH);
 		typePanel.add(label, BorderLayout.NORTH);
 		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
-		//typeCombo.setSelectedIndex(0);
-		//Added by Aakash on 14th feb to fix combolist practitioner-type bug
-		
-		if (newlyAddedType == null) {
-			typeCombo.setSelectedItem(p.getType());
-		} else {
-			for (int i = 0; i < typeCombo.getItemCount(); i++) {
- 	    		if (((TypeDto)(typeCombo.getItemAt(i))).getTypeID() == newlyAddedType.getTypeID()) {
- 	    			typeCombo.setSelectedIndex(i);
- 	    			break;
- 	    		}
- 		    }
-		}
-
 		typeCombo.setFont(Constants.DIALOG);
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());
 		typeInnerPanel.add(typeCombo, BorderLayout.CENTER);
@@ -163,9 +149,8 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("New Type")) {
 			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
-			remove(panel);
-			panel = makeMainPanel(t);
-			add(panel);
+			typeCombo.addItem(t);
+			typeCombo.setSelectedItem(t);
 			repaint();
 			validate();
 			return;
