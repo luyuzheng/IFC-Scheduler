@@ -49,7 +49,7 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 	private JTable pracTable;
 	private JTextField searchField = new JTextField();
         
-        private Component owner;
+    private Component owner;
 	
 	public EditPractitionersUI(String s, Component owner) {
 		setModal(true);

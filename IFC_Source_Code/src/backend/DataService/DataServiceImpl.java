@@ -464,6 +464,30 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
+	public boolean updatePractitionerType(String newName, TypeDto type) {
+		PreparedStatement st = null;
+
+		try {
+			st = connection.prepareStatement("UPDATE ServiceType SET TypeName=? WHERE TypeID=?");
+			st.setString(1, newName);
+			st.setInt(2, type.getTypeID());
+			st.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
+		return false;
+	}
+	
+	@Override
 	public List<TypeDto> getAllPractitionerTypes() {
 		PreparedStatement st = null;
 		ResultSet rs = null;

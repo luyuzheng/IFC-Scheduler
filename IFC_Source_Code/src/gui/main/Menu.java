@@ -9,6 +9,7 @@ import gui.Constants;
 import gui.sub.DefaultTimeslotsUI;
 import gui.sub.EditPatientsUI;
 import gui.sub.EditPractitionersUI;
+import gui.sub.EditTypeUI;
 import gui.sub.HelpUI;
 
 import java.awt.Font;
@@ -89,6 +90,15 @@ public class Menu extends JMenuBar {
 		});
 		editPractitionersItem.setFont(Constants.PARAGRAPH);
 		adminMenu.add(editPractitionersItem);
+		
+		JMenuItem editServiceTypesItem = new JMenuItem("Edit Service Types");
+		editServiceTypesItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EditTypeUI.ShowDialog(frame);
+			}
+		});
+		editServiceTypesItem.setFont(Constants.PARAGRAPH);
+		adminMenu.add(editServiceTypesItem);
 		
 		//Change defaults hours of operation by day of week
 		JMenuItem editDefaultHoursItem = new JMenuItem("Edit Default Hours");

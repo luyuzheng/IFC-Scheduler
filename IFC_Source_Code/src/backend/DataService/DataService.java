@@ -79,15 +79,15 @@ public interface DataService {
 	 * @return List of no shows associated with the patient
 	 */
 	public List<NoShowDto> getNoShowsByPatient(int PatID);
-	
-        /**
-         * @param type name
-         * @return type
-         */
-        public TypeDto getType(String type);    
-        
-    /**
-     * Adds a new Practitioner type to the database
+
+	/**
+	 * @param type name
+	 * @return type
+	 */
+	public TypeDto getType(String type);    
+
+	/**
+	 * Adds a new Practitioner type to the database
      * 
      * @param type
      */
@@ -101,6 +101,13 @@ public interface DataService {
      * @param type
      */
     public boolean removePractitionerType(String serviceType);
+    
+    /**
+     * Changes the name of the specified type.
+     * TypeID remains the same, so that practitioners associated with
+     * a type will have their types updated as well
+     */
+    public boolean updatePractitionerType(String newName, TypeDto type);
     
     /** Retrieves a list of practitioner types.
      * @return List of types in the form of strings. null if there was

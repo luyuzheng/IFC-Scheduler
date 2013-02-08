@@ -421,7 +421,7 @@ public class MainWindow extends JFrame {
 		}
 				
 		this.refreshConfirmationPane();
-                dp.isMonthViewValidate();
+        dp.isMonthViewValidate();
 	}
 	
 	/**
@@ -461,17 +461,17 @@ public class MainWindow extends JFrame {
 	}
 	
 	public void refreshAppointments(Date date){
-            if (day.getDate().toString().equals(date.toString())){
-                ap.refresh(dp);
-            }
+        if (day.getDate().toString().equals(date.toString())){
+            ap.refresh(dp);
         }
+    }
         
-        public void refreshConfirmationPane(){
-            if (showingApptConfirmation){
-                this.hideApptConfirmation();
-                this.showApptConfirmation();
-            }
-            repaint();
-            validate();
+    public void refreshConfirmationPane(){
+        if (showingApptConfirmation){
+            this.hideApptConfirmation();
+            this.showApptConfirmation();
         }
+        repaint();
+        validate();
+    }
 }
