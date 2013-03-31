@@ -1,5 +1,6 @@
 
 IFC_Source_Code/.classpath
+IFC_Source_Code/.settings
 data/*
 *.log
 IFC_Source_Code/bin/*
