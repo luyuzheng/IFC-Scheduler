@@ -24,6 +24,8 @@ public class AppointmentDto extends AbstractDto {
     public static final String CONFIRMATION = "Confirmation";
     public static final String PATIENT = "Patient";
     public static final String PRACTITIONER_NAME = "PractName";
+    public static final String PRACTITIONER_ID = "PractID";
+    public static final String TYPE_ID = "TypeID";
     
      public AppointmentDto() {
         fieldsMap = new HashMap<String, Object>();
@@ -38,6 +40,8 @@ public class AppointmentDto extends AbstractDto {
         fieldsMap.put(PATIENT, null);
         fieldsMap.put(CONFIRMATION, false);
         fieldsMap.put(PRACTITIONER_NAME, null);
+        fieldsMap.put(PRACTITIONER_ID, null);
+        fieldsMap.put(TYPE_ID, null);
     }
     
     public Integer getApptID(){
@@ -178,6 +182,14 @@ public class AppointmentDto extends AbstractDto {
      
      public String getPractName(){
     	 return (String) this.fieldsMap.get(PRACTITIONER_NAME);
+     }
+     
+     public Integer getPractID() {
+    	 return (Integer) this.fieldsMap.get(PRACTITIONER_ID);
+     }
+     
+     public Integer getTypeID() {
+    	 return (Integer) this.fieldsMap.get(TYPE_ID);
      }
      
     @Override

@@ -16,7 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
+import backend.DataTransferObjects.PractitionerDto;
 
 /**
  * DisplayAppointmentSearchUI shows information about an appointment when an appointment in the table
@@ -38,14 +40,17 @@ public class DisplayAppointmentSearchUI extends JDialog implements ActionListene
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(300, 200));
+		setPreferredSize(new Dimension(300, 220));
 
 		JPanel infoPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
+		PractitionerDto pract = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPractitioner(appt.getPractID());
+		
 		String text = "Date: " + appt.getApptDate().toString() +
 				      "\nTime: " + appt.prettyPrintStart() + " - " + appt.prettyPrintEnd() +
-				      "\nPractitioner: " + appt.getPractName() + 
+				      "\nPractitioner Name: " + appt.getPractName() + 
+				      "\nPractitioner Type: " + pract.getTypeName() + 
 				      "\nAppointment Length: " + (appt.getEnd() - appt.getStart()) +
 				      "\n";
 

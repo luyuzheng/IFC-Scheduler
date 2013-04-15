@@ -30,6 +30,7 @@ import javax.swing.table.AbstractTableModel;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.PractitionerDto;
 
 /**
  * DisplayPatientSearchUI shows information about a patient when a patient in the search table
@@ -59,7 +60,7 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(400, 400));
+		setPreferredSize(new Dimension(600, 400));
 		
 		JPanel infoPanel = new JPanel(new BorderLayout());
 		JPanel apptPanel = new JPanel(new BorderLayout());
@@ -111,7 +112,7 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		add(scrollPane, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
-		setResizable(false);
+		setResizable(true);
 	}
 
 	/**
@@ -149,7 +150,7 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		 */
 		public FutureAppointmentsTableModel(List<AppointmentDto> confirm) {
 			this.confirm = confirm;
-			columnNames = new String[] {"Date", "Start Time", "End Time",  "Confirmed"};
+			columnNames = new String[] {"Date", "Start Time", "End Time", "Practitioner", "Type", "Confirmed"};
 		}
 		
 		/**
@@ -201,6 +202,7 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		 */
 		public Object getValueAt(int row, int col) {
 			AppointmentDto appt = confirm.get(row);
+			PractitionerDto pract = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPractitioner(appt.getPractID());
 			
 			if (col == 0) {
 				return appt.getApptDate();
@@ -208,6 +210,10 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 				return appt.prettyPrintStart();
 			} else if (col == 2) {
 				return appt.prettyPrintEnd();
+			} else if (col == 3) {
+				return appt.getPractName();
+			} else if (col == 4) {
+				return pract.getTypeName();
 			} else {
 				if (appt.getConfirmation()) {
 					return "Yes";
