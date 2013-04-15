@@ -22,6 +22,7 @@ import javax.swing.border.EmptyBorder;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.PractitionerDto;
 
 import gui.main.MainWindow;
 
@@ -57,11 +58,14 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		setResizable(false);
 	
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
+		PractitionerDto pract = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPractitioner(appointment.getPractID());
 		
 		String text = "Time Slot: " + appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd();
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
 		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n");
+		text += "\nPractitioner Name: " + appointment.getPractName();
+		text += "\nPractitioner Type: " + pract.getTypeName();
 		text += "\nAppointment Confirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
 
 		JPanel textPanel = new JPanel(new BorderLayout());
