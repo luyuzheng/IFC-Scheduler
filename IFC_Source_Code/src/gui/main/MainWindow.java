@@ -362,6 +362,7 @@ public class MainWindow extends JFrame {
 				repaint();
 				validate();
 			}
+			dp.setAddPracButtonEnabled(true);
 			inMonthView= false;
 			
 		} else {
@@ -377,6 +378,7 @@ public class MainWindow extends JFrame {
 				repaint();
 				validate();
 			}
+			dp.setAddPracButtonEnabled(false);
 			inMonthView= true;
 		}
 		//inMonthView = !inMonthView;

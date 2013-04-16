@@ -132,6 +132,10 @@ public class DayPanel extends JPanel {
 		this.as = as;
 	}
 	
+	public void setAddPracButtonEnabled(boolean b) {
+		addPracButton.setEnabled(b);
+	}
+	
 	/** Sets the "remove practitioner" button as clickable. */
 	public void setRemovePracButtonEnabled(boolean b, RoomPanel rp) {
 		this.rp = rp;
