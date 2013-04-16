@@ -83,8 +83,8 @@ EndTime int,
 Status tinyint
 );
 
-INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Monday", 960, 1200, 1);
-INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Tuesday", 960, 1200, 0);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Monday", 840, 1080, 1);
+INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Tuesday", 900, 1140, 1);
 INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Wednesday", 960, 1200, 0);
 INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Thursday", 960, 1200, 1);
 INSERT INTO DefaultHours (Day, StartTime, EndTime, Status) VALUES("Friday", 960, 1200, 0);
