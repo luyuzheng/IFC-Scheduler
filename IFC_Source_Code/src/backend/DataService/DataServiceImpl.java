@@ -871,14 +871,13 @@ public class DataServiceImpl implements DataService {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-		
 		st = connection.prepareStatement("UPDATE Appointment " +
 				"SET Appointment.PatID=? WHERE Appointment.ApptID=?" );
 		st.setInt(1, patID);
 		st.setInt(2, appointment.getApptID());
 		
 		st.executeUpdate();
-                appointment.setPatient(DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(patID));
+		appointment.setPatient(DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(patID));
 		return true;
 		
 	} catch (SQLException e) {
@@ -930,11 +929,17 @@ public class DataServiceImpl implements DataService {
         try {
 		
 		st = connection.prepareStatement("UPDATE Appointment " +
-				"SET Appointment.PatID=NULL WHERE Appointment.ApptID=?" );
+				"SET Appointment.PatID=NULL, Appointment.NoShowID=NULL, " +
+				"Appointment.Status=NULL, Appointment.Confirmation=0, " + 
+				"Appointment.Note=NULL WHERE Appointment.ApptID=?" );
 		st.setInt(1, appointment.getApptID());
 		
-                appointment.setPatient(null);
-                appointment.setPatientID(null);
+        appointment.setPatient(null);
+        appointment.setPatientID(null);
+        appointment.setNoShowID(null);
+        appointment.setConfirmation(false);
+        appointment.setNote(null);
+        
 		st.executeUpdate();
 		return true;
 		
@@ -1258,11 +1263,11 @@ public class DataServiceImpl implements DataService {
 			st.setInt(3, start);
 			st.setInt(4, end);
 			st.executeUpdate();
-                        st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
+            st = connection.prepareStatement("SELECT Max(PractSchID) FROM PractitionerScheduled");
 			rs = st.executeQuery();
 			rs.next();
 
-			int pract_id = rs.getInt(1);
+			int practSchID = rs.getInt(1);
 
 			AppointmentDto newApt = new AppointmentDto();
 			SchedulePractitionerDto returnDto = new SchedulePractitionerDto();
@@ -1274,7 +1279,7 @@ public class DataServiceImpl implements DataService {
 			returnDto.setField(SchedulePractitionerDto.PRACT, pract);
 			returnDto.setField(SchedulePractitionerDto.END, end);
 			returnDto.setField(SchedulePractitionerDto.START, start);
-			returnDto.setField(SchedulePractitionerDto.PRACT_SCHED_ID, pract_id);
+			returnDto.setField(SchedulePractitionerDto.PRACT_SCHED_ID, practSchID);
 
 			
 			PreparedStatement new_st = connection.prepareStatement("Select MAX(ApptID) as ID From Appointment");
@@ -1283,18 +1288,27 @@ public class DataServiceImpl implements DataService {
 			int lastID = rs.getInt("ID");
 		
 			st = connection.prepareStatement("INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
-			int j = 0;
+			int j = 1;
 			for (int i = start; i <= end - pract.getApptLength(); i+=pract.getApptLength()){
-				newApt = new AppointmentDto();
-				newApt.setField(AppointmentDto.APPT_ID, lastID+j);
-				newApt.setEnd(i + pract.getApptLength());
-				st.setInt(3, i + pract.getApptLength());
-				newApt.setStart(i);
+				st.setInt(1, practSchID);
 				st.setInt(2, i);
+				st.setInt(3, i + pract.getApptLength());
+				st.setDate(4, day.getDate());
+				
+				newApt = new AppointmentDto();
 				newApt.setField(AppointmentDto.APPT_DATE, day.getDate());
-				st.setDate(+4, day.getDate());
-				newApt.setField(AppointmentDto.PRACT_SCHED_ID, pract_id);
-				st.setInt(1, pract_id);
+				newApt.setField(AppointmentDto.APPT_ID, lastID+j);
+				newApt.setField(AppointmentDto.END, i + pract.getApptLength());
+				newApt.setField(AppointmentDto.NOTE, null);
+				newApt.setField(AppointmentDto.NO_SHOW_ID, null);
+				newApt.setField(AppointmentDto.PAT_ID, null);
+				newApt.setField(AppointmentDto.PRACT_SCHED_ID, practSchID);
+				newApt.setField(AppointmentDto.START, i);
+				newApt.setField(AppointmentDto.CONFIRMATION, false);
+				newApt.setField(AppointmentDto.PRACTITIONER_NAME, pract.getFirst() + " " + pract.getLast());
+				newApt.setField(AppointmentDto.PRACTITIONER_ID, pract.getPractID());
+				newApt.setField(AppointmentDto.TYPE_ID, pract.getTypeID());
+				
 				appointments.add(newApt);
 				st.executeUpdate();
 				j++;
@@ -1725,6 +1739,40 @@ public class DataServiceImpl implements DataService {
 			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
 	}
+        return null;
+    }
+    
+    @Override
+    public TypeDto getTypeByID(int typeID) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+		
+			st = connection.prepareStatement("SELECT * FROM ServiceType WHERE TypeID=?");
+			
+			st.setInt(1, typeID);
+	        rs = st.executeQuery();
+	                
+	        if (rs.next()){
+	            TypeDto returnType = new TypeDto();
+	            returnType.setField(TypeDto.TYPE_ID, typeID);
+	            returnType.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+	            return returnType;
+	        }
+	        else {
+	            return null;
+	        }
+		} catch (SQLException e) {
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
+			}
+		}
         return null;
     }
 

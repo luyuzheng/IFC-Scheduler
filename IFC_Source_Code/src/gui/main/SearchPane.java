@@ -27,8 +27,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
+import backend.DataTransferObjects.TypeDto;
 
 /**
  * SearchPane displays the search pane on the right-hand side of the application when the "Search" button is clicked.
@@ -219,7 +221,7 @@ public class SearchPane extends JPanel {
 		 */ 
 		public PatientResultsTableModel(List<PatientDto> pat) {
 			patients = pat;
-			columnNames = new String[] { "Name", "Phone Number", "Comments", /*"Waitlisted",*/ "No Shows"};
+			columnNames = new String[] { "Name", "Phone Number", "Patient Note", /*"Waitlisted",*/ "No Shows"};
 		}
 		
 		/**
@@ -298,7 +300,7 @@ public class SearchPane extends JPanel {
 		 */ 
 		public AppointmentResultsTableModel(ArrayList<AppointmentDto> appt) {
 			appointments = appt;
-			columnNames = new String[] { "Date", "Start Time", "Practitioner", "Appointment Length"};
+			columnNames = new String[] { "Date", "Start Time", "Practitioner", "Type", "Length"};
 		}
 		
 		/**
@@ -350,12 +352,16 @@ public class SearchPane extends JPanel {
 		 */
 		public Object getValueAt(int row, int col) {
 			AppointmentDto a = appointments.get(row);
+			TypeDto type = DataServiceImpl.GLOBAL_DATA_INSTANCE.getTypeByID(a.getTypeID());
+			
 			if (col == 0) {
 				return DateTimeUtils.prettyPrintMonthDay(a.getApptDate());
 			} else if (col == 1){
 				return a.prettyPrintStart();
 			} else if (col == 2) {
 				return a.getPractName();
+			} else if (col == 3) {
+				return type.getTypeName();
 			} else {
 				return a.getEnd() - a.getStart();
 			}

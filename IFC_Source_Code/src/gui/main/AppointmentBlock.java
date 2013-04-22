@@ -113,7 +113,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		appointment.setPatientID(patId);
         DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patId, appointment);
 		setText();
-                main.refreshConfirmationPane();
+        main.refreshConfirmationPane();
 	}
 
 	/**

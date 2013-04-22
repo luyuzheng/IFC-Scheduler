@@ -54,7 +54,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(480, 350));
+		setPreferredSize(new Dimension(480, 450));
 		setResizable(false);
 	
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appointment.getPatientID());
@@ -64,7 +64,7 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
 		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n");
-		text += "\nPractitioner Name: " + appointment.getPractName();
+		text += "\n\nPractitioner Name: " + appointment.getPractName();
 		text += "\nPractitioner Type: " + pract.getTypeName();
 		text += "\nAppointment Confirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
 
@@ -155,11 +155,14 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 	
 	private void refreshPatientInfo(AppointmentDto appt) {
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
+		PractitionerDto pract = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPractitioner(appointment.getPractID());
 		
 		String text = "Time Slot: " + appointment.prettyPrintStart() + " - " + appointment.prettyPrintEnd();
 		text += "\nPatient Name: " + patient.getFirst() + " " + patient.getLast();
 		text += "\nPhone Number: " + patient.getPhone();
 		text += "\nPatient Note: " + (patient.getNotes()).replaceAll("\t\t", "\n");
+		text += "\n\nPractitioner Name: " + appointment.getPractName();
+		text += "\nPractitioner Type: " + pract.getTypeName();
 		text += "\nAppointment Confirmed: " + (appointment.getConfirmation() ? "Yes" : "No");
 		
 		textArea.setText(text);

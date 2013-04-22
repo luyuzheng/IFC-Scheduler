@@ -87,6 +87,12 @@ public interface DataService {
 	public TypeDto getType(String type);    
 
 	/**
+	 * @param type id
+	 * @return type
+	 */
+	public TypeDto getTypeByID(int typeID);
+	
+	/**
 	 * Adds a new Practitioner type to the database
      * 
      * @param type

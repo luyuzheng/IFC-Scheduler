@@ -68,7 +68,7 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		
 		String text = "Patient Name: " + patient.getFirst() + " " + patient.getLast() +
 				  	  "\nPhone Number: " + patient.getPhone() +
-				  	  "\nComments: " + patient.getNotes() +
+				  	  "\nPatient Note: " + patient.getNotes() +
 				  	  "\nNumber of No Shows: " + patient.getNoShows() +
 				  	  "\n\nFuture Appointments: ";
 		

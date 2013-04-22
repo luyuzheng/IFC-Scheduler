@@ -208,6 +208,7 @@ public class DayPanel extends JPanel {
 	private final AbstractAction removePatAction = new AbstractAction("<html>Cancel Appointment</html>") {
 		public void actionPerformed(ActionEvent e) {
 			AppointmentBlock block = ab;
+
 			if (JOptionPane.showConfirmDialog(mw, "Are you sure you'd like to cancel this appointment?", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) block.clearAppt();
 		}
 	};
