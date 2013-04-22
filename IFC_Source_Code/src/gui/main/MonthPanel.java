@@ -168,14 +168,14 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 
 		// print days of week
 		double blockWidth = width / 7;
-		double blockHeight = (height-100) / 6;
+		double blockHeight = (height-50) / 6;
 		g2d.setFont(Constants.PRINTABLE);
 		metrics = g2d.getFontMetrics();
 		hgt = metrics.getHeight();
 		
 		for (int i = 0; i < 7; i++) {
 			rect = new Rectangle2D.Double ();
-			rect.setRect (startx, starty, blockWidth, 50);
+			rect.setRect (startx, starty, blockWidth, hgt + 10);
 			g2d.draw(rect);
 			if (i == 0) heading = "Sunday";
 			else if (i == 1) heading = "Monday";
@@ -189,7 +189,7 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 		}
 		
 		startx = Constants.PRINT_MARGINX;
-		starty += 50;
+		starty += hgt + 10;
 		
 		g2d.setFont(Constants.PRINTABLE_SMALL);
 		metrics = g2d.getFontMetrics();
@@ -304,14 +304,14 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 	
 	/** Prints the visible contents of the month panel of a given page.*/
 	public int print(Graphics graphics, PageFormat pageFormat, int page) {
-		
+		pageFormat.setOrientation(PageFormat.LANDSCAPE);
 		double width = pageFormat.getImageableWidth() - 2*Constants.PRINT_MARGINX;
 		double height = pageFormat.getImageableHeight() - 2*Constants.PRINT_MARGINY;
 		
 		if (page > 0) {
 			return NO_SUCH_PAGE;
 		}
-
+		
 		graphics = buildPage(graphics, width, height, page);
 		/* Print the entire visible contents of a java.awt.Frame */
 

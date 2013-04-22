@@ -150,10 +150,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		int hgt = metrics.getHeight();
 
 		//top height is the height of the practitioner info box
-		int pLines= 4;
+		int pLines= 3; 
 		double topHeight = pLines*hgt + 8;
 		//times width is the width of the left times panel
-		double timesWidth = 45.0;
+		double timesWidth = 35.0; 
 		
 		//end time is the end # minutes, currTime is the current time
 		int endTime = day.getEnd();
@@ -174,49 +174,49 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		int leftover = 60 - (currTime % 60);
 		if (leftover > 0) {
 			Rectangle2D.Double topTime = new Rectangle2D.Double ();
-			topTime.setRect(startx, starty, timesWidth, leftover * Constants.PIXELS_PER_MINUTE);
+			topTime.setRect(startx, starty, timesWidth, leftover * Constants.PRINT_PIXELS_PER_MINUTE);
 			g2d.draw(topTime);
-			String timeSt = ((Integer) ((currTime / 60) % 12)).toString();
+			String timeSt = ((Integer) ((currTime / 60) % 12)).toString().trim();
 			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
 			g2d.drawString(timeSt + amPm, startx + 5, starty + hgt);
-			//g2d.drawString(amPm, startx + 10, starty + 2*hgt);
-			starty += leftover * Constants.PIXELS_PER_MINUTE;
+			//g2d.drawString(amPm, startx + 5, starty + 2*hgt);
+			starty += leftover * Constants.PRINT_PIXELS_PER_MINUTE;
 			currTime+=leftover;
 		}
 		
 		// Print hours down the side (e.g. "4pm", "5pm", etc.) 
 		while (currTime + 60 < endTime) {
 			Rectangle2D.Double timeBlock = new Rectangle2D.Double ();
-			timeBlock.setRect(startx, starty, timesWidth, 60 * Constants.PIXELS_PER_MINUTE);
+			timeBlock.setRect(startx, starty, timesWidth, 60 * Constants.PRINT_PIXELS_PER_MINUTE);
 			g2d.draw(timeBlock);
-			String timeSt = ((Integer) ((currTime / 60) % 12)).toString();
+			String timeSt = ((Integer) ((currTime / 60) % 12)).toString().trim();
 			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
 			g2d.drawString(timeSt + amPm, startx + 5, starty + hgt);
-			//g2d.drawString(amPm, startx + 10, starty + 2*hgt);
-			starty += 60 * Constants.PIXELS_PER_MINUTE;
+			//g2d.drawString(amPm, startx + 5, starty + 2*hgt);
+			starty += 60 * Constants.PRINT_PIXELS_PER_MINUTE;
 			currTime+=60;
 		}
 		
 		leftover = endTime - currTime;
 		Rectangle2D.Double bottomTime = new Rectangle2D.Double ();
-		bottomTime.setRect (startx, starty, timesWidth, leftover * Constants.PIXELS_PER_MINUTE);
+		bottomTime.setRect (startx, starty, timesWidth, leftover * Constants.PRINT_PIXELS_PER_MINUTE);
 		g2d.draw(bottomTime);
-		String timeSt = ((Integer) ((currTime / 60) % 12)).toString();
+		String timeSt = ((Integer) ((currTime / 60) % 12)).toString().trim();
 		String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
-		g2d.drawString(timeSt, startx + 5, starty + hgt);
-		g2d.drawString(amPm, startx + 10, starty + 2*hgt);
+		g2d.drawString(timeSt + amPm, startx + 5, starty + hgt);
+		//g2d.drawString(amPm, startx + 5, starty + 2*hgt);
 		
 		width= width - timesWidth + Constants.PRINT_MARGINX;
 		double colWidth;
 		
-		int lineLength = 100;
+		int lineLength = 100; 
 		
 		int roomsLeft = r - page*3;
 		
 		if (roomsLeft == 1) colWidth = width;
 		else if (roomsLeft == 2) {
 			colWidth = width / 2.0;
-			lineLength = 50;
+			lineLength = 40; //50
 		}
 		else {
 			colWidth = width / 3.0;
@@ -243,7 +243,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			g2d.drawString(formatString(type, lineLength, 1)[0], startx+5, starty+2*hgt);
 			
 			if (!p.getNotes().isEmpty()) {
-				String[] notes= formatString("Notes: " + p.getNotes().replaceAll("\t\t", "\n"), lineLength, pLines-2);
+				String[] notes= formatString(p.getNotes().replaceAll("\t\t", "\n"), lineLength, pLines-2);
 				
 				for (int k=0; k<notes.length; k++) {
 					if (notes[k] != null) {
@@ -259,8 +259,8 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			// Prints the text for an appointment block
 			for (AppointmentDto a : appts) {
 				int min = a.getEnd() - a.getStart();
-				int blockHeight = min*Constants.PIXELS_PER_MINUTE;
-				int aLines= blockHeight/hgt;
+				double blockHeight = min*Constants.PRINT_PIXELS_PER_MINUTE;
+				int aLines= (int) Math.ceil(blockHeight/hgt);
 				Rectangle2D.Double apptBlock = new Rectangle2D.Double ();
 				apptBlock.setRect (startx, starty, colWidth, blockHeight);
 				g2d.draw(apptBlock);
@@ -285,7 +285,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 
 					
 					if (!a.getNote().isEmpty()) {
-						line4 = formatString("Notes: " + a.getNote().replaceAll("\t\t", "\n"), lineLength, aLines-4);
+						line4 = formatString(a.getNote().replaceAll("\t\t", "\n"), lineLength, aLines-4);
 					}
 					
 				}
@@ -306,11 +306,12 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 					k++;
 				}
 				
-				k= lin;
+				//k= lin;
+				k=0;
 				while(k<line4.length) {
 					if (line4[k] != null) {
 						
-						g2d.drawString(line4[k], startx+5, starty+(3+k)*hgt);
+						g2d.drawString(line4[k], startx+5, starty+(3+k+lin)*hgt);
 						
 						System.out.println("processing patient notes...");
 					}
