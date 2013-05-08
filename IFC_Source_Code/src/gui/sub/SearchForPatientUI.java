@@ -3,6 +3,7 @@ package gui.sub;
 import gui.Constants;
 import gui.main.SearchPane;
 import gui.main.SearchPane.PatientResultsTableModel;
+import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -12,6 +13,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -110,6 +112,25 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		return ps;
 	}
 	
+	public ArrayList<PatientDto> searchFilter(ArrayList<PatientDto> allPatients, String firstName, String lastName) {
+	    // Filters patients
+		String fullName = firstName + " " + lastName;
+		String filter = fullName.toLowerCase();
+		String[] filters = filter.split(" ");
+        ArrayList<PatientDto> filteredPat = new ArrayList<PatientDto>();
+        for (PatientDto p : allPatients) {
+        	String patName = p.getFullName().toLowerCase();
+        	
+        	for (String f : filters) {
+	        	if (patName.indexOf(f) >= 0) {
+	        		filteredPat.add(p);
+	        		break;
+	        	}
+        	}
+        }
+        return filteredPat;
+	}
+	
 	/**
 	 * Checks if the Search or Cancel button has been hit. If conducting a search, the program checks to make sure that
 	 * input information has been given; otherwise, an error message is sent. The input information is then sent to 
@@ -127,9 +148,9 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 			// Get search manager to search for the patient and return results
 			String first = firstNameField.getText();
 			String last = lastNameField.getText();
-			List<PatientDto> patients =
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.queryPatientByName(first, last);
-			ps = patients;
+			ArrayList<PatientDto> pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+			ArrayList<PatientDto> searchResults = searchFilter(pat, first, last);
+			ps = searchResults;
 		} 
 		searchForPatientUI.setVisible(false);
 	}
