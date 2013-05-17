@@ -19,24 +19,25 @@ public interface DataService {
     /**
      * Closes the connection. Instance is unusable afterwards.
      */
-    public void close();
+	public void close();
 
-    /**
-     * Adds a patient to the database.
-     * Adds a new patient with a new PatID is PatID is null in the DTO,
-     * otherwise, it overwrites whatever had the PatID last.
-     *
-     * @param patient
-     * @return true if succeeded, false if failed
-     */
+	/**
+	 * Adds a patient to the database.
+	 * Adds a new patient with a new PatID is PatID is null in the DTO,
+	 * otherwise, it overwrites whatever had the PatID last.
+	 *
+	 * @param patient
+	 * @return true if succeeded, false if failed
+	 */
 	public boolean addPatient(PatientDto patient);
 
-        /**
-         * Adds a patient given the parameters
-         */
-        
-        public PatientDto addPatient(String phone, String first, String last, String notes);
-        
+	/**
+	 * Adds a patient given the parameters
+	 * Does not add a patient with the same name and phone number
+	 * If the patient exists, it will reactivate the patient and return him.
+	 */
+	public PatientDto addPatient(String phone, String first, String last, String notes);
+
 	/**
 	 * Updates the specified field for the specified patient in the database and DTO
 	 *

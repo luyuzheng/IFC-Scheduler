@@ -1659,45 +1659,60 @@ public class DataServiceImpl implements DataService {
     public PatientDto addPatient(String phone, String first, String last, String notes) {
         PreparedStatement st = null;
         ResultSet rs = null;
-	try {
-		
-		st = connection.prepareStatement(
-			"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes, Active) VALUES (?, ?, ?, ?, 1)");
-		
-		st.setString(1, first);
-		st.setString(2, last);
-		st.setString(3, phone);
-		st.setString(4, notes);
-			st.executeUpdate();
-                        
-                st = connection.prepareStatement(
-                        "SELECT Max(PatID) FROM Patient");
-		rs = st.executeQuery();
-                rs.next();
-                
-                int newId = rs.getInt(1);
-                
-                st = connection.prepareStatement("SELECT * FROM Patient WHERE PatID=?");
-                
-                st.setInt(1, newId);
-                
-                rs = st.executeQuery();
-                
-                if(rs.next()){
-                PatientDto returnPatient = new PatientDto();
-                    returnPatient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
-                    returnPatient.setFirst(first);
-                    returnPatient.setLast(last);
-                    returnPatient.setNotes(notes);
-                    returnPatient.setPhone(phone);
-                    returnPatient.setField(PatientDto.NO_SHOW, 0);
+        int newId = 0;
+        try {
+        	st = connection.prepareStatement(
+        			"SELECT PatID FROM Patient WHERE FirstName=? AND LastName=? AND PhoneNumber=?");
+        	st.setString(1, first);
+        	st.setString(2, last);
+        	st.setString(3, phone);
+        	rs = st.executeQuery();
+        	// if patient doesn't already exist, add him
+        	if (!rs.next()) {
+        		st = connection.prepareStatement(
+        				"INSERT INTO Patient (FirstName, LastName, PhoneNumber, Notes, Active) VALUES (?, ?, ?, ?, 1)");
 
-                    return returnPatient;
-                }
-	} catch (SQLException e) {
-		lgr.log(Level.SEVERE, e.getMessage(), e);
-	} finally {
-		try {
+        		st.setString(1, first);
+        		st.setString(2, last);
+        		st.setString(3, phone);
+        		st.setString(4, notes);
+        		st.executeUpdate();
+
+            	st = connection.prepareStatement(
+            			"SELECT Max(PatID) FROM Patient");
+            	rs = st.executeQuery();
+            	rs.next();
+
+            	newId = rs.getInt(1);
+        	} else {
+        		newId = rs.getInt(PatientDto.PATIENT_ID);
+        		st = connection.prepareStatement(
+        				"UPDATE Patient SET Active=1 WHERE PatID=?");
+        		st.setInt(1, newId);
+        		st.executeUpdate();
+        	}
+
+        	st = connection.prepareStatement("SELECT * FROM Patient WHERE PatID=?");
+
+        	st.setInt(1, newId);
+
+        	rs = st.executeQuery();
+
+        	if(rs.next()){
+        		PatientDto returnPatient = new PatientDto();
+        		returnPatient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+        		returnPatient.setFirst(first);
+        		returnPatient.setLast(last);
+        		returnPatient.setNotes(notes);
+        		returnPatient.setPhone(phone);
+        		returnPatient.setField(PatientDto.NO_SHOW, 0);
+
+        		return returnPatient;
+        	}
+        } catch (SQLException e) {
+        	lgr.log(Level.SEVERE, e.getMessage(), e);
+        } finally {
+        	try {
 			if (st != null) {
 				st.close();
 			}
