@@ -401,11 +401,21 @@ public class MainWindow extends JFrame {
 		if (inMonthView) {
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
 				mp = new MonthPanel(dp);
+				pane.setLeftComponent(mp);
+				pane.repaint();
+				pane.validate();
+				sidePanel.add(dp, BorderLayout.CENTER);
+				sidePanel.repaint();
+				sidePanel.validate();
+				dp.validateButtons();
 			} else {			
 				remove(mp);
 				remove(sidePane);
 				initMVComponents(dp);
+				repaint();
+				validate();
 			}
+			dp.setAddPracButtonEnabled(false);
 		} else {			
 			
 			if (showingWaitList || showingSearch || showingApptConfirmation) {
