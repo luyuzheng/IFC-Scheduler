@@ -99,6 +99,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		typePanel.add(label, BorderLayout.NORTH);
 		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
 		typeCombo.setFont(Constants.DIALOG);
+		typeCombo.setSelectedItem(p.getType());
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());
 		typeInnerPanel.add(typeCombo, BorderLayout.CENTER);
 		JButton newTypeButton = new JButton("New Type");
