@@ -327,7 +327,7 @@ public class DayPanel extends JPanel {
 	 * Checks whether currently in month view, and determines the correct text to display for switching views.  
 	 */
 	public void isMonthViewValidate(){
-		if (mw.inMonthView()) switchViewButton.setText("<html>Switch to <br>Day View</html>");
-		else switchViewButton.setText("<html>Switch to <br>Month View</html>");
+		if (mw.inMonthView()) switchViewButton.setText("<html>Switch to Day View</html>");
+		else switchViewButton.setText("<html>Switch to Month View</html>");
 	}
 }
