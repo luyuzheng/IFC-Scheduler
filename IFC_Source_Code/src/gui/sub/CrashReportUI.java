@@ -37,7 +37,9 @@ public class CrashReportUI extends JDialog {
 	private Exception exceptionThrown;
 	
 	private String crashDescriptionString = "<b>The application appears to have crashed!</b> " +
-			"We are really sorry! To help fix these bugs and improve our product, " +
+			"We are really sorry! " +
+			"Please make sure that XAMP and MySql are running on the host machine." +
+			"To help fix these bugs and improve our product, " +
 			"please save a crash report below and then email Daisy Fan " +
 			"(dfan@cs.cornell.edu) for assistance. ";
 

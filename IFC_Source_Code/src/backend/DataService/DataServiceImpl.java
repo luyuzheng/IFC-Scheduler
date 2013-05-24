@@ -1,6 +1,7 @@
 package backend.DataService;
 
 import gui.TimeSlot;
+import gui.sub.ServerCrashUI;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -112,6 +113,7 @@ public class DataServiceImpl implements DataService {
 				DriverManager.getConnection(service.url, service.user, service.password);
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 			return null;
 		} catch (SecurityException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -133,6 +135,7 @@ public class DataServiceImpl implements DataService {
 			}
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, "DataService.close() failed.\n" + e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		}
 	}
 
@@ -158,6 +161,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -184,6 +188,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -213,6 +218,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -255,6 +261,7 @@ public class DataServiceImpl implements DataService {
 			return null;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -298,6 +305,7 @@ public class DataServiceImpl implements DataService {
 			return results;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -368,6 +376,7 @@ public class DataServiceImpl implements DataService {
 			return results;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -401,6 +410,7 @@ public class DataServiceImpl implements DataService {
 			return results;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -428,6 +438,7 @@ public class DataServiceImpl implements DataService {
                         
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -451,6 +462,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -475,6 +487,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -505,6 +518,7 @@ public class DataServiceImpl implements DataService {
 			return results;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -554,6 +568,7 @@ public class DataServiceImpl implements DataService {
 			return results;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -621,6 +636,7 @@ public class DataServiceImpl implements DataService {
 			
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -651,6 +667,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -685,6 +702,7 @@ public class DataServiceImpl implements DataService {
 		
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -726,6 +744,7 @@ public class DataServiceImpl implements DataService {
 			return retList;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -753,6 +772,7 @@ public class DataServiceImpl implements DataService {
 		catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
 			" checked as no show");
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -799,6 +819,7 @@ public class DataServiceImpl implements DataService {
 
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -854,6 +875,7 @@ public class DataServiceImpl implements DataService {
 
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -882,6 +904,7 @@ public class DataServiceImpl implements DataService {
 		
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -910,6 +933,7 @@ public class DataServiceImpl implements DataService {
 		
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -945,6 +969,7 @@ public class DataServiceImpl implements DataService {
 		
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -993,6 +1018,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} catch (NullPointerException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
 			" checked as no show");
@@ -1026,6 +1052,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} catch (NullPointerException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e + " : appointment without patient being" +
 			" checked as no show");
@@ -1056,6 +1083,7 @@ public class DataServiceImpl implements DataService {
 			return null; //Todo: changge return type
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1081,6 +1109,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1106,6 +1135,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1132,6 +1162,7 @@ public class DataServiceImpl implements DataService {
 			return null;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1157,6 +1188,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1203,6 +1235,7 @@ public class DataServiceImpl implements DataService {
 			return results;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1231,6 +1264,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1317,6 +1351,7 @@ public class DataServiceImpl implements DataService {
 			return returnDto;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1411,6 +1446,7 @@ public class DataServiceImpl implements DataService {
 
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1454,6 +1490,7 @@ public class DataServiceImpl implements DataService {
 
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1524,6 +1561,7 @@ public class DataServiceImpl implements DataService {
 		} catch (SQLException e) {
 			//Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1589,6 +1627,7 @@ public class DataServiceImpl implements DataService {
 
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1616,6 +1655,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1643,6 +1683,7 @@ public class DataServiceImpl implements DataService {
 			return true;
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1711,6 +1752,7 @@ public class DataServiceImpl implements DataService {
         	}
         } catch (SQLException e) {
         	lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
         } finally {
         	try {
 			if (st != null) {
@@ -1728,38 +1770,39 @@ public class DataServiceImpl implements DataService {
         PreparedStatement st = null;
         ResultSet rs = null;
         try {
-		
-		st = connection.prepareStatement("SELECT * FROM ServiceType WHERE TypeName=?");
-		
-		st.setString(1, type);
-                rs = st.executeQuery();
-                        
-                if (rs.next()){
-                    TypeDto returnType = new TypeDto();
-                    returnType.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
-                    returnType.setField(TypeDto.TYPE_NAME, type);
-                    return returnType;
-                }
-                else {
-                    return null;
-                }
-	} catch (SQLException e) {
-		lgr.log(Level.SEVERE, e.getMessage(), e);
-	} finally {
-		try {
-			if (st != null) {
-				st.close();
-			}
-		} catch (SQLException ex) {
-			lgr.log(Level.WARNING, ex.getMessage(), ex);
-		}
-	}
+
+        	st = connection.prepareStatement("SELECT * FROM ServiceType WHERE TypeName=?");
+
+        	st.setString(1, type);
+        	rs = st.executeQuery();
+
+        	if (rs.next()){
+        		TypeDto returnType = new TypeDto();
+        		returnType.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+        		returnType.setField(TypeDto.TYPE_NAME, type);
+        		return returnType;
+        	}
+        	else {
+        		return null;
+        	}
+        } catch (SQLException e) {
+        	lgr.log(Level.SEVERE, e.getMessage(), e);
+        	ServerCrashUI.ShowDialog();
+        } finally {
+        	try {
+        		if (st != null) {
+        			st.close();
+        		}
+        	} catch (SQLException ex) {
+        		lgr.log(Level.WARNING, ex.getMessage(), ex);
+        	}
+        }
         return null;
     }
-    
+
     @Override
     public TypeDto getTypeByID(int typeID) {
-        PreparedStatement st = null;
+    	PreparedStatement st = null;
         ResultSet rs = null;
         try {
 		
@@ -1779,6 +1822,7 @@ public class DataServiceImpl implements DataService {
 	        }
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
 		} finally {
 			try {
 				if (st != null) {
@@ -1812,6 +1856,7 @@ public class DataServiceImpl implements DataService {
 		
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -1846,6 +1891,7 @@ public class DataServiceImpl implements DataService {
 		
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -1872,6 +1918,7 @@ public class DataServiceImpl implements DataService {
                 
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -1942,6 +1989,7 @@ public class DataServiceImpl implements DataService {
 
         } catch (SQLException e) {
         	lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
         } finally {
         	try {
         		if (st != null) {
@@ -1996,6 +2044,7 @@ public class DataServiceImpl implements DataService {
 
     	} catch (SQLException e) {
     		lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
     	} finally {
     		try {
     			if (st != null) {
@@ -2047,6 +2096,7 @@ public class DataServiceImpl implements DataService {
 		
 	} catch (SQLException e) {
 		lgr.log(Level.SEVERE, e.getMessage(), e);
+		ServerCrashUI.ShowDialog();
 	} finally {
 		try {
 			if (st != null) {
@@ -2061,52 +2111,53 @@ public class DataServiceImpl implements DataService {
 
     @Override
     public boolean setTimeSlot(Day day, TimeSlot newtimes) {
-        String dayname = "";
-        if (day == Day.SUNDAY){
-            dayname = "Sunday";
+    	String dayname = "";
+    	if (day == Day.SUNDAY){
+    		dayname = "Sunday";
+    	}
+    	else if (day == Day.MONDAY){
+    		dayname = "Monday";
+    	}
+    	else if (day == Day.TUESDAY){
+    		dayname = "Tuesday";
+    	}
+    	else if (day == Day.WEDNESDAY){
+    		dayname = "Wednesday";
+    	}
+    	else if (day == Day.THURSDAY){
+    		dayname = "Thursday";
+    	}
+    	else if (day == Day.FRIDAY){
+    		dayname = "Friday";
+    	}
+    	else if (day == Day.SATURDAY){
+    		dayname = "Saturday";
+    	}
+    	PreparedStatement st = null;
+    	try {
+
+    		st = connection.prepareStatement("UPDATE DefaultHours SET " +
+    				"DefaultHours.StartTime=?, DefaultHours.EndTime=?" +
+    				" WHERE Day=?");
+    		st.setString(3, dayname);
+    		st.setInt(1, newtimes.getStartTime());
+    		st.setInt(2, newtimes.getEndTime());
+
+    		st.executeUpdate();
+        	return true;
+        } catch (SQLException e) {
+        	lgr.log(Level.SEVERE, e.getMessage(), e);
+        	ServerCrashUI.ShowDialog();
+        } finally {
+        	try {
+        		if (st != null) {
+        			st.close();
+        		}
+        	} catch (SQLException ex) {
+        		lgr.log(Level.WARNING, ex.getMessage(), ex);
+        	}
         }
-        else if (day == Day.MONDAY){
-            dayname = "Monday";
-        }
-        else if (day == Day.TUESDAY){
-            dayname = "Tuesday";
-        }
-        else if (day == Day.WEDNESDAY){
-            dayname = "Wednesday";
-        }
-        else if (day == Day.THURSDAY){
-            dayname = "Thursday";
-        }
-        else if (day == Day.FRIDAY){
-            dayname = "Friday";
-        }
-        else if (day == Day.SATURDAY){
-            dayname = "Saturday";
-        }
-        PreparedStatement st = null;
-        try {
-		
-		st = connection.prepareStatement("UPDATE DefaultHours SET " +
-                        "DefaultHours.StartTime=?, DefaultHours.EndTime=?" +
-				" WHERE Day=?");
-		st.setString(3, dayname);
-                st.setInt(1, newtimes.getStartTime());
-                st.setInt(2, newtimes.getEndTime());
-                
-                st.executeUpdate();
-		return true;
-	} catch (SQLException e) {
-		lgr.log(Level.SEVERE, e.getMessage(), e);
-	} finally {
-		try {
-			if (st != null) {
-				st.close();
-			}
-		} catch (SQLException ex) {
-			lgr.log(Level.WARNING, ex.getMessage(), ex);
-		}
-	}
-	return false;
+        return false;
     }
 
 
