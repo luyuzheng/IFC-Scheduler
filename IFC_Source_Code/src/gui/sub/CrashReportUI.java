@@ -38,7 +38,7 @@ public class CrashReportUI extends JDialog {
 	
 	private String crashDescriptionString = "<b>The application appears to have crashed!</b> " +
 			"We are really sorry! " +
-			"Please make sure that XAMP and MySql are running on the host machine." +
+			"Please make sure that XAMPP and MySQL are running on the host machine." +
 			"To help fix these bugs and improve our product, " +
 			"please save a crash report below and then email Daisy Fan " +
 			"(dfan@cs.cornell.edu) for assistance. ";
@@ -47,7 +47,7 @@ public class CrashReportUI extends JDialog {
 		exceptionThrown = e;
 		
 		setModal(true);
-		setTitle("Save Crash Report");
+		setTitle("IFC Scheduler - Save Crash Report");
 
 		setPreferredSize(new Dimension(450,400));
 		setLayout(new BorderLayout());

@@ -21,14 +21,14 @@ public class ServerCrashUI extends JDialog {
 
 	private JButton okButton = new JButton("OK");
 	
-	private String crashDescriptionString = "The MySql or XAMPP server may not be running properly. " +
-			"Please contact the system administrator about restarting the MySql server.";
+	private String crashDescriptionString = "The MySQL or XAMPP server may not be running properly. " +
+			"Please contact the system administrator about restarting the MySQL server.";
 	
 	private ServerCrashUI() {
 		setModal(true);
-		setTitle("Save Crash Report");
+		setTitle("IFC Scheduler - Save Crash Report");
 
-		setPreferredSize(new Dimension(450,200));
+		setPreferredSize(new Dimension(470,180));
 		setLayout(new BorderLayout());
 		
 		JPanel reportPanel = new JPanel();
