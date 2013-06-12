@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.BoxLayout;
@@ -31,6 +32,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
 
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.PractitionerDto;
@@ -101,7 +103,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		                  "Select a New Practitioner");
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
-		tabbedPane.setPreferredSize(new Dimension(500,250));
+		tabbedPane.setPreferredSize(new Dimension(600,300));
 		tabbedPane.setFont(Constants.PARAGRAPH);
 		add(tabbedPane, BorderLayout.CENTER);
 		setResizable(false);
@@ -118,13 +120,45 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
     	JPanel p = new JPanel(new BorderLayout());
     	JPanel panel = new JPanel(new BorderLayout());
     	
-    	pracTable = new JTable(new PracTableModel());
+    	pracTable = new JTable(new PracTableModel()) {  
+    		//Implement table cell tool tips.
+    		public String getToolTipText(MouseEvent e) {
+    			String tip = null;
+    			java.awt.Point p = e.getPoint();
+    			int rowIndex = rowAtPoint(p);
+    			
+    			if (rowIndex >= 0) {
+    				TableModel model = getModel();
+    				String name = (String)model.getValueAt(rowIndex, 0);
+    				String type = (String)model.getValueAt(rowIndex, 1);
+    				Integer apptLength = (Integer)model.getValueAt(rowIndex, 2);
+    				String note = (String)model.getValueAt(rowIndex, 3);
+    				ArrayList<String> notes = breakupString(note, 50);
+    				if (notes.size() == 0 || notes.get(0).equals("")) {
+    					notes.clear();
+    					notes.add("None");
+    				}
+    				
+    				tip = "<html>Practitioner: " + name +
+    					  "<br>Type: " + type +
+    					  "<br>Appt Length: " + apptLength +
+    					  "<br>Notes: ";
+    				for (String s : notes)
+    					tip += s + "<br>";
+    				tip = tip.substring (0, tip.length() - 4);
+    			} else {
+    				tip = "";
+    			}
+        		return tip;
+    		}
+    	};
+    	
     	pracTable.getTableHeader().setReorderingAllowed(false);
     	TableColumn column = null;
     	for (int i = 0; i < pracTable.getColumnCount(); i++) {
     	    column = pracTable.getColumnModel().getColumn(i);
-    	    if (i == 2) {
-    	        column.setPreferredWidth(200); //third column is bigger
+    	    if (i == 3) {
+    	        column.setPreferredWidth(200); //fourth column is bigger
     	    } else {
     	        column.setPreferredWidth(100);
     	    }
@@ -150,6 +184,23 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
         p.add(buttonPanel, BorderLayout.SOUTH);
         return p;
     }
+    
+    private ArrayList<String> breakupString(String s, int line) {
+		ArrayList<String> strings = new ArrayList<String>();
+		int startIndex = 0;
+		int endIndex = line - 5; //- 5 to compensate for word "Note: " at beginning
+		int len = s.length();
+		while (endIndex < len) {
+			while (endIndex < len && s.charAt(endIndex) != ' ' && s.charAt(endIndex) != '.') 
+				endIndex++;
+			strings.add(s.substring(startIndex, endIndex));
+			startIndex = endIndex;
+			endIndex = endIndex + line;
+		}
+		endIndex = s.length();
+		strings.add(s.substring(startIndex, endIndex));
+		return strings;
+	}
     
     private JComponent makeNewPracPanel() {
     	JPanel panel = new JPanel(new BorderLayout());
@@ -398,7 +449,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 	
 	class PracTableModel extends AbstractTableModel {
 
-		private String[] columnNames = { "Name", "Type", "Appointment Length (Minutes)" };
+		private String[] columnNames = { "Name", "Type", "Appt Length (Min)", "Note" };
 		
 		public int getColumnCount() {
 			return columnNames.length;
@@ -418,8 +469,10 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 				return p.getFirst() + " " + p.getLast();
 			else if (col == 1) 
 				return p.getTypeName();
-			else
+			else if (col == 2)
 				return p.getApptLength();
+			else
+				return p.getNotes();
 		}
 		
 		public boolean isCellEditable(int row, int col) {

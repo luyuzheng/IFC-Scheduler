@@ -75,7 +75,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
 		setLayout(new GridLayout(1,1));
-		tabbedPane.setPreferredSize(new Dimension(500,250));
+		tabbedPane.setPreferredSize(new Dimension(600,300));
 		tabbedPane.setFont(Constants.PARAGRAPH);
 		add(tabbedPane);
 		setResizable(false);
