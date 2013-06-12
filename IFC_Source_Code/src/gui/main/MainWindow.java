@@ -87,7 +87,7 @@ public class MainWindow extends JFrame {
 		add(sidePane,BorderLayout.WEST);
 		
 		//Adds the appointment panel to main window
-                ap = new AppointmentPanel(dp, this);
+        ap = new AppointmentPanel(dp, this);
 		add(ap, BorderLayout.CENTER);
 	}
 	

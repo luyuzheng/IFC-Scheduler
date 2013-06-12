@@ -36,7 +36,7 @@ public interface DataService {
 	 * Does not add a patient with the same name and phone number
 	 * If the patient exists, it will reactivate the patient and return him.
 	 */
-	public PatientDto addPatient(String phone, String first, String last, String notes);
+	public PatientDto addPatient(String first, String last, String phone, String notes);
 
 	/**
 	 * Updates the specified field for the specified patient in the database and DTO

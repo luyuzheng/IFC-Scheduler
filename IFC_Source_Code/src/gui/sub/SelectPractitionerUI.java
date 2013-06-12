@@ -364,10 +364,9 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 				return;
 			}
 			if (startTime < dayStart || endTime > dayEnd) {
-				if (JOptionPane.showConfirmDialog(
-						this, "The specified time range exceeds the range of the day. " +
-								"Continue with the specified range truncated?",
-						"Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
+				JLabel msg = new JLabel("The specified time range exceeds the range of the day. Continue with the specified range truncated?");
+				msg.setFont(Constants.PARAGRAPH);
+				if (JOptionPane.showConfirmDialog(this, msg, "Warning", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
 				if (startTime < dayStart) startTime = dayStart;
 				if (endTime > dayEnd) endTime = dayEnd;
 			}

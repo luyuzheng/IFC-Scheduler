@@ -209,7 +209,9 @@ public class DayPanel extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			AppointmentBlock block = ab;
 
-			if (JOptionPane.showConfirmDialog(mw, "Are you sure you'd like to cancel this appointment?", "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) block.clearAppt();
+			JLabel msg = new JLabel("Are you sure you'd like to cancel this appointment?");
+			msg.setFont(Constants.PARAGRAPH);
+			if (JOptionPane.showConfirmDialog(mw, msg, "Please Confirm", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) block.clearAppt();
 		}
 	};
 	

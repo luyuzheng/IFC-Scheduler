@@ -320,7 +320,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			
 			String noteText = note.getText().replaceAll("[\r\n]+", "\t\t"); //Added by Aakash on 12th feb to fix multiline note bug
 			
-			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(num, firstName, lastName, noteText);
+			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(firstName, lastName, num, noteText);
 			
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (patTable.getSelectedRow() > -1) {

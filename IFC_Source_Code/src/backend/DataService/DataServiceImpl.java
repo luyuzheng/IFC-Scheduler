@@ -72,6 +72,7 @@ public class DataServiceImpl implements DataService {
 
 	public static Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create(
+			//"ifc_db", "192.168.1.9:3306", "testuser", "test623");
 			"ifc_db", "localhost:3306", "testuser", "test623");
 	
 	private final String url;
@@ -290,17 +291,17 @@ public class DataServiceImpl implements DataService {
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
 			while (rs.next()) {
-                            if(rs.getInt("Active") != 0){
-				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
-				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
-				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
-				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
-				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
-				//TODO set to 0 if null
-				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
-				results.add(patient);
-				patient = new PatientDto();
-                            }
+                if (rs.getInt("Active") != 0){
+					patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));					
+					patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
+					patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
+					patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
+					patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+					//TODO set to 0 if null
+					patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
+					results.add(patient);
+					patient = new PatientDto();
+                }
 			}
 			return results;
 		} catch (SQLException e) {
@@ -324,54 +325,54 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-                        if (first != null && !first.equals("")){
-                            if (last != null && !last.equals("")){
-                                st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
-					"Patient.PhoneNumber, Patient.Notes, " +
-					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
-					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
-					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
-					"WHERE Patient.FirstName = ? AND Patient.LastName = ?");
-                                st.setString(1, first);
-                                st.setString(2, last);
-                            }
-                            else {
-                                st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
-					"Patient.PhoneNumber, Patient.Notes, " +
-					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
-					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
-					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
-					"WHERE Patient.FirstName = ?");
-                                st.setString(1, first);
-                            }
-                        }
-                        else if (last != null && !last.equals("")){
-                            st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
-					"Patient.PhoneNumber, Patient.Notes, " +
-					"temp.NumberOfNoShows  From Patient LEFT JOIN " +
-					"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
-					"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
-					"WHERE Patient.LastName = ?");
-                            st.setString(1, last);
-                        }
-                        else {
-                            return new ArrayList<PatientDto>();
-                        }
+            if (first != null && !first.equals("")){
+                if (last != null && !last.equals("")){
+                    st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
+							"Patient.PhoneNumber, Patient.Notes, " +
+							"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+							"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+							"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+							"WHERE Patient.FirstName = ? AND Patient.LastName = ?");
+                    st.setString(1, first);
+                    st.setString(2, last);
+                }
+                else {
+                    st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
+							"Patient.PhoneNumber, Patient.Notes, " +
+							"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+							"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+							"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+							"WHERE Patient.FirstName = ?");
+                    st.setString(1, first);
+                }
+            }
+            else if (last != null && !last.equals("")){
+                st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
+						"Patient.PhoneNumber, Patient.Notes, " +
+						"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+						"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+						"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+						"WHERE Patient.LastName = ?");
+                st.setString(1, last);
+            }
+            else {
+                return new ArrayList<PatientDto>();
+            }
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
 			PatientDto patient = new PatientDto();
 			while (rs.next()) {
-                            if (rs.getInt("Patient.Active") != 0){
-				patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
-				patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
-				patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
-				patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
-				patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
-				// TODO: change to 0 if null
-				patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
-				results.add(patient);
-				patient = new PatientDto();
-                            }
+                if (rs.getInt("Patient.Active") != 0){
+					patient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
+					patient.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
+					patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
+					patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
+					patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
+					// TODO: change to 0 if null
+					patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
+					results.add(patient);
+					patient = new PatientDto();
+                }
 			}
 			return results;
 		} catch (SQLException e) {
@@ -596,43 +597,43 @@ public class DataServiceImpl implements DataService {
 			st.setString(3, last); 
 			st.setInt(4, appLength);
 			st.setString(5, phone);
-                        st.setInt(6, 7);
+            st.setInt(6, 1);
 			st.setString(7, notes);
 			st.executeUpdate();
                         
-                        st = connection.prepareStatement(
-                        "SELECT Max(PractID) FROM Practitioner"); 
-		
-                        rs = st.executeQuery();
-                        
-                        rs.next();
-                        
-                        int id = rs.getInt(1);
-                        
-                        st = connection.prepareStatement(
-                        "SELECT * FROM Practitioner INNER JOIN ServiceType ON Practitioner.TypeID = " +
-					"ServiceType.TypeID WHERE Practitioner.PractID=?");
-                        
-                        st.setInt(1, id);
-                        
-                        rs = st.executeQuery();
-                        
-                        if(rs.next()){
-                            PractitionerDto returnPract = new PractitionerDto();
+            st = connection.prepareStatement(
+            "SELECT Max(PractID) FROM Practitioner"); 
 
-                            returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
-                            returnPract.setField(PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
-                            returnPract.setField(PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
-                            returnPract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
-                            returnPract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
-                            returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-                            TypeDto type = new TypeDto();
-                            type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
-                            type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
-                            returnPract.setField(PractitionerDto.TYPE, type);
+            rs = st.executeQuery();
+            
+            rs.next();
+            
+            int id = rs.getInt(1);
+            
+            st = connection.prepareStatement(
+            		"SELECT * FROM Practitioner INNER JOIN ServiceType ON Practitioner.TypeID = " +
+            		"ServiceType.TypeID WHERE Practitioner.PractID=?");
+            
+            st.setInt(1, id);
+            
+            rs = st.executeQuery();
+            
+            if(rs.next()){
+                PractitionerDto returnPract = new PractitionerDto();
 
-                            return returnPract;
-                        }
+                returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
+                returnPract.setField(PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
+                returnPract.setField(PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
+                returnPract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
+                returnPract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
+                returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
+                TypeDto type = new TypeDto();
+                type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+                type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+                returnPract.setField(PractitionerDto.TYPE, type);
+
+                return returnPract;
+            }
 			
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
@@ -853,7 +854,7 @@ public class DataServiceImpl implements DataService {
 
 			List<AppointmentDto> appointments = new ArrayList<AppointmentDto>();
 
-			pract.setField(SchedulePractitionerDto.APPOINTMENTS, appointments);;
+			pract.setField(SchedulePractitionerDto.APPOINTMENTS, appointments);
 
 			st = connection.prepareStatement(
 					"INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
@@ -892,7 +893,7 @@ public class DataServiceImpl implements DataService {
 	public boolean addPatientToAppointment(int patID, AppointmentDto appointment) {
         PreparedStatement st = null;
         ResultSet rs = null;
-        try {
+        try {        	
 		st = connection.prepareStatement("UPDATE Appointment " +
 				"SET Appointment.PatID=? WHERE Appointment.ApptID=?" );
 		st.setInt(1, patID);
@@ -902,18 +903,18 @@ public class DataServiceImpl implements DataService {
 		appointment.setPatient(DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(patID));
 		return true;
 		
-	} catch (SQLException e) {
-		lgr.log(Level.SEVERE, e.getMessage(), e);
-		ServerCrashUI.ShowDialog();
-	} finally {
-		try {
-			if (st != null) {
-				st.close();
+		} catch (SQLException e) {
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
-		} catch (SQLException ex) {
-			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
-	}
 		return false;
     }
 	
@@ -992,7 +993,7 @@ public class DataServiceImpl implements DataService {
 			Date date = appointment.getApptDate();
 			st = connection.prepareStatement("INSERT INTO NoShow " +
 					"(PatID, NoShowDate) " +
-			"VALUES (?, ?)");
+					"VALUES (?, ?)");
 			st.setInt(1, patID);
 			st.setDate(2, date);
 			st.executeUpdate();
@@ -1040,7 +1041,6 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement("DELETE FROM NoShow WHERE NoShowID=?");
-			System.out.println(appointment.getNoShowID());
 			st.setInt(1, appointment.getNoShowID());
 			st.executeUpdate();
 			
@@ -1080,7 +1080,7 @@ public class DataServiceImpl implements DataService {
 			st.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
                         st.setString(4, comments);
 			st.executeUpdate();
-			return null; //Todo: changge return type
+			return null; //Todo: change return type
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 			ServerCrashUI.ShowDialog();
@@ -1314,24 +1314,31 @@ public class DataServiceImpl implements DataService {
 			returnDto.setField(SchedulePractitionerDto.END, end);
 			returnDto.setField(SchedulePractitionerDto.START, start);
 			returnDto.setField(SchedulePractitionerDto.PRACT_SCHED_ID, practSchID);
-
 			
-			PreparedStatement new_st = connection.prepareStatement("Select MAX(ApptID) as ID From Appointment");
-			rs = new_st.executeQuery();
-			rs.next();
-			int lastID = rs.getInt("ID");
-		
 			st = connection.prepareStatement("INSERT INTO Appointment (PractSchedID, StartTime, EndTime, ApptDate) VALUES (?, ?, ?, ?)");
-			int j = 1;
+			int j = 0;
+			int firstID = -1;
 			for (int i = start; i <= end - pract.getApptLength(); i+=pract.getApptLength()){
+				// Insert the appointment
 				st.setInt(1, practSchID);
 				st.setInt(2, i);
 				st.setInt(3, i + pract.getApptLength());
 				st.setDate(4, day.getDate());
 				
+				st.executeUpdate();
+				
+				// Get the ApptID for the first appointment of this practitioner
+				// (We only want to access the database once to save time, so we calculate the rest of the ApptIDs.)
+				if (i == start) {
+					PreparedStatement new_st = connection.prepareStatement("Select MAX(ApptID) as ID From Appointment");
+					rs = new_st.executeQuery();
+					rs.next();
+					firstID = rs.getInt("ID");
+				}
+				
 				newApt = new AppointmentDto();
 				newApt.setField(AppointmentDto.APPT_DATE, day.getDate());
-				newApt.setField(AppointmentDto.APPT_ID, lastID+j);
+				newApt.setField(AppointmentDto.APPT_ID, firstID+j);
 				newApt.setField(AppointmentDto.END, i + pract.getApptLength());
 				newApt.setField(AppointmentDto.NOTE, null);
 				newApt.setField(AppointmentDto.NO_SHOW_ID, null);
@@ -1344,11 +1351,11 @@ public class DataServiceImpl implements DataService {
 				newApt.setField(AppointmentDto.TYPE_ID, pract.getTypeID());
 				
 				appointments.add(newApt);
-				st.executeUpdate();
 				j++;
 			}
 			
 			return returnDto;
+			
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 			ServerCrashUI.ShowDialog();
@@ -1386,60 +1393,60 @@ public class DataServiceImpl implements DataService {
 				st = connection.prepareStatement("INSERT INTO Day (DayDate, StartTime, EndTime) VALUES (?, ?, ?)");
 				retDay.setField(DayDto.DATE, date);
 				st.setDate(1, date);
-                                Calendar cal = Calendar.getInstance();
-                                cal.setTime(date);
-                                TimeSlot times;
-                                switch (cal.get(Calendar.DAY_OF_WEEK)) {
-                                    case (Calendar.MONDAY):
-                                        times = this.getDayTimeslot(Day.MONDAY); 
-                                        retDay.setStart(times.getStartTime());
-                                        st.setInt(2, times.getStartTime());
-                                        retDay.setEnd(times.getEndTime());
-                                        st.setInt(3, times.getEndTime());
-                                        break;
-                                    case (Calendar.TUESDAY):
-                                        times = this.getDayTimeslot(Day.TUESDAY); 
-                                        retDay.setStart(times.getStartTime());
-                                        st.setInt(2, times.getStartTime());
-                                        retDay.setEnd(times.getEndTime());
-                                        st.setInt(3, times.getEndTime());
-                                        break;
-                                    case (Calendar.WEDNESDAY):
-                                        times = this.getDayTimeslot(Day.WEDNESDAY); 
-                                        retDay.setStart(times.getStartTime());
-                                        st.setInt(2, times.getStartTime());
-                                        retDay.setEnd(times.getEndTime());
-                                        st.setInt(3, times.getEndTime());
-                                        break;
-                                    case (Calendar.THURSDAY):
-                                        times = this.getDayTimeslot(Day.THURSDAY); 
-                                        retDay.setStart(times.getStartTime());
-                                        st.setInt(2, times.getStartTime());
-                                        retDay.setEnd(times.getEndTime());
-                                        st.setInt(3, times.getEndTime());
-                                        break;
-                                    case (Calendar.FRIDAY):
-                                        times = this.getDayTimeslot(Day.FRIDAY); 
-                                        retDay.setStart(times.getStartTime());
-                                        st.setInt(2, times.getStartTime());
-                                        retDay.setEnd(times.getEndTime());
-                                        st.setInt(3, times.getEndTime());
-                                        break;
-                                    case (Calendar.SATURDAY):
-                                        times = this.getDayTimeslot(Day.SATURDAY); 
-                                        retDay.setStart(times.getStartTime());
-                                        st.setInt(2, times.getStartTime());
-                                        retDay.setEnd(times.getEndTime());
-                                        st.setInt(3, times.getEndTime());
-                                        break;
-                                    case (Calendar.SUNDAY):
-                                        times = this.getDayTimeslot(Day.SUNDAY); 
-                                        retDay.setStart(times.getStartTime());
-                                        st.setInt(2, times.getStartTime());
-                                        retDay.setEnd(times.getEndTime());
-                                        st.setInt(3, times.getEndTime());
-                                        break;
-                                }   
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+                TimeSlot times;
+                switch (cal.get(Calendar.DAY_OF_WEEK)) {
+                    case (Calendar.MONDAY):
+                        times = this.getDayTimeslot(Day.MONDAY); 
+                        retDay.setStart(times.getStartTime());
+                        st.setInt(2, times.getStartTime());
+                        retDay.setEnd(times.getEndTime());
+                        st.setInt(3, times.getEndTime());
+                        break;
+                    case (Calendar.TUESDAY):
+                        times = this.getDayTimeslot(Day.TUESDAY); 
+                        retDay.setStart(times.getStartTime());
+                        st.setInt(2, times.getStartTime());
+                        retDay.setEnd(times.getEndTime());
+                        st.setInt(3, times.getEndTime());
+                        break;
+                    case (Calendar.WEDNESDAY):
+                        times = this.getDayTimeslot(Day.WEDNESDAY); 
+                        retDay.setStart(times.getStartTime());
+                        st.setInt(2, times.getStartTime());
+                        retDay.setEnd(times.getEndTime());
+                        st.setInt(3, times.getEndTime());
+                        break;
+                    case (Calendar.THURSDAY):
+                        times = this.getDayTimeslot(Day.THURSDAY); 
+                        retDay.setStart(times.getStartTime());
+                        st.setInt(2, times.getStartTime());
+                        retDay.setEnd(times.getEndTime());
+                        st.setInt(3, times.getEndTime());
+                        break;
+                    case (Calendar.FRIDAY):
+                        times = this.getDayTimeslot(Day.FRIDAY); 
+                        retDay.setStart(times.getStartTime());
+                        st.setInt(2, times.getStartTime());
+                        retDay.setEnd(times.getEndTime());
+                        st.setInt(3, times.getEndTime());
+                        break;
+                    case (Calendar.SATURDAY):
+                        times = this.getDayTimeslot(Day.SATURDAY); 
+                        retDay.setStart(times.getStartTime());
+                        st.setInt(2, times.getStartTime());
+                        retDay.setEnd(times.getEndTime());
+                        st.setInt(3, times.getEndTime());
+                        break;
+                    case (Calendar.SUNDAY):
+                        times = this.getDayTimeslot(Day.SUNDAY); 
+                        retDay.setStart(times.getStartTime());
+                        st.setInt(2, times.getStartTime());
+                        retDay.setEnd(times.getEndTime());
+                        st.setInt(3, times.getEndTime());
+                        break;
+                }   
 				st.executeUpdate();
 				return retDay;
 			}
@@ -1484,7 +1491,8 @@ public class DataServiceImpl implements DataService {
 				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
 				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
 				pract.setField(PractitionerDto.TYPE, type);
-                                return pract;
+                
+				return pract;
 			}
 			return null;
 
@@ -1697,7 +1705,7 @@ public class DataServiceImpl implements DataService {
 	}
 
     @Override
-    public PatientDto addPatient(String phone, String first, String last, String notes) {
+    public PatientDto addPatient(String first, String last, String phone, String notes) {
         PreparedStatement st = null;
         ResultSet rs = null;
         int newId = 0;
@@ -1744,8 +1752,8 @@ public class DataServiceImpl implements DataService {
         		returnPatient.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
         		returnPatient.setFirst(first);
         		returnPatient.setLast(last);
-        		returnPatient.setNotes(notes);
         		returnPatient.setPhone(phone);
+        		returnPatient.setNotes(notes);
         		returnPatient.setField(PatientDto.NO_SHOW, 0);
 
         		return returnPatient;
@@ -1875,34 +1883,34 @@ public class DataServiceImpl implements DataService {
         ResultSet rs = null;
         try {
 		
-		st = connection.prepareStatement("UPDATE Waitlist " +
-				"SET Waitlist.PatID=?, Waitlist.TypeID=?, Waitlist.DatetimeEntered=?, Waitlist.Comments=?" +
-				" WHERE Waitlist.WaitlistID = ?");
-		st.setInt(1, wl.getPatientID());
-		st.setInt(2,wl.getTypeID());
-		// This seems worrisome? will date work this way?
-		//st.setDate(3,wl.getDate());
-		st.setTimestamp(3, wl.getTimestamp());
-		st.setString(4,wl.getComments());
-		st.setInt(5,wl.getWaitlistID());
-		
-		st.executeUpdate();
-		return true;
-		
-	} catch (SQLException e) {
-		lgr.log(Level.SEVERE, e.getMessage(), e);
-		ServerCrashUI.ShowDialog();
-	} finally {
-		try {
-			if (st != null) {
-				st.close();
+			st = connection.prepareStatement("UPDATE Waitlist " +
+					"SET Waitlist.PatID=?, Waitlist.TypeID=?, Waitlist.DatetimeEntered=?, Waitlist.Comments=?" +
+					" WHERE Waitlist.WaitlistID = ?");
+			st.setInt(1, wl.getPatientID());
+			st.setInt(2,wl.getTypeID());
+			// This seems worrisome? will date work this way?
+			//st.setDate(3,wl.getDate());
+			st.setTimestamp(3, wl.getTimestamp());
+			st.setString(4,wl.getComments());
+			st.setInt(5,wl.getWaitlistID());
+			
+			st.executeUpdate();
+			return true;
+			
+		} catch (SQLException e) {
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
-		} catch (SQLException ex) {
-			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
-	}
-		return false;
-    }
+			return false;
+	    }
     
     @Override
     public boolean removePatientFromWaitlist(WaitlistDto patient) {
@@ -1910,26 +1918,26 @@ public class DataServiceImpl implements DataService {
         ResultSet rs = null;
         try {
 		
-		st = connection.prepareStatement("DELETE FROM Waitlist WHERE PatID = ?");
-		
-		st.setInt(1, patient.getPatientID());
-                st.executeUpdate();
-                return true;
+			st = connection.prepareStatement("DELETE FROM Waitlist WHERE PatID = ?");
+			
+			st.setInt(1, patient.getPatientID());
+            st.executeUpdate();
+            return true;
                 
-	} catch (SQLException e) {
-		lgr.log(Level.SEVERE, e.getMessage(), e);
-		ServerCrashUI.ShowDialog();
-	} finally {
-		try {
-			if (st != null) {
-				st.close();
+		} catch (SQLException e) {
+			lgr.log(Level.SEVERE, e.getMessage(), e);
+			ServerCrashUI.ShowDialog();
+		} finally {
+			try {
+				if (st != null) {
+					st.close();
+				}
+			} catch (SQLException ex) {
+				lgr.log(Level.WARNING, ex.getMessage(), ex);
 			}
-		} catch (SQLException ex) {
-			lgr.log(Level.WARNING, ex.getMessage(), ex);
 		}
-	}
-		return false;
-    }
+			return false;
+	    }
 
     @Override
     public ArrayList<AppointmentDto> searchForAppointments(int typeId) {
@@ -1973,7 +1981,7 @@ public class DataServiceImpl implements DataService {
 				newAppt.setField(AppointmentDto.PRACTITIONER_ID, rs.getInt(AppointmentDto.PRACTITIONER_ID));
 				newAppt.setField(AppointmentDto.TYPE_ID, rs.getInt(AppointmentDto.TYPE_ID));
 				
-				// manual filter of starttime
+				// manual filter of start time
 	        	Calendar apptCal = Calendar.getInstance();
 	        	apptCal.setTime(newAppt.getApptDate());
 	        	if (apptCal.get(Calendar.DAY_OF_YEAR) == c.get(Calendar.DAY_OF_YEAR) &&

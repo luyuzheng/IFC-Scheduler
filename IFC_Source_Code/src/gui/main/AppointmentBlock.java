@@ -126,7 +126,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 			setBackground(new Color(255,200,200));
 		else
 			setBackground(new Color(200,200,255));
-		textArea.addMouseListener(npl);
+		textArea.addMouseListener(npl);		
 	}
 
 	/**

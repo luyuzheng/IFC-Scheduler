@@ -54,7 +54,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 		setModal(true);
 		setTitle(name);
 		setLayout(new GridLayout(1,1));
-		setPreferredSize(new Dimension(275,250));
+		setPreferredSize(new Dimension(500,250));
 		add(makeNewPatPanel());
 		setResizable(false);
 		
@@ -145,17 +145,20 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 		//else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
 	}
 	
-	public void actionPerformed(ActionEvent e) {
-                System.out.println("Here");
+	public void actionPerformed(ActionEvent e) {		
+		JLabel msg = new JLabel();
+		msg.setFont(Constants.PARAGRAPH);
 		if (e.getActionCommand().equals("okNew")) {
 			String firstName = firstNameField.getText();
 			if (firstName.equals("")) {
-				JOptionPane.showMessageDialog(this, "Please enter a first name.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter a first name.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			String lastName = lastNameField.getText();
 			if (lastName.equals("")) {
-				JOptionPane.showMessageDialog(this, "Please enter a last name.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter a last name.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			String areaCode = areaCodeField.getText();
@@ -164,14 +167,16 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 			boolean blank = false;
 			if (areaCode.equals("") && numberPart1.equals("") && numberPart2.equals("")) {
 				blank = true;
-				if (JOptionPane.showConfirmDialog(this, "The Phone Number field is blank. Would you like to continue?", "Missing Phone Number", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
+				msg.setText("The Phone Number field is blank. Would you like to continue?");
+				if (JOptionPane.showConfirmDialog(this, msg, "Missing Phone Number", JOptionPane.OK_CANCEL_OPTION) != JOptionPane.OK_OPTION)
 					return;
 			}
 			String num;
 			try {
 				if (blank) num = null;
 				else if (areaCode.length() != 3 || numberPart1.length() != 3 || numberPart2.length() != 4) {
-					JOptionPane.showMessageDialog(this, "Please enter a valid phone number (###-###-####) or leave the field blank.", "Error!", JOptionPane.ERROR_MESSAGE);
+					msg.setText("Please enter a valid phone number (###-###-####) or leave the field blank.");
+					JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
 				} else {
 					int a = Integer.parseInt(areaCode);
@@ -180,27 +185,28 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 					num = areaCode + "-" + numberPart1 + "-" + numberPart2;//a, p1, p2);
 				}
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, "Please enter a valid phone number (###-###-####) or leave the field blank.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please enter a valid phone number (###-###-####) or leave the field blank.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
-			//String noteText = note.getText();
 			String noteText = note.getText().replaceAll("[\r\n]+", "\t\t"); //added by aakash on feb 12 to fix multiline note bug
-                        
-			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(firstName, lastName, num, noteText);			
-			
-                        
+                        	
+			patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatient(firstName, lastName, num, noteText);
+			           
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (patTable.getSelectedRow() > -1) {
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				patient = model.getPatient(patTable.getSelectedRow());
-				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, "This patient has the following note attached: \"" + patient.getNotes() + "\". Are you sure you want to continue?", "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+				msg.setText("This patient has the following note attached: \"" + patient.getNotes() + "\". Are you sure you want to continue?");
+				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, msg, "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
 					patient = null;
 					return;
 				}
 			}
 			else {
-				JOptionPane.showMessageDialog(this, "Please select one of the patients in the table, or add a new one.", "Error!", JOptionPane.ERROR_MESSAGE);
+				msg.setText("Please select one of the patients in the table, or add a new one.");
+				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 		} else if (e.getActionCommand().equals("edit")) {

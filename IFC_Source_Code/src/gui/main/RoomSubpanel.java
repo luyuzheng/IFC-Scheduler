@@ -57,6 +57,7 @@ public class RoomSubpanel extends JPanel{
 		for (AppointmentDto a : room.getAppointments()) {
 			if (a.getEnd() <= dayEnd) {
 				AppointmentBlock app = new AppointmentBlock(a,dp, main);
+				
 				add(app);
 			}
 		}

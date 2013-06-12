@@ -207,6 +207,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 				practitioner = prac.get(pracTable.getSelectedRow());
 			else {
 				JLabel msg = new JLabel("Please select one of the practitioners in the table, or add a new one.");
+				msg.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}

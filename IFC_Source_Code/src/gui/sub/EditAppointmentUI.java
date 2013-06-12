@@ -218,9 +218,9 @@ public class EditAppointmentUI extends JDialog implements ActionListener {
 		}
                 
 		appointment.setNote((noteArea.getText()).replaceAll("[\r\n]+", "\t\t"));
-                DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
-                editAppointmentUI.setVisible(false);
-                window.refreshConfirmationPane();
-                window.refreshAppointments(window.getCurrentDay().getDate());
+        DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
+        editAppointmentUI.setVisible(false);
+        window.refreshConfirmationPane();
+        window.refreshAppointments(window.getCurrentDay().getDate());
     }
 }

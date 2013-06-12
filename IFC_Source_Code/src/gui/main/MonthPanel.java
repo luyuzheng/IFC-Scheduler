@@ -330,7 +330,7 @@ public class MonthPanel extends JScrollPane implements Printable, ActionListener
 			} catch (PrinterException ex) {
 				/* The job did not successfully complete */
 				JLabel errorMsg = new JLabel("The page did not print successfully.");
-				errorMsg.setFont(Constants.DIALOG);
+				errorMsg.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
 			}
 		}

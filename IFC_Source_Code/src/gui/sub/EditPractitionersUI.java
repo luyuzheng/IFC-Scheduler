@@ -276,6 +276,7 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 		} else if (e.getActionCommand().equals("remove")) {
 			if (pracTable.getSelectedRow() < 0) return;
 			JLabel msg = new JLabel("Are you sure you want to remove this practitioner? Removing this practitioner will not affect historical data, but you will no longer be able to schedule him or her.");
+			msg.setFont(Constants.PARAGRAPH);
 			if (JOptionPane.showConfirmDialog(this, msg, "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(
                                         model.getPractitioner(pracTable.getSelectedRow()));

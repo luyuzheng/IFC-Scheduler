@@ -17,6 +17,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -286,7 +287,10 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 			return;
 		} else if (e.getActionCommand().equals("remove")) {
 			if (patTable.getSelectedRow() < 0) return;
-			if (JOptionPane.showConfirmDialog(this, "Are you sure you want to remove this patient? Removing this patient will not affect historical data, but you will no longer be able to schedule him or her.", "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
+			
+			JLabel msg = new JLabel("Are you sure you want to remove this patient? Removing this patient will not affect historical data, but you will no longer be able to schedule him or her.");
+			msg.setFont(Constants.PARAGRAPH);
+			if (JOptionPane.showConfirmDialog(this, msg, "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatient(model.getPatient(patTable.getSelectedRow()));
 				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
