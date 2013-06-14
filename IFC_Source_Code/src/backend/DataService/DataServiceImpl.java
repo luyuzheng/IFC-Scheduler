@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -242,9 +244,10 @@ public class DataServiceImpl implements DataService {
 		try {
 			st = connection.prepareStatement("Select Patient.PatID, " +
 					"Patient.FirstName, Patient.LastName, Patient.PhoneNumber, " +
-					"Patient.Notes, temp.NumberOfNoShows  From Patient LEFT JOIN " +
-					"(Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow" +
-					" Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Patient.PatID = (?)");
+					"Patient.Notes From Patient WHERE Patient.PatID = (?)");
+					//"Patient.Notes, temp.NumberOfNoShows  From Patient LEFT JOIN " +
+					//"(Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow" +
+					//" Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Patient.PatID = (?)");
 			st.setInt(1, PatID);
 			rs = st.executeQuery();
 			PatientDto patient = new PatientDto();
@@ -254,7 +257,10 @@ public class DataServiceImpl implements DataService {
 				patient.setField(PatientDto.LAST, rs.getString(3));
 				patient.setField(PatientDto.PHONE, rs.getString(4));
 				patient.setField(PatientDto.NOTES, rs.getString(5));
-				patient.setField(PatientDto.NO_SHOW, rs.getInt(6));
+				
+				List<NoShowDto> noShows = getNoShowsByPatient(PatID);
+				patient.setField(PatientDto.NO_SHOW, noShows.size());
+				//patient.setField(PatientDto.NO_SHOW, rs.getInt(6));
 				
 				return patient;
 			}
@@ -283,9 +289,12 @@ public class DataServiceImpl implements DataService {
 		try {
 
 			st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, " +
-					"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
-					"From Patient LEFT JOIN (Select PatID, Count(NoShowID) as " +
-					"NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID"); 
+					"Patient.LastName, Patient.PhoneNumber, Patient.Notes From Patient " + 
+					"ORDER BY Patient.LastName, Patient.FirstName");
+					//"Patient.LastName, Patient.PhoneNumber, Patient.Notes, temp.NumberOfNoShows  " +
+					//"From Patient LEFT JOIN (Select PatID, Count(NoShowID) as " +
+					//"NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+					//"ORDER BY Patient.LastName, Patient.FirstName"); 
                        
 			rs = st.executeQuery();
 			List<PatientDto> results = new ArrayList<PatientDto>();
@@ -297,8 +306,10 @@ public class DataServiceImpl implements DataService {
 					patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 					patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 					patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
-					//TODO set to 0 if null
-					patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
+					
+					List<NoShowDto> noShows = getNoShowsByPatient(patient.getPatID());
+					patient.setField(PatientDto.NO_SHOW, noShows.size());
+					//patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
 					results.add(patient);
 					patient = new PatientDto();
                 }
@@ -328,20 +339,22 @@ public class DataServiceImpl implements DataService {
             if (first != null && !first.equals("")){
                 if (last != null && !last.equals("")){
                     st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
-							"Patient.PhoneNumber, Patient.Notes, " +
-							"temp.NumberOfNoShows  From Patient LEFT JOIN " +
-							"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
-							"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+							"Patient.PhoneNumber, Patient.Notes " +
+                    		"From Patient " +
+							//"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+							//"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+							//"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
 							"WHERE Patient.FirstName = ? AND Patient.LastName = ?");
                     st.setString(1, first);
                     st.setString(2, last);
                 }
                 else {
                     st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
-							"Patient.PhoneNumber, Patient.Notes, " +
-							"temp.NumberOfNoShows  From Patient LEFT JOIN " +
-							"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
-							"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+							"Patient.PhoneNumber, Patient.Notes " +
+                    		"From Patient " + 
+							//"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+							//"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+							//"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
 							"WHERE Patient.FirstName = ?");
                     st.setString(1, first);
                 }
@@ -349,9 +362,10 @@ public class DataServiceImpl implements DataService {
             else if (last != null && !last.equals("")){
                 st = connection.prepareStatement("Select Patient.Active, Patient.PatID, Patient.FirstName, Patient.LastName, " +
 						"Patient.PhoneNumber, Patient.Notes, " +
-						"temp.NumberOfNoShows  From Patient LEFT JOIN " +
-						"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
-						"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
+                		"From Patient " +
+						//"temp.NumberOfNoShows  From Patient LEFT JOIN " +
+						//"(Select PatID, Count(NoShowID) as 	NumberOfNoShows from " +
+						//"NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID " +
 						"WHERE Patient.LastName = ?");
                 st.setString(1, last);
             }
@@ -368,8 +382,12 @@ public class DataServiceImpl implements DataService {
 					patient.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
 					patient.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
 					patient.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
-					// TODO: change to 0 if null
-					patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
+					
+					List<NoShowDto> noShows = getNoShowsByPatient(patient.getPatID());
+					patient.setField(PatientDto.NO_SHOW, noShows.size());
+					//patient.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
+					
+					
 					results.add(patient);
 					patient = new PatientDto();
                 }
@@ -396,19 +414,33 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM NoShows WHERE PatID=?");
+			st = connection.prepareStatement("SELECT * FROM NoShow WHERE PatID=?");
 			st.setInt(1, patID);
 			rs = st.executeQuery();
 			List<NoShowDto> results = new ArrayList<NoShowDto>();
 			NoShowDto noShow = new NoShowDto();
 			while (rs.next()) {
-				noShow.setField(NoShowDto.NOSHOW_ID, rs.getInt(NoShowDto.NOSHOW_ID));
-				noShow.setField(NoShowDto.PATIENT_ID, rs.getString(NoShowDto.PATIENT_ID));
-				noShow.setField(NoShowDto.DATE, rs.getString(NoShowDto.DATE));
-				results.add(noShow);
-				noShow = new NoShowDto();
+				// Only add no shows from previous six months
+				Calendar cal = Calendar.getInstance();
+				cal.add(Calendar.DAY_OF_YEAR, -180);
+                try {
+					java.util.Date sixMonthsPriorToCurrentDate = cal.getTime();
+					java.util.Date noShowDate = new SimpleDateFormat("yyyy-MM-dd").parse(rs.getString(NoShowDto.DATE));
+					
+					if (sixMonthsPriorToCurrentDate.before(noShowDate)) {
+						noShow.setField(NoShowDto.NOSHOW_ID, rs.getInt(NoShowDto.NOSHOW_ID));
+						noShow.setField(NoShowDto.PATIENT_ID, rs.getString(NoShowDto.PATIENT_ID));
+						noShow.setField(NoShowDto.DATE, rs.getDate(NoShowDto.DATE));
+						results.add(noShow);
+						noShow = new NoShowDto();
+					}
+				} catch (ParseException e) {
+
+				}
 			}
+			
 			return results;
+			
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 			ServerCrashUI.ShowDialog();
@@ -539,7 +571,8 @@ public class DataServiceImpl implements DataService {
 
 		try {
 			st = connection.prepareStatement("SELECT * FROM Practitioner " +
-					"INNER JOIN ServiceType ON Practitioner.`TypeID` = ServiceType.TypeID");
+					"INNER JOIN ServiceType ON Practitioner.`TypeID` = ServiceType.TypeID " +
+					"ORDER BY Practitioner.LastName, Practitioner.FirstName");
 			rs = st.executeQuery();
 			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
 			PractitionerDto practitioner;
@@ -2016,7 +2049,8 @@ public class DataServiceImpl implements DataService {
     	ResultSet rs = null;
     	try {
 
-    		st = connection.prepareStatement("Select * From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = ? AND Appointment.PatID IS NOT NULL");
+    		//st = connection.prepareStatement("Select * From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID LEFT JOIN (Select PatID, Count(NoShowID) as NumberOfNoShows from NoShow Group by PatID) as temp ON temp.PatID = Patient.PatID WHERE Appointment.ApptDate = ? AND Appointment.PatID IS NOT NULL");
+    		st = connection.prepareStatement("Select * From Patient INNER JOIN Appointment ON Appointment.PatID = Patient.PatID WHERE Appointment.ApptDate = ? AND Appointment.PatID IS NOT NULL");
 
     		st.setDate(1, day);
     		rs = st.executeQuery();
@@ -2029,10 +2063,11 @@ public class DataServiceImpl implements DataService {
     			newPat = new PatientDto();
     			newPat.setField(PatientDto.FIRST, rs.getString(PatientDto.FIRST));
     			newPat.setField(PatientDto.LAST, rs.getString(PatientDto.LAST));
-    			newPat.setField(PatientDto.NO_SHOW, rs.getInt(PatientDto.NO_SHOW));
     			newPat.setField(PatientDto.NOTES, rs.getString(PatientDto.NOTES));
     			newPat.setField(PatientDto.PATIENT_ID, rs.getInt(PatientDto.PATIENT_ID));
     			newPat.setField(PatientDto.PHONE, rs.getString(PatientDto.PHONE));
+    			List<NoShowDto> noShows = getNoShowsByPatient(newPat.getPatID());
+    			newPat.setField(PatientDto.NO_SHOW, noShows.size());
     			
     			newAppt = new AppointmentDto();
     			newAppt.setPatient(newPat);

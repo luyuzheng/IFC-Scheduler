@@ -1,6 +1,7 @@
 package gui.sub;
 
 import gui.Constants;
+import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -10,6 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -35,6 +37,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import backend.DataService.DataServiceImpl;
+import backend.DataTransferObjects.PatientDto;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.TypeDto;
 
@@ -44,7 +47,7 @@ import backend.DataTransferObjects.TypeDto;
  * It also allows his hours to be specified.
  * New practitioners can also be created from here.
  */
-public class SelectPractitionerUI extends JDialog implements ActionListener,ListSelectionListener {
+public class SelectPractitionerUI extends JDialog implements ActionListener,ListSelectionListener, KeyListener {
 
 	private static SelectPractitionerUI selectPractitionerUI;
 	private ArrayList<PractitionerDto> prac =
@@ -53,6 +56,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 	private JTextField endTimeField = new JTextField();
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
+	private JTextField searchField = new JTextField();
 	private JComboBox typeCombo;
 	JTabbedPane tabbedPane;
 	private JTextField apptLengthField = new JTextField();
@@ -120,7 +124,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
     	JPanel p = new JPanel(new BorderLayout());
     	JPanel panel = new JPanel(new BorderLayout());
     	
-    	pracTable = new JTable(new PracTableModel()) {  
+    	pracTable = new JTable(new PracTableModel(prac)) {  
     		//Implement table cell tool tips.
     		public String getToolTipText(MouseEvent e) {
     			String tip = null;
@@ -152,7 +156,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
         		return tip;
     		}
     	};
-    	
+    	pracTable.setAutoCreateRowSorter(true);
     	pracTable.getTableHeader().setReorderingAllowed(false);
     	TableColumn column = null;
     	for (int i = 0; i < pracTable.getColumnCount(); i++) {
@@ -180,6 +184,10 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
         JScrollPane scrollPane = new JScrollPane(panel);
         //scrollPane.setPreferredSize(new Dimension(410,200));
         
+        searchField.setFont(Constants.PARAGRAPH);
+        searchField.addKeyListener(this);
+        
+        p.add(searchField, BorderLayout.NORTH);
         p.add(scrollPane, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
         return p;
@@ -325,6 +333,24 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		return false;
 	}
 	
+	public void updateTable() {
+	    // Filters patients
+		String filter = searchField.getText().toLowerCase();
+		String[] filters = filter.split(" ");
+        ArrayList<PractitionerDto> filteredPrac = new ArrayList<PractitionerDto>();
+        for (PractitionerDto p : prac) {
+        	String fullName = p.getFirst().toLowerCase() + " " + p.getLast().toLowerCase();
+        	
+        	for (String f : filters) {
+	        	if (fullName.indexOf(f) >= 0) {
+	        		filteredPrac.add(p);
+	        		break;
+	        	}
+        	}
+        }
+        pracTable.setModel(new PracTableModel(filteredPrac));
+	}
+	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("New Type")) {
 			TypeDto t = NewTypeUI.ShowDialog(this);
@@ -449,6 +475,12 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 	
 	class PracTableModel extends AbstractTableModel {
 
+		ArrayList<PractitionerDto> practitioners = new ArrayList<PractitionerDto>();
+		
+		public PracTableModel(ArrayList<PractitionerDto> practitioners) {
+			this.practitioners = practitioners;
+		}
+		
 		private String[] columnNames = { "Name", "Type", "Appt Length (Min)", "Note" };
 		
 		public int getColumnCount() {
@@ -460,11 +492,11 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		}
 
 		public int getRowCount() {
-			return prac.size();
+			return practitioners.size();
 		}
 
 		public Object getValueAt(int row, int col) {
-			PractitionerDto p = prac.get(row);
+			PractitionerDto p = practitioners.get(row);
 			if (col == 0) 
 				return p.getFirst() + " " + p.getLast();
 			else if (col == 1) 
@@ -479,6 +511,18 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 			return false;
 		}
 		
+	}
+
+	public void keyPressed(KeyEvent arg0) {
+
+	}
+
+	public void keyReleased(KeyEvent arg0) {
+		updateTable();
+	}
+
+	public void keyTyped(KeyEvent arg0) {
+
 	}
 	
 }

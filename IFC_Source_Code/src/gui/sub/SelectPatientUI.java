@@ -14,7 +14,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -103,9 +107,6 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	JPanel p = new JPanel(new BorderLayout());
     	JPanel panel = new JPanel(new BorderLayout());
     	
-    	searchField.addKeyListener(this);
-    	
-    	
     	patTable = new JTable(new PatTableModel(pat)) {  
     		//Implement table cell tool tips.
     		public String getToolTipText(MouseEvent e) {
@@ -158,7 +159,6 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     	cancelButton1.setFont(Constants.DIALOG);
     	buttonPanel.add(okButton1);
     	buttonPanel.add(cancelButton1);
-    	
     	
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
@@ -393,10 +393,8 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 				return p.getPhone();
 			else if (col == 3)
 				return p.getNotes();
-			else {
-				Integer numNoShows = p.getNoShows();
-				return numNoShows.toString();
-			}
+			else
+				return (p.getNoShows()).intValue();
 		}
 		
 		public boolean isCellEditable(int row, int col) {

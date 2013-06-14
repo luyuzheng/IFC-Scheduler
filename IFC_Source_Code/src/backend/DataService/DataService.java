@@ -74,7 +74,7 @@ public interface DataService {
 	public List<PatientDto> queryPatientByName(String first, String last);
 	
 	/**
-	 * Returns a list no shows according patient.
+	 * Returns a list no shows within the past six months for a given patient.
 	 *
 	 * @param PatID
 	 * @return List of no shows associated with the patient

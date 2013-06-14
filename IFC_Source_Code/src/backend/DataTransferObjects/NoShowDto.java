@@ -7,7 +7,7 @@ public class NoShowDto extends AbstractDto {
 
     public static final String NOSHOW_ID = "NoShowID";
     public static final String PATIENT_ID = "PatID";
-    public static final String DATE = "Date";
+    public static final String DATE = "NoShowDate";
 
     public NoShowDto() {
         fieldsMap = new HashMap<String, Object>();
