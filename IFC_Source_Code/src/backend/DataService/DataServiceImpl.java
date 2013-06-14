@@ -414,7 +414,7 @@ public class DataServiceImpl implements DataService {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT * FROM NoShow WHERE PatID=?");
+			st = connection.prepareStatement("SELECT * FROM NoShow WHERE PatID=? ORDER BY NoShowDate");
 			st.setInt(1, patID);
 			rs = st.executeQuery();
 			List<NoShowDto> results = new ArrayList<NoShowDto>();

@@ -79,7 +79,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 		tabbedPane.setMnemonicAt(1, KeyEvent.VK_2);
 		
 		setLayout(new GridLayout(1,1));
-		tabbedPane.setPreferredSize(new Dimension(600,300));
+		tabbedPane.setPreferredSize(new Dimension(700,350));
 		tabbedPane.setFont(Constants.PARAGRAPH);
 		add(tabbedPane);
 		setResizable(false);
@@ -369,7 +369,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			return patients.get(row);
 		}
 		
-		private String[] columnNames = { "First Name", "Last Name", "Phone #", "Note", "No Shows"};
+		private String[] columnNames = { "First Name", "Last Name", "Phone #", "Note", "No Shows", "Allowed Scheduling Date"};
 		
 		public int getColumnCount() {
 			return columnNames.length;
@@ -385,6 +385,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 
 		public Object getValueAt(int row, int col) {
 			PatientDto p = patients.get(row);
+			List<NoShowDto> noShows = DataServiceImpl.GLOBAL_DATA_INSTANCE.getNoShowsByPatient(p.getPatID());
 			if (col == 0) 
 				return p.getFirst();
 			else  if (col == 1)
@@ -393,8 +394,19 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 				return p.getPhone();
 			else if (col == 3)
 				return p.getNotes();
-			else
-				return (p.getNoShows()).intValue();
+			else if (col == 4)
+				return noShows.size();
+			else {
+				if (noShows.size() >= 2) {
+					Calendar cal = Calendar.getInstance();
+					cal.setTime(noShows.get(noShows.size() - 2).getDate());
+					cal.add(Calendar.DAY_OF_YEAR, 180);
+					String schedulingDate = new SimpleDateFormat("MMM dd, yyyy").format(cal.getTime());
+					return schedulingDate;
+				} else {
+					return null;
+				}
+			}
 		}
 		
 		public boolean isCellEditable(int row, int col) {
