@@ -362,8 +362,18 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 			remove(tabbedPane);
 			add(tabbedPane, BorderLayout.CENTER);
 			
-			typeCombo.addItem(t);
-			typeCombo.setSelectedItem(t);
+			boolean exists = false;
+			for (int i = 0; i < typeCombo.getItemCount(); i++) {
+				if (t.equals(typeCombo.getItemAt(i))) {
+					typeCombo.setSelectedItem(t);
+					exists = true;
+					break;
+				}
+			}
+			if (!exists) {
+				typeCombo.addItem(t);
+				typeCombo.setSelectedItem(t);
+			}
 			
 			repaint();
 			validate();

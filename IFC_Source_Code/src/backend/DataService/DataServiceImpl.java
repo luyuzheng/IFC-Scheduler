@@ -462,13 +462,18 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public TypeDto addNewPractitionerType(String serviceType) {
 		PreparedStatement st = null;
+		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("INSERT INTO ServiceType (TypeName) VALUES (?)");
-			st.setString(1, serviceType);
-			st.executeUpdate();
-			return this.getType(serviceType);
-                        
+			TypeDto type = this.getType(serviceType);
+			if (this.getType(serviceType) == null) {
+				st = connection.prepareStatement("INSERT INTO ServiceType (TypeName) VALUES (?)");
+				st.setString(1, serviceType);
+				st.executeUpdate();
+				return this.getType(serviceType);
+			} else {
+				return type;
+			}            
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 			ServerCrashUI.ShowDialog();

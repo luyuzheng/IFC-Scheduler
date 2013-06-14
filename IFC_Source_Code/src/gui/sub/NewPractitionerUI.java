@@ -155,8 +155,20 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 		if (e.getActionCommand().equals("New Type")) {
 			TypeDto t = NewTypeUI.ShowDialog(this);
 			if (t == null) return;
-			typeCombo.addItem(t);
-			typeCombo.setSelectedItem(t);
+			
+			boolean exists = false;
+			for (int i = 0; i < typeCombo.getItemCount(); i++) {
+				if (t.equals(typeCombo.getItemAt(i))) {
+					typeCombo.setSelectedItem(t);
+					exists = true;
+					break;
+				}
+			}
+			if (!exists) {
+				typeCombo.addItem(t);
+				typeCombo.setSelectedItem(t);
+			}
+			
 			repaint();
 			validate();
 			return;
