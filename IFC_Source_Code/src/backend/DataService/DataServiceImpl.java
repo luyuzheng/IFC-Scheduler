@@ -1110,13 +1110,25 @@ public class DataServiceImpl implements DataService {
 	public WaitlistDto addPatientToWaitlist(PatientDto patient, TypeDto type, String comments) {
 		PreparedStatement st = null;
 		try {
+			// If patient has two or more no shows, then set priority date to the allowed scheduling date
+			List<NoShowDto> noShows = DataServiceImpl.GLOBAL_DATA_INSTANCE.getNoShowsByPatient(patient.getPatID());
+			Timestamp priorityDate;
+			if (noShows.size() >= 2) {
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(noShows.get(noShows.size() - 2).getDate());
+				cal.add(Calendar.DAY_OF_YEAR, 180);
+				priorityDate = new Timestamp((cal.getTime()).getTime());
+			} else {
+				priorityDate = new Timestamp(new java.util.Date().getTime());
+			}
+			
 			st = connection.prepareStatement("INSERT INTO Waitlist " +
 					"(PatID, TypeID, DatetimeEntered, Comments) " +
 			"VALUES (?, ?, ?, ?)");
 			st.setInt(1, patient.getPatID());
 			st.setInt(2, type.getTypeID());
-			st.setTimestamp(3, new Timestamp(new java.util.Date().getTime()));
-                        st.setString(4, comments);
+			st.setTimestamp(3, priorityDate);
+            st.setString(4, comments);
 			st.executeUpdate();
 			return null; //Todo: change return type
 		} catch (SQLException e) {

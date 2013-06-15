@@ -9,7 +9,10 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -66,7 +69,7 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(wp.getPatientID());
 		
-		String text = "Date Added: " + wp.getDate() + "\n" + 
+		String text = "Priority Date: " + wp.getDate() + "\n" +
 					  "Time Added: " + wp.getTimeAdded() + "\n" +
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
 					  "Phone Number: " + patient.getPhone() + "\n" +

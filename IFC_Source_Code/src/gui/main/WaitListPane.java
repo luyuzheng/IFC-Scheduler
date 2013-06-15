@@ -15,7 +15,9 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -30,6 +32,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
 import backend.DataTransferObjects.*;
+
 import java.sql.Date;
 
 /**
@@ -215,8 +218,8 @@ public class WaitListPane extends JPanel {
 		 */ 
 		public WaitlistTableModel(ArrayList<WaitlistDto> waits, boolean specific) {
 			this.waits = waits;
-			if (specific) columnNames = new String[] { "Date Added", "Name", "Phone Number", "Comment" };
-			else columnNames = new String[] { "Date Added", "Name", "Phone Number", "Type", "Comment" };
+			if (specific) columnNames = new String[] { "Priority Date", "Name", "Phone Number", "Comment" };
+			else columnNames = new String[] { "Priority Date", "Name", "Phone Number", "Type", "Comment" };
 			this.specific = specific;
 		}
 		
