@@ -1176,6 +1176,9 @@ public class DataServiceImpl implements DataService {
 	public boolean commentWaitlist(WaitlistDto entry, String comment) {
 		PreparedStatement st = null;
 
+		System.out.println("DataServiceImpl = Waitlist Patient ID: " + entry.getWaitlistID());
+		System.out.println("DataServiceImpl = Waitlist comment: " + comment);
+		
 		try {
 			st = connection.prepareStatement("UPDATE Waitlist SET Comments=? " +
 			"WHERE WaitlistID=?");

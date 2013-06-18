@@ -30,12 +30,12 @@ public class WaitlistPatientListener extends MouseAdapter implements ListSelecti
 	
 	JTable owner;
 	Component parent;
-        WaitListPane waitlist;
+    WaitListPane waitlist;
 	
 	public WaitlistPatientListener(JTable owner, Component parent, WaitListPane waitlist) {
 		this.owner = owner;
 		this.parent = parent;
-                this.waitlist = waitlist;
+        this.waitlist = waitlist;
 	}
 	
 	/** Displays a pop-up to add or remove a patient to the waitlist. */
@@ -45,9 +45,8 @@ public class WaitlistPatientListener extends MouseAdapter implements ListSelecti
 			if (owner.getSelectedRow() >= 0) {
 
 				WaitlistDto wp = ((WaitlistTableModel)owner.getModel()).getPatient(owner.getSelectedRow());
-				String newComment = DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp, waitlist);
-				wp.setComments(newComment);
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
+				DisplayWaitingPatientUI.ShowDialog(parent.getParent(), wp, waitlist);
+
 				WaitListPane wlp = (WaitListPane) parent;
 				wlp.resetModel();
 			}

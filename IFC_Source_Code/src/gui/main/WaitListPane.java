@@ -159,9 +159,7 @@ public class WaitListPane extends JPanel {
 				return;
 			}
 			WaitlistDto wp = ((WaitlistTableModel)specTable.getModel()).getPatient(specTable.getSelectedRow());
-			String newComment = DisplayWaitingPatientUI.ShowDialog(getParent(), wp, pane);
-			wp.setComments(newComment);
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.updateWaitlist(wp);
+			DisplayWaitingPatientUI.ShowDialog(getParent(), wp, pane);
 			resetModel();
 		}
 	};

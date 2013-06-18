@@ -140,7 +140,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 	
 	public void updateTable() {
 		String filter = searchField.getText();
-                patTable.setModel(new PatTableModel(pat));
+        patTable.setModel(new PatTableModel(pat));
 		//TODO: FILTER if (filter.equals("")) patTable.setModel(new PatTableModel(pat));
 		//else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
 	}

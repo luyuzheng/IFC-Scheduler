@@ -41,16 +41,14 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	private ArrayList<AppointmentDto> apt;
 	private JTable aptTable;
 	
-	private WaitlistDto waitingPatient;
+	private static WaitlistDto waitingPatient;
 	
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 	private JTextArea textArea;
 	private JTextArea noteArea;
         
-        private WaitListPane pane;
-	
-	private static String comment = "";
+    private WaitListPane pane;
 	
 	/** Creates the dialog for a patient on the waitlist **/
 	private DisplayWaitingPatientUI(String name, WaitlistDto wp, WaitListPane pane) {
@@ -73,7 +71,8 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 					  "Time Added: " + wp.getTimeAdded() + "\n" +
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
 					  "Phone Number: " + patient.getPhone() + "\n" +
-					  "Type: " + wp.getTypeName() + "\n\n";
+					  "Type: " + wp.getTypeName() + "\n" + 
+					  "No Shows: " + patient.getNoShows() + "\n\n";
 		
 		textArea = new JTextArea();
 		textArea.setLineWrap(true);
@@ -185,14 +184,12 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	}
     
 	
-	public static String ShowDialog(Component owner, WaitlistDto waitp, WaitListPane pane) {
-		
+	public static void ShowDialog(Component owner, WaitlistDto waitp, WaitListPane pane) {
 		String name= "Schedule Appointment for " + waitp.getPatient().getFullName();
 		displayWaitingPatientUI = new DisplayWaitingPatientUI(name, waitp, pane);
 		displayWaitingPatientUI.pack();
 		displayWaitingPatientUI.setLocationRelativeTo(owner);
 		displayWaitingPatientUI.setVisible(true);
-		return comment;
 	}
 	
 	/** Updates the database when someone is added to the waitlist or scheduled for an appointment **/
@@ -206,13 +203,12 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 				
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patient.getPatID(), appt);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(patient, type);
-                                pane.refreshAppointments(appt.getApptDate());
+                pane.refreshAppointments(appt.getApptDate());
 			}
 			
-			
-			comment = noteArea.getText();
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.commentWaitlist(getWaitlistPatient(), comment);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.commentWaitlist(getWaitlistPatient(), noteArea.getText());
 		} 
+
 		displayWaitingPatientUI.setVisible(false);
     }
 	
