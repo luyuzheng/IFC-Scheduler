@@ -75,6 +75,7 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 					  "Time Slot: " + appt.prettyPrintStart() + " - " + appt.prettyPrintEnd() + "\n" +
 					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
 					  "Phone Number: " + patient.getPhone() + "\n" +
+					  "No Shows: " + patient.getNoShows() + "\n" + 
 					  "Confirmed: " + confirmed;
 		
 		textArea = new JTextArea();
