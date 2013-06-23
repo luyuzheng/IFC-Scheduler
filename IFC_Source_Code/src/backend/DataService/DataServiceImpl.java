@@ -1,6 +1,8 @@
 package backend.DataService;
 
 import gui.TimeSlot;
+import gui.sub.PractitionerErrorUI;
+import gui.sub.PractitionerErrorUI.PractitionerTask;
 import gui.sub.ServerCrashUI;
 
 import java.io.IOException;
@@ -20,6 +22,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
+
+import javax.swing.JOptionPane;
 
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.DayDto;
@@ -582,27 +586,27 @@ public class DataServiceImpl implements DataService {
 			List<PractitionerDto> results = new ArrayList<PractitionerDto>();
 			PractitionerDto practitioner;
 			while (rs.next()) {
-                            if (rs.getInt("Active") != 0){
-				practitioner = new PractitionerDto();
-				practitioner.setField(
-						PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-				TypeDto type = new TypeDto();
-				type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
-				type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
-				practitioner.setField(
-						PractitionerDto.TYPE, type);
-				practitioner.setField(
-						PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
-				practitioner.setField(
-						PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
-				practitioner.setField(
-						PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
-				practitioner.setField(
-						PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
-				practitioner.setField(
-						PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
-				results.add(practitioner);
-                            }
+                if (rs.getInt("Active") != 0){
+					practitioner = new PractitionerDto();
+					practitioner.setField(
+							PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
+					TypeDto type = new TypeDto();
+					type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
+					type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
+					practitioner.setField(
+							PractitionerDto.TYPE, type);
+					practitioner.setField(
+							PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
+					practitioner.setField(
+							PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
+					practitioner.setField(
+							PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
+					practitioner.setField(
+							PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
+					practitioner.setField(
+							PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
+					results.add(practitioner);
+                }
 			}
 			return results;
 		} catch (SQLException e) {
@@ -621,58 +625,67 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public PractitionerDto addPractitioner(int typeID, String first, String last, int appLength, String phone, String notes) {
+	public PractitionerDto addPractitioner(int typeID, String first, String last, int apptLength, String phone, String notes) {
 		PreparedStatement st = null;
         ResultSet rs = null;
 		try {
-			
-			st = connection.prepareStatement("INSERT INTO Practitioner " +
-					"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Active, Notes) " +
-			"VALUES (?, ?, ?, ?, ?, ?, ?)");
-			
-			st.setInt(1, typeID);
-			st.setString(2, first);
-			st.setString(3, last); 
-			st.setInt(4, appLength);
-			st.setString(5, phone);
-            st.setInt(6, 1);
-			st.setString(7, notes);
-			st.executeUpdate();
-                        
-            st = connection.prepareStatement(
-            "SELECT Max(PractID) FROM Practitioner"); 
+			// Check if a practitioner with the same info already exists in the database
+			st = connection.prepareStatement(
+        			"SELECT PractID, Active FROM Practitioner WHERE FirstName=? AND LastName=? AND TypeID=? AND ApptLength=?");
+        	st.setString(1, first);
+        	st.setString(2, last);
+        	st.setInt(3, typeID);
+        	st.setInt(4, apptLength);
+        	rs = st.executeQuery();
+        	
+        	PractitionerTask task;
+			// The practitioner does not exist
+        	if (!(rs.next())) {
+				task = PractitionerTask.CREATENEW;
+			// The practitioner already exists - check if the practitioner is active or inactive
+	        } else {
+	    		task = PractitionerErrorUI.ShowDialog(rs.getInt("Practitioner.Active"));
+	        }
+        	
+        	// Create a new practitioner entry in the database
+    		if (task == PractitionerTask.CREATENEW) {
+    			st = connection.prepareStatement("INSERT INTO Practitioner " +
+						"(TypeID, FirstName, LastName, ApptLength, PhoneNumber, Active, Notes) " +
+    					"VALUES (?, ?, ?, ?, ?, ?, ?)");
+				st.setInt(1, typeID);
+				st.setString(2, first);
+				st.setString(3, last); 
+				st.setInt(4, apptLength);
+				st.setString(5, phone);
+	            st.setInt(6, 1);
+				st.setString(7, notes);
+				st.executeUpdate();
+				
+				// Get the id of the practitioner that was just inserted into the database
+	            st = connection.prepareStatement(
+	            "SELECT Max(PractID) FROM Practitioner"); 
+	            rs = st.executeQuery();
+	            rs.next();
+	            int id = rs.getInt(1);
+	            
+	            // Return all info about the practitioner using the id from above
+	            return getPractitioner(id);
+	        
+	        // Use the existing practitioner instead of creating a new entry
+    		} else if (task == PractitionerTask.USEEXISTING) {
+    			return getPractitioner(rs.getInt(PractitionerDto.PRACT_ID));
 
-            rs = st.executeQuery();
-            
-            rs.next();
-            
-            int id = rs.getInt(1);
-            
-            st = connection.prepareStatement(
-            		"SELECT * FROM Practitioner INNER JOIN ServiceType ON Practitioner.TypeID = " +
-            		"ServiceType.TypeID WHERE Practitioner.PractID=?");
-            
-            st.setInt(1, id);
-            
-            rs = st.executeQuery();
-            
-            if(rs.next()){
-                PractitionerDto returnPract = new PractitionerDto();
-
-                returnPract.setField(PractitionerDto.APPT_LENGTH, rs.getInt(PractitionerDto.APPT_LENGTH));
-                returnPract.setField(PractitionerDto.FIRST, rs.getString(PractitionerDto.FIRST));
-                returnPract.setField(PractitionerDto.LAST, rs.getString(PractitionerDto.LAST));
-                returnPract.setField(PractitionerDto.NOTES, rs.getString(PractitionerDto.NOTES));
-                returnPract.setField(PractitionerDto.PHONE, rs.getString(PractitionerDto.PHONE));
-                returnPract.setField(PractitionerDto.PRACT_ID, rs.getInt(PractitionerDto.PRACT_ID));
-                TypeDto type = new TypeDto();
-                type.setField(TypeDto.TYPE_ID, rs.getInt(TypeDto.TYPE_ID));
-                type.setField(TypeDto.TYPE_NAME, rs.getString(TypeDto.TYPE_NAME));
-                returnPract.setField(PractitionerDto.TYPE, type);
-
-                return returnPract;
-            }
-			
+    		// Reactivate an inactive practitioner
+    		} else if (task == PractitionerTask.REACTIVATE) {
+            	int oldID = rs.getInt(PractitionerDto.PRACT_ID);
+    			st = connection.prepareStatement("UPDATE Practitioner SET Active=1 WHERE PractID=?");
+        		st.setInt(1, oldID);
+        		st.executeUpdate();
+        		return getPractitioner(oldID);
+    		// The user hit "Cancel" in the PractitionerErrorUI dialog box
+    		} else {
+    			return null;
+    		}
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 			ServerCrashUI.ShowDialog();

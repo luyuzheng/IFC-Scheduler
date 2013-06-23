@@ -210,7 +210,7 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 				p.setType(t);
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.updatePractitionerInfo(p);
 			} else {
-                                DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(p);
+                DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(p);
                      
 				p = DataServiceImpl.GLOBAL_DATA_INSTANCE.addPractitioner(t.getTypeID(), firstName, lastName, newApptLength, "" ,noteText);
 			}
