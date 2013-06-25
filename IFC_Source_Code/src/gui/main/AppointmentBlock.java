@@ -67,7 +67,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		this.setFocusable(true);
 		textArea.addFocusListener(this);
 		
-		if (appointment.getPatientID() != null && appointment.getPatientID() != 0) setBackground(new Color(238,238,255));
+		if (appointment.getPatientID() != null && appointment.getPatientID() != 0) setBackground(new Color(238,238,255)); // light blue
 
 		setText();
 		
@@ -82,7 +82,6 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		timeslot.setFont(Constants.PARAGRAPH_BOLD);
 		add(timeslot, BorderLayout.NORTH);
 		String text = "";
-               // System.out.println(appointment.getPatientID());
 		
 		if (appointment.getPatientID() != null && appointment.getPatientID() != 0){
 			int patientId= appointment.getPatientID();
@@ -115,6 +114,7 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 		appointment.setPatientID(patId);
         DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patId, appointment);
 		setText();
+		setBackground(new Color(238, 238, 255));
         main.refreshConfirmationPane();
 	}
 
@@ -125,9 +125,9 @@ public class AppointmentBlock extends JPanel implements FocusListener {
 	public void focusGained(FocusEvent arg0) {
 		dp.setPatButtonEnabled(true, this);
 		if (appointment.getPatientID() != null && appointment.getPatientID() != 0) 
-			setBackground(new Color(255,200,200));
+			setBackground(new Color(255,200,200)); // red
 		else
-			setBackground(new Color(200,200,255));
+			setBackground(new Color(200,200,255)); // darker blue
 		textArea.addMouseListener(npl);		
 	}
 
