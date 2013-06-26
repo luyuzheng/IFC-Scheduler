@@ -42,8 +42,7 @@ public class PractitionerErrorUI extends JDialog implements ActionListener {
 		if (active == 0) {
 			text = "<b>There is a practitioner who used to work here under " +
 				   "the same credentials.</b> Would you like to reactivate the " +
-				   "profile? <br><br>(If you want to create a new profile, please " +
-				   "start over and give the practitioner a slightly different name.)";
+				   "profile?";
 			
 			reactivateOldPractitioner.setFont(Constants.DIALOG);
 			reactivateOldPractitioner.addActionListener(this);
@@ -51,14 +50,14 @@ public class PractitionerErrorUI extends JDialog implements ActionListener {
 			
 		} else {
 			text = "<b>This practitioner already exists.</b> Do you want to use " +
-				   "the existing practitioner? <br><br>(If you want to create a new " +
-				   "profile, please start over and give the practitioner a " +
-				   "slightly different name.)";
+				   "the existing practitioner?";
 			
 			useExistingPractitioner.setFont(Constants.DIALOG);
 			useExistingPractitioner.addActionListener(this);
 			buttonPanel.add(useExistingPractitioner);
 		}
+		text += "<br><br>(If you would like to create a new profile, please hit Cancel and " +
+				"start over, but give the practitioner a different name.)";
 		
 		cancel.setFont(Constants.DIALOG);
 		cancel.addActionListener(this);
