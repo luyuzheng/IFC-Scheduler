@@ -1,6 +1,6 @@
 /**
- * This class reports behaviors of what happens in the small calendar. The small calendar is the interface that allows
- * users to navigate between days and months.
+ * This class determines behaviors of the small calendar. The small calendar 
+ * is the interface that allows users to navigate between days and months.
  */
 
 package gui.main;
@@ -22,10 +22,13 @@ public class DatePicker extends JPanel {
 	
 	/** The date that is currently selected on the date picker. */
 	private TinyDayBlock selectedBlock;
+	
 	/** The current month shown in the date picker. */
-	private MonthView curr;
+	private MonthView currentMonth;
+	
 	/** The application window. */
 	private MainWindow mainWindow;
+	
 	/** Today's date. */
 	private Date currentDate;
 	
@@ -33,22 +36,20 @@ public class DatePicker extends JPanel {
 	public DatePicker(MainWindow window) {
 		this.mainWindow = window;
 		setMaximumSize(new Dimension(200, 500));
+		setLayout(new GridLayout(0,1));
+		
+		// Get today's date
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeInMillis(System.currentTimeMillis());
-		
 		currentDate = new Date(cal.getTimeInMillis());
-		curr = new MonthView(this, currentDate, MonthView.CURRENT_MONTH);		
-
-		//reportFocusGained(selectedBlock);
+		
+		// Initialize the selectedBlock to the current date
 		selectedBlock = new TinyDayBlock(this, DataServiceImpl.GLOBAL_DATA_INSTANCE.getOrCreateDay(currentDate).getDate(), false);
 		
-		
-		//Date focused = selectedBlock.getDate();
-		//cal.setTime(focused);
-		curr.selectDay(cal.get(Calendar.DATE));
-		
-		setLayout(new GridLayout(0,1));
-		add(curr);
+		// Initialize the currentMonth and add it to the GUI
+		currentMonth = new MonthView(this, currentDate, MonthView.CURRENT_MONTH);	
+		currentMonth.selectDay(cal.get(Calendar.DATE));
+		add(currentMonth);
 	}
 	
 	/** Returns today's date as a Date object. */
@@ -63,127 +64,61 @@ public class DatePicker extends JPanel {
 	
 	/** Changes the currently selected day on the date picker.*/
 	public void setDate(Date d) {
+		
+		// Removes the selected date from the tiny month calendar
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTime(selectedBlock.getDate());
-		//System.out.print(d);
-		//System.out.println(" setDate " + selectedBlock.getDate().toString());
-		curr.deselectDay(cal.get(Calendar.DATE));
-		curr = new MonthView(this, d, MonthView.CURRENT_MONTH);
+		currentMonth.deselectDay(cal.get(Calendar.DATE));
 		
+		// Changes the month view to the month of the selected day
+		currentMonth = new MonthView(this, d, MonthView.CURRENT_MONTH);
+		
+		// Reset calendar to the selected date
+		cal.setTime(d);
+		currentMonth.selectDay(cal.get(Calendar.DATE));
+		selectedBlock = new TinyDayBlock(this, d, Color.LIGHT_GRAY, false);
+		
+		// Changes main window GUI to reflect the info for the new date
 		removeAll();
-		add(curr);
+		add(currentMonth);
 		repaint();
 		validate();
-		//revalidate();
-		
-		curr.selectDay(cal.get(Calendar.DATE));
 		mainWindow.setDate(d);
 	}
 	
-	/** Advances the date picker one month. */
+	/** Advances the date picker by one month. */
 	public void nextMonth() {
 			
+		// Adds one month to the current date
 		GregorianCalendar focused= new GregorianCalendar();
-		Date newDate = curr.getDate();
-		//System.out.println("# # # " + newDate.toString());
-		focused.setTime(newDate);
+		focused.setTime(currentMonth.getDate());
 		focused.add(Calendar.MONTH, 1);
-		//System.out.println("# # # " + focused.getTime().toString());
 		
-//		int day = focused.get(Calendar.DAY_OF_MONTH);
-//		int month = focused.get(Calendar.MONTH);
-//		int year = focused.get(Calendar.YEAR);
-//				
-//		if (month == 11) {
-//			month = 0;
-//			year++;
-//		} else
-//			month++;
-//		
-//		focused.set(Calendar.DAY_OF_MONTH, day);	
-//		focused.set(Calendar.MONTH, month);
-//		focused.set(Calendar.YEAR, year);
-		newDate = new Date(focused.getTime().getTime());
-		int day = focused.get(Calendar.DAY_OF_MONTH);
-		
+		// Sets the calendar to the new date
+		Date newDate = new Date(focused.getTime().getTime());
 		setDate(newDate);
-		//selectedBlock.setDate(newDate);
-		//reportFocusGained(selectedBlock);		
-		TinyDayBlock b = new TinyDayBlock(this, newDate, Color.LIGHT_GRAY, false);
-		
-		focused.setTime(selectedBlock.getDate());	
-		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH));
-		curr.selectDay(day);
-		selectedBlock = b;
 	}
 	
-	/** Goes back one month on the day picker. */
+	/** Goes back one month on the date picker. */
 	public void prevMonth() {
 		
+		// Subtracts one month from the current date
 		GregorianCalendar focused= new GregorianCalendar();
-		Date newDate = curr.getDate();
-		focused.setTime(newDate);
-		
-		
-		int day = focused.get(Calendar.DAY_OF_MONTH);
-		int month = focused.get(Calendar.MONTH);
-		int year = focused.get(Calendar.YEAR);
-		if (month == 0) {
-			month = 11;
-			year--;
-		} else
-			month--;
-		
-		
-		focused.set(Calendar.DAY_OF_MONTH, day);	
-		focused.set(Calendar.MONTH, month);
-		focused.set(Calendar.YEAR, year);
-		newDate = new Date(focused.getTime().getTime());
-		
+		focused.setTime(currentMonth.getDate());
+		focused.add(Calendar.MONTH, -1);
+
+		// Sets the calendar to the new date
+		Date newDate = new Date(focused.getTime().getTime());
 		setDate(newDate);
-		//selectedBlock.setDate(newDate);
-		//reportFocusGained(selectedBlock);		
-		TinyDayBlock b = new TinyDayBlock(this, newDate, Color.LIGHT_GRAY, false);
-		focused.setTime(selectedBlock.getDate());	
-		curr.deselectDay(focused.get(Calendar.DAY_OF_MONTH));
-		curr.selectDay(day);
-		selectedBlock = b;
 	}
 	
 	/**
-	 * This method determines the behavior of clicking on a day in the month view.
+	 * Determines the behavior of clicking on a day in the month view.
 	 */
-	public void reportFocusGained(TinyDayBlock b) {
-		
-		GregorianCalendar focused= new GregorianCalendar();
-		Date newDate1 = b.getDate();
-		focused.setTime(newDate1);
-		
-		GregorianCalendar block= new GregorianCalendar();
-		Date newDate2 = selectedBlock.getDate();
-		block.setTime(newDate2);		
-		
-		if (focused.get(Calendar.MONTH) == block.get(Calendar.MONTH)) {
-			if (mainWindow.inMonthView()) {
-				mainWindow.switchView();
-			}
-			curr.deselectDay(block.get(Calendar.DAY_OF_MONTH));
-			curr.selectDay(focused.get(Calendar.DAY_OF_MONTH));
-			selectedBlock = b;
-			mainWindow.setDate(b.getDate());
-		} else {
-			if (mainWindow.inMonthView()) {
-				mainWindow.switchView();
-			}
-			setDate(b.getDate());
-			//System.out.println(block.get(Calendar.DAY_OF_MONTH));
-			curr.deselectDay(block.get(Calendar.DAY_OF_MONTH));
-			// TODO: I just added deselectDay here to fix a day highlighting bug
-			// however, it seems that it should not be necessary because when the month changes
-			// all of the tiny day blocks should be regenerated: THE TINYDAYBLOCKS MAY NOT BE REGENERATED!!
-			curr.selectDay(focused.get(Calendar.DAY_OF_MONTH));
-			selectedBlock = b;
-			
-		}		
+	public void reportFocusGained(TinyDayBlock b) {		
+		if (mainWindow.inMonthView()) {
+			mainWindow.switchView();
+		}
+		setDate(b.getDate());
 	}
 }
