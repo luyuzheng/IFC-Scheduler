@@ -112,7 +112,10 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     		public String getToolTipText(MouseEvent e) {
     		    String tip = null;
     		    java.awt.Point p = e.getPoint();
-    		    int rowIndex = rowAtPoint(p);
+    		    
+    		    // Convert the row index from the GUI to the row index in the model.
+    		    // This is important if the table was sorted in the GUI.
+    		    int rowIndex = this.getRowSorter().convertRowIndexToModel(rowAtPoint(p));
     		    
     		    if (rowIndex >= 0) {
     		    	TableModel model = getModel();
@@ -325,7 +328,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 		} else if (e.getActionCommand().equals("okOld")) {
 			if (patTable.getSelectedRow() > -1) {
 				PatTableModel model = (PatTableModel)patTable.getModel();
-				patient = model.getPatient(patTable.getSelectedRow());
+				patient = model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow()));
 				
 				msg.setText("This patient has the following note attached: \"" + patient.getNotes() + "\". Are you sure you want to continue?");
 				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, msg, "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
@@ -348,7 +351,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			if (patTable.getSelectedRow() < 0) return;
 			else {
 				PatTableModel model = (PatTableModel)patTable.getModel();
-				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getSelectedRow()));
+				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow())));
 				pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 				return;
@@ -385,6 +388,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 
 		public Object getValueAt(int row, int col) {
 			PatientDto p = patients.get(row);
+			
 			List<NoShowDto> noShows = DataServiceImpl.GLOBAL_DATA_INSTANCE.getNoShowsByPatient(p.getPatID());
 			if (col == 0) 
 				return p.getFirst();
