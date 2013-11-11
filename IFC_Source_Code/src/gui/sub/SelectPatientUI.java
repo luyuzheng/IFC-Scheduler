@@ -115,7 +115,10 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
     		    
     		    // Convert the row index from the GUI to the row index in the model.
     		    // This is important if the table was sorted in the GUI.
-    		    int rowIndex = this.getRowSorter().convertRowIndexToModel(rowAtPoint(p));
+    		    int rowIndex = -1;
+    		    if (rowAtPoint(p) > -1) {
+    		    	rowIndex = this.getRowSorter().convertRowIndexToModel(rowAtPoint(p));
+    		    }
     		    
     		    if (rowIndex >= 0) {
     		    	TableModel model = getModel();

@@ -129,8 +129,13 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
     		public String getToolTipText(MouseEvent e) {
     			String tip = null;
     			java.awt.Point p = e.getPoint();
-    			int rowIndex = rowAtPoint(p);
     			
+    			// Convert the row index from the GUI to the row index in the model.
+    		    // This is important if the table was sorted in the GUI.
+     		    int rowIndex = -1;
+     		    if (rowAtPoint(p) > -1) {
+     		    	rowIndex = this.getRowSorter().convertRowIndexToModel(rowAtPoint(p));
+     		    }
     			if (rowIndex >= 0) {
     				TableModel model = getModel();
     				String name = (String)model.getValueAt(rowIndex, 0);
@@ -284,6 +289,10 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
     	return panel;
     }
 	
+	public PractitionerDto getPractitioner() {
+		return practitioner;
+	}
+    
 	public static SelectPractitionerUI ShowDialog(Component owner, int startTime, int endTime) {
 		selectPractitionerUI = new SelectPractitionerUI("Select Practitioner");
 		selectPractitionerUI.setStartTime(startTime);
@@ -292,10 +301,6 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		selectPractitionerUI.setLocationRelativeTo(owner);
 		selectPractitionerUI.setVisible(true);
 		return selectPractitionerUI;
-	}
-	
-	public PractitionerDto getPractitioner() {
-		return practitioner;
 	}
 	
 	private void setStartTime(int startTime) {
@@ -457,9 +462,10 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 				if (startTime < dayStart) startTime = dayStart;
 				if (endTime > dayEnd) endTime = dayEnd;
 			}
-			if (pracTable.getSelectedRow() > -1)
-				practitioner = prac.get(pracTable.getSelectedRow());
-			else {
+			if (pracTable.getSelectedRow() > -1) {
+				PracTableModel model = (PracTableModel)pracTable.getModel();
+				practitioner = model.getPractitioner(pracTable.getRowSorter().convertRowIndexToModel(pracTable.getSelectedRow()));
+			} else {
 				JLabel msg = new JLabel("Please select one of the practitioners in the table, or add a new one.");
 				msg.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
@@ -489,6 +495,10 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 		
 		public PracTableModel(ArrayList<PractitionerDto> practitioners) {
 			this.practitioners = practitioners;
+		}
+		
+		public PractitionerDto getPractitioner(int row) {
+			return practitioners.get(row);
 		}
 		
 		private String[] columnNames = { "Name", "Type", "Appt Length (Min)", "Note" };
