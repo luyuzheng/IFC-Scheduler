@@ -90,7 +90,13 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
     		public String getToolTipText(MouseEvent e) {
     		    String tip = null;
     		    java.awt.Point p = e.getPoint();
-    		    int rowIndex = rowAtPoint(p);
+    		    
+    		    // Convert the row index from the GUI to the row index in the model.
+    		    // This is important if the table was sorted in the GUI.
+    		    int rowIndex = -1;
+    		    if (rowAtPoint(p) > -1) {
+    		    	rowIndex = this.getRowSorter().convertRowIndexToModel(rowAtPoint(p));
+    		    }
     		    
     		    if (rowIndex >= 0) {
     		    	TableModel model = getModel();
@@ -274,7 +280,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		if (e.getActionCommand().equals("edit")) {
 			if (patTable.getSelectedRow() < 0) return;
 			else {
-				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getSelectedRow()));
+				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow())));
 				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
                                 ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
@@ -291,7 +297,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 			JLabel msg = new JLabel("Are you sure you want to remove this patient? Removing this patient will not affect historical data, but you will no longer be able to schedule him or her.");
 			msg.setFont(Constants.PARAGRAPH);
 			if (JOptionPane.showConfirmDialog(this, msg, "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatient(model.getPatient(patTable.getSelectedRow()));
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatient(model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow())));
 				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 			}

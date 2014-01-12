@@ -88,7 +88,13 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
     		public String getToolTipText(MouseEvent e) {
     		    String tip = null;
     		    java.awt.Point p = e.getPoint();
-    		    int rowIndex = rowAtPoint(p);
+    		    
+    		 // Convert the row index from the GUI to the row index in the model.
+    		    // This is important if the table was sorted in the GUI.
+     		    int rowIndex = -1;
+     		    if (rowAtPoint(p) > -1) {
+     		    	rowIndex = this.getRowSorter().convertRowIndexToModel(rowAtPoint(p));
+     		    }
     		    
     		    if (rowIndex >= 0) {
     		    	TableModel model = getModel();
@@ -267,7 +273,7 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 		if (e.getActionCommand().equals("edit")) {
 			if (pracTable.getSelectedRow() < 0) return;
 			else {
-				EditPractitionerUI.ShowDialog(this, model.getPractitioner(pracTable.getSelectedRow()));
+				EditPractitionerUI.ShowDialog(this, model.getPractitioner(pracTable.getRowSorter().convertRowIndexToModel(pracTable.getSelectedRow())));
 				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
                 ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
@@ -279,7 +285,7 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 			msg.setFont(Constants.PARAGRAPH);
 			if (JOptionPane.showConfirmDialog(this, msg, "Really remove?", JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION) {
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePractitioner(
-                                        model.getPractitioner(pracTable.getSelectedRow()));
+                        model.getPractitioner(pracTable.getRowSorter().convertRowIndexToModel(pracTable.getSelectedRow())));
 				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
 			}
