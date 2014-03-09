@@ -173,39 +173,30 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		//leftover is the number of minutes in the first box (if it ends oddly)
 		int leftover = 60 - (currTime % 60);
 		if (leftover > 0) {
-			Rectangle2D.Double topTime = new Rectangle2D.Double ();
+			Rectangle2D.Double topTime = new Rectangle2D.Double();
 			topTime.setRect(startx, starty, timesWidth, leftover * Constants.PRINT_PIXELS_PER_MINUTE);
 			g2d.draw(topTime);
-			String timeSt = ((Integer) ((currTime / 60) % 12)).toString().trim();
-			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
-			g2d.drawString(timeSt + amPm, startx + 5, starty + hgt);
-			//g2d.drawString(amPm, startx + 5, starty + 2*hgt);
+			g2d.drawString(getTimeIn12HourFormat(currTime), startx + 5, starty + hgt);
 			starty += leftover * Constants.PRINT_PIXELS_PER_MINUTE;
 			currTime+=leftover;
 		}
 		
 		// Print hours down the side (e.g. "4pm", "5pm", etc.) 
 		while (currTime + 60 < endTime) {
-			Rectangle2D.Double timeBlock = new Rectangle2D.Double ();
+			Rectangle2D.Double timeBlock = new Rectangle2D.Double();
 			timeBlock.setRect(startx, starty, timesWidth, 60 * Constants.PRINT_PIXELS_PER_MINUTE);
 			g2d.draw(timeBlock);
-			String timeSt = ((Integer) ((currTime / 60) % 12)).toString().trim();
-			String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
-			g2d.drawString(timeSt + amPm, startx + 5, starty + hgt);
-			//g2d.drawString(amPm, startx + 5, starty + 2*hgt);
+			g2d.drawString(getTimeIn12HourFormat(currTime), startx + 5, starty + hgt);
 			starty += 60 * Constants.PRINT_PIXELS_PER_MINUTE;
 			currTime+=60;
 		}
 		
 		leftover = endTime - currTime;
-		Rectangle2D.Double bottomTime = new Rectangle2D.Double ();
+		Rectangle2D.Double bottomTime = new Rectangle2D.Double();
 		bottomTime.setRect (startx, starty, timesWidth, leftover * Constants.PRINT_PIXELS_PER_MINUTE);
 		g2d.draw(bottomTime);
-		String timeSt = ((Integer) ((currTime / 60) % 12)).toString().trim();
-		String amPm = (((currTime / 60) % 12) == 0) ? "am" : "pm"; 
-		g2d.drawString(timeSt + amPm, startx + 5, starty + hgt);
-		//g2d.drawString(amPm, startx + 5, starty + 2*hgt);
-		
+		g2d.drawString(getTimeIn12HourFormat(currTime), startx + 5, starty + hgt);
+
 		width= width - timesWidth + Constants.PRINT_MARGINX;
 		double colWidth;
 		
@@ -261,7 +252,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 				int min = a.getEnd() - a.getStart();
 				double blockHeight = min*Constants.PRINT_PIXELS_PER_MINUTE;
 				int aLines= (int) Math.ceil(blockHeight/hgt);
-				Rectangle2D.Double apptBlock = new Rectangle2D.Double ();
+				Rectangle2D.Double apptBlock = new Rectangle2D.Double();
 				apptBlock.setRect (startx, starty, colWidth, blockHeight);
 				g2d.draw(apptBlock);
 
@@ -336,6 +327,15 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		dateArray[0] = full.substring(0, 4);
 		dateArray[1] = full.substring(5,full.length());
 		return dateArray;
+	}
+	
+	/** Returns a string representation of a given time. */
+	private String getTimeIn12HourFormat(int timeInMins) {
+		int hrsIn24HourFormat = timeInMins / 60;
+		int hrsIn12HourFormat = (hrsIn24HourFormat == 12 ? 12 : hrsIn24HourFormat % 12);
+		String timeSt = ((Integer) hrsIn12HourFormat).toString().trim();
+		String amPm = (hrsIn24HourFormat < 12 ? "am" : "pm");
+		return timeSt + amPm;
 	}
 
 	/** Prints the visible contents of the appointment pane of a given page. */
