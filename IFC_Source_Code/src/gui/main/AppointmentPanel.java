@@ -135,7 +135,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	}
 
 	/** Builds the page to be printed from information on the appointment panel. */
-	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
+	/*private Graphics2D buildPage(Graphics g, double width, double height, int page) {
 		System.out.println("start build");
 		
 		//# rooms (i.e., the total number of practitioners scheduled for the day)
@@ -265,7 +265,8 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 					PatientDto pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(a.getPatientID());
 					
 					if (a.getConfirmation()) {
-						line2="-- CONFIRMED --";
+						//line2="-- CONFIRMED --";
+						line1 += "  CONFIRMED";
 					}
 					
 					if (pat.getPhone() == null) {
@@ -318,7 +319,152 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		System.out.println("end build");
 
 		return g2d;
+	}*/
+
+	
+	/** NEW VERSION - Builds the page to be printed from information on the appointment panel. */
+	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
+		System.out.println("start build");
+		
+		//# rooms (i.e., the total number of practitioners scheduled for the day)
+		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
+
+		//create the graphics object
+		Graphics2D g2d = (Graphics2D) g.create();
+		
+		//set the font, find the line height
+		g2d.setFont(Constants.PRINTABLE);
+		FontMetrics metrics = g2d.getFontMetrics(Constants.PRINTABLE);
+		int hgt = metrics.getHeight();
+
+		//top height is the height of the practitioner info box
+		int pLines= 3; 
+		double topHeight = pLines*hgt + 8;
+		//times width is the width of the left times panel
+		double timesWidth = 35.0; 
+
+		//current drawing point
+		int startx = Constants.PRINT_MARGINX;
+		int starty = Constants.PRINT_MARGINY;
+		
+		// Prints the date in the top left corner
+		String[] dateSt = toDateArray(day.getDate());
+		g2d.drawString(dateSt[1], startx + 5, starty + hgt);
+		
+		starty = Constants.PRINT_MARGINY + (int)topHeight;
+		
+
+		width= width - timesWidth + Constants.PRINT_MARGINX;
+		double colWidth;
+
+		int lineLength = 100; 
+		
+		int roomsLeft = r - page*2;
+		
+		if (roomsLeft == 1) {
+			colWidth = width;			
+		} else {
+			colWidth = width / 2.0;
+			lineLength = 40; // 50
+		}	
+		
+		System.out.println("column width: " + colWidth);
+		System.out.println("line length: " + lineLength);
+
+		for (int j = 0; j < roomsLeft; j++) {
+                    
+			startx = Constants.PRINT_MARGINX + (int)timesWidth + (int)colWidth*j;
+			// Prevent the printer from starting a new column if it doesn't fit on that page
+			// (Need to add the margins to the width because startx begins its calculations
+			// from the edge of the page, but width does not)
+			if ((width + Constants.PRINT_MARGINX + (int)timesWidth) - startx >= colWidth) {
+			
+				starty = Constants.PRINT_MARGINY;
+				Rectangle2D.Double rect = new Rectangle2D.Double();
+				rect.setRect (startx, starty, colWidth, topHeight);
+				g2d.draw(rect);
+	
+				// Prints header with practitioner information
+				PractitionerDto p = day.getRooms().get(page*2 + j).getPractitioner();
+				
+				String name= p.getFirst().toString() + " " + p.getLast().toString();
+				g2d.drawString(formatString(name, lineLength, 1)[0], startx+5, starty+hgt);
+				
+				String type= p.getType().toString();
+				g2d.drawString(formatString(type, lineLength, 1)[0], startx+5, starty+2*hgt);
+				
+				if (!p.getNotes().isEmpty()) {
+					String[] notes= formatString(p.getNotes().replaceAll("\t\t", "\n"), lineLength, pLines-2);
+					
+					for (int k=0; k<notes.length; k++) {
+						if (notes[k] != null) {
+							g2d.drawString(notes[k], startx+5, starty+(3+k)*hgt);
+						}
+					}
+				}
+				
+				
+				ArrayList<AppointmentDto> appts = day.getRooms().get(page*2 + j).getAppointments();
+				starty += topHeight;
+	
+				// Prints the text for an appointment block
+				for (AppointmentDto a : appts) {
+					int min = a.getEnd() - a.getStart();
+					double blockHeight = min*Constants.PRINT_PIXELS_PER_MINUTE;
+					int aLines= (int) Math.ceil(blockHeight/hgt);
+					Rectangle2D.Double apptBlock = new Rectangle2D.Double();
+					apptBlock.setRect (startx, starty, colWidth, blockHeight);
+					g2d.draw(apptBlock);
+	
+					String line1 = formatString(a.prettyPrintStart() + " - " + a.prettyPrintEnd(), lineLength, 1)[0];
+					String[] line2= new String[5];
+					String[] line3= new String[5];
+					if (a.getPatientID() != null) {
+	                                        
+						PatientDto pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(a.getPatientID());
+						
+						if (a.getConfirmation()) {
+							line1 += "  CONFIRMED";
+						}
+						
+						if (pat.getPhone() == null) {
+							line2= formatString(pat.getFullName() + " - No phone #", lineLength, 2);
+						} else {
+							line2 = formatString(pat.getFullName() + " - " + pat.getPhone(), lineLength, 2);
+						}			
+						
+						if (!a.getNote().isEmpty()) {
+							line3 = formatString(a.getNote().replaceAll("\t\t", "\n"), lineLength, aLines-4);
+						}
+					}
+					
+					g2d.drawString(line1, startx+5, starty+hgt);
+					
+					for (int k = 0; k < line2.length; k++) {
+						if (line2[k] != null) {
+							g2d.drawString(line2[k], startx+5, starty+(2+k)*hgt);
+						}
+					}
+					
+					for (int k = 0; k < line3.length; k++) {
+						if (line3[k] != null) {
+							g2d.drawString(line3[k], startx+5, starty+(3+k)*hgt);
+							
+							System.out.println("processing patient notes...");
+						}
+					}
+	
+					starty += blockHeight;
+				}
+			}
+		}
+		
+		System.out.println("end build");
+
+		return g2d;
 	}
+	
+	
 
 	/** Returns a string representation of a given date. */
 	private String[] toDateArray(Date date) {
@@ -337,26 +483,27 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		String amPm = (hrsIn24HourFormat < 12 ? "am" : "pm");
 		return timeSt + amPm;
 	}
-
+	
 	/** Prints the visible contents of the appointment pane of a given page. */
 	public int print(Graphics graphics, PageFormat pageFormat, int page) {
 		System.out.println("print the pages");
 		
 		double width = pageFormat.getImageableWidth() - 2*Constants.PRINT_MARGINX;
 		double height = pageFormat.getImageableHeight() - 2*Constants.PRINT_MARGINY;
-		int pages = (int)Math.ceil((double)day.getRooms().size() / 3.0);
+		int pages = (int)Math.ceil((double)day.getRooms().size() / 2.0);
 		
 		if (page >= pages) {
 			return NO_SUCH_PAGE;
 		}
 
 		graphics = buildPage(graphics, width, height, page);
-		/* Print the entire visible contents of a java.awt.Frame */
+		// Print the entire visible contents of a java.awt.Frame
 
 		return PAGE_EXISTS;
 
 	}
-
+	
+	
 	/** Sets the view as printable and prints it. */
 	public void actionPerformed(ActionEvent e) {
 		PrinterJob job = PrinterJob.getPrinterJob();
