@@ -365,7 +365,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			colWidth = width;			
 		} else {
 			colWidth = width / 2.0;
-			lineLength = 40; // 50
+			lineLength = 60; // 50
 		}	
 		
 		System.out.println("column width: " + colWidth);
@@ -484,13 +484,63 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		return timeSt + amPm;
 	}
 	
+	/** Returns the total block height in pixels for an appointment */
+	private double calculateTotalBlockHeight(int roomNumber) {
+		ArrayList<AppointmentDto> appts = day.getRooms().get(roomNumber).getAppointments();
+		int numAppts = appts.size();
+		
+		if (numAppts > 0) {
+			int numMins = appts.get(0).getEnd() - appts.get(0).getStart();
+			double blockHeight = numMins*Constants.PRINT_PIXELS_PER_MINUTE;
+			
+			return blockHeight * numAppts;
+		}
+		
+		return 0; // there were no appointments for that room
+	}
+	
+	/** Calculates the number of pages needed */
+	private int calculateNumberOfPages(PageFormat pageFormat) {
+		int numPractitioners = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
+		int numRooms = day.getRooms().size();
+		double pageHeight = pageFormat.getImageableHeight() - 2*Constants.PRINT_MARGINY;
+		int totalPages = 0;
+		
+		// Determine the number of pages per two rooms
+		double totalBlockHeight1 = 0;
+		double totalBlockHeight2 = 0;
+		int pagesForRoom1 = 0;
+		int pagesForRoom2 = 0;
+		for (int i = 0; i < numRooms; i = i + 2) {
+			// Calculate the number of pages for the first room
+			totalBlockHeight1 = calculateTotalBlockHeight(i);
+			pagesForRoom1 = (int)Math.ceil(totalBlockHeight1 / pageHeight);
+			
+			// If there is still another room left, calculate the number of pages for the second room
+			if (numRooms > i + 1) {
+				totalBlockHeight2 = calculateTotalBlockHeight(i + 1);
+				pagesForRoom2 = (int)Math.ceil(totalBlockHeight2 / pageHeight);
+				totalPages += Math.max(pagesForRoom1, pagesForRoom2);
+				System.out.println("pages for rooms 1 and 2: " + Math.max(pagesForRoom1, pagesForRoom2));
+			// There was only one room left
+			} else {
+				totalPages += pagesForRoom1;
+				System.out.println("Pages for room 1: " + pagesForRoom1);
+			}
+		}
+		
+		return totalPages;
+	}
+	
 	/** Prints the visible contents of the appointment pane of a given page. */
 	public int print(Graphics graphics, PageFormat pageFormat, int page) {
 		System.out.println("print the pages");
 		
 		double width = pageFormat.getImageableWidth() - 2*Constants.PRINT_MARGINX;
 		double height = pageFormat.getImageableHeight() - 2*Constants.PRINT_MARGINY;
-		int pages = (int)Math.ceil((double)day.getRooms().size() / 2.0);
+		//int pages = (int)Math.ceil((double)day.getRooms().size() / 2.0);
+		int pages = calculateNumberOfPages(pageFormat);
+		System.out.println("total number of pages: " + pages);
 		
 		if (page >= pages) {
 			return NO_SUCH_PAGE;
