@@ -51,5 +51,5 @@ public class Constants {
 	/** The horizontal print margin, in pixels */
 	public static final int PRINT_MARGINX = 25;
 	/** The vertical print margin, in pixels */
-	public static final int PRINT_MARGINY = 25;
+	public static final int PRINT_MARGINY = 20;
 }

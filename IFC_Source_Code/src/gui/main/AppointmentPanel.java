@@ -89,20 +89,20 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		
 		while (leftover.length() > lineLength && i < numLines) {
 			String line= leftover.substring(0, lineLength);
-			System.out.println("line: " + line);
+			//System.out.println("line: " + line);
 			
 			int j= line.lastIndexOf(" ");
 			if (j != -1) {
 				print[i]= line.substring(0, j).trim();
-				System.out.println("prints p[" + i + "]: " + print[i]);
+				//System.out.println("prints p[" + i + "]: " + print[i]);
 				
 				leftover= leftover.substring(j+1);
-				System.out.println("leftover: " + leftover + "\n");
+				//System.out.println("leftover: " + leftover + "\n");
 			} else {
 				print[i]= line;
 				leftover= leftover.substring(lineLength);
-				System.out.println("prints p[" + i + "]: " + print[i]);
-				System.out.println("leftover: " + leftover + "\n");
+				//System.out.println("prints p[" + i + "]: " + print[i]);
+				//System.out.println("leftover: " + leftover + "\n");
 			}	
 			
 			i++;
@@ -113,10 +113,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		if (i < numLines) {
 			if (leftover.length() > lineLength) {
 				print[i]= "...";
-				System.out.println("truncates p[" + i + "]: " + print[i] + "\n");
+				//System.out.println("truncates p[" + i + "]: " + print[i] + "\n");
 			} else {
 				print[i]= leftover;
-				System.out.println("prints leftover p[" + i + "]: " + print[i] + "\n");
+				//System.out.println("prints leftover p[" + i + "]: " + print[i] + "\n");
 			}
 		} else {
 			if (numLines > 0) { // A check to make sure the block can actually fit a note
@@ -129,30 +129,29 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	}
 
 	
-	/** NEW VERSION - Builds the page to be printed from information on the appointment panel. */
+	/** Builds the page to be printed from information on the appointment panel. */
 	private Graphics2D buildPage(Graphics g, double width, double height, int page) {
-		System.out.println("start build");		
+		//System.out.println("start build");		
 		
-		//# rooms (i.e., the total number of practitioners scheduled for the day)
+		// Number of rooms (i.e., the total number of practitioners scheduled for the day)
 		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 		
-		//create the graphics object
+		// Create the graphics object
 		Graphics2D g2d = (Graphics2D) g.create();
 		
-		//set the font, find the line height
+		// Set the font, find the line height
 		g2d.setFont(Constants.PRINTABLE);
 		FontMetrics metrics = g2d.getFontMetrics(Constants.PRINTABLE);
 		int hgt = metrics.getHeight();
 
-		//top height is the height of the practitioner info box
+		// Top height is the height of the practitioner info box
 		int pLines= 3; 
 		double topHeight = pLines*hgt + 8;
-		//times width is the width of the left times panel
-		double timesWidth = 35.0; 
-
-		double apptHeight = height - topHeight;
 		
-		//current drawing point
+		// Date width is the width of the margin that contains the date
+		double dateWidth = 35.0; 
+		
+		// Current drawing point
 		int startx = Constants.PRINT_MARGINX;
 		int starty = Constants.PRINT_MARGINY;
 		
@@ -160,39 +159,41 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		String[] dateSt = toDateArray(day.getDate());
 		g2d.drawString(dateSt[1], startx + 5, starty + hgt);
 		
-		starty = Constants.PRINT_MARGINY + (int)topHeight;
+		// Redefine the width to be the space left to print the appointments
+		width = width - dateWidth + Constants.PRINT_MARGINX;
 		
-
-		width= width - timesWidth + Constants.PRINT_MARGINX;
+		// Print the page number in the bottom left corner
+		g2d.drawString("" + (page + 1), (int)(width / 2.0) + (int)dateWidth + Constants.PRINT_MARGINX, 
+						(int)height + Constants.PRINT_MARGINY + hgt);
+		
+		// Determine width of each column, the length of each line of notes, 
+		// and the number of rooms to print on the page
 		double colWidth;
-		int lineLength = 130; 
+		int lineLength = 125; 
 		int roomsLeft = r - pageData.get(page).getPageCol() * 2;
-		System.out.println("roomsLeft: " + roomsLeft);
-		
 		if (roomsLeft == 1) {
 			colWidth = width;
 		} else {
 			colWidth = width / 2.0;
-			lineLength = 60; // 50
+			lineLength = 60;
 			roomsLeft = 2;
 		}	
 		
-		System.out.println("column width: " + colWidth);
-		System.out.println("line length: " + lineLength);
-		
+		// Print the appointments
 		for (int j = 0; j < roomsLeft; j++) {
-			startx = Constants.PRINT_MARGINX + (int)timesWidth + (int)colWidth*j;
+			startx = Constants.PRINT_MARGINX + (int)dateWidth + (int)colWidth*j;
 			// Prevent the printer from starting a new column if it doesn't fit on that page
 			// (Need to add the margins to the width because startx begins its calculations
 			// from the edge of the page, but width does not)
-			if (width + Constants.PRINT_MARGINX + (int)timesWidth >= startx + colWidth) {
+			if (width + Constants.PRINT_MARGINX + (int)dateWidth >= startx + colWidth) {
 			
+				// Draw the rectangle where the practitioner information will be
 				starty = Constants.PRINT_MARGINY;
 				Rectangle2D.Double rect = new Rectangle2D.Double();
 				rect.setRect (startx, starty, colWidth, topHeight);
 				g2d.draw(rect);
 	
-				// Prints header with practitioner information
+				// Print the header with practitioner information
 				PractitionerDto p = day.getRooms().get(pageData.get(page).getPageCol() * 2 + j).getPractitioner();
 				
 				String name= p.getFirst().toString() + " " + p.getLast().toString();
@@ -211,21 +212,24 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 					}
 				}
 
+				// Get the appointments to be printed on the page
 				ArrayList<AppointmentDto> appts = day.getRooms().get(pageData.get(page).getPageCol() * 2 + j).getAppointments();
-				starty += topHeight;
-	
-				// Prints the text for an appointment block
 				int i = pageData.get(page).getApptIndex(j);
 				boolean donePrintingRoom = false;
+				
+				starty += topHeight;
+				
+				// Print the the text for an appointment block
 				while (i < appts.size() && !donePrintingRoom) {
+					// Draw the rectangle that contains the appointment information
 					int min = appts.get(i).getEnd() - appts.get(i).getStart();
 					double blockHeight = min*Constants.PRINT_PIXELS_PER_MINUTE;
-					
-					int aLines= (int) Math.ceil(blockHeight/hgt);
 					Rectangle2D.Double apptBlock = new Rectangle2D.Double();
 					apptBlock.setRect (startx, starty, colWidth, blockHeight);
 					g2d.draw(apptBlock);
 	
+					// Precompute which lines show the patient name, appointment confirmation, phone number, and note
+					int aLines= (int) Math.ceil(blockHeight/hgt);
 					String line1 = formatString(appts.get(i).prettyPrintStart() + " - " + appts.get(i).prettyPrintEnd(), lineLength, 1)[0];
 					String[] line2= new String[5];
 					String[] line3= new String[5];
@@ -248,6 +252,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 						}
 					}
 					
+					// Print the patient name, phone number, and note
 					g2d.drawString(line1, startx+5, starty+hgt);
 					
 					for (int k = 0; k < line2.length; k++) {
@@ -259,11 +264,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 					for (int k = 0; k < line3.length; k++) {
 						if (line3[k] != null) {
 							g2d.drawString(line3[k], startx+5, starty+(3+k)*hgt);
-							
-							System.out.println("processing patient notes...");
 						}
 					}
 	
+					// Move pointer to next appointment location
 					starty += blockHeight;
 					
 					// Stop printing on this page if no more appointments fit
@@ -277,7 +281,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			}
 		}
 		
-		System.out.println("end build");
+		//System.out.println("end build");
 
 		return g2d;
 	}
@@ -293,20 +297,15 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		return dateArray;
 	}
 	
-	/** Returns a string representation of a given time. */
-	private String getTimeIn12HourFormat(int timeInMins) {
-		int hrsIn24HourFormat = timeInMins / 60;
-		int hrsIn12HourFormat = (hrsIn24HourFormat == 12 ? 12 : hrsIn24HourFormat % 12);
-		String timeSt = ((Integer) hrsIn12HourFormat).toString().trim();
-		String amPm = (hrsIn24HourFormat < 12 ? "am" : "pm");
-		return timeSt + amPm;
-	}
-	
 	/**
-	 * 
-	 * @param roomNumber
-	 * @param apptHeight
-	 * @return an array with the number of pages and appointments per page
+	 * Calculates the number of pages needed to print a room's schedule and 
+	 * determines the number of appointments that can be printed on a page.
+	 * @param roomNumber - an index used to access the appointments of a room on a given day
+	 * @param apptHeight - the amount of space available to print only appointments 
+	 * 					   (excludes the practitioner headers)
+	 * @return a two-element array, where
+	 * 			data[0] = the number of pages, and 
+	 * 			data[1] = the number of appointments per page
 	 */
 	private int[] numberOfPagesPerRoom(int roomNumber, double apptHeight) {
 		ArrayList<AppointmentDto> appts = day.getRooms().get(roomNumber).getAppointments();
@@ -316,29 +315,40 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		if (numAppts > 0) {
 			int numMins = appts.get(0).getEnd() - appts.get(0).getStart();
 			double blockHeight = numMins*Constants.PRINT_PIXELS_PER_MINUTE;
+			
 			int apptsPerPage = (int)Math.floor(apptHeight / blockHeight);
-			int numPages = (int)Math.ceil(numAppts / apptsPerPage);
+			int numPages = (int)Math.ceil((double)numAppts / apptsPerPage);
+			
 			data[0] = numPages;
 			data[1] = apptsPerPage;
+			
+			//System.out.println("room number: " + roomNumber + " num pages: " + data[0] + " appts per page: " + data[1]);
+			
 			return data;
 		}
 		
 		return data; // there were no appointments for that room
 	}
 	
-	/** Calculates the number of pages needed */
+	/** 
+	 * Calculates the information for all pages to be printed, including the row number, column number, and 
+	 * appointment indexes for a page. See the Page class for more details.
+	 * @param pageHeight - the total height for printing on a page (excluding the top and bottom margins)
+	 * @param pracHeaderHeight - the height of the blocks containing practitioner information
+	 * @return an array of Pages that tell which appointments should be printed on a given page
+	 */
 	private ArrayList<Page> calculatePageData(double pageHeight, double pracHeaderHeight) {
-		int numPractitioners = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
 		int numRooms = day.getRooms().size();
 		double apptHeight = pageHeight - pracHeaderHeight; // do not include height of practitioner header in page calculations
-		int numPagesPerTwoRooms = 0;
+		ArrayList<Page> pageData = new ArrayList<Page>();
 		int[] pagesForRoom1 = new int[2];
 		int[] pagesForRoom2 = new int[2];
-		ArrayList<Page> pageData = new ArrayList<Page>();
+		int numPagesPerTwoRooms = 0;
 		int col = 0;
 		
-		// Determine the number of pages per two rooms
+		// Calculate the page data for all rooms
 		for (int i = 0; i < numRooms; i = i + 2) {
+			// Determine the number of pages per two rooms
 			pagesForRoom1 = numberOfPagesPerRoom(i, apptHeight);
 			if (numRooms > i + 1) {
 				pagesForRoom2 = numberOfPagesPerRoom(i + 1, apptHeight);
@@ -352,6 +362,8 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			for (int row = 0; row < numPagesPerTwoRooms; row++) {
 				int[] apptIndexes = {row * pagesForRoom1[1], row * pagesForRoom2[1]};
 				pageData.add(new Page(row, col, apptIndexes));
+				
+				//System.out.println("row: " + row + " col: " + col + " apptIndex0: " + apptIndexes[0] + " apptIndex1: " + apptIndexes[1]);
 			}
 			col++;
 		}
@@ -360,22 +372,21 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	}
 	
 	/** Prints the visible contents of the appointment pane of a given page. */
-	public int print(Graphics graphics, PageFormat pageFormat, int page) {
-		System.out.println("print the pages");
+	public int print(Graphics graphics, PageFormat pageFormat, int page) throws PrinterException {
+		//System.out.println("print the pages");
 		
 		double width = pageFormat.getImageableWidth() - 2*Constants.PRINT_MARGINX;
 		double height = pageFormat.getImageableHeight() - 2*Constants.PRINT_MARGINY;
-		//int pages = (int)Math.ceil((double)day.getRooms().size() / 2.0);
 		
-		//create the graphics object
+		// Create the graphics object
 		Graphics2D g2d = (Graphics2D) graphics.create();
 		
-		//set the font, find the line height
+		// Set the font, find the line height
 		g2d.setFont(Constants.PRINTABLE);
 		FontMetrics metrics = g2d.getFontMetrics(Constants.PRINTABLE);
 		int hgt = metrics.getHeight();
 		
-		//calculate the page height and practitioner header height
+		// Calculate the page height and practitioner header height
 		int pLines= 3; 
 		double pracHeaderHeight = pLines*hgt + 8;
 		double pageHeight = pageFormat.getImageableHeight() - 2*Constants.PRINT_MARGINY;
@@ -383,12 +394,21 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		pageData = calculatePageData(pageHeight, pracHeaderHeight);
 		int pages = pageData.size();
 		
+		if (pageData.size() <= 0) {
+			JLabel errorMsg = new JLabel("There are no appointments to print for this day!");
+			errorMsg.setFont(Constants.DIALOG);
+			JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
+			throw new PrinterException();
+		}
+
+		//System.out.println("Total number of pages: " + pages);
+		
 		if (page >= pages) {
 			return NO_SUCH_PAGE;
 		}
 
-		graphics = buildPage(graphics, width, height, page);
 		// Print the entire visible contents of a java.awt.Frame
+		graphics = buildPage(graphics, width, height, page);
 
 		return PAGE_EXISTS;
 
@@ -400,7 +420,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		PrinterJob job = PrinterJob.getPrinterJob();
 		job.setPrintable(this);
 		boolean ok = job.printDialog();
-		System.out.println("job received");
+		//System.out.println("job received");
 		if (ok) {
 			try {
 				job.print();
@@ -414,6 +434,52 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 
 	}
 	
+	/* Below is an example structure of how the printing works:
+	 *	  	  col 0       col 1
+	 * 		 _______	 ___ ___
+	 * 		|	|	|	|	|	|
+	 * row 0| 0 | 0 |	| 0	| 0	|
+	 * 		|___|___|	|___|___|
+	 * 		|	|	|	|	|	|
+	 * row 1| 3 | 16|	| 12| 0	|
+	 * 		|___|___|	|___|___|
+	 * 		|	|	|	  p2 
+	 * row 2| 6 | 32|
+	 * 		|___|___|
+	 * 	 	 p0  p1
+	 * 
+	 * Assume the following is true about the three practitioners, p0 to p2:
+	 * p0 has 7 45-minute appointments -  3 appointments fit per page.
+	 * p1 has 20 15-minute appointments - 16 appointments fit per page.
+	 * p2 has 24 20-minute appointments - 12 appointments fit per page.
+	 * 
+	 * In the example above, this is how the pages are indexed:
+	 * Page 0 = row 0, col 0
+	 * Page 1 = row 1, col 0
+	 * Page 2 = row 2, col 0
+	 * Page 3 = row 0, col 1
+	 * Page 4 is row 1, col 1
+	 * 
+	 * Column 0 will print practitioners p0 and p1.
+	 * Column 1 will print practitioner p2.
+	 * 
+	 * Inside each cell is an index that says which appointment to start printing 
+	 * at the top of the page. For example, for p0, page 0 will contain appts 0-2, 
+	 * page 1 contains appts 3-5, and page 2 contains appt 6. 
+	 * 
+	 * For p1, since there is nothing else to print after the 20th appt, the index
+	 * will still increment (for ease of calculation), but buildPage knows not to print 
+	 * nonexistent appts (i.e. not to print appts 21-47).
+	 * 
+	 * Printing p2 works in a similar way, as p0 where appts 0-11 print on page 3 
+	 * and appts 12-23 print on page 4.
+	 * 
+	 * The last column (where practitioner p3 might have been) is empty, so the indexes 
+	 * are set to 0 as placeholders. 
+	 * 
+	 * Note that the appointments for p2 will visibly stretch across the entire page 
+	 * since there is no fourth practitioner.
+	 */
 	private class Page {
 		private int pageRow;
 		private int pageCol;
@@ -453,193 +519,4 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 			apptIndexes[arrayIndex] = apptIndex;
 		}
 	}
-	
-	
-	/** Builds the page to be printed from information on the appointment panel. */
-	/*private Graphics2D buildPage(Graphics g, double width, double height, int page) {
-		System.out.println("start build");
-		
-		//# rooms (i.e., the total number of practitioners scheduled for the day)
-		int r = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionersForDay(day).size();
-
-		//create the graphics object
-		Graphics2D g2d = (Graphics2D) g.create();
-		
-		//set the font, find the line height
-		g2d.setFont(Constants.PRINTABLE);
-		FontMetrics metrics = g2d.getFontMetrics(Constants.PRINTABLE);
-		int hgt = metrics.getHeight();
-
-		//top height is the height of the practitioner info box
-		int pLines= 3; 
-		double topHeight = pLines*hgt + 8;
-		//times width is the width of the left times panel
-		double timesWidth = 35.0; 
-		
-		//end time is the end # minutes, currTime is the current time
-		int endTime = day.getEnd();
-		int currTime = day.getStart();
-		
-		//current drawing point
-		int startx = Constants.PRINT_MARGINX;
-		int starty = Constants.PRINT_MARGINY;
-		
-		// Prints the date in the top left corner
-		String[] dateSt = toDateArray(day.getDate());
-		//g2d.drawString(dateSt[0], startx + 5, starty + hgt);
-		g2d.drawString(dateSt[1], startx + 5, starty + hgt);
-		
-		starty = Constants.PRINT_MARGINY + (int)topHeight;
-		
-		//leftover is the number of minutes in the first box (if it ends oddly)
-		int leftover = 60 - (currTime % 60);
-		if (leftover > 0) {
-			Rectangle2D.Double topTime = new Rectangle2D.Double();
-			topTime.setRect(startx, starty, timesWidth, leftover * Constants.PRINT_PIXELS_PER_MINUTE);
-			g2d.draw(topTime);
-			g2d.drawString(getTimeIn12HourFormat(currTime), startx + 5, starty + hgt);
-			starty += leftover * Constants.PRINT_PIXELS_PER_MINUTE;
-			currTime+=leftover;
-		}
-		
-		// Print hours down the side (e.g. "4pm", "5pm", etc.) 
-		while (currTime + 60 < endTime) {
-			Rectangle2D.Double timeBlock = new Rectangle2D.Double();
-			timeBlock.setRect(startx, starty, timesWidth, 60 * Constants.PRINT_PIXELS_PER_MINUTE);
-			g2d.draw(timeBlock);
-			g2d.drawString(getTimeIn12HourFormat(currTime), startx + 5, starty + hgt);
-			starty += 60 * Constants.PRINT_PIXELS_PER_MINUTE;
-			currTime+=60;
-		}
-		
-		leftover = endTime - currTime;
-		Rectangle2D.Double bottomTime = new Rectangle2D.Double();
-		bottomTime.setRect (startx, starty, timesWidth, leftover * Constants.PRINT_PIXELS_PER_MINUTE);
-		g2d.draw(bottomTime);
-		g2d.drawString(getTimeIn12HourFormat(currTime), startx + 5, starty + hgt);
-
-		width= width - timesWidth + Constants.PRINT_MARGINX;
-		double colWidth;
-		
-		int lineLength = 100; 
-		
-		int roomsLeft = r - page*3;
-		
-		if (roomsLeft == 1) colWidth = width;
-		else if (roomsLeft == 2) {
-			colWidth = width / 2.0;
-			lineLength = 40; //50
-		}
-		else {
-			colWidth = width / 3.0;
-			roomsLeft = 3;
-			lineLength = 30;
-		}
-		
-
-		for (int j = 0; j < roomsLeft; j++) {
-                    
-			Rectangle2D.Double rect = new Rectangle2D.Double ();
-			startx = Constants.PRINT_MARGINX + (int)timesWidth + (int)colWidth*j;
-			starty = Constants.PRINT_MARGINY;
-			rect.setRect (startx, starty, colWidth, topHeight);
-			g2d.draw(rect);
-
-			// Prints header with practitioner information
-			PractitionerDto p = day.getRooms().get(page*3 + j).getPractitioner();
-			
-			String name= p.getFirst().toString() + " " + p.getLast().toString();
-			g2d.drawString(formatString(name, lineLength, 1)[0], startx+5, starty+hgt);
-			
-			String type= p.getType().toString();
-			g2d.drawString(formatString(type, lineLength, 1)[0], startx+5, starty+2*hgt);
-			
-			if (!p.getNotes().isEmpty()) {
-				String[] notes= formatString(p.getNotes().replaceAll("\t\t", "\n"), lineLength, pLines-2);
-				
-				for (int k=0; k<notes.length; k++) {
-					if (notes[k] != null) {
-						g2d.drawString(notes[k], startx+5, starty+(3+k)*hgt);
-					}
-				}
-			}
-			
-			
-			ArrayList<AppointmentDto> appts = day.getRooms().get(page*3 + j).getAppointments();
-			starty += topHeight;
-
-			// Prints the text for an appointment block
-			for (AppointmentDto a : appts) {
-				int min = a.getEnd() - a.getStart();
-				double blockHeight = min*Constants.PRINT_PIXELS_PER_MINUTE;
-				int aLines= (int) Math.ceil(blockHeight/hgt);
-				Rectangle2D.Double apptBlock = new Rectangle2D.Double();
-				apptBlock.setRect (startx, starty, colWidth, blockHeight);
-				g2d.draw(apptBlock);
-
-				String line1 = formatString(a.prettyPrintStart() + " - " + a.prettyPrintEnd(), lineLength, 1)[0];
-				String line2 = "";
-				String[] line3= new String[5];
-				String[] line4= new String[5];
-				if (a.getPatientID() != null) {
-                                        
-					PatientDto pat = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(a.getPatientID());
-					
-					if (a.getConfirmation()) {
-						//line2="-- CONFIRMED --";
-						line1 += "  CONFIRMED";
-					}
-					
-					if (pat.getPhone() == null) {
-						line3= formatString(pat.getFullName() + " - No phone #", lineLength, 2);
-					} else {
-						line3 = formatString(pat.getFullName() + " - " + pat.getPhone(), lineLength, 2);
-					}			
-
-					
-					if (!a.getNote().isEmpty()) {
-						line4 = formatString(a.getNote().replaceAll("\t\t", "\n"), lineLength, aLines-4);
-					}
-					
-				}
-				
-				g2d.drawString(line1, startx+5, starty+hgt);
-				g2d.drawString(line2, startx+5, starty+2*hgt);
-				
-				int k=0;
-				int lin=0;
-				while (k<line3.length) {
-
-					if (line3[k] !=null) {
-						
-						g2d.drawString(line3[k], startx+5, starty+(3+k)*hgt);
-						lin++;
-					}
-					
-					k++;
-				}
-				
-				//k= lin;
-				k=0;
-				while(k<line4.length) {
-					if (line4[k] != null) {
-						
-						g2d.drawString(line4[k], startx+5, starty+(3+k+lin)*hgt);
-						
-						System.out.println("processing patient notes...");
-					}
-					
-					k++;
-				}
-
-
-				starty += blockHeight;
-			}
-		}
-		
-		System.out.println("end build");
-
-		return g2d;
-	}*/
-
 }
