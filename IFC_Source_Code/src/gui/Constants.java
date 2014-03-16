@@ -10,7 +10,7 @@ public class Constants {
 	/** The number of pixels that each minute corresponds to in the calendar area */
 	public static final int PIXELS_PER_MINUTE = 4;
 	/** The number of pixels that each minute corresponds to in the printable area */
-	public static final double PRINT_PIXELS_PER_MINUTE = 3.5; //2.5;
+	public static final double PRINT_PIXELS_PER_MINUTE = 2.8; //2.5;
 	/** The height of the Heading Panel in the Day Panel. */
 	public static final int HEADING_PANEL_HEIGHT = 75;
 	/** The width of the Time Panel column in the Day Panel. */
