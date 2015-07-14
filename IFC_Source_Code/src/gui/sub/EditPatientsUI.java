@@ -253,6 +253,17 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 				return p.getNotes();
 		}
 		
+		public int getRowByValue(PatientDto patient) {
+			for (int i = 0; i < getRowCount(); i++) {
+				if (getValueAt(i, 0).equals(patient.getFirst()) && 
+					getValueAt(i, 1).equals(patient.getLast()) &&
+					getValueAt(i, 2).equals(patient.getPhone())) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		
 		public boolean isCellEditable(int row, int col) {
 			return false;
 		}
@@ -280,16 +291,32 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 		if (e.getActionCommand().equals("edit")) {
 			if (patTable.getSelectedRow() < 0) return;
 			else {
-				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow())));
+				PatientDto patient = EditPatientUI.ShowDialog(this, model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow())));
 				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
-                                ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
-				return;
+                ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
+				updateTable();
+				
+				// Reset selection (which gets removed by updateTable())
+				int row = ((PatTableModel)patTable.getModel()).getRowByValue(patient);
+				if (row != -1) {
+					patTable.scrollRectToVisible(patTable.getCellRect(row, 0, true));
+					patTable.setRowSelectionInterval(row, row);
+				}
+                return;
 			}
 		} else if (e.getActionCommand().equals("new")) {
-			NewPatientUI.ShowDialog(this);
+			PatientDto patient = NewPatientUI.ShowDialog(this);
 			pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 			patTable.setModel(new PatTableModel(pat));
+			
+			// Set patient as the new selected row
+			searchField.setText("");
+			int row = ((PatTableModel)patTable.getModel()).getRowByValue(patient);
+			if (row != -1) {
+				patTable.scrollRectToVisible(patTable.getCellRect(row, 0, true));
+				patTable.setRowSelectionInterval(row, row);
+			}
 			return;
 		} else if (e.getActionCommand().equals("remove")) {
 			if (patTable.getSelectedRow() < 0) return;
@@ -300,6 +327,7 @@ public class EditPatientsUI extends JDialog implements KeyListener, ActionListen
 				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatient(model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow())));
 				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
+				updateTable();
 			}
 			return;	
 		}

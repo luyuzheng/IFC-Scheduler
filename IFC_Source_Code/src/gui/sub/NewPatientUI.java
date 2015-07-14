@@ -27,11 +27,11 @@ import javax.swing.JTextField;
 import javax.swing.table.AbstractTableModel;
 
 import backend.DataTransferObjects.*;
-import java.util.List;
 
 /**
  * Popup that allows new patients to be created
  */
+@SuppressWarnings("serial")
 public class NewPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static NewPatientUI newPatientUI;
 	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
@@ -45,7 +45,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
 	JTable patTable;
-	private JTextField searchField = new JTextField();
+	//private JTextField searchField = new JTextField();
 	
 	private static PatientDto patient;
 	
@@ -139,7 +139,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 	}
 	
 	public void updateTable() {
-		String filter = searchField.getText();
+		//String filter = searchField.getText();
         patTable.setModel(new PatTableModel(pat));
 		//TODO: FILTER if (filter.equals("")) patTable.setModel(new PatTableModel(pat));
 		//else patTable.setModel(new PatTableModel(pm.getFilteredPatientList(filter)));
@@ -179,10 +179,7 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 					JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
 				} else {
-					int a = Integer.parseInt(areaCode);
-					int p1 = Integer.parseInt(numberPart1);
-					int p2 = Integer.parseInt(numberPart2);
-					num = areaCode + "-" + numberPart1 + "-" + numberPart2;//a, p1, p2);
+					num = areaCode + "-" + numberPart1 + "-" + numberPart2;
 				}
 			} catch (Exception ex) {
 				msg.setText("Please enter a valid phone number (###-###-####) or leave the field blank.");
@@ -272,7 +269,6 @@ public class NewPatientUI extends JDialog implements ActionListener, KeyListener
 	}
 
 	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 

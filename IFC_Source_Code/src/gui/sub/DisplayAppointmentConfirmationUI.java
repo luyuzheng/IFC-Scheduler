@@ -2,25 +2,27 @@
 package gui.sub;
 
 import gui.Constants;
-import gui.main.AppointmentConfirmationPane;
+import gui.DateTimeUtils;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
 
 import javax.swing.AbstractAction;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
@@ -31,6 +33,7 @@ import gui.main.MainWindow;
  * DisplayAppointmentConfirmationUI shows information about a patient's appointment when a patient in the table
  * is clicked.
  */
+@SuppressWarnings("serial")
 public class DisplayAppointmentConfirmationUI extends JDialog implements ActionListener {
 	private static DisplayAppointmentConfirmationUI displayAppointmentConfirmationUI;
 	
@@ -42,8 +45,10 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	private JButton confirmButton = new JButton("Confirm");
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
-	private JTextArea textArea;
-	private JTextArea noteArea;
+	private JScrollPane scrollPane;
+	private JScrollPane notePane;
+	private JTextPane textPane;
+	private JTextPane noteArea;
 	
         private MainWindow main;
         
@@ -55,51 +60,45 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	private DisplayAppointmentConfirmationUI(String name, AppointmentDto appt, MainWindow main) {
 		appointment = appt;
 		
-                this.main = main;
+        this.main = main;
                 
 		setModal(true);
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(350, 350));
-		setResizable(false);
+		setPreferredSize(new Dimension(450, 450));
+		setResizable(true);
 		
 		infoPanel = new JPanel(new BorderLayout());
 		buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
-		String confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
-		Date date = new Date(appt.getApptDate().getTime());
+		String text = getApptConfirmationText(appt);
 		
-		String text = "Date: " + date.toString() + "\n" +
-					  "Time Slot: " + appt.prettyPrintStart() + " - " + appt.prettyPrintEnd() + "\n" +
-					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
-					  "Phone Number: " + patient.getPhone() + "\n" +
-					  "No Shows: " + patient.getNoShows() + "\n" + 
-					  "Confirmed: " + confirmed;
-		
-		textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setFont(Constants.PARAGRAPH);
-		textArea.setOpaque(false);
-		textArea.setHighlighter(null);
-		textArea.setText(text);
-		infoPanel.add(textArea);
+		textPane = new JTextPane();
+		textPane.setFont(Constants.PARAGRAPH);
+		textPane.setContentType("text/html");
+		textPane.setText("<html>" + text + "</html>");
+		textPane.setEditable(false);
+		textPane.setCaretPosition(0);
+		textPane.setOpaque(false);
+		textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true); // Used so that font will display properly
+	
+		scrollPane = new JScrollPane(textPane);
+		TitledBorder title = BorderFactory.createTitledBorder("Patient/Appointment Information");
+		title.setTitleFont(Constants.PARAGRAPH_BOLD);
+		scrollPane.setBorder(title);
+		infoPanel.add(scrollPane);
 
 		notePanel = new JPanel(new BorderLayout());
-		JLabel noteLabel = new JLabel("Appointment Confirmation Note:");
+		JLabel noteLabel = new JLabel("<html><p><b>Appointment Confirmation Note:</b></p></html>");
 		noteLabel.setFont(Constants.PARAGRAPH);
-		JScrollPane notePane = new JScrollPane();
-		notePane.setPreferredSize(new Dimension(200,200));
-		noteArea = new JTextArea();
-		noteArea.setLineWrap(true);
-		noteArea.setWrapStyleWord(true);
-		noteArea.setFont(Constants.PARAGRAPH);
 
+		noteArea = new JTextPane();
+		noteArea.setFont(Constants.PARAGRAPH);
 		noteArea.setText((appt.getNote()).replaceAll("\t\t", "\n"));
-		notePane.setViewportView(noteArea);
+		
+		notePane = new JScrollPane(noteArea);
+		notePane.setPreferredSize(new Dimension(200,200));
 		notePanel.add(noteLabel, BorderLayout.NORTH);
 		notePanel.add(notePane, BorderLayout.CENTER);
 		
@@ -121,28 +120,40 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 		buttonPanel.add(cancelButton);
 		
 		infoPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		notePanel.setBorder(new EmptyBorder(0, 10, 0, 10));
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
 		
 		add(infoPanel, BorderLayout.NORTH);
 		add(notePanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
+	}
+	
+	private String getApptConfirmationText(AppointmentDto appt) {
+		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
+		String confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
+		String date = DateTimeUtils.prettyPrintMonthDay(new Date(appt.getApptDate().getTime()));
 		
-		setResizable(false);
+		String[] labels = {"Date", "Time Slot", "Patient Name", "Phone Number", "No Shows", "Confirmed"};
+		String[] info = {date, 
+						 appt.prettyPrintStart() + " - " + appt.prettyPrintEnd(), 
+						 patient.getFirst() + " " + patient.getLast(),
+						 patient.getPhone(),
+						 patient.getNoShows().toString(),
+						 confirmed
+						 };
+		String text = "<table>";
+		for (int i = 0; i < labels.length; i++) {
+			text += "<tr><td><b>" + labels[i] + ": </b></td><td align='left'>" + info[i] + "</td></tr><br />";
+		}
+		text += "</table>";
+
+		return text;
 	}
 	
 	private void refreshPatientInfo(AppointmentDto appt) {
-		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(appt.getPatientID());
-		String confirmed = (appt.getConfirmation() == true ? "Yes" : "No");
-		Date date = new Date(appt.getApptDate().getTime());
-		
-		String text = "Date: " + date.toString() + "\n" +
-					  "Time Slot: " + appt.prettyPrintStart() + " - " + appt.prettyPrintEnd() + "\n" +
-					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
-					  "Phone Number: " + patient.getPhone() + "\n" +
-					  "Confirmed: " + confirmed;
-		
-		textArea.setText(text);
-		textArea.updateUI();
+		String text = getApptConfirmationText(appt);
+		textPane.setText(text);
+		textPane.updateUI();
 	}
 	
 	/**
@@ -188,17 +199,11 @@ public class DisplayAppointmentConfirmationUI extends JDialog implements ActionL
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "OK") {
-
-                    //TODO: write text box to appointment note
-
 			appointment.setNote(noteArea.getText());
-
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addNotesToAppointment(appointment);
-                        main.refreshAppointments(appointment.getApptDate());
-			displayAppointmentConfirmationUI.setVisible(false);
-		} else {
-			displayAppointmentConfirmationUI.setVisible(false);
-		}
+            main.refreshAppointments(appointment.getApptDate());
+		} 
+		displayAppointmentConfirmationUI.setVisible(false);
 	}
 	
 }

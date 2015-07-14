@@ -4,7 +4,6 @@
 
 package gui.main;
 
-import gui.TimeSlot;
 import gui.main.listeners.NewPractitionerListener;
 
 import java.awt.BorderLayout;
@@ -13,8 +12,6 @@ import javax.swing.JPanel;
 
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
-
-//import gui.Constants;
 
 @SuppressWarnings("serial")
 public class RoomPanel extends JPanel {

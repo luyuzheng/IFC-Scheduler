@@ -7,10 +7,6 @@ package gui.main;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-//import java.util.Calendar;
-//import java.util.GregorianCalendar;
-//import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;

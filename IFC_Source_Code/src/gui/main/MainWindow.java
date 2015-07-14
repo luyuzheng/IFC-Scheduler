@@ -444,7 +444,7 @@ public class MainWindow extends JFrame {
 	 */
 	public void setDay(DayDto day) {
 		this.day = day;
-                this.refreshConfirmationPane();
+        this.refreshConfirmationPane();
 	}
 	
 	/**
@@ -470,6 +470,10 @@ public class MainWindow extends JFrame {
 	
 	public DayPanel getDayPanel() {
 		return dp;
+	}
+	
+	public DatePicker getDatePicker() {
+		return cp;
 	}
 	
 	public void refreshAppointments(Date date){

@@ -7,7 +7,6 @@
 package gui.main;
 
 import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -48,7 +47,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	public AppointmentPanel(DayPanel dp, MainWindow main) {
 		super(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		JPanel panel = new JPanel(new BorderLayout());
-                this.main = main;
+        this.main = main;
 		sidePanel = new SidePanel(dp);
 		dp.setSidePanel(sidePanel);
 		panel.add(sidePanel, BorderLayout.WEST);
@@ -78,7 +77,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	}
 	
 	/** Truncates a string if longer than a specified length, to support readability. */
-	private String[] formatString(String s, int lineLength, int numLines) {
+	private String[] formatString(FontMetrics metrics, String s, int lineLength, int numLines) {
 		
 		// string to return
 		String[] print= new String[numLines+1];
@@ -88,9 +87,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		int i= 0;
 		
 		while (leftover.length() > lineLength && i < numLines) {
-			String line= leftover.substring(0, lineLength);
-			//System.out.println("line: " + line);
-			
+			String line= leftover.substring(0, lineLength);			
 			int j= line.lastIndexOf(" ");
 			if (j != -1) {
 				print[i]= line.substring(0, j).trim();
@@ -121,7 +118,10 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		} else {
 			if (numLines > 0) { // A check to make sure the block can actually fit a note
 				int len= print[i-1].length();
-				print[i-1]= print[i-1].substring(0, len-3) + "...";
+				//System.out.println("p[" + (i-1) + "]: " + print[i-1] + "\n");
+				if (len > 3) {
+					print[i-1]= print[i-1].substring(0, len-3) + "...";
+				} 
 			}
 		}
 		
@@ -169,13 +169,13 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 		// Determine width of each column, the length of each line of notes, 
 		// and the number of rooms to print on the page
 		double colWidth;
-		int lineLength = 125; 
+		int lineLength = 110; // A magic number of characters that seems to work well
 		int roomsLeft = r - pageData.get(page).getPageCol() * 2;
 		if (roomsLeft == 1) {
 			colWidth = width;
 		} else {
 			colWidth = width / 2.0;
-			lineLength = 60;
+			lineLength = 54; // A magic number of characters that seems to work well
 			roomsLeft = 2;
 		}	
 		
@@ -197,13 +197,13 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 				PractitionerDto p = day.getRooms().get(pageData.get(page).getPageCol() * 2 + j).getPractitioner();
 				
 				String name= p.getFirst().toString() + " " + p.getLast().toString();
-				g2d.drawString(formatString(name, lineLength, 1)[0], startx+5, starty+hgt);
+				g2d.drawString(formatString(metrics, name, lineLength, 1)[0], startx+5, starty+hgt);
 				
 				String type= p.getType().toString();
-				g2d.drawString(formatString(type, lineLength, 1)[0], startx+5, starty+2*hgt);
+				g2d.drawString(formatString(metrics, type, lineLength, 1)[0], startx+5, starty+2*hgt);
 				
 				if (!p.getNotes().isEmpty()) {
-					String[] notes= formatString(p.getNotes().replaceAll("\t\t", "\n"), lineLength, pLines-2);
+					String[] notes= formatString(metrics, p.getNotes().replaceAll("\t\t", "\n"), lineLength, pLines-2);
 					
 					for (int k=0; k<notes.length; k++) {
 						if (notes[k] != null) {
@@ -230,7 +230,7 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	
 					// Precompute which lines show the patient name, appointment confirmation, phone number, and note
 					int aLines= (int) Math.ceil(blockHeight/hgt);
-					String line1 = formatString(appts.get(i).prettyPrintStart() + " - " + appts.get(i).prettyPrintEnd(), lineLength, 1)[0];
+					String line1 = formatString(metrics, appts.get(i).prettyPrintStart() + " - " + appts.get(i).prettyPrintEnd(), lineLength, 1)[0];
 					String[] line2= new String[5];
 					String[] line3= new String[5];
 					if (appts.get(i).getPatientID() != null) {
@@ -242,13 +242,13 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 						}
 						
 						if (pat.getPhone() == null) {
-							line2= formatString(pat.getFullName() + " - No phone #", lineLength, 2);
+							line2= formatString(metrics, pat.getFullName() + " - No phone #", lineLength, 2);
 						} else {
-							line2 = formatString(pat.getFullName() + " - " + pat.getPhone(), lineLength, 2);
+							line2 = formatString(metrics, pat.getFullName() + " - " + pat.getPhone(), lineLength, 2);
 						}			
 						
 						if (!appts.get(i).getNote().isEmpty()) {
-							line3 = formatString(appts.get(i).getNote().replaceAll("\t\t", "\n"), lineLength, aLines-4);
+							line3 = formatString(metrics, appts.get(i).getNote().replaceAll("\t\t", "\n"), lineLength, aLines-4);
 						}
 					}
 					
@@ -479,7 +479,9 @@ public class AppointmentPanel extends JScrollPane implements Printable, ActionLi
 	 * 
 	 * Note that the appointments for p2 will visibly stretch across the entire page 
 	 * since there is no fourth practitioner.
+	 * 
 	 */
+	@SuppressWarnings("unused")		// Extra methods added for completeness.
 	private class Page {
 		private int pageRow;
 		private int pageCol;

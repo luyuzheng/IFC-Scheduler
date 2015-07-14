@@ -6,7 +6,6 @@ package gui.main;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -17,6 +16,7 @@ import gui.Constants;
 import gui.TimeSlot;
 
 
+@SuppressWarnings("serial")
 public class TimesPanel extends JPanel {
 
 	/** The time slot associated with the times panel. */

@@ -9,11 +9,15 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 
 import backend.DataTransferObjects.PractitionerDto;
 
@@ -21,12 +25,14 @@ import backend.DataTransferObjects.PractitionerDto;
  * Displays the info on a practitioner when a scheduled one is double clicked.
  * It also allows you the clear the practitioner scheduled for that time.
  */
+@SuppressWarnings("serial")
 public class DisplayPractitionerUI extends JDialog implements ActionListener {
 	private static DisplayPractitionerUI displayPractitionerUI;
 	
 	private JButton okButton = new JButton("OK");
 	private JButton clearButton = new JButton("Clear Practitioner");
-	private JTextArea textArea;
+	private JTextPane textPane;
+	private JScrollPane scrollPane;
 	
 	private static PractitionerDto practitioner;
 	
@@ -36,29 +42,30 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
+		setPreferredSize(new Dimension(450, 350));
+		setResizable(true);
 		
-		String text = "Practitioner Name: " + p.getFirst() + " " + p.getLast();
-		text += "\nType: " + p.getTypeName().toString();
-		text += "\nAppointment Length: " + p.getApptLength() + " Minutes";
-		text += "\nPractitioner Note: ";
-		
-		if (p.getNotes().isEmpty()) {
-			text+= "No Notes to Display";
-		} else {
-			text += p.getNotes();
-		}
-
-		textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setOpaque(false);
-		textArea.setHighlighter(null);
-		textArea.setText(text);
-		textArea.setFont(Constants.PARAGRAPH);
-		textArea.setBorder(new EmptyBorder(10, 10, 0, 10));
-		
+		JPanel practPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		
+		String text = getPractInfoText(p);
+		
+		textPane = new JTextPane();
+		textPane.setFont(Constants.PARAGRAPH);
+		textPane.setContentType("text/html");
+		textPane.setText("<html>" + text + "</html>");
+		textPane.setEditable(false);
+		textPane.setCaretPosition(0);
+		textPane.setOpaque(false);
+		textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true); // Used so that font will display properly
+	
+		scrollPane = new JScrollPane(textPane);
+		TitledBorder title = BorderFactory.createTitledBorder("Practitioner Information");
+		title.setTitleFont(Constants.PARAGRAPH_BOLD);
+		scrollPane.setBorder(title);
+		scrollPane.setPreferredSize(new Dimension(450, 320));
+		practPanel.add(scrollPane);
+		
 		okButton.addActionListener(this);
 		okButton.setActionCommand("ok");
 		okButton.setFont(Constants.DIALOG);
@@ -67,14 +74,35 @@ public class DisplayPractitionerUI extends JDialog implements ActionListener {
 		clearButton.setActionCommand("clear");
 		clearButton.setFont(Constants.DIALOG);
 		buttonPanel.add(clearButton);
+		
+		practPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
 		buttonPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		
-		add(textArea, BorderLayout.CENTER);
+		add(practPanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
+	}
+	
+	private String getPractInfoText(PractitionerDto p) {
+		String[] labels = {"Practitioner Name", "Practitioner Type", "Appointment Length"};
+		String[] info = {p.getFirst() + " " + p.getLast(), 
+						 p.getTypeName().toString(), 
+						 p.getApptLength() + " Minutes"};
+		String text = "<table>";
+		for (int i = 0; i < labels.length; i++) {
+			text += "<tr><td><b>" + labels[i] + ": </b></td><td align='left'>" + info[i] + "</td></tr><br />";
+		}
+		text += "<tr><td colspan='2'><b>Practitioner Note: </b>";
 		
-		setPreferredSize(new Dimension(350, 220));
-		setResizable(false);
 		
+		if (p.getNotes().isEmpty()) {
+			text += "No Notes to Display";
+		} else {
+			text += p.getNotes();
+		}
+		
+		text += "</td></tr></table>";
+		
+		return text;
 	}
 	
 	public static PractitionerDto ShowDialog(Component owner, PractitionerDto p) {

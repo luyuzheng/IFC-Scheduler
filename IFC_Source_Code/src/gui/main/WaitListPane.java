@@ -2,7 +2,6 @@ package gui.main;
 
 import backend.DataService.DataServiceImpl;
 import gui.Constants;
-import gui.DateTimeUtils;
 import gui.main.listeners.WaitlistPatientListener;
 import gui.sub.AddToWaitlistUI;
 import gui.sub.ChangePriorityUI;
@@ -15,9 +14,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.swing.AbstractAction;
@@ -39,12 +36,13 @@ import java.sql.Date;
  * WaitListPane displays the wait list pane on the right-hand side of the application when the "Wait List" button is clicked.
  * The user can add or remove patients from the wait list. The pane can be closed by clicking the "Hide Wait List" button.
  */
+@SuppressWarnings("serial")
 public class WaitListPane extends JPanel {
 	
 	private Component owner;
 	
 	private JTable specTable;
-	private JComboBox typeSelector;
+	private JComboBox<TypeDto> typeSelector;
 	private JButton addPatientButton = new JButton("Add Patient to List");
 	public JButton schedulePatientButton = new JButton("Schedule Patient from List");
 	public JButton removePatientButton = new JButton("Remove Patient from List");
@@ -70,7 +68,7 @@ public class WaitListPane extends JPanel {
 		TypeDto noFilter = new TypeDto();
 		noFilter.setField(TypeDto.TYPE_NAME, "All");
 		noFilter.setField(TypeDto.TYPE_ID, -1);
-		typeSelector = new JComboBox();
+		typeSelector = new JComboBox<TypeDto>();
 		typeSelector.addItem(noFilter);
 		for (TypeDto type : types) {
 			typeSelector.addItem(type);
@@ -173,9 +171,7 @@ public class WaitListPane extends JPanel {
 			if (specTable.getSelectedRow() < 0) return;
 			WaitlistTableModel model = (WaitlistTableModel)specTable.getModel();
 			WaitlistDto w = model.getPatient(specTable.getSelectedRow());
-			TypeDto type = new TypeDto();
-			type.setField(TypeDto.TYPE_ID, w.getTypeID());
-			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(w.getPatient(), type);
+			DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(w.getWaitlistID());
 			filter(typeSelector);
 			specTable.getColumnModel().getColumn(0).setMinWidth(100);
 		}
@@ -200,6 +196,7 @@ public class WaitListPane extends JPanel {
 	public void resetModel() {
             specTable.setModel(new WaitlistTableModel((ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist(), false));
         	specTable.getColumnModel().getColumn(0).setMinWidth(100);
+        	filter(typeSelector);
 	}
 	
 	/**
@@ -315,12 +312,13 @@ public class WaitListPane extends JPanel {
 	 */
 	public class BoxListener implements ActionListener {
 	    public void actionPerformed(ActionEvent e) {
-	        JComboBox cb = (JComboBox)e.getSource();
+	        @SuppressWarnings("unchecked")
+			JComboBox<TypeDto> cb = (JComboBox<TypeDto>)e.getSource();
 	        filter(cb);
 	    }
 	}
 
-	void filter(JComboBox cb) {
+	void filter(JComboBox<TypeDto> cb) {
 		ArrayList<WaitlistDto> waitlist = (ArrayList<WaitlistDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
 		if (((TypeDto)cb.getSelectedItem()).getTypeID() == -1) {
         	specTable.setModel(new WaitlistTableModel(waitlist, false));

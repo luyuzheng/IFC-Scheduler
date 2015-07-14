@@ -7,10 +7,10 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -27,12 +27,13 @@ import backend.DataTransferObjects.*;
 /**
  * Popup that allows a single practitioner's details to be edited
  */
+@SuppressWarnings("serial")
 public class EditPractitionerUI extends JDialog implements ActionListener {
 	private static EditPractitionerUI editPractitionerUI;
 
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
-	private JComboBox typeCombo = new JComboBox();
+	private JComboBox<TypeDto> typeCombo = new JComboBox<TypeDto>();
 	private JTextArea note = new JTextArea();
 	private JTextField apptLengthField = new JTextField();
 	private JButton okButton = new JButton("OK");
@@ -97,7 +98,8 @@ public class EditPractitionerUI extends JDialog implements ActionListener {
 		label = new JLabel("Type: ", JLabel.CENTER);
 		label.setFont(Constants.PARAGRAPH);
 		typePanel.add(label, BorderLayout.NORTH);
-		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
+		List<TypeDto> types = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+		typeCombo = new JComboBox<TypeDto>(types.toArray(new TypeDto[types.size()]));
 		typeCombo.setFont(Constants.DIALOG);
 		typeCombo.setSelectedItem(p.getType());
 		JPanel typeInnerPanel = new JPanel(new BorderLayout());

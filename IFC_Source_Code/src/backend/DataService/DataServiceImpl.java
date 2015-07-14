@@ -23,8 +23,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-import javax.swing.JOptionPane;
-
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.DayDto;
 import backend.DataTransferObjects.NoShowDto;
@@ -39,8 +37,8 @@ public class DataServiceImpl implements DataService {
 	// just for testing
 	public static void main(String[] args) {
 		//String url = "jdbc:mysql://localhost:3306/test";
-		String user = "testuser";
-		String password = "test623";
+		//String user = "testuser";
+		//String password = "test623";
 
 		//DataService serv = DataServiceImpl.create("test", "192.168.0.13:3306", user, password);
 
@@ -78,8 +76,8 @@ public class DataServiceImpl implements DataService {
 
 	public static Logger lgr = Logger.getLogger(DataServiceImpl.class.getName());
 	public static DataService GLOBAL_DATA_INSTANCE = DataServiceImpl.create(
-			"ifc_db", "192.168.1.9:3306", "testuser", "test623");
-			//"ifc_db", "localhost:3306", "testuser", "test623");
+			//"ifc_db", "192.168.1.9:3306", "testuser", "test623");
+			"ifc_db", "localhost:3306", "testuser", "test623");
 	
 	private final String url;
 	private final String user;
@@ -466,7 +464,6 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public TypeDto addNewPractitionerType(String serviceType) {
 		PreparedStatement st = null;
-		ResultSet rs = null;
 
 		try {
 			TypeDto type = this.getType(serviceType);
@@ -735,7 +732,6 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public boolean updatePractitionerInfo(PractitionerDto practitioner) {
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {
 		
 		st = connection.prepareStatement("UPDATE Practitioner " +
@@ -864,6 +860,7 @@ public class DataServiceImpl implements DataService {
 					"StartTime=?,EndTime=?");
 			st.setInt(1, newStart);
 			st.setInt(2, newEnd);
+			//st.setInt(3, pract.getPractSchedID());
 			st.executeUpdate();
 			//set hours
 			pract.setStart(newStart);
@@ -943,7 +940,6 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public boolean addPatientToAppointment(int patID, AppointmentDto appointment) {
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {        	
 		st = connection.prepareStatement("UPDATE Appointment " +
 				"SET Appointment.PatID=? WHERE Appointment.ApptID=?" );
@@ -972,7 +968,6 @@ public class DataServiceImpl implements DataService {
 	
 	public boolean addNotesToAppointment(AppointmentDto appointment) {
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {
 		
 		st = connection.prepareStatement("UPDATE Appointment " +
@@ -1001,7 +996,6 @@ public class DataServiceImpl implements DataService {
 	@Override
 	public boolean removePatientFromAppointment(AppointmentDto appointment) {
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {
 		
 		st = connection.prepareStatement("UPDATE Appointment " +
@@ -1160,14 +1154,12 @@ public class DataServiceImpl implements DataService {
 	}
 
 	@Override
-	public boolean removePatientFromWaitlist(PatientDto patient, TypeDto type) {
+	public boolean removePatientFromWaitlist(int waitlistID) {
 		PreparedStatement st = null;
 
 		try {
-			st = connection.prepareStatement("DELETE FROM Waitlist WHERE " +
-			"PatID=? AND TypeID=?");
-			st.setInt(1, patient.getPatID());
-			st.setInt(2, type.getTypeID());
+			st = connection.prepareStatement("DELETE FROM Waitlist WHERE WaitlistID = ?");
+			st.setInt(1, waitlistID);
 			st.executeUpdate();
 			return true;
 		} catch (SQLException e) {
@@ -1189,8 +1181,8 @@ public class DataServiceImpl implements DataService {
 	public boolean commentWaitlist(WaitlistDto entry, String comment) {
 		PreparedStatement st = null;
 
-		System.out.println("DataServiceImpl = Waitlist Patient ID: " + entry.getWaitlistID());
-		System.out.println("DataServiceImpl = Waitlist comment: " + comment);
+		//System.out.println("DataServiceImpl = Waitlist Patient ID: " + entry.getWaitlistID());
+		//System.out.println("DataServiceImpl = Waitlist comment: " + comment);
 		
 		try {
 			st = connection.prepareStatement("UPDATE Waitlist SET Comments=? " +
@@ -1652,7 +1644,6 @@ public class DataServiceImpl implements DataService {
 	public List<AppointmentDto> getFutureAppointmentsByPatId(int patID) {
 		PreparedStatement st = null;
 		ResultSet rs = null;
-		String name = null;
 
 		try {
 			st = connection.prepareStatement(
@@ -1912,7 +1903,6 @@ public class DataServiceImpl implements DataService {
     @Override
     public boolean updatePatient(PatientDto patient) {
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {
 		
 		st = connection.prepareStatement("UPDATE Patient " +
@@ -1946,7 +1936,6 @@ public class DataServiceImpl implements DataService {
     @Override
     public boolean updateWaitlist(WaitlistDto wl) {
         PreparedStatement st = null;
-        ResultSet rs = null;
         try {
 		
 			st = connection.prepareStatement("UPDATE Waitlist " +
@@ -1963,33 +1952,6 @@ public class DataServiceImpl implements DataService {
 			st.executeUpdate();
 			return true;
 			
-		} catch (SQLException e) {
-			lgr.log(Level.SEVERE, e.getMessage(), e);
-			ServerCrashUI.ShowDialog();
-		} finally {
-			try {
-				if (st != null) {
-					st.close();
-				}
-			} catch (SQLException ex) {
-				lgr.log(Level.WARNING, ex.getMessage(), ex);
-			}
-		}
-			return false;
-	    }
-    
-    @Override
-    public boolean removePatientFromWaitlist(WaitlistDto patient) {
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try {
-		
-			st = connection.prepareStatement("DELETE FROM Waitlist WHERE PatID = ?");
-			
-			st.setInt(1, patient.getPatientID());
-            st.executeUpdate();
-            return true;
-                
 		} catch (SQLException e) {
 			lgr.log(Level.SEVERE, e.getMessage(), e);
 			ServerCrashUI.ShowDialog();

@@ -15,7 +15,6 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 
-import javax.security.auth.callback.ConfirmationCallback;
 import javax.swing.AbstractAction;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -26,15 +25,13 @@ import javax.swing.JPanel;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.DayDto;
 
-import java.util.Date;
-import java.util.List;
-
 import backend.DataTransferObjects.PatientDto;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 import gui.Constants;
 import gui.TimeSlot;
 
+@SuppressWarnings("serial")
 public class DayPanel extends JPanel {
 	/** The side panel with the time slot information for the day panel. */
 	SidePanel sidePanel;
@@ -42,7 +39,6 @@ public class DayPanel extends JPanel {
 	/** The day associated with the day panel; each day has its own day panel. */
 	private DayDto day;
 	/** The list of practitioners scheduled for the day. */
-	private List<SchedulePractitionerDto> schedulePractitionerList;
 	private JButton switchViewButton = new PanelButton("Month View");
 	private JButton patientButton = new PanelButton("Schedule Patient");
 	private JButton addPracButton = new PanelButton("Schedule Practitioner");

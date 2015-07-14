@@ -1,7 +1,6 @@
 package gui.sub;
 
 import gui.Constants;
-import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -37,7 +36,6 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
 
 import backend.DataService.DataServiceImpl;
-import backend.DataTransferObjects.PatientDto;
 import backend.DataTransferObjects.PractitionerDto;
 import backend.DataTransferObjects.TypeDto;
 
@@ -47,6 +45,7 @@ import backend.DataTransferObjects.TypeDto;
  * It also allows his hours to be specified.
  * New practitioners can also be created from here.
  */
+@SuppressWarnings("serial")
 public class SelectPractitionerUI extends JDialog implements ActionListener,ListSelectionListener, KeyListener {
 
 	private static SelectPractitionerUI selectPractitionerUI;
@@ -57,7 +56,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
 	private JTextField searchField = new JTextField();
-	private JComboBox typeCombo;
+	private JComboBox<TypeDto> typeCombo;
 	JTabbedPane tabbedPane;
 	private JTextField apptLengthField = new JTextField();
 	private JTextArea noteField = new JTextArea();
@@ -251,7 +250,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
         
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
-    	typeCombo = new JComboBox(typeList.toArray());
+    	typeCombo = new JComboBox<TypeDto>(typeList.toArray(new TypeDto[typeList.size()]));
     	typeCombo.setFont(Constants.PARAGRAPH);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	JButton newTypeButton = new JButton("New Type");
@@ -478,7 +477,7 @@ public class SelectPractitionerUI extends JDialog implements ActionListener,List
 	@Override
 	public void valueChanged(ListSelectionEvent le) {
 		if (pracTable.getSelectedRow() > -1) {
-			PractitionerDto pract = prac.get(pracTable.getSelectedColumn());
+			//PractitionerDto pract = prac.get(pracTable.getSelectedColumn());
 			
 			
 			

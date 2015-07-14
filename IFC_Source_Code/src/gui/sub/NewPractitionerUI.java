@@ -7,12 +7,9 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -35,6 +32,7 @@ import java.util.List;
 /**
  * Popup that allows new practitioners to be created.
  */
+@SuppressWarnings("serial")
 public class NewPractitionerUI extends JDialog implements ActionListener {
 
 	private static NewPractitionerUI newPractitionerUI;
@@ -42,7 +40,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
 	
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
-	private JComboBox typeCombo;
+	private JComboBox<TypeDto> typeCombo;
 	private JTextField apptLengthField = new JTextField();
 	private JTextArea noteField = new JTextArea();
 	private JButton okButton = new JButton("OK");
@@ -104,7 +102,7 @@ public class NewPractitionerUI extends JDialog implements ActionListener {
     	typePanel.add(label, BorderLayout.NORTH);
     	JPanel typeComboPanel = new JPanel(new BorderLayout());
         ArrayList<TypeDto> typeList = (ArrayList<TypeDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
-    	typeCombo = new JComboBox(typeList.toArray());
+    	typeCombo = new JComboBox<TypeDto>(typeList.toArray(new TypeDto[typeList.size()]));
     	typeCombo.setFont(Constants.DIALOG);
     	typeComboPanel.add(typeCombo, BorderLayout.CENTER);
     	

@@ -10,7 +10,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -36,6 +35,7 @@ import backend.DataTransferObjects.TypeDto;
  * SearchPane displays the search pane on the right-hand side of the application when the "Search" button is clicked.
  * A person can search by patient, by practitioner, and by appointment. The pane can be closed by clicking the "Hide Search" button.
  */
+@SuppressWarnings("serial")
 public class SearchPane extends JPanel {
 	
 	private enum SearchType {

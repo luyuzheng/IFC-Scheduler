@@ -10,12 +10,10 @@ import gui.Constants;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 import backend.DataTransferObjects.AppointmentDto;
@@ -23,7 +21,6 @@ import backend.DataTransferObjects.SchedulePractitionerDto;
 
 import gui.main.MainWindow;
 
-//import gui.Constants;
 
 @SuppressWarnings("serial")
 public class RoomSubpanel extends JPanel{

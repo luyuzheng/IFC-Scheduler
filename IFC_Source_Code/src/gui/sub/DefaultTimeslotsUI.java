@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,6 +26,7 @@ import gui.TimeSlot;
  * This is the Dialog pop that can be accessed from the the administrator menu.
  * It allows the default times for each day to be changed.
  */
+@SuppressWarnings("serial")
 public class DefaultTimeslotsUI extends JDialog implements ActionListener {
 	
 	private static DefaultTimeslotsUI defaultTimeslotsUI;

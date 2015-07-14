@@ -8,12 +8,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
@@ -21,11 +21,12 @@ import javax.swing.border.EmptyBorder;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.TypeDto;
 
+@SuppressWarnings("serial")
 public class EditTypeUI extends JDialog implements ActionListener {
 	private static EditTypeUI editTypeUI;
 	
 	private JPanel panel;
-	private JComboBox typeCombo;
+	private JComboBox<TypeDto> typeCombo;
 	private JTextField editTypeField = new JTextField();
 	private JButton saveButton = new JButton("Save");
 	private JButton newTypeButton = new JButton("New");
@@ -53,7 +54,8 @@ public class EditTypeUI extends JDialog implements ActionListener {
 		// Put the list of existing types in the combo box
 		JLabel typeLabel = new JLabel("Select a Type: ", JLabel.CENTER);
 		typeLabel.setFont(Constants.PARAGRAPH);
-		typeCombo = new JComboBox((DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes().toArray()));
+		List<TypeDto> types = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
+		typeCombo = new JComboBox<TypeDto>(types.toArray(new TypeDto[types.size()]));
 		typeCombo.setFont(Constants.DIALOG);
 		
 		JPanel typePanel = new JPanel(new FlowLayout());

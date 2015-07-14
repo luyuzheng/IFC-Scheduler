@@ -147,7 +147,7 @@ public class EditPatientUI extends JDialog implements ActionListener {
     	
     	add(panel, BorderLayout.CENTER);		
 		
-		setResizable(false);
+		setResizable(true);
 		
 	}
     

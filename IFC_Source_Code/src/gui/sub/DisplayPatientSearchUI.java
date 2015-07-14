@@ -1,30 +1,28 @@
 package gui.sub;
 
 import gui.Constants;
-import gui.main.AppointmentConfirmationPane.AppointmentConfirmationTableModel;
-import gui.main.listeners.AppointmentConfirmationListener;
 import gui.main.listeners.DisplayPatientSearchListener;
 import gui.main.MainWindow;
-import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 
 import backend.DataService.DataServiceImpl;
@@ -36,6 +34,7 @@ import backend.DataTransferObjects.PractitionerDto;
  * DisplayPatientSearchUI shows information about a patient when a patient in the search table
  * is clicked.
  */
+@SuppressWarnings("serial")
 public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 	private static DisplayPatientSearchUI displayPatientSearchUI;
 	
@@ -43,8 +42,9 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 	private PatientDto patient;
 	private JButton okButton = new JButton("OK");
 	private JButton editPatientButton = new JButton("Edit Patient");
-	private JTextArea textArea;
-	private JTextArea apptArea;
+	private JTextPane textPane;
+	private JScrollPane patInfoScrollPane;
+	private JScrollPane apptScrollPane;
 	private JTable table;
 	
 	/**
@@ -60,27 +60,31 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		setTitle(name);
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(600, 400));
+		setPreferredSize(new Dimension(600, 500));
+		setResizable(true);
 		
 		JPanel infoPanel = new JPanel(new BorderLayout());
 		JPanel apptPanel = new JPanel(new BorderLayout());
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
-		String text = "Patient Name: " + patient.getFirst() + " " + patient.getLast() +
-				  	  "\nPhone Number: " + patient.getPhone() +
-				  	  "\nPatient Note: " + patient.getNotes() +
-				  	  "\nNumber of No Shows: " + patient.getNoShows() +
-				  	  "\n\nFuture Appointments: ";
+		String text = getPatientInfoText();
 		
-		textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setFont(Constants.PARAGRAPH);
-		textArea.setOpaque(false);
-		textArea.setHighlighter(null);
-		textArea.setText(text);
-		infoPanel.add(textArea);
+		textPane = new JTextPane();
+		textPane.setFont(Constants.PARAGRAPH);
+		textPane.setContentType("text/html");
+		textPane.setText("<html>" + text + "</html>");
+		textPane.setEditable(false);
+		textPane.setCaretPosition(0);
+		textPane.setOpaque(false);
+		textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true); // Used so that font will display properly
+		
+		patInfoScrollPane = new JScrollPane(textPane);
+		TitledBorder patInfoTitle = 
+				BorderFactory.createTitledBorder("Patient Information for " + patient.getFirst() + " " + patient.getLast());
+		patInfoTitle.setTitleFont(Constants.PARAGRAPH_BOLD);
+		patInfoScrollPane.setBorder(patInfoTitle);
+		patInfoScrollPane.setPreferredSize(new Dimension(600, 200));
+		infoPanel.add(patInfoScrollPane);
 
 		FutureAppointmentsTableModel model = new FutureAppointmentsTableModel(
 				(List<AppointmentDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getFutureAppointmentsByPatId(patient.getPatID()));
@@ -92,9 +96,15 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
     	table.getTableHeader().setReorderingAllowed(false);
     	table.getTableHeader().setFont(Constants.DIALOG);
     	table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    	
     	apptPanel.add(table.getTableHeader(), BorderLayout.PAGE_START);
     	apptPanel.add(table, BorderLayout.CENTER);
-    	JScrollPane scrollPane = new JScrollPane(apptPanel);
+    	
+    	apptScrollPane = new JScrollPane(apptPanel);
+		TitledBorder apptTitle = BorderFactory.createTitledBorder("Future Appointments:");
+		apptTitle.setTitlePosition(TitledBorder.ABOVE_TOP);
+		apptTitle.setTitleFont(Constants.PARAGRAPH_BOLD);
+		apptScrollPane.setBorder(apptTitle);
 		
     	editPatientButton.setFont(Constants.DIALOG);
     	editPatientButton.setActionCommand("edit");
@@ -109,10 +119,8 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		buttonPanel.setBorder(new EmptyBorder(10, 10, 20, 10));
 		
 		add(infoPanel, BorderLayout.NORTH);
-		add(scrollPane, BorderLayout.CENTER);
+		add(apptScrollPane, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
-		
-		setResizable(true);
 	}
 
 	/**
@@ -224,19 +232,38 @@ public class DisplayPatientSearchUI extends JDialog implements ActionListener {
 		}
 	}
 	
+	private String getPatientInfoText() {
+		String[] labels = {"Patient Name", "Phone Number", "Number of No Shows"};
+		String[] info = {patient.getFirst() + " " + patient.getLast(),
+						 patient.getPhone(),
+						 patient.getNoShows().toString()};
+		
+		String text = "<table>";
+		for (int i = 0; i < labels.length; i++) {
+			text += "<tr><td><b>" + labels[i] + ": </b></td><td align='left'>" + info[i] + "</td></tr><br />";
+		}
+		
+		text += "<tr><td colspan='2'><b>Patient Note: </b>";
+		
+		if (patient.getNotes().isEmpty()) {
+			text += "No Notes to Display";
+		} else {
+			text += patient.getNotes();
+		}
+		
+		text += "</td></tr></table>";
+		
+		return text;
+	}
+	
 	/**
 	 * Updates the patient info displayed at the top of the pop up. Used after patient info
 	 * has been edited.
 	 */
-	public void updatePatientInfo() {
-		String text = "Patient Name: " + patient.getFirst() + " " + patient.getLast() +
-			  	  	  "\nPhone Number: " + patient.getPhone() +
-			  	  	  "\nComments: " + patient.getNotes() +
-			  	  	  "\nNumber of No Shows: " + patient.getNoShows() +
-			  	  	  "\n\nFuture Appointments: ";
-		
-		textArea.setText(text);
-		textArea.updateUI();
+	public void updatePatientInfo() {		
+		String text = getPatientInfoText();
+		textPane.setText(text);
+		textPane.updateUI();
 	}
 	
 	/**

@@ -8,8 +8,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.Statement;
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -22,13 +20,7 @@ import backend.DataService.DataService;
 import backend.DataService.DataService.Day;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
-import backend.DataTransferObjects.DayDto;
-import backend.DataTransferObjects.NoShowDto;
 import backend.DataTransferObjects.PatientDto;
-import backend.DataTransferObjects.PractitionerDto;
-import backend.DataTransferObjects.SchedulePractitionerDto;
-import backend.DataTransferObjects.TypeDto;
-import backend.DataTransferObjects.WaitlistDto;
 
 public class DataServiceTests extends TestCase {
 

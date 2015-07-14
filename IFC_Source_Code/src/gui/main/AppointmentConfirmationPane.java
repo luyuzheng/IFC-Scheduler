@@ -35,6 +35,8 @@ import gui.main.MainWindow;
  * allowing the user to easily find and check off which patients need to be contacted to confirm their appointments. The
  * pane can be closed by clicking on the "Hide Appointment Confirmation" button that appears once the pane is open.
  */
+
+@SuppressWarnings("serial")
 public class AppointmentConfirmationPane extends JPanel implements ActionListener {
 
 	/** The component (main window) that owns this pane. */

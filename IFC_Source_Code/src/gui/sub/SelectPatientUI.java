@@ -7,22 +7,21 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JEditorPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,7 +30,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
@@ -43,9 +45,10 @@ import java.util.List;
  * It allows for a patient to be selected and appointed to that spot.
  * It also allows for new patients to be created and scheduled.
  */
+@SuppressWarnings("serial")
 public class SelectPatientUI extends JDialog implements ActionListener, KeyListener {
 	private static SelectPatientUI selectPatientUI;
-	private ArrayList<PatientDto> pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+	private ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 	
 	private JTextField firstNameField = new JTextField();
 	private JTextField lastNameField = new JTextField();
@@ -312,10 +315,6 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 					JOptionPane.showMessageDialog(this, msg, "Error!", JOptionPane.ERROR_MESSAGE);
 					return;
 				} else {
-					//int a = Integer.parseInt(areaCode);
-					//int p1 = Integer.parseInt(numberPart1);
-					//int p2 = Integer.parseInt(numberPart2);
-					//num = new PhoneNumber(a, p1, p2);
 					num = areaCode + "-" + numberPart1 + "-" + numberPart2;
 				}
 			} catch (Exception ex) {
@@ -333,8 +332,33 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				patient = model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow()));
 				
-				msg.setText("This patient has the following note attached: \"" + patient.getNotes() + "\". Are you sure you want to continue?");
-				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, msg, "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
+				JTextPane textPane = new JTextPane();
+				textPane.setFont(Constants.PARAGRAPH);
+				textPane.setContentType("text/html");
+				textPane.setText("<html>" + patient.getNotes() + "</html>");
+				textPane.setEditable(false);
+				textPane.setCaretPosition(0);
+				textPane.setOpaque(false);
+				textPane.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+				textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true); // Used so that font will display properly
+				
+				JScrollPane scrollPane = new JScrollPane(textPane);
+				scrollPane.setPreferredSize(new Dimension(400, 200));
+				scrollPane.setMaximumSize(new Dimension(400, 200));
+				scrollPane.setBorder(new EmptyBorder(10, 0, 10, 0));
+				
+				JLabel opening = new JLabel("This patient has the following note attached:");
+				JLabel ending = new JLabel("Are you sure you want to continue?");
+				
+				opening.setFont(Constants.PARAGRAPH_BOLD);
+				ending.setFont(Constants.PARAGRAPH_BOLD);
+				
+				JPanel panel = new JPanel(new BorderLayout());
+				panel.add(opening, BorderLayout.NORTH);
+				panel.add(scrollPane, BorderLayout.CENTER);
+				panel.add(ending, BorderLayout.SOUTH);
+				
+				if (!patient.getNotes().equals("") && JOptionPane.showConfirmDialog(this, panel, "Please Confirm", JOptionPane.YES_NO_OPTION) != JOptionPane.YES_OPTION) {
 					patient = null;
 					return;
 				}
@@ -355,7 +379,7 @@ public class SelectPatientUI extends JDialog implements ActionListener, KeyListe
 			else {
 				PatTableModel model = (PatTableModel)patTable.getModel();
 				EditPatientUI.ShowDialog(this, model.getPatient(patTable.getRowSorter().convertRowIndexToModel(patTable.getSelectedRow())));
-				pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+				pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
 				patTable.setModel(new PatTableModel(pat));
 				return;
 			}

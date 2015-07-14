@@ -12,7 +12,6 @@ import backend.DataTransferObjects.*;
  * The implementation of this interface will have a static create method
  * for generating instances of this data service. Methods in this interface
  * are used to query data from the database.
- * TODO: add more methods as needed and we will try to implement them.
  */
 public interface DataService {
 
@@ -199,7 +198,7 @@ public interface DataService {
     /**
      * remove patient from waitlist
      */
-    public boolean removePatientFromWaitlist(PatientDto patient, TypeDto type);
+    public boolean removePatientFromWaitlist(int waitlistID);
     
     /**
      * Adds comments to waitlist entry
@@ -264,10 +263,6 @@ public interface DataService {
 
     /** Updates the waitlist when a patient has been added to it. */
     public boolean updateWaitlist(WaitlistDto wp);
-
-
-    /** Removes a patient from the waitlist. */
-    public boolean removePatientFromWaitlist(WaitlistDto patient);
     
     /**
      * Finds all appointments of type with typeid.

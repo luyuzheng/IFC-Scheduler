@@ -4,7 +4,6 @@ import gui.main.MainWindow;
 import gui.main.SearchPane;
 import gui.main.SearchPane.AppointmentResultsTableModel;
 import gui.main.SearchPane.PatientResultsTableModel;
-import gui.sub.DisplayAppointmentConfirmationUI;
 import gui.sub.DisplayAppointmentSearchUI;
 import gui.sub.DisplayPatientSearchUI;
 
@@ -14,7 +13,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JTable;
 
-import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.PatientDto;
 
@@ -57,7 +55,8 @@ public class SearchListener extends MouseAdapter {
 				// Otherwise the appointment search results table was clicked
 				} else {
 					AppointmentDto appt = ((AppointmentResultsTableModel)owner.getModel()).getAppointment(owner.getSelectedRow());
-					DisplayAppointmentSearchUI.ShowDialog(parent.getParent(), appt);
+					mw.getDatePicker().setDate(appt.getApptDate());
+					//DisplayAppointmentSearchUI.ShowDialog(parent.getParent(), appt);
 					SearchPane sp = (SearchPane) parent;
 					sp.resetModel();
 				}

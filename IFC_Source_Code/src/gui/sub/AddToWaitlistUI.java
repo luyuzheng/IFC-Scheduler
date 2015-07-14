@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -28,6 +27,7 @@ import backend.DataTransferObjects.*;
  * This class is pop up dialog box that is used to add patients to the waitlist.
  * It allows you to select a patient and service type, as well as add comments.
  */
+@SuppressWarnings("serial")
 public class AddToWaitlistUI extends JDialog implements ActionListener {
 	private static AddToWaitlistUI addToWaitlistUI;
 	
@@ -37,7 +37,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 	
 	private PatientDto patient;
 	private JLabel patientLabel;
-	private JComboBox typeCombo;
+	private JComboBox<TypeDto> typeCombo;
 	private JTextArea commentArea;
 	
 	private static int change = -1; // -1 if canceled, other is the typeID
@@ -63,7 +63,7 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 		JLabel typeLabel = new JLabel("Select Specific Wait List: ");
 		typeLabel.setFont(Constants.DIALOG);
 		List<TypeDto> types = DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitionerTypes();
-		typeCombo = new JComboBox(types.toArray());
+		typeCombo = new JComboBox<TypeDto>(types.toArray(new TypeDto[types.size()]));
 		typeCombo.setFont(Constants.DIALOG);
 		typePanel.add(typeLabel, BorderLayout.NORTH);
 		typePanel.add(typeCombo, BorderLayout.CENTER);
@@ -140,11 +140,16 @@ public class AddToWaitlistUI extends JDialog implements ActionListener {
 			List<WaitlistDto> waitlist = DataServiceImpl.GLOBAL_DATA_INSTANCE.getWaitlist();
 			for (int i = 0; i < waitlist.size(); i++) {
 				// If patient is already on the waitlist, give a warning
-                                //TODO: I don't think this works as desired? Might have fixed, come back to
-				if (waitlist.get(i).getPatientID() == patient.getPatID() && waitlist.get(i).getTypeID() == type.getTypeID()) {
-					errorMsg.setText("This patient has already been added to the waitlist for this type of service.");
-					JOptionPane.showMessageDialog(this, errorMsg, "Error!", JOptionPane.ERROR_MESSAGE);
-				    return;
+				if (waitlist.get(i).getPatientID().intValue() == patient.getPatID().intValue() && 
+					waitlist.get(i).getTypeID().intValue() == type.getTypeID().intValue()) {
+					errorMsg.setText("This patient is already on the waitlist for this type of service. " +
+									 "Do you still wish to continue?");
+					int selection = JOptionPane.showConfirmDialog(this, errorMsg, "Please Confirm", JOptionPane.YES_NO_OPTION);
+					if (selection == JOptionPane.YES_OPTION) {
+						break;
+					} else {
+						return;
+					}
 				} 
 			}
 			DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToWaitlist(patient, type, comment);

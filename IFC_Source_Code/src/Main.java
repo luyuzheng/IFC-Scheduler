@@ -1,6 +1,5 @@
 import gui.main.MainWindow;
 import gui.sub.CrashReportUI;
-import gui.sub.ServerCrashUI;
 
 /** Runs the scheduler application. */
 public class Main {

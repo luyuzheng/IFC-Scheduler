@@ -9,21 +9,20 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
+import javax.swing.JEditorPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.table.AbstractTableModel;
 import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.*;
@@ -45,20 +44,24 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 	
 	private JButton okButton = new JButton("OK");
 	private JButton cancelButton = new JButton("Cancel");
-	private JTextArea textArea;
-	private JTextArea noteArea;
+	private JTextPane textPane;
+	private JTextPane noteArea;
+	private JScrollPane scrollPane;
+	private JScrollPane notePane;
         
     private WaitListPane pane;
 	
 	/** Creates the dialog for a patient on the waitlist **/
 	private DisplayWaitingPatientUI(String name, WaitlistDto wp, WaitListPane pane) {
+		this.pane = pane;
+		waitingPatient = wp;
+		
 		setModal(true);
 		setTitle(name);
-		this.pane = pane;
+
 		setLayout(new BorderLayout());
 		setPreferredSize(new Dimension(500, 550));
-		
-		waitingPatient = wp;
+		setResizable(true);
 		
 		// Display patient information
 		JPanel topPanel = new JPanel(new BorderLayout());
@@ -67,47 +70,67 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 		
 		PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(wp.getPatientID());
 		
-		String text = "Priority Date: " + wp.getDate() + "\n" +
-					  "Time Added: " + wp.getTimeAdded() + "\n" +
-					  "Patient Name: " + patient.getFirst() + " " + patient.getLast() + "\n" +
-					  "Phone Number: " + patient.getPhone() + "\n" +
-					  "Type: " + wp.getTypeName() + "\n" + 
-					  "No Shows: " + patient.getNoShows() + "\n\n";
+		String text = getPatientInfoText(patient, wp);
 		
-		textArea = new JTextArea();
-		textArea.setLineWrap(true);
-		textArea.setWrapStyleWord(true);
-		textArea.setEditable(false);
-		textArea.setFont(Constants.PARAGRAPH);
-		textArea.setOpaque(false);
-		textArea.setHighlighter(null);
-		textArea.setText(text);
-		textArea.setBorder(new EmptyBorder(10, 10, 0, 10));
-		infoPanel.add(textArea, BorderLayout.NORTH);
+		textPane = new JTextPane();
+		textPane.setFont(Constants.PARAGRAPH);
+		textPane.setContentType("text/html");
+		textPane.setText("<html>" + text + "</html>");
+		textPane.setEditable(false);
+		textPane.setCaretPosition(0);
+		textPane.setOpaque(false);
+		textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true); // Used so that font will display properly
+	
+		scrollPane = new JScrollPane(textPane);
+		TitledBorder infoTitle = BorderFactory.createTitledBorder("Patient/Appointment Information");
+		infoTitle.setTitleFont(Constants.PARAGRAPH_BOLD);
+		scrollPane.setBorder(infoTitle);
+		infoPanel.add(scrollPane);
 		
-		JLabel commentsLabel = new JLabel("Comments: ");
-		commentsLabel.setFont(Constants.PARAGRAPH);
-		noteArea = new JTextArea();
-		noteArea.setLineWrap(true);
-		noteArea.setWrapStyleWord(true);
+		noteArea = new JTextPane();
 		noteArea.setFont(Constants.PARAGRAPH);
 		noteArea.setText(wp.getComments());
-		notePanel.add(commentsLabel, BorderLayout.NORTH);
-		notePanel.add(noteArea, BorderLayout.CENTER);
-		notePanel.setBorder(new EmptyBorder(0, 10, 40, 10));
+		noteArea.setEditable(true);
+		
+		notePane = new JScrollPane(noteArea);
+		TitledBorder noteAreaTitle = BorderFactory.createTitledBorder("Comments");
+		noteAreaTitle.setTitleFont(Constants.PARAGRAPH_BOLD);
+		notePane.setBorder(noteAreaTitle);
+		notePanel.add(notePane);
+		
+		infoPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+		notePanel.setBorder(new EmptyBorder(0, 10, 10, 10));
 		
 		// Display available appointments to schedule person off of waitlist
 		apt= DataServiceImpl.GLOBAL_DATA_INSTANCE.searchForAppointments(wp.getTypeID());
-		JComponent panel= displayAvailAppts();
-		panel.setPreferredSize(new Dimension(500,250));
+		JComponent panel = displayAvailAppts();
+		panel.setPreferredSize(new Dimension(500,200));
 
-		topPanel.setPreferredSize(new Dimension(500, 250));
+		topPanel.setPreferredSize(new Dimension(500, 300));
 		topPanel.add(infoPanel, BorderLayout.NORTH);
 		topPanel.add(notePanel, BorderLayout.CENTER);
 		add(topPanel, BorderLayout.NORTH);
 		add(panel, BorderLayout.CENTER);
-		setResizable(false);
 		
+	}
+	
+	private String getPatientInfoText(PatientDto patient, WaitlistDto wp) {
+		String[] labels = {"Priority Date", "Time Added", "Patient Name", "Phone Number", "Type", "No Shows"};
+		String[] info = {wp.getDate(), 
+						 wp.getTimeAdded(),
+						 patient.getFirst() + " " + patient.getLast(),
+						 patient.getPhone(),
+						 wp.getTypeName(),
+						 patient.getNoShows().toString()
+						 };
+		
+		String text = "<table>";
+		for (int i = 0; i < labels.length; i++) {
+			text += "<tr><td><b>" + labels[i] + ": </b></td><td align='left'>" + info[i] + "</td></tr><br />";
+		}
+		text += "</table>";
+
+		return text;		
 	}
 	
 	/** Displays the available appointments for someone on the waitlist **/
@@ -157,9 +180,6 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	aptTable.getTableHeader().setFont(Constants.PARAGRAPH);
     	aptTable.addMouseListener(new ScheduleWaitlistPatientListener(aptTable, this));
     	
-    	JLabel scheduleApptLabel = new JLabel("Schedule an Appointment for the Waitlisted Patient: ");
-    	scheduleApptLabel.setFont(Constants.PARAGRAPH);
-    	
     	panel.add(aptTable.getTableHeader(), BorderLayout.PAGE_START);
     	panel.add(aptTable, BorderLayout.CENTER);
     	    	
@@ -172,11 +192,14 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
     	buttonPanel.add(okButton);
     	buttonPanel.add(cancelButton);
     	
-    	
     	//Create the scroll pane and add the table to it.
         JScrollPane scrollPane = new JScrollPane(panel);
+    	TitledBorder tableTitle = BorderFactory.createTitledBorder("Schedule an Appointment for the Waitlisted Patient:");
+		tableTitle.setTitleFont(Constants.PARAGRAPH_BOLD);
+		tableTitle.setTitlePosition(TitledBorder.ABOVE_TOP);
+		scrollPane.setBorder(tableTitle);
         
-    	topPanel.add(scheduleApptLabel, BorderLayout.NORTH);
+    	//topPanel.add(scheduleApptLabel, BorderLayout.NORTH);
     	topPanel.add(scrollPane, BorderLayout.CENTER);
     	p.add(topPanel, BorderLayout.CENTER);
         p.add(buttonPanel, BorderLayout.SOUTH);
@@ -198,11 +221,8 @@ public class DisplayWaitingPatientUI extends JDialog implements ActionListener {
 			if (aptTable.getSelectedRow() >= 0) {
 				AppointmentDto appt = ((ApptTableModel)aptTable.getModel()).getAppointment(aptTable.getSelectedRow());
 				WaitlistDto waitlistPatient = getWaitlistPatient();
-				PatientDto patient = DataServiceImpl.GLOBAL_DATA_INSTANCE.getPatient(waitlistPatient.getPatientID());
-				TypeDto type = DataServiceImpl.GLOBAL_DATA_INSTANCE.getType(waitlistPatient.getTypeName());
-				
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(patient.getPatID(), appt);
-				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(patient, type);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.addPatientToAppointment(waitlistPatient.getPatientID(), appt);
+				DataServiceImpl.GLOBAL_DATA_INSTANCE.removePatientFromWaitlist(waitlistPatient.getWaitlistID());
                 pane.refreshAppointments(appt.getApptDate());
 			}
 			

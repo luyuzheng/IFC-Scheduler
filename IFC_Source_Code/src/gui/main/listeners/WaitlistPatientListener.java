@@ -4,10 +4,7 @@
 
 package gui.main.listeners;
 
-import backend.DataService.DataServiceImpl;
-import gui.main.AppointmentConfirmationPane;
 import gui.main.WaitListPane;
-import gui.main.AppointmentConfirmationPane.AppointmentConfirmationTableModel;
 import gui.main.WaitListPane.WaitlistTableModel;
 import gui.sub.DisplayWaitingPatientUI;
 
@@ -19,12 +16,8 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.WaitlistDto;
 
-import gui.main.WaitListPane;
-
-//import data.managers.WaitlistManager;
 
 public class WaitlistPatientListener extends MouseAdapter implements ListSelectionListener {
 	

@@ -1,15 +1,11 @@
 package gui.sub;
 
 import gui.Constants;
-import gui.main.SearchPane;
-import gui.main.SearchPane.PatientResultsTableModel;
-import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +17,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -31,15 +26,13 @@ import backend.DataTransferObjects.PatientDto;
 /**
  * Displays the pop up window that allows the user to search for a patient.
  */
+@SuppressWarnings("serial")
 public class SearchForPatientUI extends JDialog implements ActionListener {
 	private static SearchForPatientUI searchForPatientUI;
 	
 	private static List<PatientDto> ps;
 	private JLabel searchLabel;
-	private JLabel firstNameLabel;
-	private JLabel lastNameLabel;
-	private JTextField firstNameField = new JTextField();
-	private JTextField lastNameField = new JTextField();
+	private JTextField nameField = new JTextField();
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
 	
@@ -62,20 +55,12 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		
 		// Create search labels and set the font for all fields
-		searchLabel = new JLabel("Enter a Patient's Name (First Name, Last Name, or Both): ");
-		firstNameLabel = new JLabel("First Name: ");
-		lastNameLabel = new JLabel("Last Name: ");
+		searchLabel = new JLabel("Please Enter a Patient's First and/or Last Name: ");
 		searchLabel.setFont(Constants.PARAGRAPH);
-		firstNameLabel.setFont(Constants.PARAGRAPH);
-		lastNameLabel.setFont(Constants.PARAGRAPH);
-		firstNameField.setFont(Constants.PARAGRAPH);
-		lastNameField.setFont(Constants.PARAGRAPH);
+		nameField.setFont(Constants.PARAGRAPH);
 		
 		// Add search info to search panel
-		namesPanel.add(firstNameLabel);
-		namesPanel.add(firstNameField);
-		namesPanel.add(lastNameLabel);
-		namesPanel.add(lastNameField);
+		namesPanel.add(nameField);
 		
 		searchPanel.setBorder(new EmptyBorder(0, 10, 0, 10));
 		searchPanel.add(searchLabel);
@@ -92,7 +77,7 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		cancelButton.setFont(Constants.DIALOG);
 		
 		// Add buttons to button panel
-		buttonPanel.setBorder(new EmptyBorder(20, 10, 20, 10));
+		buttonPanel.setBorder(new EmptyBorder(0, 10, 10, 10));
 		buttonPanel.add(searchButton);
 		buttonPanel.add(cancelButton);
 		add(buttonPanel, BorderLayout.SOUTH);
@@ -112,11 +97,10 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 		return ps;
 	}
 	
-	public ArrayList<PatientDto> searchFilter(ArrayList<PatientDto> allPatients, String firstName, String lastName) {
+	public ArrayList<PatientDto> searchFilter(ArrayList<PatientDto> allPatients, String name) {
 	    // Filters patients
-		String fullName = firstName + " " + lastName;
-		String filter = fullName.toLowerCase();
-		String[] filters = filter.split(" ");
+		String filter = name.toLowerCase();
+		String[] filters = filter.trim().split(" ");
         ArrayList<PatientDto> filteredPat = new ArrayList<PatientDto>();
         for (PatientDto p : allPatients) {
         	String patName = p.getFullName().toLowerCase();
@@ -138,18 +122,16 @@ public class SearchForPatientUI extends JDialog implements ActionListener {
 	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand() == "Search") {
-			if ((firstNameField.getText() == null || firstNameField.getText().isEmpty()) &&
-				(lastNameField.getText() == null || lastNameField.getText().isEmpty())) {
-				JLabel errorMessage = new JLabel("Please enter a patient's name (first name, last name, or both).");
+			if ((nameField.getText() == null || nameField.getText().isEmpty())) {
+				JLabel errorMessage = new JLabel("Please enter a patient's first and/or last name.");
 				errorMessage.setFont(Constants.PARAGRAPH);
 				JOptionPane.showMessageDialog(this, errorMessage, "Error!", JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			// Get search manager to search for the patient and return results
-			String first = firstNameField.getText();
-			String last = lastNameField.getText();
-			ArrayList<PatientDto> pat = (ArrayList) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
-			ArrayList<PatientDto> searchResults = searchFilter(pat, first, last);
+			String name = nameField.getText();
+			ArrayList<PatientDto> pat = (ArrayList<PatientDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPatients();
+			ArrayList<PatientDto> searchResults = searchFilter(pat, name);
 			ps = searchResults;
 		} 
 		searchForPatientUI.setVisible(false);

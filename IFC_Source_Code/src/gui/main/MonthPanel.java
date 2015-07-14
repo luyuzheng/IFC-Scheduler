@@ -6,7 +6,6 @@ package gui.main;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -28,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import backend.DataService.DataServiceImpl;
-import backend.DataTransferObjects.AppointmentDto;
 import backend.DataTransferObjects.DayDto;
 import backend.DataTransferObjects.SchedulePractitionerDto;
 

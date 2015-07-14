@@ -6,7 +6,6 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,6 +30,7 @@ import backend.DataTransferObjects.TypeDto;
 /**
  * Displays the pop up window that allows the user to search for the next available appointment.
  */
+@SuppressWarnings("serial")
 public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private static SearchForAppointmentUI searchForAppointmentUI;
 	
@@ -42,11 +42,10 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 	private JCheckBox friday = new JCheckBox("Fri");
 	private JButton searchButton = new JButton("Search");
 	private JButton cancelButton = new JButton("Cancel");
-	private JComboBox typeSelector;
-	private JComboBox pracSelector;
+	private JComboBox<TypeDto> typeSelector;
+	private JComboBox<String> pracSelector;
 	private ArrayList<TypeDto> types;
 	private ArrayList<PractitionerDto> pracs;
-	private ArrayList<String> pracNames;
 	
 	/**
 	 * Constructor - creates the actual UI for the pop up window.
@@ -73,7 +72,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 		general.setField(TypeDto.TYPE_ID, -1);
 		general.setField(TypeDto.TYPE_NAME, "View All");
 		types.add(0, general);
-		typeSelector = new JComboBox(types.toArray());
+		typeSelector = new JComboBox<TypeDto>(types.toArray(new TypeDto[types.size()]));
 		typeSelector.setSelectedIndex(0);
 		typeSelector.setActionCommand("typeSelector");
 		typeSelector.addActionListener(this);
@@ -81,8 +80,7 @@ public class SearchForAppointmentUI extends JDialog implements ActionListener {
 
 		// Create drop down box of practitioners
 		pracs = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
-		pracNames = new ArrayList<String>();
-		pracSelector = new JComboBox();
+		pracSelector = new JComboBox<String>();
 		pracSelector.addItem("Any Practitioner");
 		for (PractitionerDto p : pracs) {
 			if (p.getTypeID() == types.get(0).getTypeID() || types.get(0).getTypeID() == -1) {

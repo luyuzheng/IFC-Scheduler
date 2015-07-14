@@ -5,7 +5,6 @@ import gui.Constants;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,6 +19,7 @@ import backend.DataTransferObjects.*;
 /**
  * Tiny popup that allows new types to be created.
  */
+@SuppressWarnings("serial")
 public class NewTypeUI extends JDialog implements ActionListener {
 	private static NewTypeUI newTypeUI;
 	private static TypeDto t;

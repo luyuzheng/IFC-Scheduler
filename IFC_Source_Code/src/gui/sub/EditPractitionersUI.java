@@ -2,13 +2,11 @@ package gui.sub;
 
 import backend.DataService.DataServiceImpl;
 import gui.Constants;
-import gui.sub.SelectPatientUI.PatTableModel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,6 +36,7 @@ import backend.DataTransferObjects.*;
  * Displays a list practitioners and allows one to be selected for editing or deletion.
  * Also allows new practitioners to be added.
  */
+@SuppressWarnings("serial")
 public class EditPractitionersUI extends JDialog implements KeyListener, ActionListener {
 	private static EditPractitionersUI editPractitionersUI;
 	private ArrayList<PractitionerDto> prac = (ArrayList<PractitionerDto>) DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
@@ -247,19 +246,28 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 				return p.getNotes();
 		}
 		
+		public int getRowByValue(PractitionerDto pract) {
+			for (int i = 0; i < getRowCount(); i++) {
+				if (getValueAt(i, 0).equals(pract.getFirst() + " " + pract.getLast()) && 
+					getValueAt(i, 1).equals(pract.getTypeName()) &&
+					getValueAt(i, 2).equals(pract.getApptLength())) {
+					return i;
+				}
+			}
+			return -1;
+		}
+		
 		public boolean isCellEditable(int row, int col) {
 			return false;
 		}
 		
 	}
 
-	public void keyTyped(KeyEvent arg0) {
-		
+	public void keyTyped(KeyEvent arg0) {	
 		
 	}
 
 	public void keyPressed(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -273,10 +281,18 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
 		if (e.getActionCommand().equals("edit")) {
 			if (pracTable.getSelectedRow() < 0) return;
 			else {
-				EditPractitionerUI.ShowDialog(this, model.getPractitioner(pracTable.getRowSorter().convertRowIndexToModel(pracTable.getSelectedRow())));
+				PractitionerDto pract = EditPractitionerUI.ShowDialog(this, model.getPractitioner(pracTable.getRowSorter().convertRowIndexToModel(pracTable.getSelectedRow())));
 				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
                 ((gui.main.MainWindow) owner).refreshAppointments(((gui.main.MainWindow) owner).getCurrentDay().getDate());
+                updateTable();
+				
+				// Reset selection (which gets removed by updateTable())
+				int row = ((PracTableModel)pracTable.getModel()).getRowByValue(pract);
+				if (row != -1) {
+					pracTable.scrollRectToVisible(pracTable.getCellRect(row, 0, true));
+					pracTable.setRowSelectionInterval(row, row);
+				}
 				return;
 			}
 		} else if (e.getActionCommand().equals("remove")) {
@@ -288,12 +304,21 @@ public class EditPractitionersUI extends JDialog implements KeyListener, ActionL
                         model.getPractitioner(pracTable.getRowSorter().convertRowIndexToModel(pracTable.getSelectedRow())));
 				prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 				pracTable.setModel(new PracTableModel(prac));
+				updateTable();
 			}
 			return;	
 		} else if (e.getActionCommand().equals("new")) {
-			NewPractitionerUI.ShowDialog(this);
+			PractitionerDto pract = NewPractitionerUI.ShowDialog(this);
 			prac = (ArrayList<PractitionerDto>)DataServiceImpl.GLOBAL_DATA_INSTANCE.getAllPractitioners();
 			pracTable.setModel(new PracTableModel(prac));
+			
+			// Set patient as the new selected row
+			searchField.setText("");
+			int row = ((PracTableModel)pracTable.getModel()).getRowByValue(pract);
+			if (row != -1) {
+				pracTable.scrollRectToVisible(pracTable.getCellRect(row, 0, true));
+				pracTable.setRowSelectionInterval(row, row);
+			}
 			return;
 		}
 		editPractitionersUI.setVisible(false);

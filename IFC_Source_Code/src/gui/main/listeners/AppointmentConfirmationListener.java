@@ -5,8 +5,6 @@ import gui.main.AppointmentConfirmationPane.AppointmentConfirmationTableModel;
 import gui.sub.DisplayAppointmentConfirmationUI;
 
 import java.awt.Component;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,7 +12,6 @@ import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import backend.DataService.DataServiceImpl;
 import backend.DataTransferObjects.*;
 
 import gui.main.MainWindow;

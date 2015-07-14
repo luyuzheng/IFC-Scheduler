@@ -9,7 +9,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,6 +28,7 @@ import backend.DataTransferObjects.WaitlistDto;
  * Dialog popup that allows the date entered set for a waitlist entry to be changed in order
  * to alter the priorities.
  */
+@SuppressWarnings("serial")
 public class ChangePriorityUI extends JDialog implements ActionListener {
 	private static ChangePriorityUI changePriorityUI;
 	

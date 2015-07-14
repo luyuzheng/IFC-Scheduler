@@ -9,10 +9,8 @@ import gui.Constants;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import javax.swing.AbstractAction;
@@ -24,6 +22,7 @@ import javax.swing.JPanel;
 import java.sql.Date;
 
 
+@SuppressWarnings("serial")
 public class TinyMonthHeadingPanel extends JPanel {
 	
 	final DatePicker dp;

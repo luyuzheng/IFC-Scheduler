@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class PractitionerErrorUI extends JDialog implements ActionListener {	
 	public enum PractitionerTask {
 		CREATENEW,

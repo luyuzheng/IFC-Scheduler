@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 import gui.TimeSlot;
 
+@SuppressWarnings("serial")
 public class SidePanel extends JPanel {
 
 	/** The day panel associated with a side panel. */
